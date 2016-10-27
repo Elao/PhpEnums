@@ -11,7 +11,8 @@ EOF;
 Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
 
 $finder = Symfony\CS\Finder::create()
-    ->in(array(__DIR__.'/src', __DIR__.'/tests'))
+    ->in([__DIR__ . '/src', __DIR__ . '/tests'])
+    ->exclude([__DIR__ . '/tests/fixtures'])
 ;
 
 return Symfony\CS\Config\Config::create()

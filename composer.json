@@ -1,0 +1,33 @@
+{
+    "name": "elao/enum",
+    "description": "Enumerations for PHP and frameworks integrations",
+    "keywords": ["enum", "symfony", "doctrine"],
+    "type": "library",
+    "homepage": "https://github.com/Elao/PhpEnums",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elao",
+            "homepage": "http://www.elao.com"
+        },
+        {
+            "name": "Maxime Steinhausser",
+            "email": "maxime.steinhausser@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Elao\\Enum\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6",
+        "symfony/phpunit-bridge": "^3.1",
+        "friendsofphp/php-cs-fixer": "^1.12"
+    }
+}

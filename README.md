@@ -31,6 +31,7 @@ However, you can register the Symfony Serializer normalizer yourself:
 services:
     app.enum_normalizer:
         class: 'Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer'
+        public: false
         tags: [{ name: serializer.normalizer }]
 ```
 

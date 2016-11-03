@@ -1,0 +1,27 @@
+sudo: true
+language: php
+
+env:
+    global:
+        - CHECK_PHP_SYNTAX="no"
+
+matrix:
+    fast_finish: true
+    include:
+        - php: 7.0
+        - php: 7.1
+          env: CHECK_PHP_SYNTAX="yes"
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+before_install:
+    - phpenv config-rm xdebug.ini || true
+
+install:
+    - composer update --prefer-dist --no-interaction --optimize-autoloader
+
+script:
+    - phpunit
+    - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config-file=.php_cs --dry-run --no-interaction --diff; fi;

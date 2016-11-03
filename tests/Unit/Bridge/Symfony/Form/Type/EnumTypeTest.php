@@ -379,7 +379,10 @@ class EnumTypeTest extends FormIntegrationTestCase
             null,
             [
                 'enum_class' => Gender::class,
-                'choices' => [Gender::create(Gender::MALE), Gender::create(Gender::FEMALE)],
+                'choices' => [
+                    Gender::create(Gender::MALE),
+                    Gender::create(Gender::FEMALE),
+                ],
             ]
         );
 

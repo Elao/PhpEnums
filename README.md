@@ -7,7 +7,7 @@ It'll power main frameworks integrations and bridges with other libraries when r
 
 # Features
 
-- Base implementation for simple, readable and flag (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
+- Base implementation for simple, readable and flagged (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
 - Symfony's Form component integration with form types.
 - Symfony's Serializer component integration with a normalizer class.
 - Doctrine DBAL integration with abstract classes aiming to easy storing your enumeration in the database.
@@ -20,8 +20,8 @@ $ composer require elao/enum
 
 ## With Symfony full stack framework
 
-Nothing to do. We won't register anything in the Symfony DIC for now.
-Simply use classes.
+Nothing to do. We won't register anything in the Symfony DIC for now.  
+Simply use provided classes.
 
 However, you can register Symfony's Serializer normalizers yourself:
 
@@ -84,7 +84,7 @@ API:
 
 ## Readable enums
 
-Sometimes, enuums may be displayed to the user, or exported in a human readable way.  
+Sometimes, enums may be displayed to the user, or exported in a human readable way.  
 Hence comes the `ReadableEnum`:
 
 ```php
@@ -121,9 +121,7 @@ class Gender extends ReadableEnum
 The following snippet shows how to render the human readable value of an enum:
 
 ```php
-
 <?php
-
 $enum = Gender::create(Gender::Male); 
 $enum->getReadable(); // returns 'Male'
 (string) $enum->getReadable(); // returns 'Male'
@@ -155,7 +153,7 @@ Using Symfony's translation component:
 
  
 ```yaml
- ## messages.en.yml
+ # app/Resources/translations/messages.en.yml
  enum.gender.unknown: 'Unknown'
  enum.gender.male: 'Male'
  enum.gender.female: 'Female'
@@ -190,7 +188,7 @@ class Permissions extends FlaggedEnum
     const WRITE = 2;
     const READ = 4;
 
-    // You can declare shortcut to common bit flags combinations
+    // You can declare shortcuts for common bit flags combinations
     // but it should not appear in `getPossibleValues`
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
@@ -211,7 +209,7 @@ class Permissions extends FlaggedEnum
             static::WRITE => 'Write',
             static::READ => 'Read',
 
-            // You can define readable values for a given bit flags combination:
+            // You can define readable values for specific bit flags combinations:
             static::WRITE | static::READ => 'Read & write',
             static::EXECUTE | static::READ => 'Read & execute',
             static::ALL => 'All permissions',
@@ -220,7 +218,7 @@ class Permissions extends FlaggedEnum
 }
 ```
 
-Creates instances using bitwise operations and manipulate it:
+Create instances using bitwise operations and manipulate them:
 
 ```php
 <?php
@@ -298,7 +296,7 @@ use Doctrine\DBAL\Types\Type;
 Type::addType(GenderEnumType::NAME, GenderEnumType::class);
 ```
 
-To convert the underlying database type of your new “mytype” directly into an instance of MyType when performing schema operations, the type has to be registered with the database platform as well:
+To convert the underlying database type of your new "gender" type directly into an instance of `Gender` when performing schema operations, the type has to be registered with the database platform as well:
 
 ```php
 <?php
@@ -345,7 +343,6 @@ Two methods allow to set a default value if `null` is retrieved from the databas
 
 abstract class AbstractEnumType extends Type
 {
-
     // ...
 
     /**
@@ -393,7 +390,7 @@ $builder->add('gender', EnumType::class, [
 // ...
 
 $form->submit($data);
-$form->get('gender')->getData(); //Will return a `Gender` instance
+$form->get('gender')->getData(); // Will return a `Gender` instance (or null)
 ```
 
 Only the `enum_class` option is required.
@@ -418,7 +415,37 @@ $builder->add('gender', EnumType::class, [
 // ...
 
 $form->submit($data);
-$form->get('gender')->getData(); //Will return a string value defined in the `Gender` enum
+$form->get('gender')->getData(); // Will return a string value defined in the `Gender` enum (or null)
+```
+
+You can restrict the list of proposed enumerations by overriding the `choices` option:
+
+```php
+<?php
+
+use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
+use MyApp\Enum\Gender;
+
+// ...
+
+$builder->add('gender', EnumType::class, [
+    'enum_class' => Gender::class,
+    'choices' => [
+        Gender::create(Gender::MALE), 
+        Gender::create(Gender::FEMALE),
+    ],
+]);
+
+// or:
+
+$builder->add('gender', EnumType::class, [
+    'enum_class' => Gender::class,
+    'as_value' => true,
+    'choices' => [
+        Gender::getReadableFor(Gender::MALE) => Gender::MALE,
+        Gender::getReadableFor(Gender::FEMALE) => Gender::FEMALE,
+    ],
+]);
 ```
 
 ## Flagged enums
@@ -440,7 +467,7 @@ $builder->add('permissions', FlaggedEnumType::class, [
 // ...
 
 $form->submit($data);
-$form->get('permissions')->getData(); //Will return a single `Permissions` instance composed of selected bit flags
+$form->get('permissions')->getData(); // Will return a single `Permissions` instance composed of selected bit flags
 ```
 
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).

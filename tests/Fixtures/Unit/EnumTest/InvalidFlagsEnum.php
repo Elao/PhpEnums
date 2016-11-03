@@ -26,6 +26,7 @@ class InvalidFlagsEnum extends FlaggedEnum
             static::INVALID => 'Invalid',
         ];
     }
+
     public static function getPossibleValues(): array
     {
         return [

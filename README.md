@@ -124,7 +124,7 @@ The following snippet shows how to render the human readable value of an enum:
 <?php
 $enum = Gender::create(Gender::Male); 
 $enum->getReadable(); // returns 'Male'
-(string) $enum->getReadable(); // returns 'Male'
+(string) $enum; // returns 'Male'
 ```
 
 If you're using a translation library, you can also simply return translation keys from the `ReadableEnumInterface::getReadables()` method:

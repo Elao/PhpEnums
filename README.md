@@ -8,8 +8,8 @@ It'll power main frameworks integrations and bridges with other libraries when r
 # Features
 
 - Base implementation for simple, readable and flagged (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
-- Symfony's Form component integration with form types.
-- Symfony's Serializer component integration with a normalizer class.
+- Symfony Form component integration with form types.
+- Symfony Serializer component integration with a normalizer class.
 - Doctrine DBAL integration with abstract classes aiming to easy storing your enumeration in the database.
 
 # Installation
@@ -23,7 +23,7 @@ $ composer require elao/enum
 Nothing to do. We won't register anything in the Symfony DIC for now.  
 Simply use provided classes.
 
-However, you can register Symfony's Serializer normalizers yourself:
+However, you can register the Symfony Serializer normalizer yourself:
 
 ```yml
 # services.yml

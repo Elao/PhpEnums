@@ -225,7 +225,7 @@ Create instances using bitwise operations and manipulate them:
 $permissions = Permissions::create(Permissions::EXECUTE | Permissions::WRITE | Permissions::READ);
 $permissions = $permissions->removeFlags(Permissions::EXECUTE); // Returns a new instance without "execute" flag
 $permissions->getValue(); // Returns 6 (int)
-$permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE]
+$permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE])
 
 $permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE); // Returns a new instance without "read" and "write" flags
 $permissions->getValue(); // Returns Permissions::NONE (0)

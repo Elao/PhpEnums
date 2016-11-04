@@ -10,8 +10,8 @@
 
 namespace Elao\Enum\Tests\Unit;
 
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\ExtendedSimpleEnum;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\SimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\ExtendedSimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +35,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Unit\EnumTest\SimpleEnum" enum.
+     * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.
      */
     public function testExceptionIsRaisedWhenValueIsNotAcceptable()
     {

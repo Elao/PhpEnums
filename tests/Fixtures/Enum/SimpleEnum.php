@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Unit\EnumTest;
+namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\Enum;
 

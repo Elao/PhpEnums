@@ -10,7 +10,7 @@
 
 namespace Elao\Enum\Tests\Unit;
 
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
 
 class ReadableEnumTest extends \PHPUnit_Framework_TestCase
 {

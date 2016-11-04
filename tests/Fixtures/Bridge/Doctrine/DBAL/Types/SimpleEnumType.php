@@ -8,10 +8,10 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Unit\Bridge\Doctrine\DBAL\Types;
+namespace Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\SimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class SimpleEnumType extends AbstractIntegerEnumType
 {

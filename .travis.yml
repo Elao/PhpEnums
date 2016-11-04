@@ -24,4 +24,4 @@ install:
 
 script:
     - phpunit
-    - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff; fi;
+    - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff --path-mode=intersection; fi;

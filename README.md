@@ -14,7 +14,7 @@ Table of Contents
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
     * [Flagged enums](#flagged-enums)
-  * [Persisting enums into databases (With Doctrine DBAL and ORM)](#persisting-enums-into-databases-with-doctrine-dbal-and-orm)
+  * [Persisting enums (Doctrine)](#persisting-enums-doctrine)
     * [Create the DBAL type](#create-the-dbal-type)
     * [Register the DBAL type](#register-the-dbal-type)
       * [Manually](#manually)
@@ -51,7 +51,6 @@ However, you can register the Symfony Serializer normalizer yourself:
 
 ```yml
 # services.yml
-
 services:
     app.enum_normalizer:
         class: 'Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer'
@@ -89,7 +88,6 @@ Create a new instance of your enumeration:
 
 ```php
 <?php
-
 $enum = Gender::create(Gender::Male); 
 ```
 
@@ -167,7 +165,6 @@ class Gender extends ReadableEnum
 
 Using Symfony's translation component:
 
- 
 ```yaml
  # app/Resources/translations/messages.en.yml
  enum.gender.unknown: 'Unknown'
@@ -248,7 +245,7 @@ $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
 ```
 
-# Persisting enums into databases (With Doctrine DBAL and ORM)
+# Persisting enums (Doctrine)
 
 You can store the raw value of an enumeration in the database, but still manipulte it as an object in your entities by [creating a custom DBAL type from scratch](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/custom-mapping-types.html).
 
@@ -471,7 +468,6 @@ $form->get('permissions')->getData(); // Will return a single `Permissions` inst
 
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).
 
-
 # API
 
 ## Simple enum
@@ -494,7 +490,6 @@ Method | Static | Returns | Description
 `getReadableFor($value)` | Yes | `string` | Get the human representation for given enumeration value.
 `getReadable($value)` | No | `string` | Get the human representation for the current instance.
 
-
 ## Flagged enum
 
 Method | Static | Returns | Description
@@ -502,8 +497,8 @@ Method | Static | Returns | Description
 `isAcceptableValue($value)` | Yes | `bool` | Same as before, but accepts bit flags and bitmasks.
 `getReadableFor($value, string $separator = '; ')` | Yes | `string` | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
 `getReadable(string $separator = '; ')` | No | `string` | Same as before, but with a delimiter option (see above).
+`getReadableForNone()` | Yes | `string` | Override to replace the default human representation of the "no flag" value.
 `getFlags()` | No | `int[]` | Returns an array of bit flags set in the current enumeration instance.
 `hasFlag(int $bitFlag)` | No | `bool` | True if the current instance has the given bit flag(s).
 `addFlags(int $flags)` | No | `static` | Returns a new instance of the enumeration with additional flag(s).
 `removeFlags(int $flags)` | No | `static` | Returns a new instance of the enumeration without given flag(s).
-`getReadableForNone()` | No | `string` | Override to replace the default human representation of the "no flag" value.

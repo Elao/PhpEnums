@@ -493,7 +493,7 @@ Method | Static | Returns | Description
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
 `isAcceptableValue($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | Same as before, but accepts bit flags and bitmasks.
-`getReadableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | > Override to replace the default human representation of the "no flag" value.
+`getReadableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | Override to replace the default human representation of the "no flag" value.
 `getReadableFor($value, string $separator = '; ')` | <kbd>Yes</kbd> | <kbd>string</kbd> | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
 `getReadable(string $separator = '; ')` | <kbd>No</kbd> | <kbd>string</kbd> | Same as before, but with a delimiter option (see above).
 `getFlags()` | <kbd>No</kbd> | <kbd>int[]</kbd> | Returns an array of bit flags set in the current enumeration instance.

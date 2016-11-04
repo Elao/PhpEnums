@@ -11,8 +11,8 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\Type;
 
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Gender;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\SimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;

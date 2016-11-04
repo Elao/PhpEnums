@@ -11,14 +11,14 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\SingleToCollectionFlagEnumTransformer;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Gender;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 
 class CollectionToSingleFlagEnumTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage "Elao\Enum\Tests\Fixtures\Unit\EnumTest\Gender" is not an instance of "Elao\Enum\FlaggedEnum"
+     * @expectedExceptionMessage "Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"
      */
     public function testThrowsExceptionIfNotFLaggedEnumInstance()
     {

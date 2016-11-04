@@ -10,8 +10,8 @@
 
 namespace Elao\Enum\Tests\Unit;
 
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\InvalidFlagsEnum;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
+use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 
 class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,7 +51,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Elao\Enum\Exception\LogicException
-     * @expectedExceptionMessage Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Unit\EnumTest\InvalidFlagsEnum" is not a bit flag.
+     * @expectedExceptionMessage Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum" is not a bit flag.
      */
     public function testThrowExceptionWhenBitmaskIsInvalid()
     {

@@ -34,6 +34,13 @@
         "doctrine/dbal": "^2.5",
         "symfony/form": "^3.1",
         "symfony/symfony": "^3.1",
-        "friendsofphp/php-cs-fixer": "2.x@dev"
+        "friendsofphp/php-cs-fixer": "2.x@dev",
+        "symfony/framework-bundle": "^3.1",
+        "symfony/dependency-injection": "^3.1",
+        "symfony/doctrine-bridge": "^3.1",
+        "symfony/twig-bundle": "^3.1",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/orm": "^2.5",
+        "doctrine/data-fixtures": "^1.2"
     }
 }

@@ -12,8 +12,8 @@ namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Elao\Enum\Tests\Fixtures\Unit\Bridge\Doctrine\DBAL\Types\GenderEnumType;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Gender;
+use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\GenderEnumType;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
 
 class EnumTypeTest extends \PHPUnit_Framework_TestCase
 {

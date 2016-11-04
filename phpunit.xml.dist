@@ -9,8 +9,12 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/Fixtures/Functional/Symfony/app/bootstrap.php"
 >
+    <php>
+        <server name="KERNEL_DIR" value="tests/Fixtures/Functional/Symfony/app/" />
+    </php>
+
     <testsuites>
         <testsuite name="Elao Enumerations Test Suite">
             <directory>./tests/</directory>

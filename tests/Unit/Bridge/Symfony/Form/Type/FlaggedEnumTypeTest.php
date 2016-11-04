@@ -11,7 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\Type;
 
 use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;
-use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 

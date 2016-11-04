@@ -1,0 +1,23 @@
+framework:
+    secret:                           'elao'
+    form:                             true
+    router:
+        resource:                     '%kernel.root_dir%/config/routing.yml'
+        strict_requirements:          '%kernel.debug%'
+    test:                              ~
+    session:
+        storage_id:                    'session.storage.mock_file'
+    templating:
+        engines:                       ['twig']
+
+doctrine:
+    dbal:
+        driver:                        'pdo_sqlite'
+        path:                          '%kernel.cache_dir%/db.sqlite'
+        charset:                       'UTF8'
+        types:
+            gender: 'Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\GenderEnumType'
+
+    orm:
+        auto_generate_proxy_classes:   '%kernel.debug%'
+        auto_mapping:                  true

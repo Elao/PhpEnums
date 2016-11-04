@@ -10,7 +10,7 @@
 
 namespace Elao\Enum;
 
-use Elao\Enum\Exception\InvalidEnumArgumentException;
+use Elao\Enum\Exception\InvalidValueException;
 
 abstract class ReadableEnum extends Enum implements ReadableEnumInterface
 {
@@ -38,7 +38,7 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
     public static function getReadableFor($value): string
     {
         if (!static::isAcceptableValue($value)) {
-            throw new InvalidEnumArgumentException($value, static::class);
+            throw new InvalidValueException($value, static::class);
         }
         $humanRepresentations = static::getReadables();
 

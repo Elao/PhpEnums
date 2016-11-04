@@ -10,7 +10,7 @@
 
 namespace Elao\Enum;
 
-use Elao\Enum\Exception\InvalidEnumArgumentException;
+use Elao\Enum\Exception\InvalidValueException;
 
 abstract class Enum implements EnumInterface
 {
@@ -35,7 +35,7 @@ abstract class Enum implements EnumInterface
     public static function create($value): EnumInterface
     {
         if (!static::isAcceptableValue($value)) {
-            throw new InvalidEnumArgumentException($value, static::class);
+            throw new InvalidValueException($value, static::class);
         }
 
         return new static($value);

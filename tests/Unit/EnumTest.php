@@ -34,7 +34,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Unit\EnumTest\SimpleEnum" enum.
      */
     public function testExceptionIsRaisedWhenValueIsNotAcceptable()
@@ -43,7 +43,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage "0" is not an acceptable value
      */
     public function testExceptionIsRaisedWhenValueIsNotAcceptableWithStrictCheck()

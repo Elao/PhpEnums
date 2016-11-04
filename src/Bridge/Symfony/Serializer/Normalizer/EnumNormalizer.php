@@ -11,7 +11,7 @@
 namespace Elao\Enum\Bridge\Symfony\Serializer\Normalizer;
 
 use Elao\Enum\EnumInterface;
-use Elao\Enum\Exception\InvalidEnumArgumentException;
+use Elao\Enum\Exception\InvalidValueException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -43,7 +43,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         try {
             return call_user_func([$class, 'create'], $data);
-        } catch (InvalidEnumArgumentException $e) {
+        } catch (InvalidValueException $e) {
             throw new UnexpectedValueException($e->getMessage());
         }
     }

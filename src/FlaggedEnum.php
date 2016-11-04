@@ -10,7 +10,8 @@
 
 namespace Elao\Enum;
 
-use Elao\Enum\Exception\InvalidEnumArgumentException;
+use Elao\Enum\Exception\InvalidValueException;
+use Elao\Enum\Exception\LogicException;
 
 abstract class FlaggedEnum extends ReadableEnum
 {
@@ -28,7 +29,7 @@ abstract class FlaggedEnum extends ReadableEnum
     public static function isAcceptableValue($value): bool
     {
         if (!is_int($value)) {
-            throw new InvalidEnumArgumentException($value, static::class);
+            throw new InvalidValueException($value, static::class);
         }
 
         if ($value === self::NONE) {
@@ -46,7 +47,7 @@ abstract class FlaggedEnum extends ReadableEnum
     public static function getReadableFor($value, string $separator = '; '): string
     {
         if (!static::isAcceptableValue($value)) {
-            throw new InvalidEnumArgumentException($value, static::class);
+            throw new InvalidValueException($value, static::class);
         }
         if ($value === self::NONE) {
             return static::getReadableForNone();
@@ -119,14 +120,14 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @param int $flags The bit flag or bit flags
      *
-     * @throws InvalidEnumArgumentException When $flags is not acceptable for this enumeration type
+     * @throws InvalidValueException When $flags is not acceptable for this enumeration type
      *
      * @return static A new instance of the enumeration
      */
     public function addFlags(int $flags): self
     {
         if (!static::isAcceptableValue($flags)) {
-            throw new InvalidEnumArgumentException($flags, static::class);
+            throw new InvalidValueException($flags, static::class);
         }
 
         return static::create($this->value | $flags);
@@ -137,14 +138,14 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @param int $flags The bit flag or bit flags
      *
-     * @throws InvalidEnumArgumentException When $flags is not acceptable for this enumeration type
+     * @throws InvalidValueException When $flags is not acceptable for this enumeration type
      *
      * @return static A new instance of the enumeration
      */
     public function removeFlags(int $flags): self
     {
         if (!static::isAcceptableValue($flags)) {
-            throw new InvalidEnumArgumentException($flags, static::class);
+            throw new InvalidValueException($flags, static::class);
         }
 
         return static::create($this->value & ~$flags);
@@ -163,7 +164,7 @@ abstract class FlaggedEnum extends ReadableEnum
     /**
      * Gets an integer value of the possible flags for enumeration.
      *
-     * @throws \UnexpectedValueException
+     * @throws LogicException If the possibles values are not valid bit flags
      *
      * @return int
      */
@@ -175,9 +176,10 @@ abstract class FlaggedEnum extends ReadableEnum
             $mask = 0;
             foreach (static::getPossibleValues() as $flag) {
                 if ($flag < 1 || ($flag > 1 && ($flag % 2) !== 0)) {
-                    throw new \UnexpectedValueException(sprintf(
-                        'Possible value %s of the enumeration is not a bit flag.',
-                        json_encode($flag)
+                    throw new LogicException(sprintf(
+                        'Possible value %s of the enumeration "%s" is not a bit flag.',
+                        json_encode($flag),
+                        static::class
                     ));
                 }
                 $mask |= $flag;

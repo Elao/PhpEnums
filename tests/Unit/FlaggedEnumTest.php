@@ -16,7 +16,7 @@ use Elao\Enum\Tests\Fixtures\Unit\EnumTest\Permissions;
 class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage "1" is not an acceptable value
      */
     public function testThrowExceptionWhenValueIsNotInteger()
@@ -50,8 +50,8 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \UnexpectedValueException
-     * @expectedExceptionMessage Possible value 3 of the enumeration is not a bit flag.
+     * @expectedException \Elao\Enum\Exception\LogicException
+     * @expectedExceptionMessage Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Unit\EnumTest\InvalidFlagsEnum" is not a bit flag.
      */
     public function testThrowExceptionWhenBitmaskIsInvalid()
     {
@@ -129,7 +129,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage 8 is not an acceptable value
      */
     public function testThrowExceptionWhenInvalidFlagsAdded()
@@ -158,7 +158,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage 99 is not an acceptable value
      */
     public function testThrowExceptionWhenInvalidFlagsRemoved()

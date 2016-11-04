@@ -46,7 +46,7 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidEnumArgumentException
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
      */
     public function testExceptionIsRaisedWhenValueCannotBeReadable()
     {

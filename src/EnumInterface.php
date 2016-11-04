@@ -10,7 +10,7 @@
 
 namespace Elao\Enum;
 
-use Elao\Enum\Exception\InvalidEnumArgumentException;
+use Elao\Enum\Exception\InvalidValueException;
 
 interface EnumInterface
 {
@@ -19,7 +19,7 @@ interface EnumInterface
      *
      * @param mixed $value The value of a particular enumerated constant
      *
-     * @throws InvalidEnumArgumentException When $value is not acceptable for this enumeration type
+     * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *
      * @return EnumInterface A new instance of an enum
      */

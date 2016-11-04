@@ -5,6 +5,30 @@ This project is greatly inspired by the [BiplaneEnumBundle](https://github.com/y
 
 It'll power main frameworks integrations and bridges with other libraries when relevant. 
 
+Table of Contents
+=================
+
+  * [Features](#features)
+  * [Installation](#installation)
+    * [With Symfony full stack framework](#with-symfony-full-stack-framework)
+  * [Usage](#usage)
+    * [Readable enums](#readable-enums)
+    * [Flagged enums](#flagged-enums)
+  * [Persisting enums into databases (With Doctrine DBAL and ORM)](#persisting-enums-into-databases-with-doctrine-dbal-and-orm)
+    * [Create the DBAL type](#create-the-dbal-type)
+    * [Register the DBAL type](#register-the-dbal-type)
+      * [Manually](#manually)
+      * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
+    * [Mapping](#mapping)
+    * [Default value on null](#default-value-on-null)
+  * [Integration with Symfony's Form component](#integration-with-symfonys-form-component)
+    * [Simple enums](#simple-enums)
+    * [Flagged enums](#flagged-enums-1)
+  * [API](#api)
+    * [Simple enum](#simple-enum)
+    * [Readable enum](#readable-enum)
+    * [Flagged enum](#flagged-enum)
+
 # Features
 
 - Base implementation for simple, readable and flagged (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
@@ -73,15 +97,6 @@ The main advantage of this approach is to manipulate your enums as objects, whic
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`
 
-API:
-
-- `public static function create($value): EnumInterface`: Creates a new instance of an enumeration
-- `public static function getPossibleValues(): array`: Should return any possible value for the enumeration
-- `public static function isAcceptableValue($value): bool`: True if the value is acceptable for this enumeration
-- `public function getValue()`: Returns the enumeration instance value
-- `public function equals(EnumInterface $enum): bool`: Determines whether two enumerations instances should be considered the same
-- `public function is($value): bool`: Determines if the enumeration instance value is equal to the given value.
-- `public static function getPossibleInstances(): array`: Instantiate and returns an array containing every enumeration instances for possible values.
 
 ## Readable enums
 
@@ -167,12 +182,6 @@ $enum = Gender::create(Gender::MALE);
 $translator->trans($enum); // returns 'Male'
 ```
 
-API:
-
-- `public static function getReadables(): array`: Should return an array of the human representations indexed by possible values.
-- `public static function getReadableFor($value): string`: Get the human representation for given enumeration value.
-- `public function getReadable(): string`: Get the human representation for the current instance.
-
 ## Flagged enums
 
 Flagged enumerations are used for bitwise operations.
@@ -238,17 +247,6 @@ $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
 ```
-
-API:
-
-- `public static function isAcceptableValue($value): bool`: Same as before, but accepts bit flags and bitmasks.
-- `public static function getReadableFor($value, string $separator = '; '): string`: Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination)
-- `public function getReadable(string $separator = '; '): string`: Same as before, but with a delimiter option (see above) 
-- `public function getFlags(): array`: Returns an array of bit flags set in the current enumeration instance.
-- `public function hasFlag(int $bitFlag): bool`: True if the current instance has the given bit flag(s).
-- `public function addFlags(int $flags): self`: Returns a new instance of the enumeration with additional flag(s).
-- `public function removeFlags(int $flags): self`: Returns a new instance of the enumeration without given flag(s).
-- `protected static function getReadableForNone(): string`: Override to replace the default human representation of the "no flag" value.
 
 # Persisting enums into databases (With Doctrine DBAL and ORM)
 
@@ -335,7 +333,7 @@ class User
 }
 ```
 
-### Default value on `null`
+## Default value on `null`
 
 Two methods allow to set a default value if `null` is retrieved from the database, or before persisting a value:
 
@@ -472,3 +470,40 @@ $form->get('permissions')->getData(); // Will return a single `Permissions` inst
 ```
 
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).
+
+
+# API
+
+## Simple enum
+
+Method | Static | Returns | Description
+------ | ------ | ------- | -----------
+`create($value)` | Yes | `EnumInterface` | Creates a new instance of an enumeration
+`getPossibleValues()` | Yes | `array` | Should return any possible value for the enumeration.
+`isAcceptableValue($value)` | Yes | `bool` | True if the value is acceptable for this enumeration.
+`getPossibleInstances()` | Yes | `EnumInterface[]` | Instantiate and returns an array containing every enumeration instances for possible values.
+`getValue()` | No | `void` | Returns the enumeration instance value
+`equals(EnumInterface $enum)` | No | `bool` | Determines whether two enumerations instances should be considered the same.
+`is($value)` | No | `bool` | Determines if the enumeration instance value is equal to the given value.
+
+## Readable enum
+
+Method | Static | Returns | Description
+------ | ------ | ------- | -----------
+`getReadables()` | Yes | `string[]` | Should return an array of the human representations indexed by possible values.
+`getReadableFor($value)` | Yes | `string` | Get the human representation for given enumeration value.
+`getReadable($value)` | No | `string` | Get the human representation for the current instance.
+
+
+## Flagged enum
+
+Method | Static | Returns | Description
+------ | ------ | ------- | -----------
+`isAcceptableValue($value)` | Yes | `bool` | Same as before, but accepts bit flags and bitmasks.
+`getReadableFor($value, string $separator = '; ')` | Yes | `string` | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
+`getReadable(string $separator = '; ')` | No | `string` | Same as before, but with a delimiter option (see above).
+`getFlags()` | No | `int[]` | Returns an array of bit flags set in the current enumeration instance.
+`hasFlag(int $bitFlag)` | No | `bool` | True if the current instance has the given bit flag(s).
+`addFlags(int $flags)` | No | `static` | Returns a new instance of the enumeration with additional flag(s).
+`removeFlags(int $flags)` | No | `static` | Returns a new instance of the enumeration without given flag(s).
+`getReadableForNone()` | No | `string` | Override to replace the default human representation of the "no flag" value.

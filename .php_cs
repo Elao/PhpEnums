@@ -8,25 +8,23 @@ Copyright (C) 2016 Elao
 @author Elao <contact@elao.com>
 EOF;
 
-Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
+$finder = PhpCsFixer\Finder::create()->in([__DIR__ . '/src', __DIR__ . '/tests']);
 
-$finder = Symfony\CS\Finder::create()
-    ->in([__DIR__ . '/src', __DIR__ . '/tests'])
-    ->exclude([__DIR__ . '/tests/fixtures'])
-;
-
-return Symfony\CS\Config\Config::create()
-    ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
-    ->fixers([
-        '-psr0',
-        '-concat_without_spaces',
-        '-phpdoc_short_description',
-        'concat_with_spaces',
-        'header_comment',
-        'ordered_use',
-        'phpdoc_order',
-        'short_array_syntax',
-    ])
+return PhpCsFixer\Config::create()
     ->setUsingCache(true)
     ->finder($finder)
+    ->setRules([
+        '@Symfony' => true,
+        'psr0' => false,
+        'concat_without_spaces' => false,
+        'concat_with_spaces' => true,
+        'phpdoc_short_description' => false,
+        'phpdoc_order' => true,
+        'short_array_syntax' => true,
+        'ordered_imports' => true,
+        'simplified_null_return' => false,
+        'header_comment' => [
+            'header' => $header,
+        ],
+    ])
 ;

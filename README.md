@@ -493,7 +493,6 @@ Method | Static | Returns | Description
 `getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value
 `equals(EnumInterface $enum)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines whether two enumerations instances should be considered the same.
 `is($value)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines if the enumeration instance value is equal to the given value.
-`__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allow to converts the instance to the human representation of the current value by casting it to a string.
 
 ## Readable enum
 
@@ -502,6 +501,7 @@ Method | Static | Returns | Description
 `readables()` | <kbd>Yes</kbd> | <kbd>string[]</kbd> | Should return an array of the human representations indexed by possible values.
 `readableFor($value)` | <kbd>Yes</kbd> | <kbd>string</kbd> | Get the human representation for given enumeration value.
 `getReadable($value)` | <kbd>No</kbd> | <kbd>string</kbd> | Get the human representation for the current instance.
+`__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allow to converts the instance to the human representation of the current value by casting it to a string.
 
 ## Flagged enum
 

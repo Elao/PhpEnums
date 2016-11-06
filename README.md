@@ -74,7 +74,7 @@ class Gender extends Enum
     const MALE = 'male';
     const FEMALE = 'female';
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             self::UNKNOW, 
@@ -111,7 +111,7 @@ class Gender extends ReadableEnum
     const MALE = 'male';
     const FEMALE = 'female';
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             self::UNKNOW,
@@ -120,7 +120,7 @@ class Gender extends ReadableEnum
         ];
     }
 
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             self::UNKNOW => 'Unknown',
@@ -140,7 +140,7 @@ $enum->getReadable(); // returns 'Male'
 (string) $enum; // returns 'Male'
 ```
 
-If you're using a translation library, you can also simply return translation keys from the `ReadableEnumInterface::getReadables()` method:
+If you're using a translation library, you can also simply return translation keys from the `ReadableEnumInterface::readables()` method:
 
 ```php
 <?php
@@ -151,7 +151,7 @@ class Gender extends ReadableEnum
 {
     // ...
     
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             self::UNKNOW => 'enum.gender.unknown',
@@ -198,7 +198,7 @@ class Permissions extends FlaggedEnum
     values
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             // Only declare valid bit flags:
@@ -208,7 +208,7 @@ class Permissions extends FlaggedEnum
         ];
     }
 
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             static::EXECUTE => 'Execute',

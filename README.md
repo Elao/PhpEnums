@@ -9,6 +9,7 @@ Table of Contents
 =================
 
   * [Features](#features)
+  * [Why?](#why)
   * [Installation](#installation)
     * [With Symfony full stack framework](#with-symfony-full-stack-framework)
   * [Usage](#usage)
@@ -28,6 +29,17 @@ Table of Contents
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
     * [Flagged enum](#flagged-enum)
+
+# Why?
+
+Using an enum class provides many benefits:
+
+- Bring visibility in your code
+- Typehint using the enum class
+- Centralize enumeration logic inside a class
+- Define utility methods or minor logic owned by your enumeration
+- Helps to describe how to read, serialize, export \[, ...\] an enumeration
+- Allow common libraries and frameworks integrations.
 
 # Features
 
@@ -90,8 +102,6 @@ Create a new instance of your enumeration:
 <?php
 $enum = Gender::create(Gender::Male); 
 ```
-
-The main advantage of this approach is to manipulate your enums as objects, which can be convenient in many situations in your domain, and allow to typehint methods.
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`
 

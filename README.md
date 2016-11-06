@@ -15,16 +15,18 @@ Table of Contents
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
     * [Flagged enums](#flagged-enums)
-  * [Persisting enums (Doctrine)](#persisting-enums-doctrine)
-    * [Create the DBAL type](#create-the-dbal-type)
-    * [Register the DBAL type](#register-the-dbal-type)
-      * [Manually](#manually)
-      * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
-    * [Mapping](#mapping)
-    * [Default value on null](#default-value-on-null)
-  * [Integration with Symfony's Form component](#integration-with-symfonys-form-component)
-    * [Simple enums](#simple-enums)
-    * [Flagged enums](#flagged-enums-1)
+  * [Integrations](#integrations)
+    * [Doctrine](#doctrine)
+      * [Create the DBAL type](#create-the-dbal-type)
+      * [Register the DBAL type](#register-the-dbal-type)
+        * [Manually](#manually)
+        * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
+      * [Mapping](#mapping)
+      * [Default value on null](#default-value-on-null)
+    * [Symfony Serializer component](#symfony-serializer-component)
+    * [Symfony Form component](#symfony-form-component)
+      * [Simple enums](#simple-enums)
+      * [Flagged enums](#flagged-enums-1)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -54,21 +56,8 @@ Using an enum class provides many benefits:
 $ composer require elao/enum
 ```
 
-## With Symfony full stack framework
-
-Nothing to do. We won't register anything in the Symfony DIC for now.  
-Simply use provided classes.
-
-However, you can register the Symfony Serializer normalizer yourself:
-
-```yml
-# services.yml
-services:
-    app.enum_normalizer:
-        class: 'Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer'
-        public: false
-        tags: [{ name: serializer.normalizer }]
-```
+Even if you're using the Symfony full stack framework, there is nothing more to do.   
+We won't register anything in the Symfony DIC for now. Simply use provided classes.
 
 # Usage
 
@@ -255,13 +244,15 @@ $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
 ```
 
-# Persisting enums (Doctrine)
+# Integrations
+
+## Doctrine
 
 You can store the raw value of an enumeration in the database, but still manipulate it as an object from your entities by [creating a custom DBAL type](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/custom-mapping-types.html), from scratch.
 
 However, this library can help you by providing abstract classes for both string and integer based enumerations.
 
-## Create the DBAL type
+### Create the DBAL type
 
 First, create your DBAL type by extending either `AbstractEnumType` (string based enum) or `AbstractIntegerEnumType` (integer based enum, for flagged enums for instance):
 
@@ -286,11 +277,11 @@ class GenderEnumType extends AbstractEnumType
 }
 ```
 
-## Register the DBAL type
+### Register the DBAL type
 
 Then, you'll simply need to register your DBAL type:
 
-### Manually
+#### Manually
 
 ```php
 <?php
@@ -308,7 +299,7 @@ $conn = $em->getConnection();
 $conn->getDatabasePlatform()->registerDoctrineTypeMapping(GenderEnumType::NAME, GenderEnumType::class);
 ```
 
-### Using the Doctrine Bundle with Symfony
+#### Using the Doctrine Bundle with Symfony
 
 refs: 
 
@@ -325,7 +316,7 @@ doctrine:
             gender: string
 ```
 
-## Mapping
+### Mapping
 
 When registering the custom types in the configuration you specify a unique name for the mapping type and map that to the corresponding fully qualified class name. Now the new type can be used when mapping columns:
 
@@ -338,7 +329,7 @@ class User
 }
 ```
 
-## Default value on `null`
+### Default value on `null`
 
 Two methods allow to set a default value if `null` is retrieved from the database, or before persisting a value:
 
@@ -373,9 +364,22 @@ abstract class AbstractEnumType extends Type
 
 Override those methods in order to satisfy your needs.
 
-# Integration with Symfony's Form component
+## Symfony Serializer component
 
-## Simple enums
+Simply register the following normalizer inside the DIC configuration:
+
+```yml
+# services.yml
+services:
+    app.enum_normalizer:
+        class: 'Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer'
+        public: false
+        tags: [{ name: serializer.normalizer }]
+```
+
+## Symfony Form component
+
+### Simple enums
 
 Simply use the `EnumType`:
 
@@ -452,7 +456,7 @@ $builder->add('gender', EnumType::class, [
 ]);
 ```
 
-## Flagged enums
+### Flagged enums
 
 Simply use the `FlaggedEnumType` (which extends `EnumType`):
 

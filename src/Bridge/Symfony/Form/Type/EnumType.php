@@ -30,10 +30,10 @@ class EnumType extends AbstractType
                     $enumClass = $options['enum_class'];
 
                     if (!$options['as_value']) {
-                        return $enumClass::getPossibleInstances();
+                        return $enumClass::instances();
                     }
 
-                    $possibleValues = $enumClass::getPossibleValues();
+                    $possibleValues = $enumClass::values();
 
                     if (!$this->isReadable($enumClass)) {
                         return $possibleValues;
@@ -41,7 +41,7 @@ class EnumType extends AbstractType
 
                     $choices = [];
                     foreach ($possibleValues as $possibleValue) {
-                        $choices[$enumClass::getReadableFor($possibleValue)] = $possibleValue;
+                        $choices[$enumClass::readableFor($possibleValue)] = $possibleValue;
                     }
 
                     return $choices;

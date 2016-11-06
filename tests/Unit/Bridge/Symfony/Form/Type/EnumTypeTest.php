@@ -299,17 +299,17 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::getReadableFor(Gender::UNKNOW), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
         $this->assertSame(Gender::UNKNOW, $choice->value);
         $this->assertEquals(Gender::create(Gender::UNKNOW), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::getReadableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
         $this->assertEquals(Gender::create(Gender::MALE), $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::getReadableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
         $this->assertEquals(Gender::create(Gender::FEMALE), $choice->data);
 
@@ -352,17 +352,17 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::getReadableFor(Gender::UNKNOW), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
         $this->assertSame(Gender::UNKNOW, $choice->value);
         $this->assertSame(Gender::UNKNOW, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::getReadableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
         $this->assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::getReadableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
         $this->assertSame(Gender::FEMALE, $choice->data);
 
@@ -393,12 +393,12 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(2, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::getReadableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
         $this->assertEquals(Gender::create(Gender::MALE), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::getReadableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
         $this->assertEquals(Gender::create(Gender::FEMALE), $choice->data);
 
@@ -418,8 +418,8 @@ class EnumTypeTest extends FormIntegrationTestCase
                 'enum_class' => Gender::class,
                 'as_value' => true,
                 'choices' => [
-                    Gender::getReadableFor(Gender::MALE) => Gender::MALE,
-                    Gender::getReadableFor(Gender::FEMALE) => Gender::FEMALE,
+                    Gender::readableFor(Gender::MALE) => Gender::MALE,
+                    Gender::readableFor(Gender::FEMALE) => Gender::FEMALE,
                 ],
             ]
         );
@@ -431,12 +431,12 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(2, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::getReadableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
         $this->assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::getReadableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
         $this->assertSame(Gender::FEMALE, $choice->data);
 

@@ -21,7 +21,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionWhenValueIsNotInteger()
     {
-        Permissions::isAcceptableValue('1');
+        Permissions::accepts('1');
     }
 
     public function acceptableValueProvider()
@@ -44,8 +44,8 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $result,
-            Permissions::isAcceptableValue($value),
-            sprintf('->isAcceptableValue() returns %s if the value %d.', $result ? 'true' : 'false', $value)
+            Permissions::accepts($value),
+            sprintf('->accepts() returns %s if the value %d.', $result ? 'true' : 'false', $value)
         );
     }
 
@@ -67,7 +67,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testSingleFlagIsReadable()
     {
-        $this->assertEquals('Execute', Permissions::getReadableFor(Permissions::EXECUTE));
+        $this->assertEquals('Execute', Permissions::readableFor(Permissions::EXECUTE));
 
         $instance = Permissions::create(Permissions::EXECUTE);
 
@@ -78,7 +78,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             'Execute; Write',
-            Permissions::getReadableFor(Permissions::EXECUTE | Permissions::WRITE)
+            Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE)
         );
 
         $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
@@ -90,7 +90,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             'Read & write',
-            Permissions::getReadableFor(Permissions::READ | Permissions::WRITE)
+            Permissions::readableFor(Permissions::READ | Permissions::WRITE)
         );
 
         $instance = Permissions::create(Permissions::ALL);
@@ -100,7 +100,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testNoneCanBeReadabled()
     {
-        $this->assertSame('None', Permissions::getReadableFor(Permissions::NONE));
+        $this->assertSame('None', Permissions::readableFor(Permissions::NONE));
 
         $instance = Permissions::create(Permissions::NONE);
 
@@ -111,7 +111,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'Execute | Write',
-            Permissions::getReadableFor(Permissions::EXECUTE | Permissions::WRITE, ' | ')
+            Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE, ' | ')
         );
         $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
         $this->assertEquals('Execute | Write', $instance->getReadable(' | '));

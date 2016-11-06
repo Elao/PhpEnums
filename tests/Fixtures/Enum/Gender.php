@@ -18,7 +18,7 @@ class Gender extends ReadableEnum
     const MALE = 'male';
     const FEMALE = 'female';
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             self::UNKNOW,
@@ -27,7 +27,7 @@ class Gender extends ReadableEnum
         ];
     }
 
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             self::UNKNOW => 'Unknown',

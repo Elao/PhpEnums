@@ -72,7 +72,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
             SimpleEnum::create(SimpleEnum::ZERO),
             SimpleEnum::create(SimpleEnum::FIRST),
             SimpleEnum::create(SimpleEnum::SECOND),
-        ], SimpleEnum::getPossibleInstances());
+        ], SimpleEnum::instances());
     }
 
     public function testIs()

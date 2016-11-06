@@ -19,7 +19,7 @@ interface ReadableEnumInterface extends EnumInterface
      *
      * @return array
      */
-    public static function getReadables(): array;
+    public static function readables(): array;
 
     /**
      * Gets the human representation for a given value.
@@ -30,7 +30,7 @@ interface ReadableEnumInterface extends EnumInterface
      *
      * @return string The human representation for a given value
      */
-    public static function getReadableFor($value): string;
+    public static function readableFor($value): string;
 
     /**
      * Gets the human representation of the value.

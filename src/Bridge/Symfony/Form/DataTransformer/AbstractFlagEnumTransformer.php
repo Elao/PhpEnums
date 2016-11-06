@@ -39,6 +39,6 @@ abstract class AbstractFlagEnumTransformer implements DataTransformerInterface
 
     protected function isAcceptableValueForEnum(int $value): bool
     {
-        return call_user_func([$this->enumClass, 'isAcceptableValue'], $value);
+        return call_user_func([$this->enumClass, 'accepts'], $value);
     }
 }

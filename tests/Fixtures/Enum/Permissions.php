@@ -20,7 +20,7 @@ class Permissions extends FlaggedEnum
 
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             static::EXECUTE,
@@ -29,7 +29,7 @@ class Permissions extends FlaggedEnum
         ];
     }
 
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             static::EXECUTE => 'Execute',

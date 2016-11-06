@@ -18,7 +18,7 @@ class SimpleEnum extends Enum
     const FIRST = 1;
     const SECOND = 2;
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [self::ZERO, self::FIRST, self::SECOND];
     }

@@ -34,7 +34,7 @@ abstract class Enum implements EnumInterface
      */
     public static function create($value): EnumInterface
     {
-        if (!static::isAcceptableValue($value)) {
+        if (!static::accepts($value)) {
             throw new InvalidValueException($value, static::class);
         }
 
@@ -52,9 +52,9 @@ abstract class Enum implements EnumInterface
     /**
      * {@inheritdoc}
      */
-    public static function isAcceptableValue($value): bool
+    public static function accepts($value): bool
     {
-        return in_array($value, static::getPossibleValues(), true);
+        return in_array($value, static::values(), true);
     }
 
     /**
@@ -76,10 +76,10 @@ abstract class Enum implements EnumInterface
     /**
      * {@inheritdoc}
      */
-    public static function getPossibleInstances(): array
+    public static function instances(): array
     {
         return array_map(function ($value) {
             return static::create($value);
-        }, static::getPossibleValues());
+        }, static::values());
     }
 }

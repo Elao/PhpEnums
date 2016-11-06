@@ -55,17 +55,17 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Permissions::getReadableFor(Permissions::EXECUTE), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::EXECUTE), $choice->label);
         $this->assertEquals(Permissions::EXECUTE, $choice->value);
         $this->assertEquals(Permissions::create(Permissions::EXECUTE), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Permissions::getReadableFor(Permissions::WRITE), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::WRITE), $choice->label);
         $this->assertEquals(Permissions::WRITE, $choice->value);
         $this->assertEquals(Permissions::create(Permissions::WRITE), $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Permissions::getReadableFor(Permissions::READ), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::READ), $choice->label);
         $this->assertEquals(Permissions::READ, $choice->value);
         $this->assertEquals(Permissions::create(Permissions::READ), $choice->data);
 
@@ -98,17 +98,17 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
         $this->assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Permissions::getReadableFor(Permissions::EXECUTE), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::EXECUTE), $choice->label);
         $this->assertEquals(Permissions::EXECUTE, $choice->value);
         $this->assertEquals(Permissions::EXECUTE, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Permissions::getReadableFor(Permissions::WRITE), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::WRITE), $choice->label);
         $this->assertEquals(Permissions::WRITE, $choice->value);
         $this->assertEquals(Permissions::WRITE, $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Permissions::getReadableFor(Permissions::READ), $choice->label);
+        $this->assertSame(Permissions::readableFor(Permissions::READ), $choice->label);
         $this->assertEquals(Permissions::READ, $choice->value);
         $this->assertEquals(Permissions::READ, $choice->data);
 

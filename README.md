@@ -206,7 +206,7 @@ class Permissions extends FlaggedEnum
     const READ = 4;
 
     // You can declare shortcuts for common bit flags combinations
-    // but it should not appear in `getPossibleValues`
+    values
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function getPossibleValues(): array
@@ -483,9 +483,9 @@ Same options are available, but on the contrary of the `EnumType`, the `multiple
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
 `create($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Creates a new instance of an enumeration
-`getPossibleValues()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
-`isAcceptableValue($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
-`getPossibleInstances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiate and returns an array containing every enumeration instances for possible values.
+`values()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
+`accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
+`instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiate and returns an array containing every enumeration instances for possible values.
 `getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value
 `equals(EnumInterface $enum)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines whether two enumerations instances should be considered the same.
 `is($value)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines if the enumeration instance value is equal to the given value.
@@ -494,17 +494,17 @@ Method | Static | Returns | Description
 
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
-`getReadables()` | <kbd>Yes</kbd> | <kbd>string[]</kbd> | Should return an array of the human representations indexed by possible values.
-`getReadableFor($value)` | <kbd>Yes</kbd> | <kbd>string</kbd> | Get the human representation for given enumeration value.
+`readables()` | <kbd>Yes</kbd> | <kbd>string[]</kbd> | Should return an array of the human representations indexed by possible values.
+`readableFor($value)` | <kbd>Yes</kbd> | <kbd>string</kbd> | Get the human representation for given enumeration value.
 `getReadable($value)` | <kbd>No</kbd> | <kbd>string</kbd> | Get the human representation for the current instance.
 
 ## Flagged enum
 
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
-`isAcceptableValue($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | Same as before, but accepts bit flags and bitmasks.
-`getReadableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | Override to replace the default human representation of the "no flag" value.
-`getReadableFor($value, string $separator = '; ')` | <kbd>Yes</kbd> | <kbd>string</kbd> | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
+`accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | Same as before, but accepts bit flags and bitmasks.
+`readableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | Override to replace the default human representation of the "no flag" value.
+`readableFor($value, string $separator = '; ')` | <kbd>Yes</kbd> | <kbd>string</kbd> | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
 `getReadable(string $separator = '; ')` | <kbd>No</kbd> | <kbd>string</kbd> | Same as before, but with a delimiter option (see above).
 `getFlags()` | <kbd>No</kbd> | <kbd>int[]</kbd> | Returns an array of bit flags set in the current enumeration instance.
 `hasFlag(int $bitFlag)` | <kbd>No</kbd> | <kbd>bool</kbd> | True if the current instance has the given bit flag(s).

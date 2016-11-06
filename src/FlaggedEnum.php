@@ -26,7 +26,7 @@ abstract class FlaggedEnum extends ReadableEnum
     /**
      * {@inheritdoc}
      */
-    public static function isAcceptableValue($value): bool
+    public static function accepts($value): bool
     {
         if (!is_int($value)) {
             throw new InvalidValueException($value, static::class);
@@ -44,16 +44,16 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @param string $separator A delimiter used between each bit flag's readable string
      */
-    public static function getReadableFor($value, string $separator = '; '): string
+    public static function readableFor($value, string $separator = '; '): string
     {
-        if (!static::isAcceptableValue($value)) {
+        if (!static::accepts($value)) {
             throw new InvalidValueException($value, static::class);
         }
         if ($value === self::NONE) {
-            return static::getReadableForNone();
+            return static::readableForNone();
         }
 
-        $humanRepresentations = static::getReadables();
+        $humanRepresentations = static::readables();
 
         if (isset($humanRepresentations[$value])) {
             return $humanRepresentations[$value];
@@ -71,13 +71,23 @@ abstract class FlaggedEnum extends ReadableEnum
     }
 
     /**
+     * Gets the human representation for the none value.
+     *
+     * @return string
+     */
+    protected static function readableForNone(): string
+    {
+        return 'None';
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @param string $separator A delimiter used between each bit flag's readable string
      */
     public function getReadable(string $separator = '; '): string
     {
-        return static::getReadableFor($this->getValue(), $separator);
+        return static::readableFor($this->getValue(), $separator);
     }
 
     /**
@@ -89,7 +99,7 @@ abstract class FlaggedEnum extends ReadableEnum
     {
         if ($this->flags === null) {
             $this->flags = [];
-            foreach (static::getPossibleValues() as $flag) {
+            foreach (static::values() as $flag) {
                 if ($this->hasFlag($flag)) {
                     $this->flags[] = $flag;
                 }
@@ -126,7 +136,7 @@ abstract class FlaggedEnum extends ReadableEnum
      */
     public function addFlags(int $flags): self
     {
-        if (!static::isAcceptableValue($flags)) {
+        if (!static::accepts($flags)) {
             throw new InvalidValueException($flags, static::class);
         }
 
@@ -144,21 +154,11 @@ abstract class FlaggedEnum extends ReadableEnum
      */
     public function removeFlags(int $flags): self
     {
-        if (!static::isAcceptableValue($flags)) {
+        if (!static::accepts($flags)) {
             throw new InvalidValueException($flags, static::class);
         }
 
         return static::create($this->value & ~$flags);
-    }
-
-    /**
-     * Gets the human representation for the none value.
-     *
-     * @return string
-     */
-    protected static function getReadableForNone(): string
-    {
-        return 'None';
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class FlaggedEnum extends ReadableEnum
 
         if (!isset(self::$masks[$enumType])) {
             $mask = 0;
-            foreach (static::getPossibleValues() as $flag) {
+            foreach (static::values() as $flag) {
                 if ($flag < 1 || ($flag > 1 && ($flag % 2) !== 0)) {
                     throw new LogicException(sprintf(
                         'Possible value %s of the enumeration "%s" is not a bit flag.',

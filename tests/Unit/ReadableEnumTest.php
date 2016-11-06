@@ -42,7 +42,7 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testValueCanBeReadabled()
     {
-        $this->assertSame('Female', Gender::getReadableFor(Gender::FEMALE));
+        $this->assertSame('Female', Gender::readableFor(Gender::FEMALE));
     }
 
     /**
@@ -50,6 +50,6 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsRaisedWhenValueCannotBeReadable()
     {
-        Gender::getReadableFor('invalid_value');
+        Gender::readableFor('invalid_value');
     }
 }

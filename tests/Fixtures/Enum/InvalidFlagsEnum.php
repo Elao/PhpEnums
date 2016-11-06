@@ -18,7 +18,7 @@ class InvalidFlagsEnum extends FlaggedEnum
     const SECOND = 2;
     const INVALID = 3;
 
-    public static function getReadables(): array
+    public static function readables(): array
     {
         return [
             static::FIRST => 'First',
@@ -27,7 +27,7 @@ class InvalidFlagsEnum extends FlaggedEnum
         ];
     }
 
-    public static function getPossibleValues(): array
+    public static function values(): array
     {
         return [
             static::FIRST,

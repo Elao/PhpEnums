@@ -36,9 +36,7 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
     }
 
     /**
-     * Converts to the human representation of the current value.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

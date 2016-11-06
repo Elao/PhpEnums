@@ -493,6 +493,7 @@ Method | Static | Returns | Description
 `getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value
 `equals(EnumInterface $enum)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines whether two enumerations instances should be considered the same.
 `is($value)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines if the enumeration instance value is equal to the given value.
+`__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allow to converts the instance to the human representation of the current value by casting it to a string.
 
 ## Readable enum
 

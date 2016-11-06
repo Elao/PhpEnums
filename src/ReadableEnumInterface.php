@@ -38,4 +38,11 @@ interface ReadableEnumInterface extends EnumInterface
      * @return string
      */
     public function getReadable(): string;
+
+    /**
+     * Converts to the human representation of the current value.
+     *
+     * @return string
+     */
+    public function __toString();
 }

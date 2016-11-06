@@ -37,7 +37,7 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
     {
         $enumValue = Gender::create(Gender::MALE);
 
-        $this->assertEquals('Male', (string) $enumValue);
+        $this->assertSame('Male', (string) $enumValue);
     }
 
     public function testValueCanBeReadabled()

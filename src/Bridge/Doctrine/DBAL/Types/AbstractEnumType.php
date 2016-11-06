@@ -21,7 +21,7 @@ abstract class AbstractEnumType extends Type
      *
      * @return string
      */
-    abstract protected function getEnumClass() : string;
+    abstract protected function getEnumClass(): string;
 
     /**
      * What should be returned on null value from the database.
@@ -113,7 +113,7 @@ class GenderEnumType extends AbstractEnumType
 {
     const NAME = 'gender';
 
-    protected function getEnumClass() : string
+    protected function getEnumClass(): string
     {
         return Gender::class;
     }

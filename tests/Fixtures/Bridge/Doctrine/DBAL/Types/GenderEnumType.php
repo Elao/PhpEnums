@@ -17,7 +17,7 @@ class GenderEnumType extends AbstractEnumType
 {
     const NAME = 'gender_enum';
 
-    protected function getEnumClass() : string
+    protected function getEnumClass(): string
     {
         return Gender::class;
     }

@@ -15,7 +15,7 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
-    ->finder($finder)
+    ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
         'psr0' => false,

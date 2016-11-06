@@ -17,7 +17,7 @@ class SimpleEnumType extends AbstractIntegerEnumType
 {
     const NAME = 'simple_enum';
 
-    protected function getEnumClass() : string
+    protected function getEnumClass(): string
     {
         return SimpleEnum::class;
     }

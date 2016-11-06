@@ -501,7 +501,7 @@ Method | Static | Returns | Description
 `readables()` | <kbd>Yes</kbd> | <kbd>string[]</kbd> | Should return an array of the human representations indexed by possible values.
 `readableFor($value)` | <kbd>Yes</kbd> | <kbd>string</kbd> | Get the human representation for given enumeration value.
 `getReadable($value)` | <kbd>No</kbd> | <kbd>string</kbd> | Get the human representation for the current instance.
-`__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allow to converts the instance to the human representation of the current value by casting it to a string.
+`__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allows to convert the instance to the human representation of the current value by casting it to a string.
 
 ## Flagged enum
 

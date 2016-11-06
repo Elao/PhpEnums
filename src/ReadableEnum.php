@@ -17,6 +17,19 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
     /**
      * {@inheritdoc}
      */
+    public static function readableFor($value): string
+    {
+        if (!static::accepts($value)) {
+            throw new InvalidValueException($value, static::class);
+        }
+        $humanRepresentations = static::readables();
+
+        return $humanRepresentations[$value];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getReadable(): string
     {
         return static::readableFor($this->getValue());
@@ -30,18 +43,5 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
     public function __toString()
     {
         return (string) $this->getReadable();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function readableFor($value): string
-    {
-        if (!static::accepts($value)) {
-            throw new InvalidValueException($value, static::class);
-        }
-        $humanRepresentations = static::readables();
-
-        return $humanRepresentations[$value];
     }
 }

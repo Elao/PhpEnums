@@ -44,17 +44,27 @@ abstract class Enum implements EnumInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public static function accepts($value): bool
     {
-        return $this->value;
+        return in_array($value, static::values(), true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function accepts($value): bool
+    public static function instances(): array
     {
-        return in_array($value, static::values(), true);
+        return array_map(function ($value) {
+            return static::create($value);
+        }, static::values());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**
@@ -71,15 +81,5 @@ abstract class Enum implements EnumInterface
     public function is($value): bool
     {
         return $this->getValue() === $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function instances(): array
-    {
-        return array_map(function ($value) {
-            return static::create($value);
-        }, static::values());
     }
 }

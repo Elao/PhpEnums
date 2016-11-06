@@ -81,6 +81,35 @@ abstract class FlaggedEnum extends ReadableEnum
     }
 
     /**
+     * Gets an integer value of the possible flags for enumeration.
+     *
+     * @throws LogicException If the possibles values are not valid bit flags
+     *
+     * @return int
+     */
+    private static function getBitmask(): int
+    {
+        $enumType = static::class;
+
+        if (!isset(self::$masks[$enumType])) {
+            $mask = 0;
+            foreach (static::values() as $flag) {
+                if ($flag < 1 || ($flag > 1 && ($flag % 2) !== 0)) {
+                    throw new LogicException(sprintf(
+                        'Possible value %s of the enumeration "%s" is not a bit flag.',
+                        json_encode($flag),
+                        static::class
+                    ));
+                }
+                $mask |= $flag;
+            }
+            self::$masks[$enumType] = $mask;
+        }
+
+        return self::$masks[$enumType];
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @param string $separator A delimiter used between each bit flag's readable string
@@ -159,34 +188,5 @@ abstract class FlaggedEnum extends ReadableEnum
         }
 
         return static::create($this->value & ~$flags);
-    }
-
-    /**
-     * Gets an integer value of the possible flags for enumeration.
-     *
-     * @throws LogicException If the possibles values are not valid bit flags
-     *
-     * @return int
-     */
-    private static function getBitmask(): int
-    {
-        $enumType = static::class;
-
-        if (!isset(self::$masks[$enumType])) {
-            $mask = 0;
-            foreach (static::values() as $flag) {
-                if ($flag < 1 || ($flag > 1 && ($flag % 2) !== 0)) {
-                    throw new LogicException(sprintf(
-                        'Possible value %s of the enumeration "%s" is not a bit flag.',
-                        json_encode($flag),
-                        static::class
-                    ));
-                }
-                $mask |= $flag;
-            }
-            self::$masks[$enumType] = $mask;
-        }
-
-        return self::$masks[$enumType];
     }
 }

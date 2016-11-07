@@ -234,7 +234,6 @@ class Permissions extends FlaggedEnum
     const READ = 4;
 
     // You can declare shortcuts for common bit flags combinations
-    values
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function values(): array

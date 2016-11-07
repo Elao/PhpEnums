@@ -36,6 +36,9 @@ Table of Contents
 
 # Why?
 
+An enumeration is data type, enclosing a single value from a predictable set of members (enumerators).  
+Each enumerator name is a single identifier, materialized by a PHP constant.  
+
 Using an enum class provides many benefits:
 
 - Bring visibility in your code
@@ -44,6 +47,23 @@ Using an enum class provides many benefits:
 - Define utility methods or minor logic owned by your enumeration
 - Helps to describe how to read, serialize, export \[, ...\] an enumeration
 - Allow common libraries and frameworks integrations.
+
+Enumerations are not options and are not meant to replace constants. Designing an enum type should be done by keeping your domain in mind, and should convey a strong meaning on your application logic.
+
+Wrong use-cases:
+
+- A set of options for a used by a library or a method.
+- Unpredictable set of elements.
+- Non-reusable set of elements inside the application.
+- Long set of elements (languages, locales, currencies, ...)
+- Holding variable data inside the enum type (use an intermediate value object holding the data and the enum instance instead).
+
+Valid use-cases:
+
+- Gender, civility, predicable roles and permissions, ...
+- A set of supported nodes in an importer, or a set of predefined attributes.
+- In a game: predefined actions, movement direction, character classes, weapon types, ...
+- Any other set of restricted elements.
 
 Why another library ?
 

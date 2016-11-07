@@ -11,29 +11,62 @@
 namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
+use Elao\Enum\Exception\LogicException;
 
 abstract class Enum implements EnumInterface
 {
+    /**
+     * Cached array of enum instances by enum type (FQCN).
+     * This cache is used in order to make single enums values act as singletons.
+     * This means you'll always get the exact same instance for a same enum value.
+     *
+     * @var array
+     */
+    private static $instances;
+
     /** @var mixed */
     protected $value;
 
     /**
-     * The constructor is protected: use the static create method instead.
+     * The constructor is private: use the static create method instead.
      *
      * @param mixed $value The raw value of an enumeration
      */
-    protected function __construct($value)
+    private function __construct($value)
     {
         $this->value = $value;
+
+        $enumType = static::class;
+        $identifier = serialize($value);
+
+        if (isset(self::$instances[$enumType][$identifier])) {
+            throw new LogicException(
+                '"__construct" should not be called when an instance already exists for this enum value.'
+            );
+        }
+
+        if (!isset(self::$instances[$enumType])) {
+            self::$instances[$enumType] = [];
+        }
+
+        self::$instances[$enumType][$identifier] = $this;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @return static A new instance of an enum
+     * @return static The enum instance for given value
      */
     public static function create($value): EnumInterface
     {
+        $enumType = static::class;
+        $identifier = serialize($value);
+
+        // Return the cached instance for given value if it already exists:
+        if (isset(self::$instances[$enumType][$identifier])) {
+            return self::$instances[$enumType][$identifier];
+        }
+
         if (!static::accepts($value)) {
             throw new InvalidValueException($value, static::class);
         }

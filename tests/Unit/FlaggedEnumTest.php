@@ -58,6 +58,19 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         InvalidFlagsEnum::create(InvalidFlagsEnum::FIRST);
     }
 
+    public function testSameEnumValueActsAsSingleton()
+    {
+        $this->assertTrue(Permissions::create(Permissions::NONE) === Permissions::create(Permissions::NONE));
+        $this->assertTrue(Permissions::create(Permissions::READ) === Permissions::create(Permissions::READ));
+        $all = Permissions::create(Permissions::ALL);
+        $this->assertTrue($all === Permissions::create(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
+        $this->assertTrue(
+            $all->removeFlags(Permissions::READ) === Permissions::create(
+                Permissions::WRITE | Permissions::EXECUTE
+            )
+        );
+    }
+
     public function testGetFlagsOfValue()
     {
         $value = Permissions::create(Permissions::NONE | Permissions::WRITE | Permissions::READ);

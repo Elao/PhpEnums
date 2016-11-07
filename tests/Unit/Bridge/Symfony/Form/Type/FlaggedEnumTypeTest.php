@@ -73,7 +73,7 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
 
         $this->assertTrue($field->isSynchronized());
         $this->assertEquals(Permissions::create(Permissions::WRITE | Permissions::READ), $field->getData());
-        $this->assertEquals([Permissions::WRITE, Permissions::READ], $field->getViewData());
+        $this->assertEquals([Permissions::WRITE, Permissions::READ], array_values($field->getViewData()));
     }
 
     public function testSubmitAsValue()

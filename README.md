@@ -6,7 +6,7 @@ Elao Enumerations
 [![Latest Unstable Version](https://poser.pugx.org/elao/enum/v/unstable?format=flat-square)](https://packagist.org/packages/elao/enum) 
 [![License](https://poser.pugx.org/elao/enum/license?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Build Status](https://img.shields.io/travis/Elao/PhpEnums/master.svg?style=flat-square)](https://travis-ci.org/Elao/PhpEnums)
-[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/Elao/PhpEnums.svg?style=flat-square)](https://travis-ci.org/Elao/PhpEnums)
+[![Coveralls](https://img.shields.io/coveralls/Elao/PhpEnums.svg?style=flat-square)](https://coveralls.io/github/Elao/PhpEnums)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)
 
 This project is greatly inspired by the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) and aims to provide the missing PHP enumerations support.

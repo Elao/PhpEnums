@@ -43,7 +43,7 @@ class BitmaskToBitFlagsValueTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
-        $this->assertEquals($expectedFlags, $transformer->transform($bitmask));
+        $this->assertSame($expectedFlags, $transformer->transform($bitmask));
     }
 
     public function provideFlagsToBitmask()
@@ -58,6 +58,6 @@ class BitmaskToBitFlagsValueTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
-        $this->assertEquals($expectedBitmask, $transformer->reverseTransform($flags));
+        $this->assertSame($expectedBitmask, $transformer->reverseTransform($flags));
     }
 }

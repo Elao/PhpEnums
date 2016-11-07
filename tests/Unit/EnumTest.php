@@ -82,9 +82,14 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($enum->equals(ExtendedSimpleEnum::create(ExtendedSimpleEnum::FIRST)));
     }
 
-    public function testGetPossibleInstances()
+    public function testSameEnumValueActsAsSingleton()
     {
-        $this->assertEquals([
+        $this->assertTrue(SimpleEnum::create(SimpleEnum::FIRST) === SimpleEnum::create(SimpleEnum::FIRST));
+    }
+
+    public function testInstances()
+    {
+        $this->assertSame([
             SimpleEnum::create(SimpleEnum::ZERO),
             SimpleEnum::create(SimpleEnum::FIRST),
             SimpleEnum::create(SimpleEnum::SECOND),

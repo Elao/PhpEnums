@@ -52,13 +52,13 @@ class IntegerEnumTypeTest extends \PHPUnit_Framework_TestCase
     public function testConvertToPHPValue()
     {
         $PHPValue = $this->type->convertToPHPValue(1, $this->platform);
-        $this->assertEquals(SimpleEnum::create(SimpleEnum::FIRST), $PHPValue);
+        $this->assertSame(SimpleEnum::create(SimpleEnum::FIRST), $PHPValue);
     }
 
     public function testConvertToPHPValueOnNull()
     {
         $PHPValue = $this->type->convertToPHPValue(null, $this->platform);
-        $this->assertEquals(SimpleEnum::create(SimpleEnum::ZERO), $PHPValue);
+        $this->assertSame(SimpleEnum::create(SimpleEnum::ZERO), $PHPValue);
     }
 
     public function testRequiresSQLCommentHintIsTrue()

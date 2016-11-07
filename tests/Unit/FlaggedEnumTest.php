@@ -58,6 +58,19 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         InvalidFlagsEnum::create(InvalidFlagsEnum::FIRST);
     }
 
+    public function testSameEnumValueActsAsSingleton()
+    {
+        $this->assertTrue(Permissions::create(Permissions::NONE) === Permissions::create(Permissions::NONE));
+        $this->assertTrue(Permissions::create(Permissions::READ) === Permissions::create(Permissions::READ));
+        $all = Permissions::create(Permissions::ALL);
+        $this->assertTrue($all === Permissions::create(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
+        $this->assertTrue(
+            $all->removeFlags(Permissions::READ) === Permissions::create(
+                Permissions::WRITE | Permissions::EXECUTE
+            )
+        );
+    }
+
     public function testGetFlagsOfValue()
     {
         $value = Permissions::create(Permissions::NONE | Permissions::WRITE | Permissions::READ);
@@ -67,7 +80,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testSingleFlagIsReadable()
     {
-        $this->assertEquals('Execute', Permissions::readableFor(Permissions::EXECUTE));
+        $this->assertSame('Execute', Permissions::readableFor(Permissions::EXECUTE));
 
         $instance = Permissions::create(Permissions::EXECUTE);
 
@@ -83,7 +96,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
         $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
 
-        $this->assertEquals('Execute; Write', $instance->getReadable());
+        $this->assertSame('Execute; Write', $instance->getReadable());
     }
 
     public function testFlagsCombinationCanHaveOwnReadable()
@@ -95,7 +108,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
         $instance = Permissions::create(Permissions::ALL);
 
-        $this->assertEquals('All permissions', $instance->getReadable());
+        $this->assertSame('All permissions', $instance->getReadable());
     }
 
     public function testNoneCanBeReadabled()
@@ -109,12 +122,12 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testReadableSeparatorCanBeChanged()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'Execute | Write',
             Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE, ' | ')
         );
         $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
-        $this->assertEquals('Execute | Write', $instance->getReadable(' | '));
+        $this->assertSame('Execute | Write', $instance->getReadable(' | '));
     }
 
     public function testAddFlags()
@@ -165,5 +178,14 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $value = Permissions::create(Permissions::ALL);
         $value->removeFlags(99);
+    }
+
+    public function testInstances()
+    {
+        $this->assertSame([
+            Permissions::create(Permissions::EXECUTE),
+            Permissions::create(Permissions::WRITE),
+            Permissions::create(Permissions::READ),
+        ], Permissions::instances());
     }
 }

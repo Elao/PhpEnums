@@ -1,6 +1,10 @@
 sudo: true
 language: php
 
+branches:
+  only:
+      - master
+
 env:
     global:
         - CHECK_PHP_SYNTAX="no"

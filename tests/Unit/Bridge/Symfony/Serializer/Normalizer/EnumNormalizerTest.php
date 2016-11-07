@@ -40,7 +40,7 @@ class EnumNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testsDenormalize()
     {
-        $this->assertEquals(
+        $this->assertSame(
             Gender::create(Gender::MALE),
             $this->normalizer->denormalize((string) Gender::MALE, Gender::class)
         );
@@ -51,7 +51,7 @@ class EnumNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testsDenormalizeWithWrongValueThrowsException()
     {
-        $this->assertEquals(
+        $this->assertSame(
             Gender::create(Gender::MALE),
             $this->normalizer->denormalize('invalid_data', Gender::class)
         );

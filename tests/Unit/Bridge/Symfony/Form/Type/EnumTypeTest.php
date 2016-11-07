@@ -85,7 +85,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         $field->submit(SimpleEnum::FIRST);
 
         $this->assertTrue($field->isSynchronized());
-        $this->assertEquals(SimpleEnum::create(SimpleEnum::FIRST), $field->getData());
+        $this->assertSame(SimpleEnum::create(SimpleEnum::FIRST), $field->getData());
         $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
     }
 
@@ -121,8 +121,8 @@ class EnumTypeTest extends FormIntegrationTestCase
         $field->submit([SimpleEnum::FIRST]);
 
         $this->assertTrue($field->isSynchronized());
-        $this->assertEquals([SimpleEnum::create(SimpleEnum::FIRST)], $field->getData());
-        $this->assertEquals([SimpleEnum::create(SimpleEnum::FIRST)], $field->getNormData());
+        $this->assertSame([SimpleEnum::create(SimpleEnum::FIRST)], $field->getData());
+        $this->assertSame([SimpleEnum::create(SimpleEnum::FIRST)], $field->getNormData());
         $this->assertTrue($field['1']->getData());
         $this->assertFalse($field['2']->getData());
         $this->assertSame((string) SimpleEnum::FIRST, $field['1']->getViewData());
@@ -138,7 +138,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
         $field->setData(null);
         $this->assertNull($field->getData());
-        $this->assertEquals('', $field->getViewData());
+        $this->assertSame('', $field->getViewData());
     }
 
     public function testSetDataMultipleExpandedNull()
@@ -154,7 +154,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
         $field->setData(null);
         $this->assertNull($field->getData());
-        $this->assertEquals([], $field->getViewData());
+        $this->assertSame([], $field->getViewData());
         foreach ($field->all() as $child) {
             $this->assertSubForm($child, false, null);
         }
@@ -173,7 +173,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
         $field->setData(null);
         $this->assertNull($field->getData());
-        $this->assertEquals([], $field->getViewData());
+        $this->assertSame([], $field->getViewData());
     }
 
     public function testSetDataSingle()
@@ -187,8 +187,8 @@ class EnumTypeTest extends FormIntegrationTestCase
         $data = SimpleEnum::create(SimpleEnum::FIRST);
         $field->setData($data);
 
-        $this->assertEquals($data, $field->getData());
-        $this->assertEquals((string) SimpleEnum::FIRST, $field->getViewData());
+        $this->assertSame($data, $field->getData());
+        $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
     }
 
     public function testSetDataMultipleExpanded()
@@ -209,7 +209,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         ];
         $field->setData($data);
 
-        $this->assertEquals($data, $field->getData());
+        $this->assertSame($data, $field->getData());
         $this->assertEquals([SimpleEnum::FIRST, SimpleEnum::ZERO], $field->getViewData());
         $this->assertSubForm($field->get('0'), true, (string) SimpleEnum::ZERO);
         $this->assertSubForm($field->get('1'), true, (string) SimpleEnum::FIRST);
@@ -231,8 +231,8 @@ class EnumTypeTest extends FormIntegrationTestCase
         $data = SimpleEnum::create(SimpleEnum::FIRST);
         $field->setData($data);
 
-        $this->assertEquals($data, $field->getData());
-        $this->assertEquals(SimpleEnum::create(SimpleEnum::FIRST), $field->getNormData());
+        $this->assertSame($data, $field->getData());
+        $this->assertSame(SimpleEnum::create(SimpleEnum::FIRST), $field->getNormData());
         $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
         $this->assertSubForm($field->get('0'), false, null);
         $this->assertSubForm($field->get('1'), true, (string) SimpleEnum::FIRST);
@@ -273,7 +273,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertTrue($field->isSynchronized());
 
         $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getData());
-        $this->assertEquals([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getNormData());
+        $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getNormData());
 
         $this->assertFalse($field['0']->getData());
         $this->assertTrue($field['2']->getData());
@@ -301,22 +301,22 @@ class EnumTypeTest extends FormIntegrationTestCase
         $choice = $choices[0];
         $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
         $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertEquals(Gender::create(Gender::UNKNOW), $choice->data);
+        $this->assertSame(Gender::create(Gender::UNKNOW), $choice->data);
 
         $choice = $choices[1];
         $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertEquals(Gender::create(Gender::MALE), $choice->data);
+        $this->assertSame(Gender::create(Gender::MALE), $choice->data);
 
         $choice = $choices[2];
         $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertEquals(Gender::create(Gender::FEMALE), $choice->data);
+        $this->assertSame(Gender::create(Gender::FEMALE), $choice->data);
 
         $field->submit(Gender::MALE);
 
         $this->assertTrue($field->isSynchronized());
-        $this->assertEquals(Gender::create(Gender::MALE), $field->getData());
+        $this->assertSame(Gender::create(Gender::MALE), $field->getData());
         $this->assertSame(Gender::MALE, $field->getViewData());
     }
 
@@ -368,7 +368,7 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit(Gender::MALE);
         $this->assertTrue($field->isSynchronized());
-        $this->assertEquals(Gender::MALE, $field->getData());
+        $this->assertSame(Gender::MALE, $field->getData());
         $this->assertSame(Gender::MALE, $field->getViewData());
     }
 
@@ -395,12 +395,12 @@ class EnumTypeTest extends FormIntegrationTestCase
         $choice = $choices[0];
         $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
         $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertEquals(Gender::create(Gender::MALE), $choice->data);
+        $this->assertSame(Gender::create(Gender::MALE), $choice->data);
 
         $choice = $choices[1];
         $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
         $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertEquals(Gender::create(Gender::FEMALE), $choice->data);
+        $this->assertSame(Gender::create(Gender::FEMALE), $choice->data);
 
         $field->submit(Gender::UNKNOW);
 

@@ -52,13 +52,13 @@ class EnumTypeTest extends \PHPUnit_Framework_TestCase
     public function testConvertToPHPValue()
     {
         $PHPValue = $this->type->convertToPHPValue('male', $this->platform);
-        $this->assertEquals(Gender::create(Gender::MALE), $PHPValue);
+        $this->assertSame(Gender::create(Gender::MALE), $PHPValue);
     }
 
     public function testConvertToPHPValueOnNull()
     {
         $PHPValue = $this->type->convertToPHPValue(null, $this->platform);
-        $this->assertEquals(Gender::create(Gender::UNKNOW), $PHPValue);
+        $this->assertSame(Gender::create(Gender::UNKNOW), $PHPValue);
     }
 
     public function testRequiresSQLCommentHintIsTrue()

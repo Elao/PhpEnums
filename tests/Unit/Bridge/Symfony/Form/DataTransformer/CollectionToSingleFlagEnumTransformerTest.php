@@ -53,7 +53,7 @@ class CollectionToSingleFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $this->assertEquals($expectedEnums, $transformer->transform($singleEnum));
+        $this->assertSame($expectedEnums, $transformer->transform($singleEnum));
     }
 
     public function provideCollectionToSingle()
@@ -68,6 +68,6 @@ class CollectionToSingleFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $this->assertEquals($expectedEnum, $transformer->reverseTransform($enums));
+        $this->assertSame($expectedEnum, $transformer->reverseTransform($enums));
     }
 }

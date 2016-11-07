@@ -19,7 +19,7 @@ cache:
         - $HOME/.composer/cache
 
 before_install:
-    - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini; fi;
+    - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini || true; fi;
 
 install:
     - composer update --prefer-dist --no-interaction --optimize-autoloader

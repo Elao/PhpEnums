@@ -28,9 +28,25 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateEnumValue($value)
     {
-        $enumValue = SimpleEnum::create($value);
+        $enum = SimpleEnum::create($value);
 
-        $this->assertSame($value, $enumValue->getValue());
+        $this->assertSame($value, $enum->getValue());
+    }
+
+    public function testCallStaticEnumValue()
+    {
+        $enum = SimpleEnum::SECOND();
+
+        $this->assertSame(2, $enum->getValue());
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage No constant named "FOO" exists in class "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"
+     */
+    public function testCallStaticOnInvalidConstantThrowsException()
+    {
+        SimpleEnum::FOO();
     }
 
     /**

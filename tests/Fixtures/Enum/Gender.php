@@ -12,6 +12,11 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\ReadableEnum;
 
+/**
+ * @method static Gender UNKNOW()
+ * @method static Gender MALE()
+ * @method static Gender FEMALE()
+ */
 class Gender extends ReadableEnum
 {
     const UNKNOW = 'unknown';

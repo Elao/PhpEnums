@@ -15,6 +15,7 @@ Table of Contents
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
     * [Flagged enums](#flagged-enums)
+    * [Shortcuts](#shortcuts)
   * [Integrations](#integrations)
     * [Doctrine](#doctrine)
       * [Create the DBAL type](#create-the-dbal-type)
@@ -243,6 +244,37 @@ $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
 ```
+
+## Shortcuts
+
+Inspired from [myclabs/php-enum](https://github.com/myclabs/php-enum#static-methods), you can use shortcuts to instantiate your enumerations, [thanks to PHP's `__callStatic` magic method](http://php.net/manual/en/language.oop5.overloading.php#object.callstatic):
+
+```php
+<?php
+Gender::MALE(); // Returns an instance of Gender with the MALE value
+```
+
+We recommend you to use this method, if and only if, you and your team use an IDE (e.g PhpStorm) able to interpret the [`@method` tag](https://phpdoc.org/docs/latest/references/phpdoc/tags/method.html) in class definitions. Then, you can benefits from IDE completion by declaring the following:
+
+```php
+<?php
+
+/**
+ * @method static Gender UNKNOW()
+ * @method static Gender MALE()
+ * @method static Gender FEMALE()
+ */
+class Gender extends ReadableEnum
+{
+    const UNKNOW = 'unknown';
+    const MALE = 'male';
+    const FEMALE = 'female';
+    
+    // ...
+}
+```
+
+Otherwise, simply implements the static methods yourself.
 
 # Integrations
 

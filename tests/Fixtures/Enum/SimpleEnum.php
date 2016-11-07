@@ -12,6 +12,11 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\Enum;
 
+/**
+ * @method static SimpleEnum ZERO()
+ * @method static SimpleEnum FIRST()
+ * @method static SimpleEnum SECOND()
+ */
 class SimpleEnum extends Enum
 {
     const ZERO = 0;
@@ -20,6 +25,10 @@ class SimpleEnum extends Enum
 
     public static function values(): array
     {
-        return [self::ZERO, self::FIRST, self::SECOND];
+        return [
+            self::ZERO,
+            self::FIRST,
+            self::SECOND,
+        ];
     }
 }

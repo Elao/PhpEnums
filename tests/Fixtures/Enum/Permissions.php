@@ -12,6 +12,12 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\FlaggedEnum;
 
+/**
+ * @method static Permissions EXECUTE()
+ * @method static Permissions WRITE()
+ * @method static Permissions READ()
+ * @method static Permissions ALL()
+ */
 class Permissions extends FlaggedEnum
 {
     const EXECUTE = 1;

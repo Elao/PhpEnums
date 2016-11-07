@@ -51,7 +51,7 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
     /**
      * Transforms an array of flagged enums to  single flagged enumeration instance.
      *
-     * @param int[] $values bit flags
+     * @param int[] $flags bit flags
      *
      * @throws TransformationFailedException When the transformation fails
      *

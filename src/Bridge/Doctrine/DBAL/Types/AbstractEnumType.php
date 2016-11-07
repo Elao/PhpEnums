@@ -108,18 +108,3 @@ abstract class AbstractEnumType extends Type
         return (string) $value;
     }
 }
-
-class GenderEnumType extends AbstractEnumType
-{
-    const NAME = 'gender';
-
-    protected function getEnumClass(): string
-    {
-        return Gender::class;
-    }
-
-    public function getName()
-    {
-        return static::NAME;
-    }
-}

@@ -36,7 +36,7 @@ abstract class FlaggedEnum extends ReadableEnum
             return true;
         }
 
-        return $value === ($value & static::getBitmask());
+        return $value === ($value & self::getBitmask());
     }
 
     /**

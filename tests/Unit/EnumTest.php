@@ -33,6 +33,13 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($value, $enumValue->getValue());
     }
 
+    public function testCallStaticEnumValue()
+    {
+        $enumValue = SimpleEnum::SECOND();
+
+        $this->assertSame(2, $enumValue->getValue());
+    }
+
     /**
      * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.

@@ -12,6 +12,9 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\Enum;
 
+/**
+ * @method static SimpleEnum SECOND
+ */
 class SimpleEnum extends Enum
 {
     const ZERO = 0;

@@ -15,6 +15,7 @@ Table of Contents
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
     * [Flagged enums](#flagged-enums)
+    * [Compare](#compare)
     * [Shortcuts](#shortcuts)
   * [Integrations](#integrations)
     * [Doctrine](#doctrine)
@@ -252,6 +253,37 @@ $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns a n
 $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
+```
+
+## Compare
+
+Enumeration values are singletons: It means creating an enum instance will actually always return the exact same instance for a given value.  
+Thus, in order to compare two instances, you can simply use the strict comparison operator in order to check references:
+
+```php
+<?php
+Gender::create(Gender::MALE) === Gender::create(Gender::FEMALE); // False
+Gender::create(Gender::MALE) === Gender::create(Gender::MALE); // True
+Permissions::create(Permissions::ALL) === Permissions::create(
+    Permissions::READ | Permissions::WRITE | Permissions::EXECUTE
+); // True
+```
+
+You can also override the `EnumInterface::equals(EnumInterface $enumToCompare)` in order to implement your own logic to determine if two instances should be considered the same.  
+The default implementation compares both enum type (the class) and value.
+
+```php
+<?php
+Gender::create(Gender::MALE)->equals(Gender::create(Gender::FEMALE)) // False
+Gender::create(Gender::MALE)->equals(Gender::create(Gender::MALE)) // True
+```
+
+Lastly, you can simply compare an instance with a value by using the `EnumInterface::is($value)`:
+
+```php
+<?php
+Gender::create(Gender::MALE)->is(Gender::FEMALE) // False
+Gender::create(Gender::MALE)->is(Gender::MALE) // True
 ```
 
 ## Shortcuts

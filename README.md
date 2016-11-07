@@ -46,7 +46,7 @@ Using an enum class provides many benefits:
 
 Why another library ?
 
-- [`myclabs/php-enum`](https://github.com/myclabs/php-enum) provides base enum implementation as a class, based on the `\SplEnum` object class. However, it doesn't provide as much features nor integrations as we wish to.
+- [`myclabs/php-enum`](https://github.com/myclabs/php-enum) provides a base enum implementation as a class, inspired from `\SplEnum`. However, it doesn't provide as much features nor integrations as we wish to.
 - [`commerceguys/enum`](https://github.com/commerceguys/enum) only acts as a utility class, but does not intend to instantiate enumerations. Hence, it doesn't allow as much features nor integrations with third-party libraries and frameworks. Manipulating enums as objects are also one of the first motivation of this project.
 - [`yethee/BiplaneEnumBundle`](https://github.com/yethee/BiplaneEnumBundle) is the first library we got inspiration from. But it was designed as a Symfony Bundle, whereas we opt for a component first approach. Integrations are then provided in a dedicated `Bridge` namespace and are not restricted to Symfony.
 

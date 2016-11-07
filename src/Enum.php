@@ -47,14 +47,19 @@ abstract class Enum implements EnumInterface
      * @param string $name      The name of a particular enumerated constant
      * @param array  $arguments
      *
-     * @return EnumInterface When $name is not acceptable for this enumeration type
+     * @throws \BadMethodCallException On invalid constant name
      *
+     * @return static When $name is an existing constant for this enumeration type
      */
     public static function __callStatic($name, $arguments = []): EnumInterface
     {
-        $value = constant('static::' . $name);
-        if (is_null($value)) {
-            throw new InvalidValueException($value, static::class);
+        $value = @constant('static::' . $name);
+        if (null === $value) {
+            throw new \BadMethodCallException(sprintf(
+                'No constant named "%s" exists in class "%s"',
+                $name,
+                static::class
+            ));
         }
 
         return static::create($value);

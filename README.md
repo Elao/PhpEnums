@@ -60,10 +60,10 @@ Enumerations are not options and are not meant to replace constants. Designing a
 
 Wrong use-cases:
 
-- A set of options for a used by a library or a method.
-- Unpredictable set of elements.
-- Non-reusable set of elements inside the application.
-- Long set of elements (languages, locales, currencies, ...)
+- A set of options used by a library or a method.
+- An unpredictable set of elements.
+- An non-reusable set of elements inside the application.
+- Long sets of elements (languages, locales, currencies, ...)
 - Holding variable data inside the enum type (use an intermediate value object holding the data and the enum instance instead).
 
 Valid use-cases:

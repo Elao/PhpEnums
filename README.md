@@ -276,7 +276,7 @@ $permissions->getValue(); // Returns Permissions::NONE (0)
 $permissions->getFlags(); // Returns an empty array
 
 $permissions = Permissions::create(Permissions::NONE); // Creates an empty bitmask instance
-$permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns a new instance with "read" and "execute" permissions
+$permissions = $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns a new instance with "read" and "execute" permissions
 $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False

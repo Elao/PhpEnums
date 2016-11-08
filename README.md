@@ -11,13 +11,13 @@ Elao Enumerations
 
 This project is greatly inspired by the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) and aims to provide the missing PHP enumerations support.
 
-It'll power main frameworks integrations and bridges with other libraries when relevant. 
+It will leverage integration of the main PHP frameworks and also provide bridges with other libraries when relevant.
 
 Table of Contents
 =================
 
-  * [Features](#features)
   * [Why?](#why)
+  * [Features](#features)
   * [Installation](#installation)
     * [With Symfony full stack framework](#with-symfony-full-stack-framework)
   * [Usage](#usage)
@@ -44,17 +44,17 @@ Table of Contents
 
 # Why?
 
-An enumeration is data type, enclosing a single value from a predictable set of members (enumerators).  
+An enumeration is a data type, enclosing a single value from a predictable set of members (enumerators). 
 Each enumerator name is a single identifier, materialized by a PHP constant.  
 
 Using an enum class provides many benefits:
 
-- Bring visibility in your code
-- Typehint using the enum class
-- Centralize enumeration logic inside a class
-- Define utility methods or minor logic owned by your enumeration
+- Brings visibility in your code
+- Provides Type Hinting when using the enum class
+- Centralizes enumeration logic within a class
+- Defines utility methods or minor logic owned by your enumeration
 - Helps to describe how to read, serialize, export \[, ...\] an enumeration
-- Allow common libraries and frameworks integrations.
+- Allows common libraries and frameworks integrations.
 
 Enumerations are not options and are not meant to replace constants. Designing an enum type should be done by keeping your domain in mind, and should convey a strong meaning on your application logic.
 
@@ -68,16 +68,16 @@ Wrong use-cases:
 
 Valid use-cases:
 
-- Gender, civility, predicable roles and permissions, ...
+- Gender, civility, predictable roles and permissions, ...
 - A set of supported nodes in an importer, or a set of predefined attributes.
-- In a game: predefined actions, movement direction, character classes, weapon types, ...
+- In a game: predefined actions, movement directions, character classes, weapon types, ...
 - Any other set of restricted elements.
 
 Why another library ?
 
-- [`myclabs/php-enum`](https://github.com/myclabs/php-enum) provides a base enum implementation as a class, inspired from `\SplEnum`. However, it doesn't provide as much features nor integrations as we wish to.
-- [`commerceguys/enum`](https://github.com/commerceguys/enum) only acts as a utility class, but does not intend to instantiate enumerations. Hence, it doesn't allow as much features nor integrations with third-party libraries and frameworks. Manipulating enums as objects are also one of the first motivation of this project.
-- [`yethee/BiplaneEnumBundle`](https://github.com/yethee/BiplaneEnumBundle) is the first library we got inspiration from. But it was designed as a Symfony Bundle, whereas we opt for a component first approach. Integrations are then provided in a dedicated `Bridge` namespace and are not restricted to Symfony.
+- [`myclabs/php-enum`](https://github.com/myclabs/php-enum) provides a base enum implementation as a class, inspired from `\SplEnum`. However, it doesn't provide as many features nor integrations as we wish to.
+- [`commerceguys/enum`](https://github.com/commerceguys/enum) only acts as a utility class, but does not intend to instantiate enumerations. Hence, it doesn't allow as many features nor integrations with third-party libraries and frameworks. Manipulating enums as objects is also one of the first motivations of this project.
+- [`yethee/BiplaneEnumBundle`](https://github.com/yethee/BiplaneEnumBundle) is the first library we got inspiration from. But it was designed as a Symfony Bundle, whereas we opted for a component first approach. Integrations are then provided in a dedicated `Bridge` namespace and are not restricted to Symfony.
 
 Finally, we used to create similar classes from scratch in some projects lately.  
 Providing our own package inspired from the best ones, on which we'll apply our own philosophy looks a better way to go.
@@ -87,7 +87,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Base implementation for simple, readable and flagged (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
 - Symfony Form component integration with form types.
 - Symfony Serializer component integration with a normalizer class.
-- Doctrine DBAL integration with abstract classes aiming to easy storing your enumeration in the database.
+- Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
 
 # Installation
 
@@ -233,7 +233,7 @@ class Permissions extends FlaggedEnum
     const WRITE = 2;
     const READ = 4;
 
-    // You can declare shortcuts for common bit flags combinations
+    // You can declare shortcuts for common bit flag combinations
     const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function values(): array
@@ -253,7 +253,7 @@ class Permissions extends FlaggedEnum
             static::WRITE => 'Write',
             static::READ => 'Read',
 
-            // You can define readable values for specific bit flags combinations:
+            // You can define readable values for specific bit flag combinations:
             static::WRITE | static::READ => 'Read & write',
             static::EXECUTE | static::READ => 'Read & execute',
             static::ALL => 'All permissions',
@@ -272,7 +272,7 @@ $permissions->getValue(); // Returns 6 (int)
 $permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE])
 
 $permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE); // Returns a new instance without "read" and "write" flags
-$permissions->getValue(); // Returns Permissions::NONE (0)
+$permissions->getValue(); // Returns Permissions::NONE (0). Note: NONE is defined in parent class, FlaggedEnum.
 $permissions->getFlags(); // Returns an empty array
 
 $permissions = Permissions::create(Permissions::NONE); // Creates an empty bitmask instance
@@ -284,7 +284,7 @@ $permissions->hasFlag(Permissions::WRITE); // False
 
 ## Compare
 
-Enumeration values are singletons: It means creating an enum instance will actually always return the exact same instance for a given value.  
+Enumeration values are singletons: it means creating an enum instance will actually always return the exact same instance for a given value.
 Thus, in order to compare two instances, you can simply use the strict comparison operator in order to check references:
 
 ```php
@@ -315,14 +315,14 @@ Gender::create(Gender::MALE)->is(Gender::MALE) // True
 
 ## Shortcuts
 
-Inspired from [myclabs/php-enum](https://github.com/myclabs/php-enum#static-methods), you can use shortcuts to instantiate your enumerations, [thanks to PHP's `__callStatic` magic method](http://php.net/manual/en/language.oop5.overloading.php#object.callstatic):
+Inspired from [myclabs/php-enum](https://github.com/myclabs/php-enum#static-methods), you can use shortcuts to instantiate your enumerations, thanks to [PHP's `__callStatic` magic method](http://php.net/manual/en/language.oop5.overloading.php#object.callstatic):
 
 ```php
 <?php
 Gender::MALE(); // Returns an instance of Gender with the MALE value
 ```
 
-We recommend you to use this method, if and only if, you and your team use an IDE (e.g PhpStorm) able to interpret the [`@method` tag](https://phpdoc.org/docs/latest/references/phpdoc/tags/method.html) in class definitions. Then, you can benefits from IDE completion by declaring the following:
+We recommend you to use this method, if and only if, you and your team use an IDE (e.g PhpStorm) able to interpret the [`@method` tag](https://phpdoc.org/docs/latest/references/phpdoc/tags/method.html) in class definitions. Then, you can benefit from IDE completion by declaring the following:
 
 ```php
 <?php
@@ -342,7 +342,7 @@ class Gender extends ReadableEnum
 }
 ```
 
-Otherwise, simply implements the static methods yourself.
+Otherwise, simply implement the static methods yourself.
 
 # Integrations
 
@@ -418,7 +418,7 @@ doctrine:
 
 ### Mapping
 
-When registering the custom types in the configuration you specify a unique name for the mapping type and map that to the corresponding fully qualified class name. Now the new type can be used when mapping columns:
+When registering the custom types in the configuration, you specify a unique name for the mapping type and map it to the corresponding fully qualified class name. Now the new type can be used when mapping columns:
 
 ```php
 <?php
@@ -503,7 +503,7 @@ $form->get('gender')->getData(); // Will return a `Gender` instance (or null)
 
 Only the `enum_class` option is required.
 
-You can used any [`ChoiceType`](https://symfony.com/doc/current/reference/forms/types/choice.html) option as usual (for instance the `multiple` option).
+You can use any [`ChoiceType`](https://symfony.com/doc/current/reference/forms/types/choice.html) option as usual (for instance the `multiple` option).
 
 The field data will be an instance of your enum. If you only want to map values, you can use the `as_value` option:
 
@@ -586,11 +586,11 @@ Same options are available, but on the contrary of the `EnumType`, the `multiple
 
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
-`create($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Creates a new instance of an enumeration
+`create($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Creates a new instance of an enumeration.
 `values()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
 `accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
-`instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiate and returns an array containing every enumeration instances for possible values.
-`getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value
+`instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiates and returns an array containing every enumeration instance for possible values.
+`getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value.
 `equals(EnumInterface $enum)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines whether two enumerations instances should be considered the same.
 `is($value)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines if the enumeration instance value is equal to the given value.
 
@@ -600,7 +600,7 @@ Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
 `readables()` | <kbd>Yes</kbd> | <kbd>string[]</kbd> | Should return an array of the human representations indexed by possible values.
 `readableFor($value)` | <kbd>Yes</kbd> | <kbd>string</kbd> | Get the human representation for given enumeration value.
-`getReadable($value)` | <kbd>No</kbd> | <kbd>string</kbd> | Get the human representation for the current instance.
+`getReadable()` | <kbd>No</kbd> | <kbd>string</kbd> | Get the human representation for the current instance.
 `__toString()` | <kbd>No</kbd> | <kbd>string</kbd> | Allows to convert the instance to the human representation of the current value by casting it to a string.
 
 ## Flagged enum
@@ -608,7 +608,7 @@ Method | Static | Returns | Description
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
 `accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | Same as before, but accepts bit flags and bitmasks.
-`readableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | Override to replace the default human representation of the "no flag" value.
+`readableForNone()` | <kbd>Yes</kbd> | <kbd>string</kbd> | Override this method to replace the default human representation of the "no flag" value.
 `readableFor($value, string $separator = '; ')` | <kbd>Yes</kbd> | <kbd>string</kbd> | Same as before, but allows to specify a delimiter between single bit flags (if no human readable representation is found for the combination).
 `getReadable(string $separator = '; ')` | <kbd>No</kbd> | <kbd>string</kbd> | Same as before, but with a delimiter option (see above).
 `getFlags()` | <kbd>No</kbd> | <kbd>int[]</kbd> | Returns an array of bit flags set in the current enumeration instance.

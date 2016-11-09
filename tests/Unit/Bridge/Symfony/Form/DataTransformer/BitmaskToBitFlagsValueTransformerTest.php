@@ -46,6 +46,28 @@ class BitmaskToBitFlagsValueTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedFlags, $transformer->transform($bitmask));
     }
 
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedExceptionMessage Expected integer. Got "string"
+     */
+    public function testTransformThrowsExceptionOnNonInteger()
+    {
+        $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
+
+        $transformer->transform('foo');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedExceptionMessage Invalid bitmask 999 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.
+     */
+    public function testTransformThrowsExceptionOnInvalifBitmask()
+    {
+        $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
+
+        $transformer->transform(999);
+    }
+
     public function provideFlagsToBitmask()
     {
         return array_map('array_reverse', $this->provideBitmaskToFlags());
@@ -59,5 +81,38 @@ class BitmaskToBitFlagsValueTransformerTest extends \PHPUnit_Framework_TestCase
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $this->assertSame($expectedBitmask, $transformer->reverseTransform($flags));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedExceptionMessage Expected array. Got "string"
+     */
+    public function testReverseTransformThrowsExceptionOnNonArray()
+    {
+        $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
+
+        $transformer->reverseTransform('foo');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedExceptionMessage Expected array of integers. Got a "string" inside.
+     */
+    public function testReverseTransformThrowsExceptionOnNonIntegers()
+    {
+        $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
+
+        $transformer->reverseTransform(['foo']);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedExceptionMessage Invalid bitmask 56 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.
+     */
+    public function testReverseTransformThrowsExceptionOnInvalifBitmask()
+    {
+        $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
+
+        $transformer->reverseTransform([16, 32, 24]);
     }
 }

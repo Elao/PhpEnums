@@ -9,6 +9,7 @@ env:
     global:
         - CHECK_PHP_SYNTAX="no"
         - ENABLE_CODE_COVERAGE="no"
+        - COMPOSER_FLAGS=""
 
 matrix:
     fast_finish: true
@@ -17,6 +18,8 @@ matrix:
           env: ENABLE_CODE_COVERAGE="yes"
         - php: 7.1
           env: CHECK_PHP_SYNTAX="yes"
+        - php: 7.1
+          env: COMPOSER_FLAGS="--prefer-lowest"
 
 cache:
     directories:
@@ -26,7 +29,7 @@ before_install:
     - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini || true; fi;
 
 install:
-    - composer update --prefer-dist --no-interaction --optimize-autoloader
+    - composer update --prefer-dist --no-interaction --optimize-autoloader --prefer-stable --no-progress $COMPOSER_FLAGS
     - if [[ "$ENABLE_CODE_COVERAGE" == "yes" ]]; then composer require --dev satooshi/php-coveralls; fi
 
 script:

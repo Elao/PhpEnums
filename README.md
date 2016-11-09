@@ -468,6 +468,8 @@ Override those methods in order to satisfy your needs.
 
 ## Symfony Serializer component
 
+> :information_source: Available for Symfony 2.8+ and 3.1+.
+
 Simply register the following normalizer inside the DIC configuration:
 
 ```yml
@@ -480,6 +482,8 @@ services:
 ```
 
 ## Symfony Form component
+
+> :information_source: Available for Symfony 2.8+ and 3.1+.
 
 ### Simple enums
 

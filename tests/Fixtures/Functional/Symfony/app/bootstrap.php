@@ -13,12 +13,16 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Filesystem\Filesystem;
 
 date_default_timezone_set('UTC');
 
 $loader = require __DIR__ . '/../../../../../vendor/autoload.php';
 
 require __DIR__ . '/AppKernel.php';
+
+// Empty generated symfony cache
+(new Filesystem())->remove(__DIR__ . '/cache');
 
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 

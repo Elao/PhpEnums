@@ -13,6 +13,7 @@ namespace Elao\Enum\Bridge\Symfony\Form\Type;
 use Elao\Enum\EnumInterface;
 use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -64,6 +65,11 @@ class EnumType extends AbstractType
                 return is_a($value, EnumInterface::class, true);
             })
         ;
+
+        // To be removed once Symfony 2.8 is not LTS anymore
+        if (self::shouldUseChoicesAsValues()) {
+            $resolver->setDefault('choices_as_values', true);
+        }
     }
 
     /**
@@ -74,8 +80,16 @@ class EnumType extends AbstractType
         return ChoiceType::class;
     }
 
-    private function isReadable(string $enumClass)
+    private function isReadable(string $enumClass): bool
     {
         return is_a($enumClass, ReadableEnumInterface::class, true);
+    }
+
+    /**
+     * Returns true if the 2.8 Form component is being used by the application.
+     */
+    private static function shouldUseChoicesAsValues(): bool
+    {
+        return true === interface_exists(ChoiceListInterface::class);
     }
 }

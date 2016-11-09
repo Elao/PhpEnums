@@ -10,6 +10,6 @@
 
 namespace Elao\Enum\Tests\Fixtures\Enum;
 
-class ExtendedSimpleEnum extends SimpleEnum
+final class ExtendedSimpleEnum extends SimpleEnum
 {
 }

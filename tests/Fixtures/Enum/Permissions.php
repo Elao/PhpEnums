@@ -18,7 +18,7 @@ use Elao\Enum\FlaggedEnum;
  * @method static Permissions READ()
  * @method static Permissions ALL()
  */
-class Permissions extends FlaggedEnum
+final class Permissions extends FlaggedEnum
 {
     const EXECUTE = 1;
     const WRITE = 2;

@@ -33,7 +33,7 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
         if (!$value instanceof $this->enumClass) {
             throw new TransformationFailedException(sprintf(
                 'Expected instance of "%s". Got "%s".',
-                FlaggedEnum::class,
+                $this->enumClass,
                 is_object($value) ? get_class($value) : gettype($value)
             ));
         }
@@ -60,7 +60,7 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
 
         if (!is_array($values)) {
             throw new TransformationFailedException(sprintf(
-                'Expected array. Got "%".',
+                'Expected array. Got "%s".',
                 is_object($values) ? get_class($values) : gettype($values)
             ));
         }
@@ -73,8 +73,8 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
         foreach ($values as $value) {
             if (!$value instanceof FlaggedEnum) {
                 throw new TransformationFailedException(sprintf(
-                    'Expected instance of "%s". Got "%s".',
-                    FlaggedEnum::class,
+                    'Expected array of "%s". Got a "%s" inside.',
+                    $this->enumClass,
                     is_object($value) ? get_class($value) : gettype($value)
                 ));
             }

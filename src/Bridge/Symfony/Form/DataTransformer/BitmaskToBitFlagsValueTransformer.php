@@ -65,7 +65,7 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
 
         if (!is_array($flags)) {
             throw new TransformationFailedException(sprintf(
-                'Expected array. Got "%".',
+                'Expected array. Got "%s".',
                 is_object($flags) ? get_class($flags) : gettype($flags)
             ));
         }
@@ -78,7 +78,7 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
         foreach ($flags as $flag) {
             if (!is_int($flag)) {
                 throw new TransformationFailedException(sprintf(
-                    'Expected integer. Got "%s".',
+                    'Expected array of integers. Got a "%s" inside.',
                     is_object($flag) ? get_class($flag) : gettype($flag)
                 ));
             }

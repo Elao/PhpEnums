@@ -28,11 +28,11 @@ abstract class Enum implements EnumInterface
     protected $value;
 
     /**
-     * The constructor is private: use the static create method instead.
+     * The constructor is private and cannot be overridden: use the static create method instead.
      *
      * @param mixed $value The raw value of an enumeration
      */
-    private function __construct($value)
+    final private function __construct($value)
     {
         $this->value = $value;
 

@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\FlaggedEnum;
 
-class InvalidFlagsEnum extends FlaggedEnum
+final class InvalidFlagsEnum extends FlaggedEnum
 {
     const FIRST = 1;
     const SECOND = 2;

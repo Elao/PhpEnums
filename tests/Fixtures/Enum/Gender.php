@@ -17,7 +17,7 @@ use Elao\Enum\ReadableEnum;
  * @method static Gender MALE()
  * @method static Gender FEMALE()
  */
-class Gender extends ReadableEnum
+final class Gender extends ReadableEnum
 {
     const UNKNOW = 'unknown';
     const MALE = 'male';

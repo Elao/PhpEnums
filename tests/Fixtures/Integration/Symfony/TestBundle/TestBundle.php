@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Functional\Symfony\TestBundle;
+namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

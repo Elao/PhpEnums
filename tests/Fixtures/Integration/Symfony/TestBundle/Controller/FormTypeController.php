@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Functional\Symfony\TestBundle\Controller;
+namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller;
 
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;

@@ -9,10 +9,10 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="tests/Fixtures/Functional/Symfony/app/bootstrap.php"
+         bootstrap="tests/Fixtures/Integration/Symfony/app/bootstrap.php"
 >
     <php>
-        <server name="KERNEL_DIR" value="tests/Fixtures/Functional/Symfony/app/" />
+        <server name="KERNEL_DIR" value="tests/Fixtures/Integration/Symfony/app/" />
     </php>
 
     <testsuites>

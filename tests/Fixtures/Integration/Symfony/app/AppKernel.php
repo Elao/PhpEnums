@@ -9,7 +9,7 @@
  */
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Elao\Enum\Tests\Fixtures\Functional\Symfony\TestBundle\TestBundle;
+use Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\TestBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;

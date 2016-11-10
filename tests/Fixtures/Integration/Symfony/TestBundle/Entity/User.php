@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Functional\Symfony\TestBundle\Entity;
+namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;

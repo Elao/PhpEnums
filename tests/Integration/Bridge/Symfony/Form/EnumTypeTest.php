@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Functional\Bridge\Symfony\Form;
+namespace Elao\Enum\Tests\Integration\Bridge\Symfony\Form;
 
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;

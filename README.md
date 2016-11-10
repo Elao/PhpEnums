@@ -19,7 +19,6 @@ Table of Contents
   * [Why?](#why)
   * [Features](#features)
   * [Installation](#installation)
-    * [With Symfony full stack framework](#with-symfony-full-stack-framework)
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
     * [Flagged enums](#flagged-enums)
@@ -466,9 +465,8 @@ abstract class AbstractEnumType extends Type
 
 Override those methods in order to satisfy your needs.
 
-## Symfony Serializer component
-
-<img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+">
+## Symfony Serializer component 
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
 
 Simply register the following normalizer inside the DIC configuration:
 
@@ -482,8 +480,7 @@ services:
 ```
 
 ## Symfony Form component
-
-<img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+">
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
 
 ### Simple enums
 

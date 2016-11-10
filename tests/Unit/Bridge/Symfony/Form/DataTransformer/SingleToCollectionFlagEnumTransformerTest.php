@@ -29,18 +29,18 @@ class SingleToCollectionFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         return [
             [null, null],
-            [Permissions::create(Permissions::NONE), []],
-            [Permissions::create(Permissions::EXECUTE), [Permissions::create(Permissions::EXECUTE)]],
+            [Permissions::get(Permissions::NONE), []],
+            [Permissions::get(Permissions::EXECUTE), [Permissions::get(Permissions::EXECUTE)]],
             [
-                Permissions::create(Permissions::EXECUTE | Permissions::READ),
-                [Permissions::create(Permissions::EXECUTE), Permissions::create(Permissions::READ)],
+                Permissions::get(Permissions::EXECUTE | Permissions::READ),
+                [Permissions::get(Permissions::EXECUTE), Permissions::get(Permissions::READ)],
             ],
             [
-                Permissions::create(Permissions::ALL),
+                Permissions::get(Permissions::ALL),
                 [
-                    Permissions::create(Permissions::EXECUTE),
-                    Permissions::create(Permissions::WRITE),
-                    Permissions::create(Permissions::READ),
+                    Permissions::get(Permissions::EXECUTE),
+                    Permissions::get(Permissions::WRITE),
+                    Permissions::get(Permissions::READ),
                 ],
             ],
         ];
@@ -64,7 +64,7 @@ class SingleToCollectionFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $transformer->transform(Gender::create(Gender::MALE));
+        $transformer->transform(Gender::get(Gender::MALE));
     }
 
     public function provideCollectionToSingle()
@@ -90,7 +90,7 @@ class SingleToCollectionFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $transformer->reverseTransform([Permissions::create(Permissions::EXECUTE), Gender::create(Gender::MALE)]);
+        $transformer->reverseTransform([Permissions::get(Permissions::EXECUTE), Gender::get(Gender::MALE)]);
     }
 
     /**
@@ -101,6 +101,6 @@ class SingleToCollectionFlagEnumTransformerTest extends \PHPUnit_Framework_TestC
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $transformer->reverseTransform(Permissions::create(Permissions::EXECUTE));
+        $transformer->reverseTransform(Permissions::get(Permissions::EXECUTE));
     }
 }

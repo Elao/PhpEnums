@@ -23,7 +23,7 @@ class FormTypeController extends Controller
     public function readableEnumFormAction(Request $request)
     {
         $data = [
-            'gender' => Gender::create(Gender::MALE),
+            'gender' => Gender::get(Gender::MALE),
         ];
 
         $form = $this->createFormBuilder($data)
@@ -42,7 +42,7 @@ class FormTypeController extends Controller
     public function flaggedEnumFormAction(Request $request)
     {
         $data = [
-            'permissions' => Permissions::create(Permissions::READ),
+            'permissions' => Permissions::get(Permissions::READ),
         ];
 
         $form = $this->createFormBuilder($data)

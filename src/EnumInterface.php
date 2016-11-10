@@ -15,15 +15,13 @@ use Elao\Enum\Exception\InvalidValueException;
 interface EnumInterface
 {
     /**
-     * Instantiates a new enumeration.
-     *
      * @param mixed $value The value of a particular enumerated constant
      *
      * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *
-     * @return EnumInterface A new instance of an enum
+     * @return EnumInterface The enum instance for given value
      */
-    public static function create($value): EnumInterface;
+    public static function get($value): EnumInterface;
 
     /**
      * Returns any possible value for the enumeration.

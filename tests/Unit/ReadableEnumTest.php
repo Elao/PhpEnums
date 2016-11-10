@@ -27,7 +27,7 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateEnumValue($value, $expectedReadable)
     {
-        $enumValue = Gender::create($value);
+        $enumValue = Gender::get($value);
 
         $this->assertSame($value, $enumValue->getValue());
         $this->assertSame($expectedReadable, $enumValue->getReadable());
@@ -35,7 +35,7 @@ class ReadableEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testEnumToString()
     {
-        $enumValue = Gender::create(Gender::MALE);
+        $enumValue = Gender::get(Gender::MALE);
 
         $this->assertSame('Male', (string) $enumValue);
     }

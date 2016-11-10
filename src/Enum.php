@@ -28,7 +28,7 @@ abstract class Enum implements EnumInterface
     protected $value;
 
     /**
-     * The constructor is private and cannot be overridden: use the static create method instead.
+     * The constructor is private and cannot be overridden: use the static get method instead.
      *
      * @param mixed $value The raw value of an enumeration
      */
@@ -57,14 +57,11 @@ abstract class Enum implements EnumInterface
      *
      * @return static The enum instance for given value
      */
-    public static function create($value): EnumInterface
+    public static function get($value): EnumInterface
     {
-        $enumType = static::class;
-        $identifier = serialize($value);
-
         // Return the cached instance for given value if it already exists:
-        if (isset(self::$instances[$enumType][$identifier])) {
-            return self::$instances[$enumType][$identifier];
+        if (null !== $instance = self::getCachedInstance($value)) {
+            return $instance;
         }
 
         if (!static::accepts($value)) {
@@ -95,7 +92,7 @@ abstract class Enum implements EnumInterface
             ));
         }
 
-        return static::create($value);
+        return static::get($value);
     }
 
     /**
@@ -112,8 +109,20 @@ abstract class Enum implements EnumInterface
     public static function instances(): array
     {
         return array_map(function ($value) {
-            return static::create($value);
+            return static::get($value);
         }, static::values());
+    }
+
+    private static function getCachedInstance($value)
+    {
+        $enumType = static::class;
+        $identifier = serialize($value);
+
+        if (isset(self::$instances[$enumType][$identifier])) {
+            return self::$instances[$enumType][$identifier];
+        }
+
+        return null;
     }
 
     /**

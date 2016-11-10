@@ -39,7 +39,7 @@ class IntegerEnumTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertToDatabaseValue()
     {
-        $databaseValue = $this->type->convertToDatabaseValue(SimpleEnum::create(SimpleEnum::FIRST), $this->platform);
+        $databaseValue = $this->type->convertToDatabaseValue(SimpleEnum::get(SimpleEnum::FIRST), $this->platform);
         $this->assertSame(1, $databaseValue);
     }
 
@@ -52,13 +52,13 @@ class IntegerEnumTypeTest extends \PHPUnit_Framework_TestCase
     public function testConvertToPHPValue()
     {
         $PHPValue = $this->type->convertToPHPValue(1, $this->platform);
-        $this->assertSame(SimpleEnum::create(SimpleEnum::FIRST), $PHPValue);
+        $this->assertSame(SimpleEnum::get(SimpleEnum::FIRST), $PHPValue);
     }
 
     public function testConvertToPHPValueOnNull()
     {
         $PHPValue = $this->type->convertToPHPValue(null, $this->platform);
-        $this->assertSame(SimpleEnum::create(SimpleEnum::ZERO), $PHPValue);
+        $this->assertSame(SimpleEnum::get(SimpleEnum::ZERO), $PHPValue);
     }
 
     public function testRequiresSQLCommentHintIsTrue()

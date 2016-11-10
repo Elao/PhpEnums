@@ -42,7 +42,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         try {
-            return call_user_func([$class, 'create'], $data);
+            return call_user_func([$class, 'get'], $data);
         } catch (InvalidValueException $e) {
             throw new UnexpectedValueException($e->getMessage());
         }

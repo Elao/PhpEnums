@@ -28,7 +28,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateEnumValue($value)
     {
-        $enum = SimpleEnum::create($value);
+        $enum = SimpleEnum::get($value);
 
         $this->assertSame($value, $enum->getValue());
     }
@@ -55,7 +55,7 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsRaisedWhenValueIsNotAcceptable()
     {
-        SimpleEnum::create('invalid_value');
+        SimpleEnum::get('invalid_value');
     }
 
     /**
@@ -64,41 +64,41 @@ class EnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsRaisedWhenValueIsNotAcceptableWithStrictCheck()
     {
-        SimpleEnum::create('0');
+        SimpleEnum::get('0');
     }
 
     public function testEnumsForEqualsWithSameClass()
     {
-        $enum = SimpleEnum::create(SimpleEnum::FIRST);
+        $enum = SimpleEnum::get(SimpleEnum::FIRST);
 
-        $this->assertTrue($enum->equals(SimpleEnum::create(SimpleEnum::FIRST)));
-        $this->assertFalse($enum->equals(SimpleEnum::create(SimpleEnum::SECOND)));
+        $this->assertTrue($enum->equals(SimpleEnum::get(SimpleEnum::FIRST)));
+        $this->assertFalse($enum->equals(SimpleEnum::get(SimpleEnum::SECOND)));
     }
 
     public function testEnumsForEqualsWithExtendedClasses()
     {
-        $enum = SimpleEnum::create(SimpleEnum::FIRST);
+        $enum = SimpleEnum::get(SimpleEnum::FIRST);
 
-        $this->assertFalse($enum->equals(ExtendedSimpleEnum::create(ExtendedSimpleEnum::FIRST)));
+        $this->assertFalse($enum->equals(ExtendedSimpleEnum::get(ExtendedSimpleEnum::FIRST)));
     }
 
     public function testSameEnumValueActsAsSingleton()
     {
-        $this->assertTrue(SimpleEnum::create(SimpleEnum::FIRST) === SimpleEnum::create(SimpleEnum::FIRST));
+        $this->assertTrue(SimpleEnum::get(SimpleEnum::FIRST) === SimpleEnum::get(SimpleEnum::FIRST));
     }
 
     public function testInstances()
     {
         $this->assertSame([
-            SimpleEnum::create(SimpleEnum::ZERO),
-            SimpleEnum::create(SimpleEnum::FIRST),
-            SimpleEnum::create(SimpleEnum::SECOND),
+            SimpleEnum::get(SimpleEnum::ZERO),
+            SimpleEnum::get(SimpleEnum::FIRST),
+            SimpleEnum::get(SimpleEnum::SECOND),
         ], SimpleEnum::instances());
     }
 
     public function testIs()
     {
-        $enum = SimpleEnum::create(SimpleEnum::SECOND);
+        $enum = SimpleEnum::get(SimpleEnum::SECOND);
 
         $this->assertTrue($enum->is(2));
     }

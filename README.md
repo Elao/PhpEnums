@@ -468,7 +468,7 @@ Override those methods in order to satisfy your needs.
 
 ## Symfony Serializer component
 
-> :information_source: Available for Symfony 2.8+ and 3.1+.
+<img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+">
 
 Simply register the following normalizer inside the DIC configuration:
 
@@ -483,7 +483,7 @@ services:
 
 ## Symfony Form component
 
-> :information_source: Available for Symfony 2.8+ and 3.1+.
+<img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+">
 
 ### Simple enums
 

@@ -40,7 +40,7 @@ class EnumTypeTest extends KernelTestCase
 
     public function testEnumType()
     {
-        $this->em->persist(new User($uuid = 'user01', Gender::create(Gender::MALE)));
+        $this->em->persist(new User($uuid = 'user01', Gender::get(Gender::MALE)));
         $this->em->flush();
         $this->em->clear();
 

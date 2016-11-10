@@ -39,7 +39,7 @@ class EnumTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertToDatabaseValue()
     {
-        $databaseValue = $this->type->convertToDatabaseValue(Gender::create(Gender::MALE), $this->platform);
+        $databaseValue = $this->type->convertToDatabaseValue(Gender::get(Gender::MALE), $this->platform);
         $this->assertSame('male', $databaseValue);
     }
 
@@ -52,13 +52,13 @@ class EnumTypeTest extends \PHPUnit_Framework_TestCase
     public function testConvertToPHPValue()
     {
         $PHPValue = $this->type->convertToPHPValue('male', $this->platform);
-        $this->assertSame(Gender::create(Gender::MALE), $PHPValue);
+        $this->assertSame(Gender::get(Gender::MALE), $PHPValue);
     }
 
     public function testConvertToPHPValueOnNull()
     {
         $PHPValue = $this->type->convertToPHPValue(null, $this->platform);
-        $this->assertSame(Gender::create(Gender::UNKNOW), $PHPValue);
+        $this->assertSame(Gender::get(Gender::UNKNOW), $PHPValue);
     }
 
     public function testRequiresSQLCommentHintIsTrue()

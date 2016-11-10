@@ -37,7 +37,7 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
     {
         $field = $this->factory->create(
             FlaggedEnumType::class,
-            Permissions::create(Permissions::EXECUTE | Permissions::WRITE),
+            Permissions::get(Permissions::EXECUTE | Permissions::WRITE),
             ['enum_class' => Permissions::class]
         );
 
@@ -45,8 +45,8 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
 
         $this->assertEquals([Permissions::EXECUTE, Permissions::WRITE], $view->vars['value']);
         $this->assertSame([
-            Permissions::create(Permissions::EXECUTE),
-            Permissions::create(Permissions::WRITE),
+            Permissions::get(Permissions::EXECUTE),
+            Permissions::get(Permissions::WRITE),
         ], $view->vars['data']);
 
         /** @var ChoiceView[] $choices */
@@ -57,22 +57,22 @@ class FlaggedEnumTypeTest extends FormIntegrationTestCase
         $choice = $choices[0];
         $this->assertSame(Permissions::readableFor(Permissions::EXECUTE), $choice->label);
         $this->assertSame((string) Permissions::EXECUTE, $choice->value);
-        $this->assertSame(Permissions::create(Permissions::EXECUTE), $choice->data);
+        $this->assertSame(Permissions::get(Permissions::EXECUTE), $choice->data);
 
         $choice = $choices[1];
         $this->assertSame(Permissions::readableFor(Permissions::WRITE), $choice->label);
         $this->assertSame((string) Permissions::WRITE, $choice->value);
-        $this->assertSame(Permissions::create(Permissions::WRITE), $choice->data);
+        $this->assertSame(Permissions::get(Permissions::WRITE), $choice->data);
 
         $choice = $choices[2];
         $this->assertSame(Permissions::readableFor(Permissions::READ), $choice->label);
         $this->assertSame((string) Permissions::READ, $choice->value);
-        $this->assertSame(Permissions::create(Permissions::READ), $choice->data);
+        $this->assertSame(Permissions::get(Permissions::READ), $choice->data);
 
         $field->submit([Permissions::WRITE, Permissions::READ]);
 
         $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Permissions::create(Permissions::WRITE | Permissions::READ), $field->getData());
+        $this->assertSame(Permissions::get(Permissions::WRITE | Permissions::READ), $field->getData());
         $this->assertEquals([Permissions::WRITE, Permissions::READ], array_values($field->getViewData()));
     }
 

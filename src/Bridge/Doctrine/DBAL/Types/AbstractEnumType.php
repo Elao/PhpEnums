@@ -69,7 +69,7 @@ abstract class AbstractEnumType extends Type
         /** @var string|EnumInterface $class */
         $class = $this->getEnumClass();
 
-        return $class::create($this->cast($value));
+        return $class::get($this->cast($value));
     }
 
     /**

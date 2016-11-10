@@ -24,7 +24,7 @@ class GenderEnumType extends AbstractEnumType
 
     protected function onNullFromDatabase()
     {
-        return Gender::create(Gender::UNKNOW);
+        return Gender::get(Gender::UNKNOW);
     }
 
     protected function onNullFromPhp()

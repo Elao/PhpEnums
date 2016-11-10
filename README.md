@@ -126,11 +126,11 @@ final class Gender extends Enum
 
 > :memo: It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
 
-Create a new instance of your enumeration:
+Get an instance of your enum type:
 
 ```php
 <?php
-$enum = Gender::create(Gender::Male); 
+$enum = Gender::get(Gender::Male); 
 ```
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`
@@ -176,7 +176,7 @@ The following snippet shows how to render the human readable value of an enum:
 
 ```php
 <?php
-$enum = Gender::create(Gender::Male); 
+$enum = Gender::get(Gender::Male); 
 $enum->getReadable(); // returns 'Male'
 (string) $enum; // returns 'Male'
 ```
@@ -214,7 +214,7 @@ Using Symfony's translation component:
 
 ```php
 <?php
-$enum = Gender::create(Gender::MALE);
+$enum = Gender::get(Gender::MALE);
 // get translator instance...
 $translator->trans($enum); // returns 'Male'
 ```
@@ -264,11 +264,11 @@ final class Permissions extends FlaggedEnum
 }
 ```
 
-Create instances using bitwise operations and manipulate them:
+Get instances using bitwise operations and manipulate them:
 
 ```php
 <?php
-$permissions = Permissions::create(Permissions::EXECUTE | Permissions::WRITE | Permissions::READ);
+$permissions = Permissions::get(Permissions::EXECUTE | Permissions::WRITE | Permissions::READ);
 $permissions = $permissions->removeFlags(Permissions::EXECUTE); // Returns a new instance without "execute" flag
 $permissions->getValue(); // Returns 6 (int)
 $permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE])
@@ -277,7 +277,7 @@ $permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE)
 $permissions->getValue(); // Returns Permissions::NONE (0). Note: NONE is defined in parent class, FlaggedEnum.
 $permissions->getFlags(); // Returns an empty array
 
-$permissions = Permissions::create(Permissions::NONE); // Creates an empty bitmask instance
+$permissions = Permissions::get(Permissions::NONE); // Returns an empty bitmask instance
 $permissions = $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns a new instance with "read" and "execute" permissions
 $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
@@ -291,9 +291,9 @@ Thus, in order to compare two instances, you can simply use the strict compariso
 
 ```php
 <?php
-Gender::create(Gender::MALE) === Gender::create(Gender::FEMALE); // False
-Gender::create(Gender::MALE) === Gender::create(Gender::MALE); // True
-Permissions::create(Permissions::ALL) === Permissions::create(
+Gender::get(Gender::MALE) === Gender::get(Gender::FEMALE); // False
+Gender::get(Gender::MALE) === Gender::get(Gender::MALE); // True
+Permissions::get(Permissions::ALL) === Permissions::get(
     Permissions::READ | Permissions::WRITE | Permissions::EXECUTE
 ); // True
 ```
@@ -303,16 +303,16 @@ The default implementation compares both enum type (the class) and value.
 
 ```php
 <?php
-Gender::create(Gender::MALE)->equals(Gender::create(Gender::FEMALE)) // False
-Gender::create(Gender::MALE)->equals(Gender::create(Gender::MALE)) // True
+Gender::get(Gender::MALE)->equals(Gender::get(Gender::FEMALE)) // False
+Gender::get(Gender::MALE)->equals(Gender::get(Gender::MALE)) // True
 ```
 
 Lastly, you can simply compare an instance with a value by using the `EnumInterface::is($value)`:
 
 ```php
 <?php
-Gender::create(Gender::MALE)->is(Gender::FEMALE) // False
-Gender::create(Gender::MALE)->is(Gender::MALE) // True
+Gender::get(Gender::MALE)->is(Gender::FEMALE) // False
+Gender::get(Gender::MALE)->is(Gender::MALE) // True
 ```
 
 ## Shortcuts
@@ -545,8 +545,8 @@ use MyApp\Enum\Gender;
 $builder->add('gender', EnumType::class, [
     'enum_class' => Gender::class,
     'choices' => [
-        Gender::create(Gender::MALE), 
-        Gender::create(Gender::FEMALE),
+        Gender::get(Gender::MALE), 
+        Gender::get(Gender::FEMALE),
     ],
 ]);
 
@@ -592,7 +592,7 @@ Same options are available, but on the contrary of the `EnumType`, the `multiple
 
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
-`create($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Creates a new instance of an enumeration.
+`get($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Returns the instance of the enum type for given value.
 `values()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
 `accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
 `instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiates and returns an array containing every enumeration instance for possible values.

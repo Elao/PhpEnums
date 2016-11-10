@@ -24,7 +24,7 @@ class SimpleEnumType extends AbstractIntegerEnumType
 
     protected function onNullFromDatabase()
     {
-        return SimpleEnum::create(SimpleEnum::ZERO);
+        return SimpleEnum::get(SimpleEnum::ZERO);
     }
 
     protected function onNullFromPhp()

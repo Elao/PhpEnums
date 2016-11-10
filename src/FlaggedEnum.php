@@ -161,7 +161,7 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @throws InvalidValueException When $flags is not acceptable for this enumeration type
      *
-     * @return static A new instance of the enumeration
+     * @return static The enum instance for computed value
      */
     public function addFlags(int $flags): self
     {
@@ -169,7 +169,7 @@ abstract class FlaggedEnum extends ReadableEnum
             throw new InvalidValueException($flags, static::class);
         }
 
-        return static::create($this->value | $flags);
+        return static::get($this->value | $flags);
     }
 
     /**
@@ -179,7 +179,7 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @throws InvalidValueException When $flags is not acceptable for this enumeration type
      *
-     * @return static A new instance of the enumeration
+     * @return static The enum instance for computed value
      */
     public function removeFlags(int $flags): self
     {
@@ -187,6 +187,6 @@ abstract class FlaggedEnum extends ReadableEnum
             throw new InvalidValueException($flags, static::class);
         }
 
-        return static::create($this->value & ~$flags);
+        return static::get($this->value & ~$flags);
     }
 }

@@ -55,17 +55,17 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionWhenBitmaskIsInvalid()
     {
-        InvalidFlagsEnum::create(InvalidFlagsEnum::FIRST);
+        InvalidFlagsEnum::get(InvalidFlagsEnum::FIRST);
     }
 
     public function testSameEnumValueActsAsSingleton()
     {
-        $this->assertTrue(Permissions::create(Permissions::NONE) === Permissions::create(Permissions::NONE));
-        $this->assertTrue(Permissions::create(Permissions::READ) === Permissions::create(Permissions::READ));
-        $all = Permissions::create(Permissions::ALL);
-        $this->assertTrue($all === Permissions::create(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
+        $this->assertTrue(Permissions::get(Permissions::NONE) === Permissions::get(Permissions::NONE));
+        $this->assertTrue(Permissions::get(Permissions::READ) === Permissions::get(Permissions::READ));
+        $all = Permissions::get(Permissions::ALL);
+        $this->assertTrue($all === Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
         $this->assertTrue(
-            $all->removeFlags(Permissions::READ) === Permissions::create(
+            $all->removeFlags(Permissions::READ) === Permissions::get(
                 Permissions::WRITE | Permissions::EXECUTE
             )
         );
@@ -73,7 +73,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFlagsOfValue()
     {
-        $value = Permissions::create(Permissions::NONE | Permissions::WRITE | Permissions::READ);
+        $value = Permissions::get(Permissions::NONE | Permissions::WRITE | Permissions::READ);
 
         $this->assertSame([Permissions::WRITE, Permissions::READ], $value->getFlags());
     }
@@ -82,7 +82,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('Execute', Permissions::readableFor(Permissions::EXECUTE));
 
-        $instance = Permissions::create(Permissions::EXECUTE);
+        $instance = Permissions::get(Permissions::EXECUTE);
 
         $this->assertSame('Execute', $instance->getReadable());
     }
@@ -94,7 +94,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
             Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE)
         );
 
-        $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
+        $instance = Permissions::get(Permissions::EXECUTE | Permissions::WRITE);
 
         $this->assertSame('Execute; Write', $instance->getReadable());
     }
@@ -106,7 +106,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
             Permissions::readableFor(Permissions::READ | Permissions::WRITE)
         );
 
-        $instance = Permissions::create(Permissions::ALL);
+        $instance = Permissions::get(Permissions::ALL);
 
         $this->assertSame('All permissions', $instance->getReadable());
     }
@@ -115,7 +115,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame('None', Permissions::readableFor(Permissions::NONE));
 
-        $instance = Permissions::create(Permissions::NONE);
+        $instance = Permissions::get(Permissions::NONE);
 
         $this->assertSame('None', $instance->getReadable());
     }
@@ -126,13 +126,13 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
             'Execute | Write',
             Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE, ' | ')
         );
-        $instance = Permissions::create(Permissions::EXECUTE | Permissions::WRITE);
+        $instance = Permissions::get(Permissions::EXECUTE | Permissions::WRITE);
         $this->assertSame('Execute | Write', $instance->getReadable(' | '));
     }
 
     public function testAddFlags()
     {
-        $original = Permissions::create(Permissions::READ);
+        $original = Permissions::get(Permissions::READ);
         $result = $original->addFlags(Permissions::WRITE | Permissions::EXECUTE);
 
         $this->assertNotSame($original, $result);
@@ -147,13 +147,13 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionWhenInvalidFlagsAdded()
     {
-        $value = Permissions::create(Permissions::READ);
+        $value = Permissions::get(Permissions::READ);
         $value->addFlags(Permissions::ALL + 1);
     }
 
     public function testRemoveFlags()
     {
-        $original = Permissions::create(Permissions::ALL);
+        $original = Permissions::get(Permissions::ALL);
         $result = $original->removeFlags(Permissions::READ | Permissions::WRITE);
 
         $this->assertNotSame($original, $result);
@@ -164,7 +164,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveAllFlags()
     {
-        $original = Permissions::create(Permissions::ALL);
+        $original = Permissions::get(Permissions::ALL);
         $result = $original->removeFlags(Permissions::ALL);
         $this->assertCount(0, $result->getFlags());
         $this->assertSame(Permissions::NONE, $result->getValue());
@@ -176,16 +176,16 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionWhenInvalidFlagsRemoved()
     {
-        $value = Permissions::create(Permissions::ALL);
+        $value = Permissions::get(Permissions::ALL);
         $value->removeFlags(99);
     }
 
     public function testInstances()
     {
         $this->assertSame([
-            Permissions::create(Permissions::EXECUTE),
-            Permissions::create(Permissions::WRITE),
-            Permissions::create(Permissions::READ),
+            Permissions::get(Permissions::EXECUTE),
+            Permissions::get(Permissions::WRITE),
+            Permissions::get(Permissions::READ),
         ], Permissions::instances());
     }
 }

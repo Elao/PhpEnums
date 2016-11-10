@@ -269,16 +269,16 @@ Get instances using bitwise operations and manipulate them:
 ```php
 <?php
 $permissions = Permissions::get(Permissions::EXECUTE | Permissions::WRITE | Permissions::READ);
-$permissions = $permissions->removeFlags(Permissions::EXECUTE); // Returns a new instance without "execute" flag
+$permissions = $permissions->removeFlags(Permissions::EXECUTE); // Returns an instance without "execute" flag
 $permissions->getValue(); // Returns 6 (int)
 $permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE])
 
-$permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE); // Returns a new instance without "read" and "write" flags
+$permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE); // Returns an instance without "read" and "write" flags
 $permissions->getValue(); // Returns Permissions::NONE (0). Note: NONE is defined in parent class, FlaggedEnum.
 $permissions->getFlags(); // Returns an empty array
 
 $permissions = Permissions::get(Permissions::NONE); // Returns an empty bitmask instance
-$permissions = $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns a new instance with "read" and "execute" permissions
+$permissions = $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns an instance with "read" and "execute" permissions
 $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
@@ -286,7 +286,7 @@ $permissions->hasFlag(Permissions::WRITE); // False
 
 ## Compare
 
-Enumeration values are singletons: it means creating an enum instance will actually always return the exact same instance for a given value.
+Enumeration values are singletons: it means you'll always get the exact same instance for a given value.
 Thus, in order to compare two instances, you can simply use the strict comparison operator in order to check references:
 
 ```php
@@ -556,8 +556,8 @@ $builder->add('gender', EnumType::class, [
     'enum_class' => Gender::class,
     'as_value' => true,
     'choices' => [
-        Gender::getReadableFor(Gender::MALE) => Gender::MALE,
-        Gender::getReadableFor(Gender::FEMALE) => Gender::FEMALE,
+        Gender::readableFor(Gender::MALE) => Gender::MALE,
+        Gender::readableFor(Gender::FEMALE) => Gender::FEMALE,
     ],
 ]);
 ```

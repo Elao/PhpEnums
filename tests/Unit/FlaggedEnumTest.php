@@ -65,7 +65,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         $all = Permissions::get(Permissions::ALL);
         $this->assertTrue($all === Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
         $this->assertTrue(
-            $all->removeFlags(Permissions::READ) === Permissions::get(
+            $all->withoutFlags(Permissions::READ) === Permissions::get(
                 Permissions::WRITE | Permissions::EXECUTE
             )
         );
@@ -130,10 +130,10 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Execute | Write', $instance->getReadable(' | '));
     }
 
-    public function testAddFlags()
+    public function testWithFlags()
     {
         $original = Permissions::get(Permissions::READ);
-        $result = $original->addFlags(Permissions::WRITE | Permissions::EXECUTE);
+        $result = $original->withFlags(Permissions::WRITE | Permissions::EXECUTE);
 
         $this->assertNotSame($original, $result);
         $this->assertTrue($result->hasFlag(Permissions::EXECUTE));
@@ -145,16 +145,16 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage 8 is not an acceptable value
      */
-    public function testThrowExceptionWhenInvalidFlagsAdded()
+    public function testThrowExceptionWhenWithInvalidFlags()
     {
         $value = Permissions::get(Permissions::READ);
-        $value->addFlags(Permissions::ALL + 1);
+        $value->withFlags(Permissions::ALL + 1);
     }
 
-    public function testRemoveFlags()
+    public function testWithoutFlags()
     {
         $original = Permissions::get(Permissions::ALL);
-        $result = $original->removeFlags(Permissions::READ | Permissions::WRITE);
+        $result = $original->withoutFlags(Permissions::READ | Permissions::WRITE);
 
         $this->assertNotSame($original, $result);
         $this->assertTrue($result->hasFlag(Permissions::EXECUTE));
@@ -162,10 +162,10 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result->hasFlag(Permissions::WRITE));
     }
 
-    public function testRemoveAllFlags()
+    public function testWithoutAnyFlag()
     {
         $original = Permissions::get(Permissions::ALL);
-        $result = $original->removeFlags(Permissions::ALL);
+        $result = $original->withoutFlags(Permissions::ALL);
         $this->assertCount(0, $result->getFlags());
         $this->assertSame(Permissions::NONE, $result->getValue());
     }
@@ -177,7 +177,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
     public function testThrowExceptionWhenInvalidFlagsRemoved()
     {
         $value = Permissions::get(Permissions::ALL);
-        $value->removeFlags(99);
+        $value->withoutFlags(99);
     }
 
     public function testInstances()

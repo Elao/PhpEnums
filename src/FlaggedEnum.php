@@ -155,7 +155,7 @@ abstract class FlaggedEnum extends ReadableEnum
     }
 
     /**
-     * Adds a bitmask to the value of this instance.
+     * Computes a new value with given flags, and returns the corresponding instance.
      *
      * @param int $flags The bit flag or bit flags
      *
@@ -163,7 +163,7 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @return static The enum instance for computed value
      */
-    public function addFlags(int $flags): self
+    public function withFlags(int $flags): self
     {
         if (!static::accepts($flags)) {
             throw new InvalidValueException($flags, static::class);
@@ -173,7 +173,7 @@ abstract class FlaggedEnum extends ReadableEnum
     }
 
     /**
-     * Removes a bitmask from the value of this instance.
+     * Computes a new value without given flags, and returns the corresponding instance.
      *
      * @param int $flags The bit flag or bit flags
      *
@@ -181,7 +181,7 @@ abstract class FlaggedEnum extends ReadableEnum
      *
      * @return static The enum instance for computed value
      */
-    public function removeFlags(int $flags): self
+    public function withoutFlags(int $flags): self
     {
         if (!static::accepts($flags)) {
             throw new InvalidValueException($flags, static::class);

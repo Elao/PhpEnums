@@ -268,16 +268,16 @@ Get instances using bitwise operations and manipulate them:
 ```php
 <?php
 $permissions = Permissions::get(Permissions::EXECUTE | Permissions::WRITE | Permissions::READ);
-$permissions = $permissions->removeFlags(Permissions::EXECUTE); // Returns an instance without "execute" flag
+$permissions = $permissions->withoutFlags(Permissions::EXECUTE); // Returns an instance without "execute" flag
 $permissions->getValue(); // Returns 6 (int)
 $permissions->getFlags(); // Returns [2, 4] (=> [Permissions::EXECUTE, Permissions::WRITE])
 
-$permissions = $permissions->removeFlags(Permissions::READ | Permissions::WRITE); // Returns an instance without "read" and "write" flags
+$permissions = $permissions->withoutFlags(Permissions::READ | Permissions::WRITE); // Returns an instance without "read" and "write" flags
 $permissions->getValue(); // Returns Permissions::NONE (0). Note: NONE is defined in parent class, FlaggedEnum.
 $permissions->getFlags(); // Returns an empty array
 
 $permissions = Permissions::get(Permissions::NONE); // Returns an empty bitmask instance
-$permissions = $permissions->addFlags(Permissions::READ | Permissions::EXECUTE); // Returns an instance with "read" and "execute" permissions
+$permissions = $permissions->withFlags(Permissions::READ | Permissions::EXECUTE); // Returns an instance with "read" and "execute" permissions
 $permissions->hasFlag(Permissions::READ); // True
 $permissions->hasFlag(Permissions::READ | Permissions::EXECUTE); // True
 $permissions->hasFlag(Permissions::WRITE); // False
@@ -616,5 +616,5 @@ Method | Static | Returns | Description
 `getReadable(string $separator = '; ')` | <kbd>No</kbd> | <kbd>string</kbd> | Same as before, but with a delimiter option (see above).
 `getFlags()` | <kbd>No</kbd> | <kbd>int[]</kbd> | Returns an array of bit flags set in the current enumeration instance.
 `hasFlag(int $bitFlag)` | <kbd>No</kbd> | <kbd>bool</kbd> | True if the current instance has the given bit flag(s).
-`addFlags(int $flags)` | <kbd>No</kbd> | <kbd>static</kbd> | Returns a new instance of the enumeration with additional flag(s).
-`removeFlags(int $flags)` | <kbd>No</kbd> | <kbd>static</kbd> | Returns a new instance of the enumeration without given flag(s).
+`withFlags(int $flags)` | <kbd>No</kbd> | <kbd>static</kbd> | Computes a new value with given flags, and returns the corresponding instance.
+`withoutFlags(int $flags)` | <kbd>No</kbd> | <kbd>static</kbd> | Computes a new value without given flags, and returns the corresponding instance.

@@ -23,7 +23,7 @@ return PhpCsFixer\Config::create()
         'concat_with_spaces' => true,
         'phpdoc_short_description' => false,
         'phpdoc_order' => true,
-        'short_array_syntax' => true,
+        'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => true,
         'simplified_null_return' => false,
         'header_comment' => [

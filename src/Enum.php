@@ -118,11 +118,7 @@ abstract class Enum implements EnumInterface
         $enumType = static::class;
         $identifier = serialize($value);
 
-        if (isset(self::$instances[$enumType][$identifier])) {
-            return self::$instances[$enumType][$identifier];
-        }
-
-        return null;
+        return self::$instances[$enumType][$identifier] ?? null;
     }
 
     /**

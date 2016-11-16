@@ -285,7 +285,7 @@ $permissions->hasFlag(Permissions::WRITE); // False
 
 ## Compare
 
-Enumeration values are singletons: it means you'll always get the exact same instance for a given value.
+Enumeration values are singletons (exact term in this case actually is [multiton](http://designpatternsphp.readthedocs.io/en/latest/Creational/Multiton/README.html)): it means you'll always get the exact same instance for a given value.
 Thus, in order to compare two instances, you can simply use the strict comparison operator in order to check references:
 
 ```php

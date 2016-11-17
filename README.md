@@ -8,6 +8,7 @@ Elao Enumerations
 [![Build Status](https://img.shields.io/travis/Elao/PhpEnums/master.svg?style=flat-square)](https://travis-ci.org/Elao/PhpEnums)
 [![Coveralls](https://img.shields.io/coveralls/Elao/PhpEnums.svg?style=flat-square)](https://coveralls.io/github/Elao/PhpEnums)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)
+[![php](https://img.shields.io/badge/PHP-7-green.svg?style=flat-square "Available for PHP 7+")](http://php.net)
 
 This project is greatly inspired by the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) and aims to provide the missing PHP enumerations support.
 

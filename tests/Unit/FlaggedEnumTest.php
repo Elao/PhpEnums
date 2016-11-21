@@ -19,9 +19,9 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Elao\Enum\Exception\InvalidValueException
      * @expectedExceptionMessage "1" is not an acceptable value
      */
-    public function testThrowExceptionWhenValueIsNotInteger()
+    public function testGetThrowExceptionWhenValueIsNotInteger()
     {
-        Permissions::accepts('1');
+        Permissions::get('1');
     }
 
     public function acceptableValueProvider()
@@ -34,6 +34,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
             [Permissions::READ | Permissions::WRITE, true],
             [Permissions::ALL, true],
             [99, false],
+            ['4', false],
         ];
     }
 

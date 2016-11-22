@@ -597,7 +597,8 @@ To use the constraint, simply provide the enum `class`:
 # src/AppBundle/Resources/config/validation.yml
 AppBundle\Entity\User:
     properties:
-        gender: MyApp\Enum\Gender
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum: MyApp\Enum\Gender
 ```
 
 If the property value is not an enum instance, set the `asValue` option to true in order to simply validate the enum value:
@@ -606,9 +607,10 @@ If the property value is not an enum instance, set the `asValue` option to true 
 # src/AppBundle/Resources/config/validation.yml
 AppBundle\Entity\User:
     properties:
-        gender: 
-            class: MyApp\Enum\Gender
-            asValue: true
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                asValue: true
 ```
 
 You can restrict the available choices by setting the allowed values in the `choices` option:
@@ -617,11 +619,12 @@ You can restrict the available choices by setting the allowed values in the `cho
 # src/AppBundle/Resources/config/validation.yml
 AppBundle\Entity\User:
     properties:
-        gender: 
-            class: MyApp\Enum\Gender
-            choices: 
-              - female
-              - !php/const:MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                choices: 
+                    - female
+                    - !php/const:MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
 ```
 
 The `choice` option only accepts enum values and normalize it internally to enum instances if `asValue` is `false`.
@@ -632,9 +635,10 @@ You can also use a [`callback`](http://symfony.com/doc/current/reference/constra
 # src/AppBundle/Resources/config/validation.yml
 AppBundle\Entity\User:
     properties:
-        gender: 
-            class: MyApp\Enum\Gender
-            callback: ['allowedValues']
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                callback: ['allowedValues']
 ```
 
 Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed instances (:warning: should return values if `asValue` is set to `true`).

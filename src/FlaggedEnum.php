@@ -29,7 +29,7 @@ abstract class FlaggedEnum extends ReadableEnum
     public static function accepts($value): bool
     {
         if (!is_int($value)) {
-            throw new InvalidValueException($value, static::class);
+            return false;
         }
 
         if ($value === self::NONE) {

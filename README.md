@@ -37,6 +37,7 @@ Table of Contents
     * [Symfony Form component](#symfony-form-component)
       * [Simple enums](#simple-enums)
       * [Flagged enums](#flagged-enums-1)
+    * [Symfony Validator component](#symfony-validator-component)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -87,6 +88,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Base implementation for simple, readable and flagged (bitmask) enumerations based on the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) ones.
 - Symfony Form component integration with form types.
 - Symfony Serializer component integration with a normalizer class.
+- Symfony Validator component integration with an enum constraint.
 - Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
 
 # Installation
@@ -583,6 +585,65 @@ $form->get('permissions')->getData(); // Will return a single `Permissions` inst
 ```
 
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).
+
+## Symfony Validator component
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+
+The library provides a `Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum` constraint which makes use of Symfony's built-in [`Choice` constraint](http://symfony.com/doc/current/reference/constraints/Choice.html) and validator internally.
+
+To use the constraint, simply provide the enum `class`:
+
+```yaml
+# src/AppBundle/Resources/config/validation.yml
+AppBundle\Entity\User:
+    properties:
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum: MyApp\Enum\Gender
+```
+
+If the property value is not an enum instance, set the `asValue` option to true in order to simply validate the enum value:
+
+```yaml
+# src/AppBundle/Resources/config/validation.yml
+AppBundle\Entity\User:
+    properties:
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                asValue: true
+```
+
+You can restrict the available choices by setting the allowed values in the `choices` option:
+
+```yaml
+# src/AppBundle/Resources/config/validation.yml
+AppBundle\Entity\User:
+    properties:
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                choices: 
+                    - female
+                    - !php/const:MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
+```
+
+The `choice` option only accepts enum values and normalize it internally to enum instances if `asValue` is `false`.
+
+You can also use a [`callback`](http://symfony.com/doc/current/reference/constraints/Choice.html#callback):
+
+```yaml
+# src/AppBundle/Resources/config/validation.yml
+AppBundle\Entity\User:
+    properties:
+        gender:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
+                class: MyApp\Enum\Gender
+                callback: ['allowedValues']
+```
+
+Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed instances (:warning: should return values if `asValue` is set to `true`).
+
+Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 
 # API
 

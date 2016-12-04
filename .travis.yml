@@ -33,7 +33,7 @@ install:
     - if [[ "$ENABLE_CODE_COVERAGE" == "yes" ]]; then composer require --dev satooshi/php-coveralls; fi
 
 script:
-    - if [[ "$ENABLE_CODE_COVERAGE" == "yes" ]]; then phpunit --coverage-text --coverage-clover build/logs/clover.xml; else phpunit; fi;
+    - if [[ "$ENABLE_CODE_COVERAGE" == "yes" ]]; then vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi;
     - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then vendor/bin/php-cs-fixer fix --config=.php_cs --dry-run --no-interaction --diff --path-mode=intersection; fi;
 
 after_success:

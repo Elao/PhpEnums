@@ -19,9 +19,9 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         'psr0' => false,
-        'concat_without_spaces' => false,
         'concat_space' => ['spacing' => 'one'],
-        'phpdoc_short_description' => false,
+        'phpdoc_summary' => false,
+        'phpdoc_annotation_without_dot' => false,
         'phpdoc_order' => true,
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => true,

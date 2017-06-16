@@ -12,7 +12,8 @@
          bootstrap="tests/Fixtures/Integration/Symfony/app/bootstrap.php"
 >
     <php>
-        <server name="KERNEL_DIR" value="tests/Fixtures/Integration/Symfony/app/" />
+        <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="KERNEL_DIR" value="tests/Fixtures/Integration/Symfony/app/" /> <!-- deprecated -->
     </php>
 
     <testsuites>

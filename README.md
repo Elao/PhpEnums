@@ -38,6 +38,7 @@ Table of Contents
       * [Simple enums](#simple-enums)
       * [Flagged enums](#flagged-enums-1)
     * [Symfony Validator component](#symfony-validator-component)
+    * [Faker enum provider](#faker-enum-provider)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -644,6 +645,51 @@ AppBundle\Entity\User:
 Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed instances (:warning: should return values if `asValue` is set to `true`).
 
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
+
+## Faker enum provider
+
+The PhpEnums library provides an `Elao\Enum\Bridge\Faker\Provider\EnumProvider` to generate fixtures.
+
+### Instantiating the provider
+
+The `EnumProvider` constructor receives as an array parameter a mapping between class aliases and your Enum classes' FQCN:
+
+```php
+
+    <?php
+
+    use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
+
+    $myEnumProvider = new EnumProvider([
+        'Civility' => Namespace\To\MyCivilityEnum::class,
+        'Gender' => Namespace\To\MyGenderEnum::class,
+    ]);
+
+```
+
+### Usage
+
+The `EnumProvider` exposes two public methods:
+
+* `enum(string $enumValueShortcut): EnumInterface` in order to generate deterministic enums
+* `randomEnum(string $enumClassAlias): EnumInterface` in order to generate random enums
+
+Here is an example of a YML [Nelmio/Alice](https://github.com/nelmio/alice) fixtures file:
+
+```yml
+MyEntity:
+    entity1:
+        civility: <enum(Civility::MISTER)>
+        gender: <enum(Gender::MALE>
+        # You can use the pipe character in order to combine flagged enums:
+        permissions: <enum(Permissions::READ|WRITE>
+    entity2:
+        civility: <randomEnum(Civility)>
+        gender: <randomEnum(Gender)>
+        permissions: <randomEnum(Permissions)>
+```
+
+**Note** : _MISTER_ in _<enum(Civility::MISTER)>_ refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
 
 # API
 

@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\Tests\Fixtures\Enum\AlarmScheduleType;
 use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 
@@ -112,7 +113,7 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('All permissions', $instance->getReadable());
     }
 
-    public function testNoneCanBeReadabled()
+    public function testNoneCanBeReadable()
     {
         $this->assertSame('None', Permissions::readableFor(Permissions::NONE));
 
@@ -129,6 +130,26 @@ class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
         );
         $instance = Permissions::get(Permissions::EXECUTE | Permissions::WRITE);
         $this->assertSame('Execute | Write', $instance->getReadable(' | '));
+    }
+
+    public function testHasBaseReadableImplementation()
+    {
+        $this->assertSame([
+            1 => 'Monday morning',
+            2 => 'Monday afternoon',
+            4 => 'Tuesday morning',
+            8 => 'Tuesday afternoon',
+            16 => 'Wednesday morning',
+            32 => 'Wednesday afternoon',
+            64 => 'Thursday morning',
+            128 => 'Thursday afternoon',
+            256 => 'Friday morning',
+            512 => 'Friday afternoon',
+            1024 => 'Saturday morning',
+            2048 => 'Saturday afternoon',
+            4096 => 'Sunday morning',
+            8192 => 'Sunday afternoon',
+        ], AlarmScheduleType::readables());
     }
 
     public function testWithFlags()

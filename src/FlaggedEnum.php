@@ -20,6 +20,9 @@ abstract class FlaggedEnum extends ReadableEnum
     /** @var array */
     private static $masks = [];
 
+    /** @var array */
+    private static $readables = [];
+
     /** @var int[] */
     protected $flags;
 
@@ -37,6 +40,24 @@ abstract class FlaggedEnum extends ReadableEnum
         }
 
         return $value === ($value & self::getBitmask());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function readables(): array
+    {
+        $enumType = static::class;
+
+        if (!isset(self::$readables[$enumType])) {
+            $constants = (new \ReflectionClass($enumType))->getConstants();
+            foreach (static::values() as $value) {
+                $constantName = array_search($value, $constants, true);
+                self::$readables[$enumType][$value] = ucfirst(strtolower(str_replace('_', ' ', $constantName)));
+            }
+        }
+
+        return self::$readables[$enumType];
     }
 
     /**

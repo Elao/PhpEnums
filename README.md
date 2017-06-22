@@ -655,16 +655,14 @@ The PhpEnums library provides an `Elao\Enum\Bridge\Faker\Provider\EnumProvider` 
 The `EnumProvider` constructor receives as an array parameter a mapping between class aliases and your Enum classes' FQCN:
 
 ```php
+<?php
 
-    <?php
+use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
 
-    use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
-
-    $myEnumProvider = new EnumProvider([
-        'Civility' => Namespace\To\MyCivilityEnum::class,
-        'Gender' => Namespace\To\MyGenderEnum::class,
-    ]);
-
+$provider = new EnumProvider([
+    'Civility' => Namespace\To\MyCivilityEnum::class,
+    'Gender' => Namespace\To\MyGenderEnum::class,
+]);
 ```
 
 ### Usage

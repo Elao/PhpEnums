@@ -50,25 +50,22 @@ class EnumProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorShouldFailWhenEnumClassIsIncorrect(array $mapping)
     {
-        $enumProvider = new EnumProvider($mapping);
+        new EnumProvider($mapping);
     }
 
-    public function provideErroneousEnumMapping(): array
+    public function provideErroneousEnumMapping()
     {
-        return [
+        yield 'EnumProvider constructor with a class that does not exist' => [
             [
-                // Pass to EnumProvider constructor a class that does not exist
-                [
-                    'Simple' => SimpleEnum::class,
-                    'Not-a-class' => '\UnexistingClass',
-                ],
+                'Simple' => SimpleEnum::class,
+                'Not-a-class' => '\UnexistingClass',
             ],
+        ];
+
+        yield 'EnumProvider constructor with a class that is not an Enum' => [
             [
-                // Pass to EnumProvider constructor a class that is not an Enum
-                [
-                    'Simple' => SimpleEnum::class,
-                    'Not-an-enum' => \DateTime::class,
-                ],
+                'Simple' => SimpleEnum::class,
+                'Not-an-enum' => \DateTime::class,
             ],
         ];
     }

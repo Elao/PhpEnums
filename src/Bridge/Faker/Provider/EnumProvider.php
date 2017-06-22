@@ -97,7 +97,7 @@ class EnumProvider
         $class = $this->enumMapping[$enumClassAlias];
 
         $instances = $class::instances();
-        $randomRank = rand(0, count($instances) - 1);
+        $randomRank = mt_rand(0, count($instances) - 1);
 
         return $instances[$randomRank];
     }

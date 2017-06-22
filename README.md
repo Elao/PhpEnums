@@ -38,7 +38,8 @@ Table of Contents
       * [Simple enums](#simple-enums)
       * [Flagged enums](#flagged-enums-1)
     * [Symfony Validator component](#symfony-validator-component)
-    * [Faker enum provider](#faker-enum-provider)
+    * [Faker](#faker)
+      * [Usage with Alice](#usage-with-alice)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -646,13 +647,11 @@ Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allow
 
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 
-## Faker enum provider
+## Faker
 
 The PhpEnums library provides an `Elao\Enum\Bridge\Faker\Provider\EnumProvider` to generate fixtures.
 
-### Instantiating the provider
-
-The `EnumProvider` constructor receives as an array parameter a mapping between class aliases and your Enum classes' FQCN:
+Its constructor receives a mapping between class aliases and your Enum classes' FQCN as first parameter:
 
 ```php
 <?php
@@ -665,14 +664,27 @@ $provider = new EnumProvider([
 ]);
 ```
 
-### Usage
+The provider exposes two public methods:
 
-The `EnumProvider` exposes two public methods:
+* `EnumProvider::enum(string $enumValueShortcut): EnumInterface` in order to generate deterministic enums
+* `EnumProvider::randomEnum(string $enumClassAlias): EnumInterface` in order to generate random enums
 
-* `enum(string $enumValueShortcut): EnumInterface` in order to generate deterministic enums
-* `randomEnum(string $enumClassAlias): EnumInterface` in order to generate random enums
+### Usage with Alice
 
-Here is an example of a YML [Nelmio/Alice](https://github.com/nelmio/alice) fixtures file:
+If you're using the [nelmio/alice](https://github.com/nelmio/alice) package and the bundle it provides in order to generate fixtures, you can register the Faker provider by using the `nelmio_alice.faker.generator`:
+
+```yml
+# services.yml
+services:
+    app.nelmio.faker.enum_provider:
+        class: Elao\Enum\Bridge\Faker\Provider\EnumProvider
+        arguments:
+            - Civility: Namespace\To\MyCivilityEnum
+              Gender: Namespace\To\MyGenderEnum
+        tags: [{ name: 'nelmio_alice.faker.generator' }]
+```
+
+The following example shows how to use the provider within a Yaml fixture file:
 
 ```yml
 MyEntity:
@@ -687,7 +699,7 @@ MyEntity:
         permissions: <randomEnum(Permissions)>
 ```
 
-**Note** : _MISTER_ in _<enum(Civility::MISTER)>_ refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
+**Note** : `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
 
 # API
 

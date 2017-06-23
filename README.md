@@ -709,7 +709,7 @@ MyEntity:
 Method | Static | Returns | Description
 ------ | ------ | ------- | -----------
 `get($value)` | <kbd>Yes</kbd> | <kbd>static</kbd>| Returns the instance of the enum type for given value.
-`values()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
+`values()` | <kbd>Yes</kbd> | <kbd>int[]&#124;string[]</kbd> | Should return any possible value for the enumeration.
 `accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
 `instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiates and returns an array containing every enumeration instance for possible values.
 `getValue()` | <kbd>No</kbd> | <kbd>int&#124;string</kbd> | Returns the enumeration instance value.

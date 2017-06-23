@@ -128,7 +128,7 @@ final class Gender extends Enum
 }
 ```
 
-> :memo: It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
+> 📝 It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
 
 Get an instance of your enum type:
 
@@ -139,6 +139,7 @@ $enum = Gender::get(Gender::Male);
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`
 
+> 📝 Enum values are supposed to be integers or strings.
 
 ## Readable enums
 
@@ -676,12 +677,12 @@ If you're using the [nelmio/alice](https://github.com/nelmio/alice) package and 
 ```yml
 # services.yml
 services:
-    app.nelmio.faker.enum_provider:
+    app.faker.enum_provider:
         class: Elao\Enum\Bridge\Faker\Provider\EnumProvider
         arguments:
             - Civility: Namespace\To\MyCivilityEnum
               Gender: Namespace\To\MyGenderEnum
-        tags: [{ name: 'nelmio_alice.faker.generator' }]
+        tags: [{ name: nelmio_alice.faker.generator }]
 ```
 
 The following example shows how to use the provider within a Yaml fixture file:
@@ -699,7 +700,7 @@ MyEntity:
         permissions: <randomEnum(Permissions)>
 ```
 
-**Note** : `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
+> 📝 `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
 
 # API
 
@@ -711,7 +712,7 @@ Method | Static | Returns | Description
 `values()` | <kbd>Yes</kbd> | <kbd>array</kbd> | Should return any possible value for the enumeration.
 `accepts($value)` | <kbd>Yes</kbd> | <kbd>bool</kbd> | True if the value is acceptable for this enumeration.
 `instances()` | <kbd>Yes</kbd> | <kbd>static[]</kbd> | Instantiates and returns an array containing every enumeration instance for possible values.
-`getValue()` | <kbd>No</kbd> | <kbd>mixed</kbd> | Returns the enumeration instance value.
+`getValue()` | <kbd>No</kbd> | <kbd>int&#124;string</kbd> | Returns the enumeration instance value.
 `equals(EnumInterface $enum)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines whether two enumerations instances should be considered the same.
 `is($value)` | <kbd>No</kbd> | <kbd>bool</kbd> | Determines if the enumeration instance value is equal to the given value.
 

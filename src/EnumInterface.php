@@ -15,7 +15,7 @@ use Elao\Enum\Exception\InvalidValueException;
 interface EnumInterface
 {
     /**
-     * @param mixed $value The value of a particular enumerated constant
+     * @param int|string $value The value of a particular enumerated constant
      *
      * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *
@@ -26,12 +26,12 @@ interface EnumInterface
     /**
      * Returns any possible value for the enumeration.
      *
-     * @return array
+     * @return int[]|string[]
      */
     public static function values(): array;
 
     /**
-     * @param mixed $value
+     * @param int|string $value
      *
      * @return bool True if the value is acceptable for this enumeration
      */
@@ -47,7 +47,7 @@ interface EnumInterface
     /**
      * Gets the raw value.
      *
-     * @return mixed
+     * @return int|string
      */
     public function getValue();
 
@@ -63,7 +63,7 @@ interface EnumInterface
     /**
      * Determines if the enumeration instance value is equal to the given value.
      *
-     * @param $value
+     * @param int|string $value
      *
      * @return bool
      */

@@ -130,11 +130,13 @@ final class Gender extends Enum
 
 > 📝 It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
 
+> 💡 You can also use the `AutoDiscoveredValuesTrait` to automagically guess values from the constants defined in your enum, so you don't have to implement `EnumInterface::values()` yourself.
+
 Get an instance of your enum type:
 
 ```php
 <?php
-$enum = Gender::get(Gender::Male); 
+$enum = Gender::get(Gender::Male);
 ```
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`

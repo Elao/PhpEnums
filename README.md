@@ -684,7 +684,7 @@ services:
         arguments:
             - Civility: Namespace\To\MyCivilityEnum
               Gender: Namespace\To\MyGenderEnum
-        tags: [{ name: nelmio_alice.faker.generator }]
+        tags: [{ name: nelmio_alice.faker.provider }]
 ```
 
 The following example shows how to use the provider within a Yaml fixture file:

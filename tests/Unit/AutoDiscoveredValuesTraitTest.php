@@ -13,12 +13,21 @@ namespace Elao\Enum\Tests\Unit;
 use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
 use Elao\Enum\FlaggedEnum;
+use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
 
 class AutoDiscoveredValuesTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testItAutoDiscoveredValuesBasedOnAvailableConstants()
     {
         $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredEnum::values());
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testPHP71ItAutoDiscoveredValuesBasedOnAvailableConstants()
+    {
+        $this->assertSame(['foo', 'bar', 'baz'], Php71AutoDiscoveredEnum::values());
     }
 
     public function testItAutoDiscoveredValuesBasedOnAvailableBitFlagConstants()
@@ -45,4 +54,5 @@ final class AutoDiscoveredFlaggedEnum extends FlaggedEnum
     const BAZ = 4;
 
     const NOT_A_BIT_FLAG = 3;
+    const NOT_EVEN_AN_INT = 'not_even_an_int';
 }

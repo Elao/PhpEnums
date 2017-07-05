@@ -38,6 +38,7 @@ Table of Contents
       * [Simple enums](#simple-enums)
       * [Flagged enums](#flagged-enums-1)
     * [Symfony Validator component](#symfony-validator-component)
+    * [Symfony VarDumper component](#symfony-vardumper-component)
     * [Faker](#faker)
       * [Usage with Alice](#usage-with-alice)
   * [API](#api)
@@ -91,6 +92,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Symfony Form component integration with form types.
 - Symfony Serializer component integration with a normalizer class.
 - Symfony Validator component integration with an enum constraint.
+- Symfony VarDumper component integration with a dedicated caster.
 - Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
 
 # Installation
@@ -649,6 +651,25 @@ AppBundle\Entity\User:
 Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed instances (:warning: should return values if `asValue` is set to `true`).
 
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
+
+## Symfony VarDumper component
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+
+By requiring this package and if `symfony/var-dumper` is installed, an `EnumCaster` is registered automatically to enhance enum instances dump output.
+
+For instance, here's what it'll look like when dumping a flagged enum instance:
+
+```php
+<?php
+
+use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+
+dump(Permissions::get(Permissions::ALL));
+```
+
+|HTML output|CLI output|
+|-----------|----------|
+|![var-dumper-integration-cli](res/img/dump-html.png)|![var-dumper-integration-cli](res/img/dump-cli.png)|
 
 ## Faker
 

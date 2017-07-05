@@ -18,7 +18,8 @@
     "autoload": {
         "psr-4": {
             "Elao\\Enum\\": "src/"
-        }
+        },
+        "files": ["src/Bridge/Symfony/VarDumper/Resources/register_caster.php"]
     },
     "autoload-dev": {
         "psr-4": { "Elao\\Enum\\Tests\\": "tests/" }
@@ -50,7 +51,8 @@
         "symfony/twig-bundle": "^2.8|^3.1|^4.0",
         "symfony/validator": "^2.8|^3.1|^4.0",
         "symfony/templating": "^2.8|^3.1|^4.0",
-        "symfony/yaml": "^2.8|^3.1|^4.0"
+        "symfony/yaml": "^2.8|^3.1|^4.0",
+        "symfony/var-dumper": "^2.8.9|^3.1|^4.0"
     },
     "extra": {
         "branch-alias": {

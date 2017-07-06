@@ -3,7 +3,7 @@
 /*
  * This file is part of the "elao/enum" package.
  *
- * Copyright (C) 2016 Elao
+ * Copyright (C) Elao
  *
  * @author Elao <contact@elao.com>
  */

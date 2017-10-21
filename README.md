@@ -3,8 +3,6 @@ Elao Enumerations
 [![Latest Stable Version](https://poser.pugx.org/elao/enum/v/stable?format=flat-square)](https://packagist.org/packages/elao/enum) 
 [![Total Downloads](https://poser.pugx.org/elao/enum/downloads?format=flat-square)](https://packagist.org/packages/elao/enum) 
 [![Monthly Downloads](https://poser.pugx.org/elao/enum/d/monthly?format=flat-square)](https://packagist.org/packages/elao/enum)
-[![Latest Unstable Version](https://poser.pugx.org/elao/enum/v/unstable?format=flat-square)](https://packagist.org/packages/elao/enum) 
-[![License](https://poser.pugx.org/elao/enum/license?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Build Status](https://img.shields.io/travis/Elao/PhpEnums/master.svg?style=flat-square)](https://travis-ci.org/Elao/PhpEnums)
 [![Coveralls](https://img.shields.io/coveralls/Elao/PhpEnums.svg?style=flat-square)](https://coveralls.io/github/Elao/PhpEnums)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)

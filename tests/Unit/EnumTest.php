@@ -11,6 +11,8 @@
 namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\Tests\Fixtures\Enum\ExtendedSimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\MathConstant;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class EnumTest extends \PHPUnit_Framework_TestCase
@@ -101,5 +103,60 @@ class EnumTest extends \PHPUnit_Framework_TestCase
         $enum = SimpleEnum::get(SimpleEnum::SECOND);
 
         $this->assertTrue($enum->is(2));
+    }
+
+    public function testSerialize()
+    {
+        $enum = SimpleEnum::get(SimpleEnum::SECOND);
+        $expected = sprintf(
+            'C:%d:"%s":%d:{%s}',
+            strlen(SimpleEnum::class),
+            SimpleEnum::class,
+            count($enum),
+            (string)SimpleEnum::SECOND
+        );
+
+        $this->assertEquals($expected, \serialize($enum));
+    }
+
+    /**
+     * @expectedException \Elao\Enum\Exception\NotSerializableException
+     * @expectedExceptionMessage Only values of type "string" or "int" can be serialized
+     */
+    public function testExceptionIsRaisedWhenSerializingValuesThatAreNotAllowed()
+    {
+        $enum = MathConstant::get(MathConstant::PI);
+        \serialize($enum);
+    }
+
+    public function testUnserialize()
+    {
+        $serializedEnumWithStringValues = sprintf(
+            'C:%d:"%s":%d:{%s}',
+            strlen(Gender::class),
+            Gender::class,
+            strlen(Gender::FEMALE),
+            Gender::FEMALE
+        );
+        $serializedEnumWithIntegerValues = sprintf(
+            'C:%d:"%s":%d:{%s}',
+            strlen(SimpleEnum::class),
+            SimpleEnum::class,
+            strlen((string)SimpleEnum::SECOND),
+            (string)SimpleEnum::SECOND
+        );
+
+        $this->assertTrue(Gender::get(Gender::FEMALE)->equals(\unserialize($serializedEnumWithStringValues)));
+        $this->assertTrue(SimpleEnum::get(SimpleEnum::SECOND)->equals(\unserialize($serializedEnumWithIntegerValues)));
+    }
+
+    /**
+     * @expectedException \Elao\Enum\Exception\InvalidValueException
+     * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.
+     */
+    public function testExceptionIsRaisedWhenUnserializingNotExistingValue()
+    {
+        $serialized = sprintf('C:%d:"%s":13:{invalid_value}', strlen(SimpleEnum::class), SimpleEnum::class);
+        \unserialize($serialized);
     }
 }

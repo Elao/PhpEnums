@@ -22,3 +22,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes:   '%kernel.debug%'
         auto_mapping:                  true
+
+services:
+    logger:
+        class: Psr\Log\NullLogger
+        public: false

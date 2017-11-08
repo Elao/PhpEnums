@@ -13,8 +13,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\Faker\Provider;
 use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
+use PHPUnit\Framework\TestCase;
 
-class EnumProviderTest extends \PHPUnit_Framework_TestCase
+class EnumProviderTest extends TestCase
 {
     public function testEnumMethodShouldReturnExpectedEnums()
     {

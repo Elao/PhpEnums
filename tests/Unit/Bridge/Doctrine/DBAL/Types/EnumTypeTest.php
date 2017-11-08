@@ -14,8 +14,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\GenderEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use PHPUnit\Framework\TestCase;
 
-class EnumTypeTest extends \PHPUnit_Framework_TestCase
+class EnumTypeTest extends TestCase
 {
     /** @var AbstractPlatform */
     protected $platform;

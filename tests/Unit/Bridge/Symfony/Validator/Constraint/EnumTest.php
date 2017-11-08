@@ -12,8 +12,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 
 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
+use PHPUnit\Framework\TestCase;
 
-class EnumTest extends \PHPUnit_Framework_TestCase
+class EnumTest extends TestCase
 {
     public function testDefaultValueIsEnumClass()
     {

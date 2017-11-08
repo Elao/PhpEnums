@@ -13,8 +13,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\SingleToCollectionFlagEnumTransformer;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use PHPUnit\Framework\TestCase;
 
-class SingleToCollectionFlagEnumTransformerTest extends \PHPUnit_Framework_TestCase
+class SingleToCollectionFlagEnumTransformerTest extends TestCase
 {
     /**
      * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException

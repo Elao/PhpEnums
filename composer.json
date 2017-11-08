@@ -35,7 +35,7 @@
         "doctrine/dbal": "^2.4",
         "doctrine/doctrine-bundle": "^1.4",
         "doctrine/orm": "^2.4",
-        "friendsofphp/php-cs-fixer": "^2.0",
+        "friendsofphp/php-cs-fixer": "^2.8",
         "nelmio/alice": "^3.0@RC",
         "phpspec/prophecy": "~1.0",
         "symfony/phpunit-bridge": "^3.2|^4.0",

@@ -10,6 +10,8 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -29,11 +31,13 @@ use Symfony\Component\Validator\Mapping\PropertyMetadata;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
+ * To be removed when <3.2 support is dropped.
+ *
  * @see https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Validator/Test/ConstraintValidatorTestCase.php
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-abstract class ConstraintValidatorTestCase extends \PHPUnit_Framework_TestCase
+abstract class ConstraintValidatorTestCase extends TestCase
 {
     /**
      * @var ExecutionContextInterface
@@ -321,12 +325,12 @@ class ConstraintViolationAssertion
 
         $violations = iterator_to_array($this->context->getViolations());
 
-        \PHPUnit_Framework_Assert::assertSame($expectedCount = count($expected), $violationsCount = count($violations), sprintf('%u violation(s) expected. Got %u.', $expectedCount, $violationsCount));
+        Assert::assertSame($expectedCount = count($expected), $violationsCount = count($violations), sprintf('%u violation(s) expected. Got %u.', $expectedCount, $violationsCount));
 
         reset($violations);
 
         foreach ($expected as $violation) {
-            \PHPUnit_Framework_Assert::assertEquals($violation, current($violations));
+            Assert::assertEquals($violation, current($violations));
             next($violations);
         }
     }

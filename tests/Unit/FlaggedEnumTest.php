@@ -13,8 +13,9 @@ namespace Elao\Enum\Tests\Unit;
 use Elao\Enum\Tests\Fixtures\Enum\AlarmScheduleType;
 use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use PHPUnit\Framework\TestCase;
 
-class FlaggedEnumTest extends \PHPUnit_Framework_TestCase
+class FlaggedEnumTest extends TestCase
 {
     /**
      * @expectedException \Elao\Enum\Exception\InvalidValueException

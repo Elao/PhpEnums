@@ -12,8 +12,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Serializer\Normalizer;
 
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use PHPUnit\Framework\TestCase;
 
-class EnumNormalizerTest extends \PHPUnit_Framework_TestCase
+class EnumNormalizerTest extends TestCase
 {
     /** @var EnumNormalizer */
     private $normalizer;

@@ -14,8 +14,9 @@ use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
+use PHPUnit\Framework\TestCase;
 
-class AutoDiscoveredValuesTraitTest extends \PHPUnit_Framework_TestCase
+class AutoDiscoveredValuesTraitTest extends TestCase
 {
     public function testItAutoDiscoveredValuesBasedOnAvailableConstants()
     {

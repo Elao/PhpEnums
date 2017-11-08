@@ -14,8 +14,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\SimpleEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
+use PHPUnit\Framework\TestCase;
 
-class IntegerEnumTypeTest extends \PHPUnit_Framework_TestCase
+class IntegerEnumTypeTest extends TestCase
 {
     /** @var AbstractPlatform */
     protected $platform;

@@ -17,8 +17,9 @@ use Elao\Enum\Tests\Fixtures\EnumAware\SimpleEntity;
 use Faker\Factory as FakerGeneratorFactory;
 use Faker\Generator as FakerGenerator;
 use Nelmio\Alice\Loader\NativeLoader;
+use PHPUnit\Framework\TestCase;
 
-class EnumProviderTest extends \PHPUnit_Framework_TestCase
+class EnumProviderTest extends TestCase
 {
     public function testEnumProvider()
     {

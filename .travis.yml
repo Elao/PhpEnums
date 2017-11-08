@@ -19,7 +19,10 @@ matrix:
         env: ENABLE_CODE_COVERAGE="yes"
       # oldest supported versions
       - php: 7.0
-        env: SYMFONY_VERSION="2.8.*" COMPOSER_FLAGS="--prefer-lowest"
+        env:
+          - SYMFONY_VERSION="2.8.*"
+          - COMPOSER_FLAGS="--prefer-lowest"
+          - SYMFONY_PHPUNIT_VERSION=5.7
       # common versions:
       - php: 7.1
         env: SYMFONY_VERSION="3.3.*"

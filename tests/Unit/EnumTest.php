@@ -12,8 +12,9 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\Tests\Fixtures\Enum\ExtendedSimpleEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
+use PHPUnit\Framework\TestCase;
 
-class EnumTest extends \PHPUnit_Framework_TestCase
+class EnumTest extends TestCase
 {
     public function enumValuesProvider()
     {

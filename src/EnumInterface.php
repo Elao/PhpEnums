@@ -21,7 +21,7 @@ interface EnumInterface
      *
      * @return EnumInterface The enum instance for given value
      */
-    public static function get($value): EnumInterface;
+    public static function get($value): self;
 
     /**
      * Returns any possible value for the enumeration.
@@ -58,7 +58,7 @@ interface EnumInterface
      *
      * @return bool
      */
-    public function equals(EnumInterface $enum): bool;
+    public function equals(self $enum): bool;
 
     /**
      * Determines if the enumeration instance value is equal to the given value.

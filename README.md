@@ -386,6 +386,17 @@ final class GenderEnumType extends AbstractEnumType
 }
 ```
 
+Note: You can map to native sql enum type by overriding declaration method:
+
+```php
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        $values = implode(', ', array_map(function ($value) { return "'$value'";}, Gender::values()));
+
+        return "ENUM($values)";
+    }
+```
+
 ### Register the DBAL type
 
 Then, you'll simply need to register your DBAL type:

@@ -20,7 +20,7 @@ class AutoDiscoveredValuesTraitTest extends TestCase
 {
     public function testItAutoDiscoveredValuesBasedOnAvailableConstants()
     {
-        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredEnum::values());
+        $this->assertSame(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz'], AutoDiscoveredEnum::values());
     }
 
     /**
@@ -28,12 +28,12 @@ class AutoDiscoveredValuesTraitTest extends TestCase
      */
     public function testPHP71ItAutoDiscoveredValuesBasedOnAvailableConstants()
     {
-        $this->assertSame(['foo', 'bar', 'baz'], Php71AutoDiscoveredEnum::values());
+        $this->assertSame(['foo' => 'foo', 'bar' => 'bar', 'baz' => 'baz'], Php71AutoDiscoveredEnum::values());
     }
 
     public function testItAutoDiscoveredValuesBasedOnAvailableBitFlagConstants()
     {
-        $this->assertSame([1, 2, 4], AutoDiscoveredFlaggedEnum::values());
+        $this->assertSame([1 => 1, 2 => 2, 4 => 4], AutoDiscoveredFlaggedEnum::values());
     }
 }
 

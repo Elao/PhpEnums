@@ -40,7 +40,7 @@ trait AutoDiscoveredValuesTrait
                 });
             }
 
-            self::$guessedValues[$enumType] = array_values($values);
+            self::$guessedValues[$enumType] = array_combine($values, $values);
         }
 
         return self::$guessedValues[$enumType];

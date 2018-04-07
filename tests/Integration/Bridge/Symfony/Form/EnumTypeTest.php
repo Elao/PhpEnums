@@ -86,4 +86,34 @@ class EnumTypeTest extends WebTestCase
 
         $this->assertSame(['form[permissions]' => []], $form->getValues());
     }
+
+    public function testEnumFormUtilizingScalarTransformer()
+    {
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/form-type/scalar-transformer-enum');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame([
+            ['selected', 'male', 'customMaleLabel'],
+            ['', 'female', 'customFemaleLabel'],
+        ], $crawler->filter('form select[name="form[gender]"] option')->extract(['selected', 'value', '_text']));
+        $this->assertSame([
+            ['', '1', 'customOneLabel'],
+            ['selected', '2', 'customSecondLabel'],
+        ], $crawler->filter('form select[name="form[simpleEnum]"] option')->extract(['selected', 'value', '_text']));
+
+        $form = $crawler->filter('form')->form();
+        $form['form[gender]'] = 'female';
+        $form['form[simpleEnum]'] = '1';
+
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $form = $crawler->filter('form')->form();
+
+        $this->assertSame(['form[gender]' => 'female', 'form[simpleEnum]' => '1'], $form->getValues());
+    }
 }

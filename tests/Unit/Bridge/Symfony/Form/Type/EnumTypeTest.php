@@ -10,10 +10,13 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\Type;
 
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
@@ -445,6 +448,39 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertFalse($field->isSynchronized());
         $this->assertNull($field->getData());
         $this->assertSame(Gender::UNKNOW, $field->getViewData());
+    }
+
+    public function testTransformationOfScalarChoices()
+    {
+        $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
+
+        $builder = $this->factory->createBuilder(
+            ChoiceType::class,
+            Gender::FEMALE(),
+            [
+                'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
+            ] + $options
+        );
+
+        $field = $builder->addModelTransformer(new ScalarToEnumTransformer(Gender::class))->getForm();
+
+        $view = $field->createView();
+        /** @var ChoiceView[] $choices */
+        $choices = $view->vars['choices'];
+
+        $this->assertCount(2, $choices);
+
+        $choice = $choices[0];
+        $this->assertSame('maleLabel', $choice->label);
+        $this->assertSame(Gender::MALE, $choice->value);
+        $this->assertSame(Gender::MALE, $choice->data);
+        $this->assertSame(Gender::FEMALE(), $field->getData());
+
+        $field->submit(Gender::MALE);
+
+        $this->assertTrue($field->isSynchronized());
+        $this->assertSame(Gender::MALE(), $field->getData());
+        $this->assertSame(Gender::MALE()->getValue(), $field->getViewData());
     }
 
     private function assertSubForm(FormInterface $form, $data, $viewData)

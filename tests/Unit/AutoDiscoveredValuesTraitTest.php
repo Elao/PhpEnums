@@ -35,6 +35,15 @@ class AutoDiscoveredValuesTraitTest extends TestCase
     {
         $this->assertSame([1, 2, 4], AutoDiscoveredFlaggedEnum::values());
     }
+
+    /**
+     * @expectedException \Elao\Enum\Exception\LogicException
+     * @expectedExceptionMessage Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"
+     */
+    public function testThrowsOnChoicesMisuses()
+    {
+        AutoDiscoveredEnumMisusingChoices::foo();
+    }
 }
 
 final class AutoDiscoveredEnum extends Enum
@@ -56,4 +65,16 @@ final class AutoDiscoveredFlaggedEnum extends FlaggedEnum
 
     const NOT_A_BIT_FLAG = 3;
     const NOT_EVEN_AN_INT = 'not_even_an_int';
+}
+
+final class AutoDiscoveredEnumMisusingChoices extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+
+    const FOO = 'foo';
+
+    public static function foo()
+    {
+        self::choices();
+    }
 }

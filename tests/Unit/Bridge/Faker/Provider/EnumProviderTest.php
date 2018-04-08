@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Faker\Provider;
 
 use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,10 @@ class EnumProviderTest extends TestCase
         $simple = $enumProvider->enum('Simple::FIRST');
         $this->assertInstanceOf(SimpleEnum::class, $simple);
         $this->assertTrue($simple->is(SimpleEnum::FIRST));
+
+        $gender = $enumProvider->enum('Elao\Enum\Tests\Fixtures\Enum\Gender::MALE');
+        $this->assertInstanceOf(Gender::class, $gender);
+        $this->assertTrue($gender->is(Gender::MALE));
 
         /* @var Permissions $permissions */
         $permissions = $enumProvider->enum('Permissions::READ|WRITE');
@@ -39,6 +44,9 @@ class EnumProviderTest extends TestCase
 
         $simple = $enumProvider->randomEnum('Simple');
         $this->assertInstanceOf(SimpleEnum::class, $simple);
+
+        $gender = $enumProvider->enum('Elao\Enum\Tests\Fixtures\Enum\Gender::MALE');
+        $this->assertInstanceOf(Gender::class, $gender);
 
         $permissions = $enumProvider->randomEnum('Permissions');
         $this->assertInstanceOf(Permissions::class, $permissions);

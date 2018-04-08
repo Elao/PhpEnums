@@ -700,7 +700,7 @@ $provider = new EnumProvider([
 The provider exposes two public methods:
 
 * `EnumProvider::enum(string $enumValueShortcut): EnumInterface` in order to generate deterministic enums
-* `EnumProvider::randomEnum(string $enumClassAlias): EnumInterface` in order to generate random enums
+* `EnumProvider::randomEnum(string $enumClassOrAlias): EnumInterface` in order to generate random enums
 
 ### Usage with Alice
 
@@ -723,12 +723,13 @@ The following example shows how to use the provider within a Yaml fixture file:
 MyEntity:
     entity1:
         civility: <enum(Civility::MISTER)>
-        gender: <enum(Gender::MALE>
+        # You can use enums outside of map if you specify full path to Enum class:
+        gender: <enum("App\Model\Enum\Gender::MALE">
         # You can use the pipe character in order to combine flagged enums:
         permissions: <enum(Permissions::READ|WRITE>
     entity2:
         civility: <randomEnum(Civility)>
-        gender: <randomEnum(Gender)>
+        gender: <randomEnum("App\Model\Enum\Gender")>
         permissions: <randomEnum(Permissions)>
 ```
 

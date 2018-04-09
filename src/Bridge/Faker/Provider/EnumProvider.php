@@ -35,7 +35,7 @@ class EnumProvider
      */
     private $enumMapping = [];
 
-    public function __construct(array $enumMapping)
+    public function __construct(array $enumMapping = [])
     {
         foreach ($enumMapping as $enumAlias => $enumClass) {
             $this->ensureEnumClass($enumClass);
@@ -44,8 +44,8 @@ class EnumProvider
     }
 
     /**
-     * @param string $enumValueShortcut As <ENUM_CLASS_ALIAS>::<ENUM_VALUE_CONSTANT>
-     *                                  Examples: 'Gender::MALE', 'Gender::FEMALE', 'Permissions::READ|WRITE', etc.
+     * @param string $enumValueShortcut As <ENUM_CLASS_ALIAS_OR_ENUM_FCQN>::<ENUM_VALUE_CONSTANT>
+     *                                  Examples: 'Gender::MALE', 'App\Enum\Gender::FEMALE', 'Permissions::READ|WRITE', etc.
      *
      * @throws InvalidArgumentException When the alias part of $enumValueShortcut is not a valid alias
      *
@@ -53,14 +53,11 @@ class EnumProvider
      */
     public function enum(string $enumValueShortcut): EnumInterface
     {
-        list($enumClassAlias, $constants) = explode('::', $enumValueShortcut);
-
-        if (!array_key_exists($enumClassAlias, $this->enumMapping)) {
-            throw new InvalidArgumentException("$enumClassAlias is not a valid alias");
-        }
+        list($enumClassOrAlias, $constants) = explode('::', $enumValueShortcut);
 
         /** @var EnumInterface $class */
-        $class = $this->enumMapping[$enumClassAlias];
+        $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;
+        $this->ensureEnumClass($class);
 
         $constants = explode('|', $constants);
 
@@ -81,20 +78,17 @@ class EnumProvider
     }
 
     /**
-     * @param string $enumClassAlias
+     * @param string $enumClassOrAlias
      *
      * @throws InvalidArgumentException When $enumClassAlias is not a valid alias
      *
      * @return EnumInterface
      */
-    public function randomEnum(string $enumClassAlias): EnumInterface
+    public function randomEnum(string $enumClassOrAlias): EnumInterface
     {
-        if (!array_key_exists($enumClassAlias, $this->enumMapping)) {
-            throw new InvalidArgumentException("$enumClassAlias is not a valid alias");
-        }
-
         /** @var EnumInterface $class */
-        $class = $this->enumMapping[$enumClassAlias];
+        $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;
+        $this->ensureEnumClass($class);
 
         $instances = $class::instances();
         $randomRank = mt_rand(0, count($instances) - 1);

@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Tests\Fixtures\EnumAware;
 
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
@@ -20,4 +21,7 @@ class SimpleEntity
 
     /** @var SimpleEnum */
     public $simpleEnum;
+
+    /** @var Gender */
+    public $gender;
 }

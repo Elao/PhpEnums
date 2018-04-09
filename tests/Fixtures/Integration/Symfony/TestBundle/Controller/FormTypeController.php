@@ -10,11 +10,15 @@
 
 namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller;
 
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -50,6 +54,37 @@ class FormTypeController extends Controller
             ->add('submit', SubmitType::class)
             ->getForm()
         ;
+
+        $form->handleRequest($request);
+
+        return $this->render('TestBundle::enum_type.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function enumFormUtilizingScalarTransformerAction(Request $request)
+    {
+        $data = [
+            'gender' => Gender::get(Gender::MALE),
+            'simpleEnum' => SimpleEnum::get(SimpleEnum::SECOND),
+        ];
+
+        $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
+
+        $builder = $this->createFormBuilder($data)
+            ->add('gender', ChoiceType::class, [
+                'choices' => ['customMaleLabel' => Gender::MALE, 'customFemaleLabel' => Gender::FEMALE],
+            ] + $options)
+            ->add('simpleEnum', ChoiceType::class, [
+                'choices' => ['customOneLabel' => SimpleEnum::FIRST, 'customSecondLabel' => SimpleEnum::SECOND],
+            ] + $options)
+            ->add('submit', SubmitType::class)
+        ;
+
+        $builder->get('gender')->addModelTransformer(new ScalarToEnumTransformer(Gender::class));
+        $builder->get('simpleEnum')->addModelTransformer(new ScalarToEnumTransformer(SimpleEnum::class));
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 

@@ -5,3 +5,7 @@ readable_enum_form:
 flagged_enum_form:
     path: '/form-type/flagged-enum'
     defaults: { _controller: 'TestBundle:FormType:flaggedEnumForm' }
+
+form_with_scalar_transformer:
+    path: '/form-type/scalar-transformer-enum'
+    defaults: { _controller: 'TestBundle:FormType:enumFormUtilizingScalarTransformer' }

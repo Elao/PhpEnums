@@ -45,7 +45,7 @@ class EnumProviderTest extends TestCase
         $simple = $enumProvider->randomEnum('Simple');
         $this->assertInstanceOf(SimpleEnum::class, $simple);
 
-        $gender = $enumProvider->enum('Elao\Enum\Tests\Fixtures\Enum\Gender::MALE');
+        $gender = $enumProvider->randomEnum(Gender::class);
         $this->assertInstanceOf(Gender::class, $gender);
 
         $permissions = $enumProvider->randomEnum('Permissions');

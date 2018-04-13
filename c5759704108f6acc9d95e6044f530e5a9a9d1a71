@@ -1,0 +1,302 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-04-09T16:38:24Z
+
+So, I've "simplified" everything with the base `ReadableEnum::values()` implementation & the `AutoDiscoveredReadablesTrait` meant to be used with readable enums... but that requires making the `FlaggedEnum` using it and a [uggly hack](https://github.com/Elao/PhpEnums/blob/9153b7009fadd33531a6ea39031a206f6e148057/src/AutoDiscoveredReadablesTrait.php#L51-L62) for BC reasons. And that's still a BC break under some edge conditions. Needless to say I'm not that much satisfied right now.
+At least the previous traits contract was clear to me, easing opinionated classes composition without BC issue and the relations between weren't fearing me much. I might revert. But perhaps you've a better idea?
+Anyway, thanks for your involvement.
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-04-09T22:58:37Z
+
+> but that requires making the FlaggedEnum using it
+
+How so? Patch at the bottom of my post is subset of your patch applied on master, it passes all tests. Personally, I am happy without having this trait included in FlaggedEnum. Users are still free to use it in conjunction, but they will need to handle possible conflict themselves. If we want, we can recommended to use it in conjunction and deprecate FlaggedEnum::readables in favor of that (your call).
+
+<details>
+
+<summary>patch</summary>
+
+```patch
+Index: tests/Unit/FlaggedEnumTest.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tests/Unit/FlaggedEnumTest.php	(revision a15590d90cc092b95fb6f79be07d45406be59d0a)
++++ tests/Unit/FlaggedEnumTest.php	(date 1523314043000)
+@@ -10,6 +10,7 @@
+
+ namespace Elao\Enum\Tests\Unit;
+
++use Elao\Enum\FlaggedEnum;
+ use Elao\Enum\Tests\Fixtures\Enum\AlarmScheduleType;
+ use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
+ use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+@@ -133,6 +134,11 @@
+         $this->assertSame('Execute | Write', $instance->getReadable(' | '));
+     }
+
++    public function testValues()
++    {
++        $this->assertSame([1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192], AlarmScheduleType::values());
++    }
++
+     public function testHasBaseReadableImplementation()
+     {
+         $this->assertSame([
+@@ -211,4 +217,29 @@
+             Permissions::get(Permissions::READ),
+         ], Permissions::instances());
+     }
++
++    public function testWithSpecifiedValues()
++    {
++        $this->assertSame([
++            FlaggedEnumWithSpecifiedValues::FOO,
++            FlaggedEnumWithSpecifiedValues::BAR,
++        ], FlaggedEnumWithSpecifiedValues::values());
++
++        $this->assertSame([
++            FlaggedEnumWithSpecifiedValues::FOO => 'Foo',
++            FlaggedEnumWithSpecifiedValues::BAR => 'Bar',
++        ], FlaggedEnumWithSpecifiedValues::readables());
++    }
++}
++
++final class FlaggedEnumWithSpecifiedValues extends FlaggedEnum
++{
++    const FOO = 1 << 0;
++    const BAR = 1 << 1;
++    const BAZ = 1 << 2;
++
++    public static function values(): array
++    {
++        return [self::FOO, self::BAR];
++    }
+ }
+Index: src/AutoDiscoveredReadablesTrait.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/AutoDiscoveredReadablesTrait.php	(date 1523314426000)
++++ src/AutoDiscoveredReadablesTrait.php	(date 1523314426000)
+@@ -0,0 +1,73 @@
++<?php
++
++/*
++ * This file is part of the "elao/enum" package.
++ *
++ * Copyright (C) Elao
++ *
++ * @author Elao <contact@elao.com>
++ */
++
++namespace Elao\Enum;
++
++use Elao\Enum\Exception\LogicException;
++
++/**
++ * Auto-discover enumerated readable values from public constants.
++ *
++ * Meant to be used within a {@link \Elao\Enum\ReadableEnumInterface} implementation.
++ */
++trait AutoDiscoveredReadablesTrait
++{
++    use AutoDiscoveredValuesTrait {
++        AutoDiscoveredValuesTrait::values as autodiscoveredValues;
++    }
++
++    /** @internal */
++    private static $guessedReadables = [];
++
++    /**
++     * @see ReadableEnumInterface::readables()
++     *
++     * @return string[] labels indexed by enumerated value
++     */
++    public static function readables(): array
++    {
++        static::checkForChoiceEnumTraitMisuses();
++
++        return static::autodiscoveredReadables();
++    }
++
++    /**
++     * @internal
++     */
++    private static function autodiscoveredReadables(): array
++    {
++        $enumType = static::class;
++
++        if (!isset(self::$guessedReadables[$enumType])) {
++            $constants = (new \ReflectionClass($enumType))->getConstants();
++            foreach (static::autodiscoveredValues() as $value) {
++                $constantName = array_search($value, $constants, true);
++                self::$guessedReadables[$enumType][$value] = ucfirst(strtolower(str_replace('_', ' ', $constantName)));
++            }
++        }
++
++        return self::$guessedReadables[$enumType];
++    }
++
++    /**
++     * @internal
++     */
++    private static function checkForChoiceEnumTraitMisuses()
++    {
++        if (!is_a(static::class, ReadableEnumInterface::class, true)) {
++            throw new LogicException(sprintf(
++                'The "%s" trait is meant to be used by "%s" implementations, but "%s" does not implement it.',
++                self::class,
++                ReadableEnumInterface::class,
++                static::class
++            ));
++        }
++    }
++}
+Index: tests/Unit/AutoDiscoveredReadablesTraitTest.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- tests/Unit/AutoDiscoveredReadablesTraitTest.php	(date 1523314043000)
++++ tests/Unit/AutoDiscoveredReadablesTraitTest.php	(date 1523314043000)
+@@ -0,0 +1,52 @@
++<?php
++
++/*
++ * This file is part of the "elao/enum" package.
++ *
++ * Copyright (C) Elao
++ *
++ * @author Elao <contact@elao.com>
++ */
++
++namespace Elao\Enum\Tests\Unit;
++
++use Elao\Enum\AutoDiscoveredReadablesTrait;
++use Elao\Enum\Enum;
++use Elao\Enum\ReadableEnum;
++use PHPUnit\Framework\TestCase;
++
++class AutoDiscoveredReadablesTraitTest extends TestCase
++{
++    public function testItProvidesValuesAndReadablesImplementations()
++    {
++        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredReadablesEnum::values());
++        $this->assertSame([
++            AutoDiscoveredReadablesEnum::FOO => 'Foo',
++            AutoDiscoveredReadablesEnum::BAR => 'Bar',
++            AutoDiscoveredReadablesEnum::BAZ => 'Baz',
++        ], AutoDiscoveredReadablesEnum::readables());
++    }
++
++    /**
++     * @expectedException \Elao\Enum\Exception\LogicException
++     * @expectedExceptionMessage The "Elao\Enum\Tests\Unit\NonReadableEnumWithAutoDiscoveredReadablesTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithAutoDiscoveredReadablesTrait" does not implement it.
++     */
++    public function testReadableThrowsOnNonReadable()
++    {
++        NonReadableEnumWithAutoDiscoveredReadablesTrait::readables();
++    }
++}
++
++final class AutoDiscoveredReadablesEnum extends ReadableEnum
++{
++    use AutoDiscoveredReadablesTrait;
++
++    const FOO = 'foo';
++    const BAR = 'bar';
++    const BAZ = 'baz';
++}
++
++final class NonReadableEnumWithAutoDiscoveredReadablesTrait extends Enum
++{
++    use AutoDiscoveredReadablesTrait;
++}
+Index: src/ReadableEnum.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/ReadableEnum.php	(revision a15590d90cc092b95fb6f79be07d45406be59d0a)
++++ src/ReadableEnum.php	(date 1523314043000)
+@@ -14,6 +14,14 @@
+
+ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
+ {
++    /**
++     * {@inheritdoc}
++     */
++    public static function values(): array
++    {
++        return array_keys(static::readables());
++    }
++
+     /**
+      * {@inheritdoc}
+      */
+@@ -22,9 +30,8 @@
+         if (!static::accepts($value)) {
+             throw new InvalidValueException($value, static::class);
+         }
+-        $humanRepresentations = static::readables();
+
+-        return $humanRepresentations[$value];
++        return static::readables()[$value];
+     }
+
+     /**
+@@ -40,6 +47,6 @@
+      */
+     public function __toString()
+     {
+-        return (string) $this->getReadable();
++        return $this->getReadable();
+     }
+ }
+```
+
+</details>
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-04-10T16:32:24Z
+
+Sorry, I should have explained myself a bit more:
+
+Providing the `ReadableEnum::values()` base implementation relying on readables makes the `FlaggedEnum` broken out-of-the-box, as `FlaggedEnum::values()` relies on `FlaggedEnum::readables()`, which in turn already relies on `values()` leading to an infinite loop. It's not a BC break for existing code (unless parent is called for whatever reason) as `values` needed to be implemented on userland. But now simply extending `FlaggedEnum` will not hint for the user to provide `values` anymore, which will lead to an infinite loop without notice.
+Tests are green using the subset you applied on master from my patch, because you didn't included all the tests changes. Just also apply the `AlarmScheduleType` changes (i.e: removing `values` implem) and you'll get a segfault.
+So clearly, not a pleasant DX. Some guards against this might be possible, I may give it a try and let it convince me, but that would only be at runtime. Using `AutoDiscoveredReadablesTrait` in `FlaggedEnum` solves it, but still requires the aforementioned trick and would produce edgy BC breaks.
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-04-10T21:54:56Z
+
+Indeed, all workarounds will be runtime only. Another one is override values() in FlaggedEnum and just throw inside. That might be good enough.
+
+Other than that, we would indeed have to move it out of ReadableEnum. Or make FlaggedEnum stop extend from it. That might be good enough too. IMO you shouldn't have BC policy on same level as Symfony. Or just bump to new major? You don't need to wait for having something more substantial to bump.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-04-10T22:18:06Z
+
+> IMO you shouldn't have BC policy on same level as Symfony. Or just bump to new major? You don't need to wait for having something more substantial to bump.
+
+You're right. I'm not targeting the same level. But I won't allow BC breaks (nor broken classes out of the box) on minor versions.
+BC breaks on next major one even without proper upgrade path is something I would, though.
+But there aren't enough reasons yet to bump a new major version to me. Keep finding more ;)
+For now, I've opened https://github.com/Elao/PhpEnums/projects/1 for tracking.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-04-13T12:19:44Z
+
+So, I'm gonna stick with the first implementation, i.e the choice enums concept.
+From the user perspective, it provides the expected DX and opt-in.
+From the component side, it's just a higher-level implementation leveraging the base API. Traits relations will be my burden and are not relevant from user's perspective, as everything within is considered internal.
+
+Thanks for the discussion. I appreciate your help.

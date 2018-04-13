@@ -20,6 +20,7 @@ Table of Contents
   * [Installation](#installation)
   * [Usage](#usage)
     * [Readable enums](#readable-enums)
+    * [Choice enums](#choice-enums)
     * [Flagged enums](#flagged-enums)
     * [Compare](#compare)
     * [Shortcuts](#shortcuts)
@@ -225,6 +226,58 @@ $enum = Gender::get(Gender::MALE);
 // get translator instance...
 $translator->trans($enum); // returns 'Male'
 ```
+
+## Choice enums
+
+Choice enums are a more opinionated version of readable enums. Using the `ChoiceEnumTrait` in your enum, you'll only 
+need to implement a `choices()` method instead of both `EnumInterface::values()` and `ReadableEnum::readables()` ones:
+
+```php
+<?php
+
+use Elao\Enum\ChoiceEnumTrait;
+use Elao\Enum\ReadableEnum;
+
+final class Gender extends ReadableEnum
+{
+    use ChoiceEnumTrait;
+
+    const UNKNOW = 'unknown';
+    const MALE = 'male';
+    const FEMALE = 'female';
+
+    public static function choices(): array
+    {
+        return [
+            self::UNKNOW => 'Unknown',
+            self::MALE => 'Male',
+            self::FEMALE => 'Female',
+        ];
+    }
+}
+```
+
+It is convenient as it implements the two `values` & `readables` methods for you, which means you don't have to keep it in sync anymore.
+
+The `SimpleChoiceEnum` base class allows you to benefit from both choice enums conveniency along with enumerated values auto-discoverability through public constants:
+
+
+```php
+<?php
+
+use Elao\Enum\SimpleChoiceEnum;
+
+final class Gender extends SimpleChoiceEnum
+{   
+    const UNKNOW = 'unknown';
+    const MALE = 'male';
+    const FEMALE = 'female';
+}
+```
+
+In addition, it'll provide default labels for each enumerated values based on a humanized version of their constant name 
+(i.e: "MALE" becomes "Male". "SOME_VALUE" becomes "Some value").
+In case you need more accurate labels, simply override the `SimpleChoiceEnum::choices()` implementation.
 
 ## Flagged enums
 

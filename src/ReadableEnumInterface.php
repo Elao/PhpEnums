@@ -17,7 +17,7 @@ interface ReadableEnumInterface extends EnumInterface
     /**
      * Gets an array of the human representations indexed by possible values.
      *
-     * @return array
+     * @return string[] labels indexed by enumerated value
      */
     public static function readables(): array;
 

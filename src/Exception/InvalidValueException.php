@@ -13,7 +13,7 @@ namespace Elao\Enum\Exception;
 /**
  * Exception used when providing an invalid value for a given enumeration class.
  */
-class InvalidValueException extends InvalidArgumentException implements ExceptionInterface
+class InvalidValueException extends InvalidArgumentException
 {
     public function __construct($value, $class)
     {

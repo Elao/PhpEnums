@@ -38,7 +38,7 @@ trait AutoDiscoveredValuesTrait
      */
     protected static function choices(): array
     {
-        if (!in_array(ChoiceEnumTrait::class, class_uses(self::class, false), true)) {
+        if (!\in_array(ChoiceEnumTrait::class, class_uses(self::class, false), true)) {
             throw new LogicException(sprintf(
                 'Method "%s" is only meant to be used when using the "%s" trait which is not used in "%s"',
                 __METHOD__,
@@ -69,11 +69,11 @@ trait AutoDiscoveredValuesTrait
 
             if (is_a($enumType, FlaggedEnum::class, true)) {
                 $values = array_filter($values, function ($v) {
-                    return is_int($v) && 0 === ($v & $v - 1) && $v > 0;
+                    return \is_int($v) && 0 === ($v & $v - 1) && $v > 0;
                 });
             } else {
                 $values = array_filter($values, function ($v) {
-                    return is_int($v) || is_string($v);
+                    return \is_int($v) || \is_string($v);
                 });
             }
 

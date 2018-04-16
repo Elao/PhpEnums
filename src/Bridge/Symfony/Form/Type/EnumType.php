@@ -28,6 +28,7 @@ class EnumType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
+                    /** @var EnumInterface|ReadableEnumInterface|string $enumClass */
                     $enumClass = $options['enum_class'];
 
                     if (!$options['as_value']) {

@@ -12,14 +12,18 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\PropertyMetadata;
+use Symfony\Component\Validator\Validator\ContextualValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * A test case to ease testing Constraint Validators.
@@ -105,9 +109,9 @@ abstract class ConstraintValidatorTestCase extends TestCase
 
     protected function createContext()
     {
-        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\Validator\ValidatorInterface')->getMock();
-        $contextualValidator = $this->getMockBuilder('Symfony\Component\Validator\Validator\ContextualValidatorInterface')->getMock();
+        $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
+        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $contextualValidator = $this->getMockBuilder(ContextualValidatorInterface::class)->getMock();
 
         $context = new ExecutionContext($validator, $this->root, $translator);
         $context->setGroup($this->group);
@@ -131,8 +135,8 @@ abstract class ConstraintValidatorTestCase extends TestCase
     protected function setObject($object)
     {
         $this->object = $object;
-        $this->metadata = is_object($object)
-            ? new ClassMetadata(get_class($object))
+        $this->metadata = \is_object($object)
+            ? new ClassMetadata(\get_class($object))
             : null;
 
         $this->context->setNode($this->value, $this->object, $this->metadata, $this->propertyPath);
@@ -141,8 +145,8 @@ abstract class ConstraintValidatorTestCase extends TestCase
     protected function setProperty($object, $property)
     {
         $this->object = $object;
-        $this->metadata = is_object($object)
-            ? new PropertyMetadata(get_class($object), $property)
+        $this->metadata = \is_object($object)
+            ? new PropertyMetadata(\get_class($object), $property)
             : null;
 
         $this->context->setNode($this->value, $this->object, $this->metadata, $this->propertyPath);
@@ -185,7 +189,7 @@ abstract class ConstraintValidatorTestCase extends TestCase
             ->will($this->returnValue($validator));
         $validator->expects($this->at(2 * $i + 1))
             ->method('validate')
-            ->with($value, $this->logicalOr(null, [], $this->isInstanceOf('\Symfony\Component\Validator\Constraints\Valid')), $group);
+            ->with($value, $this->logicalOr(null, [], $this->isInstanceOf(Valid::class)), $group);
     }
 
     protected function expectValidateValueAt($i, $propertyPath, $value, $constraints, $group = null)
@@ -202,7 +206,7 @@ abstract class ConstraintValidatorTestCase extends TestCase
 
     protected function assertNoViolation()
     {
-        $this->assertSame(0, $violationsCount = count($this->context->getViolations()), sprintf('0 violation expected. Got %u.', $violationsCount));
+        $this->assertSame(0, $violationsCount = \count($this->context->getViolations()), sprintf('0 violation expected. Got %u.', $violationsCount));
     }
 
     /**
@@ -325,7 +329,7 @@ class ConstraintViolationAssertion
 
         $violations = iterator_to_array($this->context->getViolations());
 
-        Assert::assertSame($expectedCount = count($expected), $violationsCount = count($violations), sprintf('%u violation(s) expected. Got %u.', $expectedCount, $violationsCount));
+        Assert::assertSame($expectedCount = \count($expected), $violationsCount = \count($violations), sprintf('%u violation(s) expected. Got %u.', $expectedCount, $violationsCount));
 
         reset($violations);
 

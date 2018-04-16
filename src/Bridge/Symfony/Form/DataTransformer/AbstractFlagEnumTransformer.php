@@ -34,11 +34,11 @@ abstract class AbstractFlagEnumTransformer implements DataTransformerInterface
 
     protected function createEnum(int $value): FlaggedEnum
     {
-        return call_user_func([$this->enumClass, 'get'], $value);
+        return \call_user_func([$this->enumClass, 'get'], $value);
     }
 
     protected function isAcceptableValueForEnum(int $value): bool
     {
-        return call_user_func([$this->enumClass, 'accepts'], $value);
+        return \call_user_func([$this->enumClass, 'accepts'], $value);
     }
 }

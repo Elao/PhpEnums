@@ -31,7 +31,7 @@ abstract class FlaggedEnum extends ReadableEnum
      */
     public static function accepts($value): bool
     {
-        if (!is_int($value)) {
+        if (!\is_int($value)) {
             return false;
         }
 

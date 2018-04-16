@@ -40,6 +40,6 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
      */
     public function __toString()
     {
-        return (string) $this->getReadable();
+        return $this->getReadable();
     }
 }

@@ -83,7 +83,7 @@ abstract class Enum implements EnumInterface
      */
     public static function __callStatic($name, $arguments = []): EnumInterface
     {
-        $value = @constant('static::' . $name);
+        $value = @\constant('static::' . $name);
         if (null === $value) {
             throw new \BadMethodCallException(sprintf(
                 'No constant named "%s" exists in class "%s"',
@@ -100,7 +100,7 @@ abstract class Enum implements EnumInterface
      */
     public static function accepts($value): bool
     {
-        return in_array($value, static::values(), true);
+        return \in_array($value, static::values(), true);
     }
 
     /**
@@ -134,7 +134,7 @@ abstract class Enum implements EnumInterface
      */
     public function equals(EnumInterface $enum): bool
     {
-        return get_class($this) === get_class($enum) && $this->value === $enum->getValue();
+        return \get_class($this) === \get_class($enum) && $this->value === $enum->getValue();
     }
 
     /**

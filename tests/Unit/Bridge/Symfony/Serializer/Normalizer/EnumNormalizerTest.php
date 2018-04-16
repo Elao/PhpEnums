@@ -36,14 +36,14 @@ class EnumNormalizerTest extends TestCase
 
     public function testSupportsDenormalization()
     {
-        $this->assertTrue($this->normalizer->supportsDenormalization((string) Gender::MALE, Gender::class));
+        $this->assertTrue($this->normalizer->supportsDenormalization(Gender::MALE, Gender::class));
     }
 
     public function testsDenormalize()
     {
         $this->assertSame(
             Gender::get(Gender::MALE),
-            $this->normalizer->denormalize((string) Gender::MALE, Gender::class)
+            $this->normalizer->denormalize(Gender::MALE, Gender::class)
         );
     }
 

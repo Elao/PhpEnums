@@ -63,14 +63,13 @@ class FlaggedEnumTest extends TestCase
 
     public function testSameEnumValueActsAsSingleton()
     {
-        $this->assertTrue(Permissions::get(Permissions::NONE) === Permissions::get(Permissions::NONE));
-        $this->assertTrue(Permissions::get(Permissions::READ) === Permissions::get(Permissions::READ));
+        $this->assertSame(Permissions::get(Permissions::NONE), Permissions::get(Permissions::NONE));
+        $this->assertSame(Permissions::get(Permissions::READ), Permissions::get(Permissions::READ));
         $all = Permissions::get(Permissions::ALL);
-        $this->assertTrue($all === Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
-        $this->assertTrue(
-            $all->withoutFlags(Permissions::READ) === Permissions::get(
-                Permissions::WRITE | Permissions::EXECUTE
-            )
+        $this->assertSame($all, Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
+        $this->assertSame(
+            $all->withoutFlags(Permissions::READ),
+            Permissions::get(Permissions::WRITE | Permissions::EXECUTE)
         );
     }
 

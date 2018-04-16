@@ -12,8 +12,9 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
+use Elao\Enum\Exception\NotSerializableException;
 
-abstract class Enum implements EnumInterface
+abstract class Enum implements EnumInterface, \Serializable
 {
     /**
      * Cached array of enum instances by enum type (FQCN).
@@ -143,5 +144,35 @@ abstract class Enum implements EnumInterface
     public function is($value): bool
     {
         return $this->getValue() === $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws NotSerializableException When Enum value type is neither "string" not "int"
+     */
+    public function serialize(): string
+    {
+        if(!is_string($this->getValue()) && !is_int($this->getValue())) {
+            throw new NotSerializableException('Only values of type "string" or "int" can be serialized');
+        }
+
+        return (string)$this->getValue();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        if(static::accepts($serialized)) {
+            $this->value = $serialized;
+            return;
+        }
+        if(is_numeric($serialized) && static::accepts(intval($serialized))) {
+            $this->value = intval($serialized);
+            return;
+        }
+
+        throw new InvalidValueException($serialized, static::class);
     }
 }

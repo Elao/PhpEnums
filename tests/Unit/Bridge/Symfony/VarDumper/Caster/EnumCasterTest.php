@@ -159,7 +159,7 @@ EODUMP;
 
         // Once symfony/var-dumper < 3.1 support is dropped, the light array flag can be used
         // and StringMatches assertions removed in favor of Identical/Equals assertions
-        $flags = defined(AbstractDumper::class . '::DUMP_LIGHT_ARRAY') ? AbstractDumper::DUMP_LIGHT_ARRAY : null;
+        $flags = \defined(AbstractDumper::class . '::DUMP_LIGHT_ARRAY') ? AbstractDumper::DUMP_LIGHT_ARRAY : null;
         $dumper = new HtmlDumper(null, null, $flags);
         $configure($dumper);
 

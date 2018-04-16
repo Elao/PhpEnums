@@ -34,7 +34,7 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
             throw new TransformationFailedException(sprintf(
                 'Expected instance of "%s". Got "%s".',
                 $this->enumClass,
-                is_object($value) ? get_class($value) : gettype($value)
+                \is_object($value) ? \get_class($value) : \gettype($value)
             ));
         }
 
@@ -58,14 +58,14 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
             return null;
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             throw new TransformationFailedException(sprintf(
                 'Expected array. Got "%s".',
-                is_object($values) ? get_class($values) : gettype($values)
+                \is_object($values) ? \get_class($values) : \gettype($values)
             ));
         }
 
-        if (0 === count($values)) {
+        if (0 === \count($values)) {
             return $this->createEnum(FlaggedEnum::NONE);
         }
 
@@ -75,7 +75,7 @@ class SingleToCollectionFlagEnumTransformer extends AbstractFlagEnumTransformer
                 throw new TransformationFailedException(sprintf(
                     'Expected array of "%s". Got a "%s" inside.',
                     $this->enumClass,
-                    is_object($value) ? get_class($value) : gettype($value)
+                    \is_object($value) ? \get_class($value) : \gettype($value)
                 ));
             }
             $rawValue |= $value->getValue();

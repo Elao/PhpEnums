@@ -53,7 +53,7 @@ class ScalarToEnumTransformer implements DataTransformerInterface
             throw new TransformationFailedException(sprintf(
                 'Expected instance of "%s". Got "%s".',
                 $this->enumClass,
-                is_object($value) ? get_class($value) : gettype($value)
+                \is_object($value) ? \get_class($value) : \gettype($value)
             ));
         }
 

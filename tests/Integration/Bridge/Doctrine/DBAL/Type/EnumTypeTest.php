@@ -46,7 +46,6 @@ class EnumTypeTest extends KernelTestCase
 
         $user = $this->em->find(User::class, $uuid);
 
-        $this->assertInstanceOf(Gender::class, $user->getGender());
         $this->assertTrue($user->getGender()->is(Gender::MALE));
     }
 
@@ -74,7 +73,6 @@ class EnumTypeTest extends KernelTestCase
 
         $user = $this->em->find(User::class, $uuid);
 
-        $this->assertInstanceOf(Gender::class, $user->getGender());
         $this->assertTrue($user->getGender()->is(Gender::UNKNOW));
     }
 }

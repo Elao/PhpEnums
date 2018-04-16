@@ -363,16 +363,16 @@ The default implementation compares both enum type (the class) and value.
 
 ```php
 <?php
-Gender::get(Gender::MALE)->equals(Gender::get(Gender::FEMALE)) // False
-Gender::get(Gender::MALE)->equals(Gender::get(Gender::MALE)) // True
+Gender::get(Gender::MALE)->equals(Gender::get(Gender::FEMALE)); // False
+Gender::get(Gender::MALE)->equals(Gender::get(Gender::MALE)); // True
 ```
 
 Lastly, you can simply compare an instance with a value by using the `EnumInterface::is($value)`:
 
 ```php
 <?php
-Gender::get(Gender::MALE)->is(Gender::FEMALE) // False
-Gender::get(Gender::MALE)->is(Gender::MALE) // True
+Gender::get(Gender::MALE)->is(Gender::FEMALE); // False
+Gender::get(Gender::MALE)->is(Gender::MALE); // True
 ```
 
 ## Shortcuts

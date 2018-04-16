@@ -55,23 +55,23 @@ class EnumProvider
     {
         list($enumClassOrAlias, $constants) = explode('::', $enumValueShortcut);
 
-        /** @var EnumInterface $class */
+        /** @var EnumInterface|string $class */
         $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;
         $this->ensureEnumClass($class);
 
         $constants = explode('|', $constants);
 
         // Flagged Enum if $constants count is greater than one:
-        if (count($constants) > 1) {
+        if (\count($constants) > 1) {
             if (!is_a($class, FlaggedEnum::class, true)) {
                 throw new InvalidArgumentException("$class is not a valid FlaggedEnum");
             }
             $value = 0;
             foreach ($constants as $constant) {
-                $value |= constant($class . '::' . $constant);
+                $value |= \constant($class . '::' . $constant);
             }
         } else {
-            $value = constant($class . '::' . current($constants));
+            $value = \constant($class . '::' . current($constants));
         }
 
         return $class::get($value);
@@ -86,12 +86,12 @@ class EnumProvider
      */
     public function randomEnum(string $enumClassOrAlias): EnumInterface
     {
-        /** @var EnumInterface $class */
+        /** @var EnumInterface|string $class */
         $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;
         $this->ensureEnumClass($class);
 
         $instances = $class::instances();
-        $randomRank = mt_rand(0, count($instances) - 1);
+        $randomRank = random_int(0, \count($instances) - 1);
 
         return $instances[$randomRank];
     }

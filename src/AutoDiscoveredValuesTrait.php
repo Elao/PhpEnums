@@ -71,6 +71,10 @@ trait AutoDiscoveredValuesTrait
                 $values = array_filter($values, function ($v) {
                     return is_int($v) && 0 === ($v & $v - 1) && $v > 0;
                 });
+            } else {
+                $values = array_filter($values, function ($v) {
+                    return is_int($v) || is_string($v);
+                });
             }
 
             self::$guessedValues[$enumType] = array_values($values);

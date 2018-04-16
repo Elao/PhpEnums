@@ -53,6 +53,8 @@ final class AutoDiscoveredEnum extends Enum
     const FOO = 'foo';
     const BAR = 'bar';
     const BAZ = 'baz';
+
+    const NOT_AN_INT_NOR_STRING = ['foo'];
 }
 
 final class AutoDiscoveredFlaggedEnum extends FlaggedEnum

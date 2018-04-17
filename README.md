@@ -631,6 +631,15 @@ $builder->add('gender', EnumType::class, [
 ]);
 ```
 
+Usually, when expecting data to be enum instances, choices must be provided as enum instances too,
+while when expecting enumerated values, choices are expected to be raw enumerated values.
+
+The `choices_as_enum_values` allows to act differently: 
+- if `true`, the `EnumType` will expect choices to be raw values.
+- if `false`, the `EnumType` will expect choices to be enum instances.
+
+By default, this option is set to the same value as `as_value`.
+
 ### Flagged enums
 
 Simply use the `FlaggedEnumType` (which extends `EnumType`):

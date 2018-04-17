@@ -92,4 +92,34 @@ class FormTypeController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    public function choicesAsEnumValuesFormAction(Request $request)
+    {
+        $data = [
+            'gender' => Gender::get(Gender::MALE),
+            'simpleEnum' => SimpleEnum::get(SimpleEnum::SECOND),
+        ];
+
+        $builder = $this->createFormBuilder($data)
+            ->add('gender', EnumType::class, [
+                'enum_class' => Gender::class,
+                'choices' => ['customMaleLabel' => Gender::MALE, 'customFemaleLabel' => Gender::FEMALE],
+                'choices_as_enum_values' => true,
+            ])
+            ->add('simpleEnum', EnumType::class, [
+                'enum_class' => SimpleEnum::class,
+                'choices' => ['customOneLabel' => SimpleEnum::FIRST, 'customSecondLabel' => SimpleEnum::SECOND],
+                'choices_as_enum_values' => true,
+            ])
+            ->add('submit', SubmitType::class)
+        ;
+
+        $form = $builder->getForm();
+
+        $form->handleRequest($request);
+
+        return $this->render('TestBundle::enum_type.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }

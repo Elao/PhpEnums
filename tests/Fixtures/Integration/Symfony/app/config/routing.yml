@@ -9,3 +9,7 @@ flagged_enum_form:
 form_with_scalar_transformer:
     path: '/form-type/scalar-transformer-enum'
     defaults: { _controller: 'TestBundle:FormType:enumFormUtilizingScalarTransformer' }
+
+choices_as_enum_values_form:
+    path: '/form-type/choices-as-enum-values-form'
+    defaults: { _controller: 'TestBundle:FormType:choicesAsEnumValuesForm' }

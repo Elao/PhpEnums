@@ -17,6 +17,7 @@ use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
@@ -450,20 +451,43 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->assertSame(Gender::UNKNOW, $field->getViewData());
     }
 
-    public function testTransformationOfScalarChoices()
+    public function provideFormWithChoicesAsEnumValues()
     {
-        $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
+        yield 'EnumType with choices_as_enum_values' => [function (FormFactoryInterface $factory): FormInterface {
+            return $factory->createBuilder(
+                EnumType::class,
+                Gender::FEMALE(),
+                [
+                    'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
+                    'enum_class' => Gender::class,
+                    'choices_as_enum_values' => true,
+                ]
+            )->getForm();
+        }];
 
-        $builder = $this->factory->createBuilder(
-            ChoiceType::class,
-            Gender::FEMALE(),
-            [
-                'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
-            ] + $options
-        );
+        yield 'ChoiceType with scalar to enum transformer' => [function (FormFactoryInterface $factory): FormInterface {
+            $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
 
-        $field = $builder->addModelTransformer(new ScalarToEnumTransformer(Gender::class))->getForm();
+            return $factory->createBuilder(
+                ChoiceType::class,
+                Gender::FEMALE(),
+                [
+                    'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
+                ] + $options
+            )
+                ->addModelTransformer(new ScalarToEnumTransformer(Gender::class))
+                ->getForm()
+            ;
+        }];
+    }
 
+    /**
+     * @dataProvider provideFormWithChoicesAsEnumValues
+     */
+    public function testWithChoicesAsEnumValues(callable $createForm)
+    {
+        /** @var FormInterface $field */
+        $field = $createForm($this->factory);
         $view = $field->createView();
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
@@ -480,7 +504,126 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $this->assertTrue($field->isSynchronized());
         $this->assertSame(Gender::MALE(), $field->getData());
-        $this->assertSame(Gender::MALE()->getValue(), $field->getViewData());
+        $this->assertSame(Gender::MALE, $field->getViewData());
+    }
+
+    public function testWithChoicesAsEnumValuesWithoutChoicesOptions()
+    {
+        $field = $this->factory->createBuilder(
+            EnumType::class,
+            Gender::FEMALE(),
+            [
+                'enum_class' => Gender::class,
+                'choices_as_enum_values' => true,
+            ]
+        )->getForm();
+
+        $view = $field->createView();
+        /** @var ChoiceView[] $choices */
+        $choices = $view->vars['choices'];
+
+        $this->assertCount(3, $choices);
+
+        $choice = $choices[0];
+        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        $this->assertSame(Gender::UNKNOW, $choice->value);
+        $this->assertSame(Gender::UNKNOW, $choice->data);
+
+        $choice = $choices[1];
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::MALE, $choice->value);
+        $this->assertSame(Gender::MALE, $choice->data);
+
+        $choice = $choices[2];
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::FEMALE, $choice->value);
+        $this->assertSame(Gender::FEMALE, $choice->data);
+
+        $this->assertSame(Gender::FEMALE(), $field->getData());
+
+        $field->submit(Gender::MALE);
+
+        $this->assertTrue($field->isSynchronized());
+        $this->assertSame(Gender::MALE(), $field->getData());
+        $this->assertSame(Gender::MALE, $field->getViewData());
+    }
+
+    public function testAsValueAndNotChoicesAsEnumValues()
+    {
+        $field = $this->factory->create(
+            EnumType::class,
+            null,
+            [
+                'enum_class' => Gender::class,
+                'as_value' => true,
+                'choices_as_enum_values' => false,
+            ]
+        );
+
+        $view = $field->createView();
+        /** @var ChoiceView[] $choices */
+        $choices = $view->vars['choices'];
+
+        $this->assertCount(3, $choices);
+
+        $choice = $choices[0];
+        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        $this->assertSame(Gender::UNKNOW, $choice->value);
+        $this->assertSame(Gender::get(Gender::UNKNOW), $choice->data);
+
+        $choice = $choices[1];
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::MALE, $choice->value);
+        $this->assertSame(Gender::get(Gender::MALE), $choice->data);
+
+        $choice = $choices[2];
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::FEMALE, $choice->value);
+        $this->assertSame(Gender::get(Gender::FEMALE), $choice->data);
+
+        $field->submit(Gender::MALE);
+        $this->assertTrue($field->isSynchronized());
+        $this->assertSame(Gender::MALE, $field->getData());
+        $this->assertSame(Gender::MALE, $field->getViewData());
+    }
+
+    public function testAsInstancesAndChoicesAsEnumValues()
+    {
+        $field = $this->factory->create(
+            EnumType::class,
+            null,
+            [
+                'enum_class' => Gender::class,
+                'as_value' => false,
+                'choices_as_enum_values' => true,
+            ]
+        );
+
+        $view = $field->createView();
+        /** @var ChoiceView[] $choices */
+        $choices = $view->vars['choices'];
+
+        $this->assertCount(3, $choices);
+
+        $choice = $choices[0];
+        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        $this->assertSame(Gender::UNKNOW, $choice->value);
+        $this->assertSame(Gender::UNKNOW, $choice->data);
+
+        $choice = $choices[1];
+        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        $this->assertSame(Gender::MALE, $choice->value);
+        $this->assertSame(Gender::MALE, $choice->data);
+
+        $choice = $choices[2];
+        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        $this->assertSame(Gender::FEMALE, $choice->value);
+        $this->assertSame(Gender::FEMALE, $choice->data);
+
+        $field->submit(Gender::MALE);
+        $this->assertTrue($field->isSynchronized());
+        $this->assertSame(Gender::get(Gender::MALE), $field->getData());
+        $this->assertSame(Gender::MALE, $field->getViewData());
     }
 
     private function assertSubForm(FormInterface $form, $data, $viewData)

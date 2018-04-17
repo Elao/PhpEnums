@@ -10,16 +10,42 @@
 
 namespace Elao\Enum\Bridge\Symfony\Form\Type;
 
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
 use Elao\Enum\EnumInterface;
 use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EnumType extends AbstractType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // TL;DR: we usually expect "choices_as_enum_values" and "as_value" to be synchronised,
+        // (i.e: expected field data and choices are both raw enumerated value, or both enum instances)
+        // but if it doesn't, we need some extra transformations.
+
+        if ($options['choices_as_enum_values'] === $options['as_value']) {
+            // No transformation required
+            return;
+        }
+
+        $transformer = new ScalarToEnumTransformer($options['enum_class']);
+
+        $options['as_value']
+            // Transform enum instances to values if choices were provided as instances
+            // but result data as raw enumerated values were asked:
+            ? $builder->addModelTransformer(new ReversedTransformer($transformer))
+            // Transform enum values to enum instance if choices were provided as values
+            // but result data as raw enumerated values weren't asked:
+            : $builder->addModelTransformer($transformer)
+        ;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +57,7 @@ class EnumType extends AbstractType
                     /** @var EnumInterface|ReadableEnumInterface|string $enumClass */
                     $enumClass = $options['enum_class'];
 
-                    if (!$options['as_value']) {
+                    if (!$options['choices_as_enum_values']) {
                         return $enumClass::instances();
                     }
 
@@ -49,17 +75,23 @@ class EnumType extends AbstractType
                     return $choices;
                 },
                 'choice_label' => function (Options $options) {
-                    if ($options['as_value']) {
+                    if ($options['choices_as_enum_values']) {
                         return null;
                     }
 
                     return $this->isReadable($options['enum_class']) ? 'readable' : 'value';
                 },
                 'choice_value' => function (Options $options) {
-                    return $options['as_value'] ? null : 'value';
+                    return $options['choices_as_enum_values'] ? null : 'value';
                 },
                 // If true, will accept and return the enum value instead of object:
                 'as_value' => false,
+                // If true, overriding the "choices" option will allow using raw enumerated values
+                // in provided choice array instead of EnumInterface instances:
+                'choices_as_enum_values' => function (Options $options) {
+                    // By default, if result data are expected as raw enumerated values, we expect choices to be too:
+                    return $options['as_value'];
+                },
             ])
             ->setRequired('enum_class')
             ->setAllowedValues('enum_class', function ($value) {

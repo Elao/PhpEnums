@@ -10,7 +10,7 @@
 
 namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller;
 
-use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
@@ -62,7 +62,7 @@ class FormTypeController extends Controller
         ]);
     }
 
-    public function enumFormUtilizingScalarTransformerAction(Request $request)
+    public function valueToEnumTransformerChoiceFormAction(Request $request)
     {
         $data = [
             'gender' => Gender::get(Gender::MALE),
@@ -81,8 +81,8 @@ class FormTypeController extends Controller
             ->add('submit', SubmitType::class)
         ;
 
-        $builder->get('gender')->addModelTransformer(new ScalarToEnumTransformer(Gender::class));
-        $builder->get('simpleEnum')->addModelTransformer(new ScalarToEnumTransformer(SimpleEnum::class));
+        $builder->get('gender')->addModelTransformer(new ValueToEnumTransformer(Gender::class));
+        $builder->get('simpleEnum')->addModelTransformer(new ValueToEnumTransformer(SimpleEnum::class));
 
         $form = $builder->getForm();
 
@@ -93,7 +93,7 @@ class FormTypeController extends Controller
         ]);
     }
 
-    public function choicesAsEnumValuesFormAction(Request $request)
+    public function choicesAsEnumValuesEnumFormAction(Request $request)
     {
         $data = [
             'gender' => Gender::get(Gender::MALE),

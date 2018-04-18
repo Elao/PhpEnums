@@ -89,8 +89,8 @@ class EnumTypeTest extends WebTestCase
 
     public function provideFormWithChoicesAsEnumValuesUrls()
     {
-        yield 'ChoiceType with scalar to enum transformer' => ['/form-type/scalar-transformer-enum'];
-        yield 'EnumType with choices_as_enum_values' => ['/form-type/choices-as-enum-values-form'];
+        yield 'ChoiceType with value to enum transformer' => ['/form-type/value-to-enum-transformer-choice-form'];
+        yield 'EnumType with choices_as_enum_values' => ['/form-type/choices-as-enum-values-enum-form'];
     }
 
     /**

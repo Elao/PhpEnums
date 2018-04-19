@@ -87,10 +87,20 @@ class EnumTypeTest extends WebTestCase
         $this->assertSame(['form[permissions]' => []], $form->getValues());
     }
 
-    public function testEnumFormUtilizingScalarTransformer()
+    public function provideFormWithChoicesAsEnumValuesUrls()
+    {
+        yield 'ChoiceType with scalar to enum transformer' => ['/form-type/scalar-transformer-enum'];
+        yield 'EnumType with choices_as_enum_values' => ['/form-type/choices-as-enum-values-form'];
+    }
+
+    /**
+     * @dataProvider provideFormWithChoicesAsEnumValuesUrls
+     */
+    public function testWithChoicesAsEnumValues(string $url)
     {
         $client = static::createClient();
-        $crawler = $client->request(Request::METHOD_GET, '/form-type/scalar-transformer-enum');
+        $crawler = $client->request(Request::METHOD_GET, $url);
+
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());

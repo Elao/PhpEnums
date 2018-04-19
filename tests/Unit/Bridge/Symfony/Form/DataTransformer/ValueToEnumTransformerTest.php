@@ -10,11 +10,11 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 
-use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
 
-class ScalarToEnumTransformerTest extends TestCase
+class ValueToEnumTransformerTest extends TestCase
 {
     /**
      * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
@@ -22,12 +22,12 @@ class ScalarToEnumTransformerTest extends TestCase
      */
     public function testThrowsExceptionIfNotEnumInstance()
     {
-        new ScalarToEnumTransformer(\stdClass::class);
+        new ValueToEnumTransformer(\stdClass::class);
     }
 
     public function testTransform()
     {
-        $transformer = new ScalarToEnumTransformer(SimpleEnum::class);
+        $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $this->assertSame(SimpleEnum::FIRST, $transformer->transform(SimpleEnum::FIRST()));
     }
@@ -38,14 +38,14 @@ class ScalarToEnumTransformerTest extends TestCase
      */
     public function testTransformThrowsExceptionOnNonEnum()
     {
-        $transformer = new ScalarToEnumTransformer(SimpleEnum::class);
+        $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $transformer->transform('foo');
     }
 
     public function testReverseTransform()
     {
-        $transformer = new ScalarToEnumTransformer(SimpleEnum::class);
+        $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $this->assertSame(SimpleEnum::FIRST(), $transformer->reverseTransform(SimpleEnum::FIRST));
     }
@@ -56,7 +56,7 @@ class ScalarToEnumTransformerTest extends TestCase
      */
     public function testReverseTransformThrowsExceptionOnValueNotInEnum()
     {
-        $transformer = new ScalarToEnumTransformer(SimpleEnum::class);
+        $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $transformer->reverseTransform('1');
     }

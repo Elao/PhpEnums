@@ -10,7 +10,7 @@
 
 namespace Elao\Enum\Bridge\Symfony\Form\Type;
 
-use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\EnumInterface;
 use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\Form\AbstractType;
@@ -34,7 +34,7 @@ class EnumType extends AbstractType
             return;
         }
 
-        $transformer = new ScalarToEnumTransformer($options['enum_class']);
+        $transformer = new ValueToEnumTransformer($options['enum_class']);
 
         $options['as_value']
             // Transform enum instances to values if choices were provided as instances

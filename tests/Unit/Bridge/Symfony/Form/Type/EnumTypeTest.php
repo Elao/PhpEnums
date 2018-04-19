@@ -10,7 +10,7 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\Type;
 
-use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ScalarToEnumTransformer;
+use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
@@ -465,7 +465,7 @@ class EnumTypeTest extends FormIntegrationTestCase
             )->getForm();
         }];
 
-        yield 'ChoiceType with scalar to enum transformer' => [function (FormFactoryInterface $factory): FormInterface {
+        yield 'ChoiceType with value to enum transformer' => [function (FormFactoryInterface $factory): FormInterface {
             $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
 
             return $factory->createBuilder(
@@ -475,7 +475,7 @@ class EnumTypeTest extends FormIntegrationTestCase
                     'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
                 ] + $options
             )
-                ->addModelTransformer(new ScalarToEnumTransformer(Gender::class))
+                ->addModelTransformer(new ValueToEnumTransformer(Gender::class))
                 ->getForm()
             ;
         }];

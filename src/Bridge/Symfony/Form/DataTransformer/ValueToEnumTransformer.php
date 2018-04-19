@@ -16,7 +16,10 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class ScalarToEnumTransformer implements DataTransformerInterface
+/**
+ * Enumerated values to enum instances transformer.
+ */
+class ValueToEnumTransformer implements DataTransformerInterface
 {
     /** @var string|EnumInterface */
     private $enumClass;
@@ -35,7 +38,7 @@ class ScalarToEnumTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms EnumInterface object to a scalar value.
+     * Transforms EnumInterface object to a raw enumerated value.
      *
      * @param EnumInterface $value EnumInterface instance
      *
@@ -61,13 +64,13 @@ class ScalarToEnumTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms scalar enum value to enumeration instance.
+     * Transforms a raw enumerated value to an enumeration instance.
      *
      * @param int|string $value Value accepted by EnumInterface
      *
      * @throws TransformationFailedException When the transformation fails
      *
-     * @return EnumInterface|null A single FlaggedEnum instance or null
+     * @return EnumInterface|null A single EnumInterface instance or null
      */
     public function reverseTransform($value)
     {

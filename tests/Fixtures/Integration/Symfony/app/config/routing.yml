@@ -6,10 +6,10 @@ flagged_enum_form:
     path: '/form-type/flagged-enum'
     defaults: { _controller: 'TestBundle:FormType:flaggedEnumForm' }
 
-form_with_scalar_transformer:
-    path: '/form-type/scalar-transformer-enum'
-    defaults: { _controller: 'TestBundle:FormType:enumFormUtilizingScalarTransformer' }
+value_to_enum_transformer_choice_form:
+    path: '/form-type/value-to-enum-transformer-choice-form'
+    defaults: { _controller: 'TestBundle:FormType:valueToEnumTransformerChoiceForm' }
 
-choices_as_enum_values_form:
-    path: '/form-type/choices-as-enum-values-form'
-    defaults: { _controller: 'TestBundle:FormType:choicesAsEnumValuesForm' }
+choices_as_enum_values_enum_form:
+    path: '/form-type/choices-as-enum-values-enum-form'
+    defaults: { _controller: 'TestBundle:FormType:choicesAsEnumValuesEnumForm' }

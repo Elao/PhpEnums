@@ -17,7 +17,7 @@ namespace Elao\Enum;
  * - implements {@link \Elao\Enum\ReadableEnumInterface} with default labels
  *   identical to enumerated values's constant name.
  */
-class SimpleChoiceEnum extends ReadableEnum
+abstract class SimpleChoiceEnum extends ReadableEnum
 {
     use AutoDiscoveredValuesTrait;
     use ChoiceEnumTrait {

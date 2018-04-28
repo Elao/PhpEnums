@@ -40,6 +40,7 @@ Table of Contents
     * [Symfony VarDumper component](#symfony-vardumper-component)
     * [Faker](#faker)
       * [Usage with Alice](#usage-with-alice)
+    * [php-translation](#php-translation)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -796,6 +797,20 @@ MyEntity:
 ```
 
 > 📝 `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
+
+## PHP-Translation
+
+The PhpEnums library provides an `Elao\Enum\Bridge\PhpTranslation\Extractor\ReflectionEnumExtractor`, which accepts SourceCollection from [php-translation/extractor](https://github.com/php-translation/extractor) and appends all readable values there.
+
+By default, it's expected PHP files containing enum classes are already loaded in memory. You can force making that happen via composer.json configuration:
+
+```json
+"autoload": {
+    "files": ["src/Enum/MyEnum1.php", "src/Enum/MyEnum2.php"]
+},
+``` 
+
+If you would rather not unnecessarily load these files in each request, second option is do class loading and providing list of classes via callback which is passed as argument to constructor.
 
 # API
 

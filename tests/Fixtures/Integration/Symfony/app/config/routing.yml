@@ -13,3 +13,11 @@ value_to_enum_transformer_choice_form:
 choices_as_enum_values_enum_form:
     path: '/form-type/choices-as-enum-values-enum-form'
     defaults: { _controller: 'TestBundle:FormType:choicesAsEnumValuesEnumForm' }
+
+enum_resolver:
+    path: '/enum-resolve/{gender}'
+    defaults: { _controller: 'TestBundle:EnumArgument:enum' }
+
+variadic_enum_resolver:
+    path: '/enum-resolve-variadic'
+    defaults: { _controller: 'TestBundle:EnumArgument:variadicEnum' }

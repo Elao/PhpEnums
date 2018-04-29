@@ -27,3 +27,8 @@ services:
     logger:
         class: Psr\Log\NullLogger
         public: false
+
+    Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver:
+        class: Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver
+        tags:
+            - { name: controller.argument_value_resolver, priority: 101 }

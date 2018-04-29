@@ -32,6 +32,7 @@ Table of Contents
         * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
       * [Mapping](#mapping)
       * [Default value on null](#default-value-on-null)
+    * [Symfony HttpKernel component](#symfony-httpkernel-component)
     * [Symfony Serializer component](#symfony-serializer-component)
     * [Symfony Form component](#symfony-form-component)
       * [Simple enums](#simple-enums)
@@ -536,6 +537,19 @@ abstract class AbstractEnumType extends Type
 ```
 
 Override those methods in order to satisfy your needs.
+
+## Symfony HttpKernel component
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.1%2B-green.svg?style=flat-square" title="Available for Symfony 3.1+" alt="Available for Symfony 3.1+" align="right"></a>
+
+There is an [argument value resolver](https://symfony.com/doc/current/controller/argument_value_resolver.html) provided,
+which seamlessly transforms HTTP request parameter into enum instance, just by typehinting the target enum in controller action.
+
+Simply register it inside the DIC configuration:
+```yaml
+services:
+    Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver:
+        tags: [{ name: controller.argument_value_resolver, priority: 101 }]
+```
 
 ## Symfony Serializer component 
 <a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>

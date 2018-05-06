@@ -40,11 +40,11 @@ class ValueToEnumTransformer implements DataTransformerInterface
     /**
      * Transforms EnumInterface object to a raw enumerated value.
      *
-     * @param EnumInterface $value EnumInterface instance
+     * @param EnumInterface|null $value EnumInterface instance
      *
      * @throws TransformationFailedException When the transformation fails
      *
-     * @return int|string Value of EnumInterface
+     * @return int|string|null Value of EnumInterface
      */
     public function transform($value)
     {
@@ -66,7 +66,7 @@ class ValueToEnumTransformer implements DataTransformerInterface
     /**
      * Transforms a raw enumerated value to an enumeration instance.
      *
-     * @param int|string $value Value accepted by EnumInterface
+     * @param int|string|null $value Value accepted by EnumInterface
      *
      * @throws TransformationFailedException When the transformation fails
      *

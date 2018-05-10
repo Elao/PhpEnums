@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-05-01T13:18:26Z
+
+You'll make one of my work mate happy with this 😄 (poke @nervo).
+We've already discussed briefly of such a feature in the past, but actually what closed a bit the discussion was the usage of the "magic" `Request::get()` method which will search in attributes, query params & post parameters, in this order. So a simple query param could override a post parameter.
+
+Ideally, I would restrict the resolver to one of these three sources. But we miss the ability to configure the resolver in each place we use it. I know there are [some ideas going this way](https://github.com/sensiolabs/SensioFrameworkExtraBundle/pull/436) so we pushed back this feature for later. We can revise this decision, but do you think it'll make sense to provide the ability to configure it at least globally by providing some flags in the resolver constructor?
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-05-01T13:58:21Z
+
+IMHO it's an edge case and 99% developers will rather rename variable in case of conflict than change wiring of this resolver. I can change the order if you wish though, but that can be counter-intuitive. It might be also viable to throw exception in case of conflict.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-05-05T11:42:05Z
+
+Oops. Sorry for the lack of response.
+Let's go as is. We cannot assume if the `GET` vs `POST` override is legit or not, so no exception.
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-05-05T12:05:17Z
+
+Good. I've fixed the typo. Let's go
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-05-05T21:40:38Z
+
+failures I believe unrelated
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-05-06T09:48:01Z
+
+Let me do one more change
+
+---------------------------------------------------------------------------
+
+by ostrolucky at 2018-05-06T10:17:32Z
+
+ready
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2018-05-07T20:41:47Z
+
+@chalasr : Good to you too ? :)

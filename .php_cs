@@ -31,5 +31,6 @@ return PhpCsFixer\Config::create()
         'header_comment' => ['header' => $header],
         'yoda_style' => null,
         'no_unneeded_final_method' => false, // final private __construct is a valid use-case
+        'native_function_invocation' => ['include' => ['@compiler_optimized']],
     ])
 ;

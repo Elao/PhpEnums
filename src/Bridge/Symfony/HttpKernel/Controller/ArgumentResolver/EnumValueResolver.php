@@ -35,7 +35,7 @@ class EnumValueResolver implements ArgumentValueResolverInterface
         $enumClass = $argument->getType();
         $requestValue = $request->get($argument->getName());
 
-        if (!is_array($requestValue) || !$argument->isVariadic()) {
+        if (!\is_array($requestValue) || !$argument->isVariadic()) {
             $requestValue = [$requestValue];
         }
 

@@ -8,7 +8,20 @@ Elao Enumerations
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)
 [![php](https://img.shields.io/badge/PHP-7-green.svg?style=flat-square "Available for PHP 7+")](http://php.net)
 
-This project is greatly inspired by the [BiplaneEnumBundle](https://github.com/yethee/BiplaneEnumBundle) and aims to provide the missing PHP enumerations support.
+This project aims to provide the missing PHP enumerations support:
+
+```php
+<?php
+
+final class Gender extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+    
+    const UNKNOW = 'unknown';
+    const MALE = 'male';
+    const FEMALE = 'female';
+}
+```
 
 It will leverage integration of the main PHP frameworks and also provide bridges with other libraries when relevant.
 
@@ -48,10 +61,17 @@ Table of Contents
 
 # Why?
 
-An enumeration is a data type, enclosing a single value from a predictable set of members (enumerators). 
-Each enumerator name is a single identifier, materialized by a PHP constant.  
+An enumeration is a strong data type providing identifiers you'll use in your application.
+Such a type allows libraries and framework integration, which this package will provide when relevant.
 
-Using an enum class provides many benefits:
+<details>
+
+<summary>Show more about enums</summary>
+
+An enumeration is a data type, enclosing a single value from a predictable set of members (enumerators). 
+Each enumerator name is a single identifier, materialized by a PHP constant.
+
+**Using an enum class provides many benefits:**
 
 - Brings visibility in your code
 - Provides Type Hinting when using the enum class
@@ -62,7 +82,7 @@ Using an enum class provides many benefits:
 
 Enumerations are not options and are not meant to replace constants. Designing an enum type should be done by keeping your domain in mind, and should convey a strong meaning on your application logic.
 
-Wrong use-cases:
+**Wrong use-cases:**
 
 - A set of options used by a library or a method.
 - An unpredictable set of elements.
@@ -70,14 +90,18 @@ Wrong use-cases:
 - Long sets of elements (languages, locales, currencies, ...)
 - Holding variable data inside the enum type (use an intermediate value object holding the data and the enum instance instead).
 
-Valid use-cases:
+**Valid use-cases:**
 
 - Gender, civility, predictable roles and permissions, ...
 - A set of supported nodes in an importer, or a set of predefined attributes.
 - In a game: predefined actions, movement directions, character classes, weapon types, ...
 - Any other set of restricted elements.
 
-Why another library ?
+</details>
+
+---
+
+**Why another library ?**
 
 - [`myclabs/php-enum`](https://github.com/myclabs/php-enum) provides a base enum implementation as a class, inspired from `\SplEnum`. However, it doesn't provide as many features nor integrations as we wish to.
 - [`commerceguys/enum`](https://github.com/commerceguys/enum) only acts as a utility class, but does not intend to instantiate enumerations. Hence, it doesn't allow as many features nor integrations with third-party libraries and frameworks. Manipulating enums as objects is also one of the first motivations of this project.
@@ -93,7 +117,9 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Symfony Serializer component integration with a normalizer class.
 - Symfony Validator component integration with an enum constraint.
 - Symfony VarDumper component integration with a dedicated caster.
+- Symfony HttpKernel component integration with an enum resolver for controller arguments.
 - Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
+- Faker enum provider to generate random enum instances.
 
 # Installation
 
@@ -132,7 +158,23 @@ final class Gender extends Enum
 
 > 📝 It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
 
-> 💡 You can also use the `AutoDiscoveredValuesTrait` to automagically guess values from the constants defined in your enum, so you don't have to implement `EnumInterface::values()` yourself.
+> 💡 You can also use the `AutoDiscoveredValuesTrait` to automagically guess values from the constants defined in your enum, so you don't have to implement `EnumInterface::values()` yourself:
+
+```php
+<?php
+
+use Elao\Enum\Enum;
+use Elao\Enum\AutoDiscoveredValuesTrait;
+
+final class Gender extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+    
+    const UNKNOW = 'unknown';
+    const MALE = 'male';
+    const FEMALE = 'female';
+}
+```
 
 Get an instance of your enum type:
 
@@ -541,14 +583,18 @@ Override those methods in order to satisfy your needs.
 ## Symfony HttpKernel component
 <a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.1%2B-green.svg?style=flat-square" title="Available for Symfony 3.1+" alt="Available for Symfony 3.1+" align="right"></a>
 
-There is an [argument value resolver](https://symfony.com/doc/current/controller/argument_value_resolver.html) provided,
-which seamlessly transforms HTTP request parameter into enum instance, just by typehinting the target enum in controller action.
+An [argument value resolver](https://symfony.com/doc/current/controller/argument_value_resolver.html) allows to 
+seamlessly transform an HTTP request parameter (from route/attributes, query string or post parameters, in this order) 
+into an enum instance by type-hinting the targeted enum in controller action.
 
 Simply register it inside the DIC configuration:
+
 ```yaml
 services:
     Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver:
-        tags: [{ name: controller.argument_value_resolver, priority: 101 }]
+        tags:
+          - name: controller.argument_value_resolver 
+            priority: 101 # After the RequestAttributeValueResolver
 ```
 
 ## Symfony Serializer component 

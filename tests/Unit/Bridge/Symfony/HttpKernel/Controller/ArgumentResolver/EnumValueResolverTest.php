@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class EnumValueResolverTest extends TestCase
 {
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
         if (!interface_exists(ArgumentValueResolverInterface::class)) {
-            $this->markTestSkipped(
+            self::markTestSkipped(
                 sprintf('"%s" is not present in this Symfony version', ArgumentValueResolverInterface::class)
             );
         }

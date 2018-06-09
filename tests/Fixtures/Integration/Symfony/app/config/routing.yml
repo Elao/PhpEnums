@@ -1,23 +1,29 @@
 readable_enum_form:
     path: '/form-type/readable-enum'
-    defaults: { _controller: 'TestBundle:FormType:readableEnumForm' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\FormTypeController::readableEnumForm'
 
 flagged_enum_form:
     path: '/form-type/flagged-enum'
-    defaults: { _controller: 'TestBundle:FormType:flaggedEnumForm' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\FormTypeController::flaggedEnumForm'
 
 value_to_enum_transformer_choice_form:
     path: '/form-type/value-to-enum-transformer-choice-form'
-    defaults: { _controller: 'TestBundle:FormType:valueToEnumTransformerChoiceForm' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\FormTypeController::valueToEnumTransformerChoiceForm'
 
 choices_as_enum_values_enum_form:
     path: '/form-type/choices-as-enum-values-enum-form'
-    defaults: { _controller: 'TestBundle:FormType:choicesAsEnumValuesEnumForm' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\FormTypeController::choicesAsEnumValuesEnumForm'
 
 enum_resolver:
     path: '/enum-resolve/{gender}'
-    defaults: { _controller: 'TestBundle:EnumArgument:enum' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\EnumArgumentController::enum'
 
 variadic_enum_resolver:
     path: '/enum-resolve-variadic'
-    defaults: { _controller: 'TestBundle:EnumArgument:variadicEnum' }
+    defaults:
+        _controller: 'Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller\EnumArgumentController::variadicEnum'

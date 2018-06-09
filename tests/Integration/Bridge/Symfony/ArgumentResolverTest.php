@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 
 class ArgumentResolverTest extends WebTestCase
 {
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
         if (!interface_exists(ArgumentValueResolverInterface::class)) {
-            $this->markTestSkipped(
+            self::markTestSkipped(
                 sprintf('"%s" is not present in this Symfony version', ArgumentValueResolverInterface::class)
             );
         }

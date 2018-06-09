@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnumArgumentController extends Controller
 {
-    public function enumAction(Gender $gender)
+    public function enum(Gender $gender)
     {
         return new Response($gender->getReadable());
     }
 
-    public function variadicEnumAction(Gender ...$genders)
+    public function variadicEnum(Gender ...$genders)
     {
         return new Response(implode(',', $genders));
     }

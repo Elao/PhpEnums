@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FormTypeController extends Controller
 {
-    public function readableEnumFormAction(Request $request)
+    public function readableEnumForm(Request $request)
     {
         $data = [
             'gender' => Gender::get(Gender::MALE),
@@ -43,7 +43,7 @@ class FormTypeController extends Controller
         ]);
     }
 
-    public function flaggedEnumFormAction(Request $request)
+    public function flaggedEnumForm(Request $request)
     {
         $data = [
             'permissions' => Permissions::get(Permissions::READ),
@@ -62,7 +62,7 @@ class FormTypeController extends Controller
         ]);
     }
 
-    public function valueToEnumTransformerChoiceFormAction(Request $request)
+    public function valueToEnumTransformerChoiceForm(Request $request)
     {
         $data = [
             'gender' => Gender::get(Gender::MALE),
@@ -93,7 +93,7 @@ class FormTypeController extends Controller
         ]);
     }
 
-    public function choicesAsEnumValuesEnumFormAction(Request $request)
+    public function choicesAsEnumValuesEnumForm(Request $request)
     {
         $data = [
             'gender' => Gender::get(Gender::MALE),

@@ -15,7 +15,7 @@ env:
 matrix:
     fast_finish: true
     include:
-      - php: 7.1
+      - php: 7.2
         env: ENABLE_CODE_COVERAGE="yes"
       # oldest supported versions
       - php: 7.0
@@ -25,17 +25,16 @@ matrix:
           - SYMFONY_PHPUNIT_VERSION=5.7
       # common versions:
       - php: 7.1
-        env: SYMFONY_VERSION="3.3.*"
-      # most recent versions
-      - php: 7.1
         env:
           - SYMFONY_VERSION="3.4.*"
-          - CHECK_CODE_STYLE="yes"
+      # most recent versions
       - php: 7.2
-        env: SYMFONY_VERSION="4.0.*"
+        env:
+          - SYMFONY_VERSION="4.1.*"
+          - CHECK_CODE_STYLE="yes"
       # bleeding edge (unreleased dev versions where failures are allowed)
       - php: nightly
-        env: SYMFONY_VERSION="4.0.*"
+        env: SYMFONY_VERSION="4.2.*"
     allow_failures:
       - php: nightly
 

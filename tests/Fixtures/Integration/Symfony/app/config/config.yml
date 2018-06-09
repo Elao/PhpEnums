@@ -11,6 +11,9 @@ framework:
         engines:                       ['twig']
     assets: false
 
+twig:
+    strict_variables: false
+
 doctrine:
     dbal:
         driver:                        'pdo_sqlite'

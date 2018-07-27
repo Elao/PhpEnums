@@ -95,4 +95,22 @@ class Enum extends Choice
     {
         return ['class'];
     }
+
+    /**
+     * Fixup deserialized enum instances by replacing them with actual multiton instances,
+     * so strict comparison works.
+     *
+     * {@inheritdoc}
+     */
+    public function __wakeup()
+    {
+        if (!$this->asValue && \is_array($this->choices)) {
+            $this->choices = array_map(function (EnumInterface $enum): EnumInterface {
+                /** @var string|EnumInterface $enumClass */
+                $enumClass = \get_class($enum);
+
+                return $enumClass::get($enum->getValue());
+            }, $this->choices);
+        }
+    }
 }

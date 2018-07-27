@@ -72,4 +72,19 @@ class EnumTest extends TestCase
     {
         new Enum(['class' => SimpleEnum::class, 'choices' => ['bar']]);
     }
+
+    public function testDeserializingConstraintRespectsMultitonInstance()
+    {
+        $constraint = new Enum(['class' => SimpleEnum::class, 'choices' => [
+            SimpleEnum::FIRST,
+            SimpleEnum::SECOND,
+        ]]);
+
+        $constraint = unserialize(serialize($constraint));
+
+        $this->assertSame([
+            SimpleEnum::get(SimpleEnum::FIRST),
+            SimpleEnum::get(SimpleEnum::SECOND),
+        ], $constraint->choices);
+    }
 }

@@ -23,13 +23,20 @@ final class EnumCaster
         $a = [];
         $value = $enum->getValue();
         $r = new \ReflectionClass($enum);
-        $constants = $r->getConstants();
 
-        if (PHP_VERSION_ID >= 70100) {
-            $constants = array_filter($constants, function (string $k) use ($r) {
-                return $r->getReflectionConstant($k)->isPublic();
-            }, ARRAY_FILTER_USE_KEY);
-        }
+        $constants = array_filter($r->getConstants(), function (string $k) use ($r, $enum) {
+            if (PHP_VERSION_ID >= 70100) {
+                // ReflectionClass::getReflectionConstant() is only available since PHP 7.1
+                $rConstant = $r->getReflectionConstant($k);
+                $public = $rConstant->isPublic();
+                $value = $rConstant->getValue();
+            } else {
+                $public = true;
+                $value = \constant("{$r->getName()}::$k");
+            }
+            // Only keep public constants, for which value matches enumerable values set:
+            return $public && $enum::accepts($value);
+        }, ARRAY_FILTER_USE_KEY);
 
         $rConstants = array_flip($constants);
 

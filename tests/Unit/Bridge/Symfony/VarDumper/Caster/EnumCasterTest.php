@@ -10,9 +10,11 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\VarDumper\Caster;
 
+use Elao\Enum\Enum;
 use Elao\Enum\EnumInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\Php71CastedEnumWIthPrivateConstants;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -53,6 +55,33 @@ Elao\Enum\Tests\Fixtures\Enum\SimpleEnum {
 EODUMP;
 
         $this->assertDumpEquals($expectedDump, SimpleEnum::get(SimpleEnum::FIRST));
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testCastWithPrivateConstants()
+    {
+        $expectedDump = <<<'EODUMP'
+Elao\Enum\Tests\Fixtures\Enum\Php71CastedEnumWIthPrivateConstants {
+  ⚑ : FOO
+  #value: "foo"
+}
+EODUMP;
+
+        $this->assertDumpEquals($expectedDump, Php71CastedEnumWIthPrivateConstants::get(Php71CastedEnumWIthPrivateConstants::FOO));
+    }
+
+    public function testCastWithPublicNonEnumerableConstant()
+    {
+        $expectedDump = <<<'EODUMP'
+Elao\Enum\Tests\Unit\Bridge\Symfony\VarDumper\Caster\EnumWithNonEnumerablePublicConstants {
+  ⚑ : BAR
+  #value: "bar"
+}
+EODUMP;
+
+        $this->assertDumpEquals($expectedDump, EnumWithNonEnumerablePublicConstants::get(EnumWithNonEnumerablePublicConstants::BAR));
     }
 
     public function testCastReadable()
@@ -164,5 +193,18 @@ EODUMP;
         $configure($dumper);
 
         return $dumper->dump($cloner->cloneVar($value)->withRefHandles(false), true);
+    }
+}
+
+class EnumWithNonEnumerablePublicConstants extends Enum
+{
+    const FOO = 'foo';
+    const BAR = 'bar';
+
+    const NOT_AN_ENUMERABLE_VALUE = [self::FOO, self::BAR];
+
+    public static function values(): array
+    {
+        return [self::FOO, self::BAR];
     }
 }

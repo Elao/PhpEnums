@@ -83,8 +83,7 @@ abstract class Enum implements EnumInterface
      */
     public static function __callStatic($name, $arguments = []): EnumInterface
     {
-        $value = @\constant('static::' . $name);
-        if (null === $value) {
+        if (!\defined('static::' . $name)) {
             throw new \BadMethodCallException(sprintf(
                 'No constant named "%s" exists in class "%s"',
                 $name,
@@ -92,7 +91,7 @@ abstract class Enum implements EnumInterface
             ));
         }
 
-        return static::get($value);
+        return static::get(\constant('static::' . $name));
     }
 
     /**

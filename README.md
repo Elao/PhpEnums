@@ -605,8 +605,7 @@ Simply register the following normalizer inside the DIC configuration:
 ```yml
 # services.yml
 services:
-    app.enum_normalizer:
-        class: 'Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer'
+    Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer:
         public: false
         tags: [{ name: serializer.normalizer }]
 ```
@@ -831,8 +830,7 @@ If you're using the [nelmio/alice](https://github.com/nelmio/alice) package and 
 ```yml
 # services.yml
 services:
-    app.faker.enum_provider:
-        class: Elao\Enum\Bridge\Faker\Provider\EnumProvider
+    Elao\Enum\Bridge\Faker\Provider\EnumProvider:
         arguments:
             - Civility: Namespace\To\MyCivilityEnum
               Gender: Namespace\To\MyGenderEnum

@@ -257,7 +257,7 @@ final class Gender extends ReadableEnum
 Using Symfony's translation component:
 
 ```yaml
- # app/Resources/translations/messages.en.yml
+ # translations/messages.en.yaml
  enum.gender.unknown: 'Unknown'
  enum.gender.male: 'Male'
  enum.gender.female: 'Female'
@@ -475,7 +475,7 @@ final class GenderEnumType extends AbstractEnumType
         return Gender::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return static::NAME;
     }
@@ -485,7 +485,7 @@ final class GenderEnumType extends AbstractEnumType
 Note: You can map to native sql enum type by overriding declaration method:
 
 ```php
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         $values = implode(', ', array_map(function ($value) { return "'$value'";}, Gender::values()));
 
@@ -523,11 +523,11 @@ refs:
 - [Registering custom Mapping Types in the SchemaTool](https://symfony.com/doc/current/doctrine/dbal.html#registering-custom-mapping-types-in-the-schematool)
 
 ```yml
-# app/config/config.yml
+# config/packages/doctrine.yaml
 doctrine:
     dbal:
         types:
-            gender:  AppBundle\Doctrine\DBAL\Types\GenderEnumType
+            gender: App\Doctrine\DBAL\Types\GenderEnumType
         mapping_types:
             gender: string
 ```
@@ -603,11 +603,11 @@ services:
 Simply register the following normalizer inside the DIC configuration:
 
 ```yml
-# services.yml
+# config/services.yaml
 services:
     Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer:
         public: false
-        tags: [{ name: serializer.normalizer }]
+        tags: ['serializer.normalizer']
 ```
 
 ## Symfony Form component
@@ -731,8 +731,8 @@ The library provides a `Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum` cons
 To use the constraint, simply provide the enum `class`:
 
 ```yaml
-# src/AppBundle/Resources/config/validation.yml
-AppBundle\Entity\User:
+# config/validator/validation.yaml
+App\Entity\User:
     properties:
         gender:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum: MyApp\Enum\Gender
@@ -741,8 +741,8 @@ AppBundle\Entity\User:
 If the property value is not an enum instance, set the `asValue` option to true in order to simply validate the enum value:
 
 ```yaml
-# src/AppBundle/Resources/config/validation.yml
-AppBundle\Entity\User:
+# config/validator/validation.yaml
+App\Entity\User:
     properties:
         gender:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
@@ -753,15 +753,15 @@ AppBundle\Entity\User:
 You can restrict the available choices by setting the allowed values in the `choices` option:
 
 ```yaml
-# src/AppBundle/Resources/config/validation.yml
-AppBundle\Entity\User:
+# config/validator/validation.yaml
+App\Entity\User:
     properties:
         gender:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
                 class: MyApp\Enum\Gender
                 choices: 
                     - female
-                    - !php/const:MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
+                    - !php/const MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
 ```
 
 The `choice` option only accepts enum values and normalize it internally to enum instances if `asValue` is `false`.
@@ -769,8 +769,8 @@ The `choice` option only accepts enum values and normalize it internally to enum
 You can also use a [`callback`](http://symfony.com/doc/current/reference/constraints/Choice.html#callback):
 
 ```yaml
-# src/AppBundle/Resources/config/validation.yml
-AppBundle\Entity\User:
+# config/validator/validation.yaml
+App\Entity\User:
     properties:
         gender:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
@@ -828,13 +828,13 @@ The provider exposes two public methods:
 If you're using the [nelmio/alice](https://github.com/nelmio/alice) package and the bundle it provides in order to generate fixtures, you can register the Faker provider by using the `nelmio_alice.faker.generator`:
 
 ```yml
-# services.yml
+# config/services.yaml
 services:
     Elao\Enum\Bridge\Faker\Provider\EnumProvider:
         arguments:
             - Civility: Namespace\To\MyCivilityEnum
               Gender: Namespace\To\MyGenderEnum
-        tags: [{ name: nelmio_alice.faker.provider }]
+        tags: ['nelmio_alice.faker.provider']
 ```
 
 The following example shows how to use the provider within a Yaml fixture file:

@@ -107,7 +107,7 @@ abstract class Enum implements EnumInterface
      */
     public static function instances(): array
     {
-        return array_map(function ($value) {
+        return array_map(static function ($value) {
             return static::get($value);
         }, static::values());
     }

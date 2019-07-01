@@ -1,0 +1,29 @@
+readable_enum_form:
+    path: '/form-type/readable-enum'
+    defaults:
+        _controller: 'App\Controller\FormTypeController::readableEnumForm'
+
+flagged_enum_form:
+    path: '/form-type/flagged-enum'
+    defaults:
+        _controller: 'App\Controller\FormTypeController::flaggedEnumForm'
+
+value_to_enum_transformer_choice_form:
+    path: '/form-type/value-to-enum-transformer-choice-form'
+    defaults:
+        _controller: 'App\Controller\FormTypeController::valueToEnumTransformerChoiceForm'
+
+choices_as_enum_values_enum_form:
+    path: '/form-type/choices-as-enum-values-enum-form'
+    defaults:
+        _controller: 'App\Controller\FormTypeController::choicesAsEnumValuesEnumForm'
+
+enum_resolver:
+    path: '/enum-resolve/{gender}'
+    defaults:
+        _controller: 'App\Controller\EnumArgumentController::enum'
+
+variadic_enum_resolver:
+    path: '/enum-resolve-variadic'
+    defaults:
+        _controller: 'App\Controller\EnumArgumentController::variadicEnum'

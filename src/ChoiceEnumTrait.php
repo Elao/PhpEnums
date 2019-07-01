@@ -34,7 +34,7 @@ trait ChoiceEnumTrait
         $values = array_keys(static::choices());
 
         if (is_a(static::class, FlaggedEnum::class, true)) {
-            $values = array_values(array_filter($values, function ($v): bool {
+            $values = array_values(array_filter($values, static function ($v): bool {
                 return 0 === ($v & $v - 1);
             }));
         }

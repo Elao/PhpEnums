@@ -105,7 +105,7 @@ class Enum extends Choice
     public function __wakeup()
     {
         if (!$this->asValue && \is_array($this->choices)) {
-            $this->choices = array_map(function (EnumInterface $enum): EnumInterface {
+            $this->choices = array_map(static function (EnumInterface $enum): EnumInterface {
                 /** @var string|EnumInterface $enumClass */
                 $enumClass = \get_class($enum);
 

@@ -10,10 +10,10 @@
 
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
+use App\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeTest extends KernelTestCase

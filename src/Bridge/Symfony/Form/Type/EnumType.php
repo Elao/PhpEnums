@@ -14,7 +14,6 @@ use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\EnumInterface;
 use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\ReversedTransformer;
@@ -81,28 +80,23 @@ class EnumType extends AbstractType
 
                     return $this->isReadable($options['enum_class']) ? 'readable' : 'value';
                 },
-                'choice_value' => function (Options $options) {
+                'choice_value' => static function (Options $options) {
                     return $options['choices_as_enum_values'] ? null : 'value';
                 },
                 // If true, will accept and return the enum value instead of object:
                 'as_value' => false,
                 // If true, overriding the "choices" option will allow using raw enumerated values
                 // in provided choice array instead of EnumInterface instances:
-                'choices_as_enum_values' => function (Options $options) {
+                'choices_as_enum_values' => static function (Options $options) {
                     // By default, if result data are expected as raw enumerated values, we expect choices to be too:
                     return $options['as_value'];
                 },
             ])
             ->setRequired('enum_class')
-            ->setAllowedValues('enum_class', function ($value) {
+            ->setAllowedValues('enum_class', static function ($value) {
                 return is_a($value, EnumInterface::class, true);
             })
         ;
-
-        // To be removed once Symfony 2.8 is not LTS anymore
-        if (self::shouldUseChoicesAsValues()) {
-            $resolver->setDefault('choices_as_values', true);
-        }
     }
 
     /**
@@ -116,13 +110,5 @@ class EnumType extends AbstractType
     private function isReadable(string $enumClass): bool
     {
         return is_a($enumClass, ReadableEnumInterface::class, true);
-    }
-
-    /**
-     * Returns true if the 2.8 Form component is being used by the application.
-     */
-    private static function shouldUseChoicesAsValues(): bool
-    {
-        return true === interface_exists(ChoiceListInterface::class);
     }
 }

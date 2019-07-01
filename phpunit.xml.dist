@@ -8,12 +8,10 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="tests/Fixtures/Integration/Symfony/app/bootstrap.php"
+         bootstrap="tests/Fixtures/Integration/Symfony/bootstrap.php"
 >
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />
-        <server name="KERNEL_DIR" value="tests/Fixtures/Integration/Symfony/app/" /> <!-- deprecated -->
     </php>
 
     <testsuites>

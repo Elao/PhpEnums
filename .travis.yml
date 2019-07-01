@@ -8,39 +8,46 @@ branches:
 env:
   global:
     - CHECK_CODE_STYLE="no"
-    - ENABLE_CODE_COVERAGE="no"
     - COMPOSER_FLAGS=""
+    - COMPOSER_MEMORY_LIMIT=-1
+    - ENABLE_CODE_COVERAGE="no"
+    - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
     - SYMFONY_VERSION=""
 
 matrix:
     fast_finish: true
     include:
-      - php: 7.2
+
+      # no flag build with code coverage:
+      - php: 7.3
         env: ENABLE_CODE_COVERAGE="yes"
+
       # oldest supported versions
       - php: 7.0
         env:
-          - SYMFONY_VERSION="2.8.*"
+          - SYMFONY_VERSION="3.4.*"
           - COMPOSER_FLAGS="--prefer-lowest"
           - SYMFONY_PHPUNIT_VERSION=5.7
-      # common versions:
-      - php: 7.1
+
+      # most recent versions:
+      - php: 7.3
         env:
-          - SYMFONY_VERSION="3.4.*"
-      # most recent versions
-      - php: 7.2
+          - SYMFONY_VERSION="4.2.*"
+      - php: 7.3
         env:
-          - SYMFONY_VERSION="4.1.*"
+          - SYMFONY_VERSION="4.3.*"
           - CHECK_CODE_STYLE="yes"
-      # bleeding edge (unreleased dev versions where failures are allowed)
-      - php: nightly
-        env: SYMFONY_VERSION="4.2.*"
+
+      # bleeding edge (unreleased dev versions where failures are allowed):
+      - php: 7.4snapshot
+        env: SYMFONY_VERSION="4.4.*"
     allow_failures:
-      - php: nightly
+      - php: 7.4snapshot
 
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/symfony-bridge/.phpunit
 
 before_install:
   - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini || true; fi;

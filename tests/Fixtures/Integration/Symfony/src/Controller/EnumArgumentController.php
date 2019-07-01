@@ -8,13 +8,13 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller;
+namespace App\Controller;
 
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnumArgumentController extends Controller
+class EnumArgumentController extends AbstractController
 {
     public function enum(Gender $gender)
     {

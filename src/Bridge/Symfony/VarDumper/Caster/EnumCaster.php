@@ -24,7 +24,7 @@ final class EnumCaster
         $value = $enum->getValue();
         $r = new \ReflectionClass($enum);
 
-        $constants = array_filter($r->getConstants(), function (string $k) use ($r, $enum) {
+        $constants = array_filter($r->getConstants(), static function (string $k) use ($r, $enum) {
             if (PHP_VERSION_ID >= 70100) {
                 // ReflectionClass::getReflectionConstant() is only available since PHP 7.1
                 $rConstant = $r->getReflectionConstant($k);
@@ -41,7 +41,7 @@ final class EnumCaster
         $rConstants = array_flip($constants);
 
         // Append constant(s) name(s)
-        $a[Caster::PREFIX_VIRTUAL . '⚑ '] = new ConstStub(implode(' | ', array_map(function ($v) use ($rConstants) {
+        $a[Caster::PREFIX_VIRTUAL . '⚑ '] = new ConstStub(implode(' | ', array_map(static function ($v) use ($rConstants) {
             return $rConstants[$v];
         }, $enum instanceof FlaggedEnum && $enum->getFlags() ? $enum->getFlags() : (array) $value)), $value);
 
@@ -55,7 +55,7 @@ final class EnumCaster
 
         // Append single bit flags list
         if ($enum instanceof FlaggedEnum) {
-            $a[Caster::PREFIX_PROTECTED . 'flags'] = array_map(function (int $flag) use ($rConstants) {
+            $a[Caster::PREFIX_PROTECTED . 'flags'] = array_map(static function (int $flag) use ($rConstants) {
                 return new ConstStub($flag, $rConstants[$flag]);
             }, $enum->getFlags());
         }

@@ -10,7 +10,7 @@ EOF;
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->exclude('tests/Fixtures/Integration/Symfony/app/cache')
+    ->exclude('tests/Fixtures/Integration/Symfony/var')
 ;
 
 return PhpCsFixer\Config::create()

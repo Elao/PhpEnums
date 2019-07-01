@@ -44,7 +44,7 @@ class FlaggedEnumType extends AbstractType
     {
         $resolver
             ->setDefault('multiple', true)
-            ->setAllowedValues('enum_class', function ($value) {
+            ->setAllowedValues('enum_class', static function ($value) {
                 return is_a($value, FlaggedEnum::class, true);
             })
         ;

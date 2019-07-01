@@ -8,7 +8,7 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\Controller;
+namespace App\Controller;
 
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
@@ -16,13 +16,13 @@ use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-class FormTypeController extends Controller
+class FormTypeController extends AbstractController
 {
     public function readableEnumForm(Request $request)
     {
@@ -38,7 +38,7 @@ class FormTypeController extends Controller
 
         $form->handleRequest($request);
 
-        return $this->render('TestBundle::enum_type.html.twig', [
+        return $this->render('@tests/enum_type.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -57,7 +57,7 @@ class FormTypeController extends Controller
 
         $form->handleRequest($request);
 
-        return $this->render('TestBundle::enum_type.html.twig', [
+        return $this->render('@tests/enum_type.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -88,7 +88,7 @@ class FormTypeController extends Controller
 
         $form->handleRequest($request);
 
-        return $this->render('TestBundle::enum_type.html.twig', [
+        return $this->render('@tests/enum_type.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -118,7 +118,7 @@ class FormTypeController extends Controller
 
         $form->handleRequest($request);
 
-        return $this->render('TestBundle::enum_type.html.twig', [
+        return $this->render('@tests/enum_type.html.twig', [
             'form' => $form->createView(),
         ]);
     }

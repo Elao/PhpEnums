@@ -104,9 +104,9 @@ Elao\Enum\Tests\Fixtures\Enum\Permissions {
   ⚑ : EXECUTE | WRITE
   readable: "Execute; Write"
   #value: 3
-  #flags:%S [
-   %S 1
-   %S 2
+  #flags: [
+    1
+    2
   ]
 }
 EODUMP;
@@ -118,7 +118,7 @@ Elao\Enum\Tests\Fixtures\Enum\Permissions {
   ⚑ : NONE
   readable: "None"
   #value: 0
-  #flags:%S []
+  #flags: []
 }
 EODUMP;
 
@@ -129,15 +129,15 @@ Elao\Enum\Tests\Fixtures\Enum\Permissions {
   ⚑ : EXECUTE | WRITE | READ
   readable: "All permissions"
   #value: 7
-  #flags:%A [
-   %S 1
-   %S 2
-   %S 4
+  #flags: [
+    1
+    2
+    4
   ]
 }
 EODUMP;
 
-        $this->assertDumpMatchesFormat($expectedDump, Permissions::get(Permissions::ALL));
+        $this->assertDumpEquals($expectedDump, Permissions::get(Permissions::ALL));
     }
 
     public function testCastAsHtml()
@@ -147,21 +147,22 @@ EODUMP;
         $dump = $this->dumpAsHtml($enum);
 
         $expectedDump = <<<'EODUMP'
-<header></header><boundary><abbr title="Elao\Enum\Tests\Fixtures\Enum\Permissions" class=sf-dump-note>Permissions</abbr> {<samp>
-  <span class=sf-dump-meta>&#9873; </span>: <span class=sf-dump-const title="7">EXECUTE | WRITE | READ</span>
-  <span class=sf-dump-meta>readable</span>: "<span class=sf-dump-str title="15 characters">All permissions</span>"
-  #<span class=sf-dump-protected title="Protected property">value</span>: <span class=sf-dump-num>7</span>
-  #<span class=sf-dump-protected title="Protected property">flags</span>:%S [<samp>
-    %S<span class=sf-dump-const title="%SEXECUTE%S">1</span>
-    %S<span class=sf-dump-const title="%SWRITE%S">2</span>
-    %S<span class=sf-dump-const title="%SREAD%S">4</span>
-  </samp>]
-</samp>}
-</boundary>
-
+"""
+<header></header><boundary><abbr title="Elao\Enum\Tests\Fixtures\Enum\Permissions" class=sf-dump-note>Permissions</abbr> {<samp>\n
+  <span class=sf-dump-meta>&#9873; </span>: <span class=sf-dump-const title="7">EXECUTE | WRITE | READ</span>\n
+  <span class=sf-dump-meta>readable</span>: "<span class=sf-dump-str title="15 characters">All permissions</span>"\n
+  #<span class=sf-dump-protected title="Protected property">value</span>: <span class=sf-dump-num>7</span>\n
+  #<span class=sf-dump-protected title="Protected property">flags</span>: [<samp>\n
+    <span class=sf-dump-const title="EXECUTE">1</span>\n
+    <span class=sf-dump-const title="WRITE">2</span>\n
+    <span class=sf-dump-const title="READ">4</span>\n
+  </samp>]\n
+</samp>}\n
+</boundary>\n
+"""
 EODUMP;
 
-        $this->assertStringMatchesFormat($expectedDump, $dump);
+        $this->assertDumpEquals($expectedDump, $dump);
     }
 
     private function dumpAsHtml($value): string
@@ -169,26 +170,12 @@ EODUMP;
         $cloner = new VarCloner();
         $cloner->setMaxItems(-1);
 
-        $configure = function (HtmlDumper $dumper) {
+        $configure = static function (HtmlDumper $dumper) {
             $dumper->setDumpHeader('<header></header>');
             $dumper->setDumpBoundaries('<boundary>', '</boundary>');
         };
 
-        // To remove once symfony/var-dumper < 3.2 support is dropped to simplify things
-        if (!method_exists(HtmlDumper::class, 'setDisplayOptions')) {
-            $h = fopen('php://memory', 'r+b');
-            $dumper = new HtmlDumper($h);
-            $configure($dumper);
-            $dumper->dump($cloner->cloneVar($value)->withRefHandles(false), $h);
-            $dump = stream_get_contents($h, -1, 0);
-            fclose($h);
-
-            return $dump;
-        }
-
-        // Once symfony/var-dumper < 3.1 support is dropped, the light array flag can be used
-        // and StringMatches assertions removed in favor of Identical/Equals assertions
-        $flags = \defined(AbstractDumper::class . '::DUMP_LIGHT_ARRAY') ? AbstractDumper::DUMP_LIGHT_ARRAY : null;
+        $flags = AbstractDumper::DUMP_LIGHT_ARRAY;
         $dumper = new HtmlDumper(null, null, $flags);
         $configure($dumper);
 

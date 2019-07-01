@@ -598,7 +598,7 @@ services:
 ```
 
 ## Symfony Serializer component 
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
 
 Simply register the following normalizer inside the DIC configuration:
 
@@ -611,7 +611,7 @@ services:
 ```
 
 ## Symfony Form component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
 
 ### Simple enums
 
@@ -724,7 +724,7 @@ $form->get('permissions')->getData(); // Will return a single `Permissions` inst
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).
 
 ## Symfony Validator component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
 
 The library provides a `Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum` constraint which makes use of Symfony's built-in [`Choice` constraint](http://symfony.com/doc/current/reference/constraints/Choice.html) and validator internally.
 
@@ -783,7 +783,7 @@ Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allow
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 
 ## Symfony VarDumper component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-%202.8%2F3.1%2B-green.svg?style=flat-square" title="Available for Symfony 2.8 and 3.1+" alt="Available for Symfony 2.8 and 3.1+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
 
 By requiring this package and if `symfony/var-dumper` is installed, an `EnumCaster` is registered automatically to enhance enum instances dump output.
 

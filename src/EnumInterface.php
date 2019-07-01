@@ -58,7 +58,7 @@ interface EnumInterface
      *
      * @return bool
      */
-    public function equals(self $enum): bool;
+    public function equals(EnumInterface $enum): bool;
 
     /**
      * Determines if the enumeration instance value is equal to the given value.

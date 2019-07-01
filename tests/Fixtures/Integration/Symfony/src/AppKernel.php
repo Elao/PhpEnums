@@ -9,7 +9,6 @@
  */
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Elao\Enum\Tests\Fixtures\Integration\Symfony\TestBundle\TestBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -26,12 +25,16 @@ class AppKernel extends Kernel
             new FrameworkBundle(),
             new TwigBundle(),
             new DoctrineBundle(),
-            new TestBundle(),
         ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getRootDir() . '/config/config.yml');
+        $loader->load($this->getProjectDir() . '/config/config.yml');
+    }
+
+    public function getProjectDir()
+    {
+        return __DIR__ . '/../';
     }
 }

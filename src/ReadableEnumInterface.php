@@ -33,6 +33,17 @@ interface ReadableEnumInterface extends EnumInterface
     public static function readableFor($value): string;
 
     /**
+     * Gets the human representations for given values.
+     *
+     * @param array $values
+     *
+     * @throws InvalidValueException When $value is not acceptable for this enumeration type
+     *
+     * @return array
+     */
+    public static function readablesFor(array $values): array;
+
+    /**
      * Gets the human representation of the value.
      *
      * @return string

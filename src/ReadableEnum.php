@@ -30,6 +30,14 @@ abstract class ReadableEnum extends Enum implements ReadableEnumInterface
     /**
      * {@inheritdoc}
      */
+    public static function readablesFor(array $values): array
+    {
+        return array_map('self::readableFor', $values);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getReadable(): string
     {
         return static::readableFor($this->getValue());

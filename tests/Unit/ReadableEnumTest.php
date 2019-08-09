@@ -46,6 +46,11 @@ class ReadableEnumTest extends TestCase
         $this->assertSame('Female', Gender::readableFor(Gender::FEMALE));
     }
 
+    public function testValuesCanBeReadabled()
+    {
+        $this->assertSame(['Male', 'Female'], Gender::readablesFor([Gender::MALE, Gender::FEMALE]));
+    }
+
     /**
      * @expectedException \Elao\Enum\Exception\InvalidValueException
      */

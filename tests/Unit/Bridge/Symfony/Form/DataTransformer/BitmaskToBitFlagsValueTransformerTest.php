@@ -14,15 +14,16 @@ use Elao\Enum\Bridge\Symfony\Form\DataTransformer\BitmaskToBitFlagsValueTransfor
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class BitmaskToBitFlagsValueTransformerTest extends TestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage "Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"
-     */
     public function testThrowsExceptionIfNotFLaggedEnumInstance()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"');
+
         new BitmaskToBitFlagsValueTransformer(Gender::class);
     }
 
@@ -47,23 +48,21 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $this->assertSame($expectedFlags, $transformer->transform($bitmask));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected integer. Got "string"
-     */
     public function testTransformThrowsExceptionOnNonInteger()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected integer. Got "string"');
+
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $transformer->transform('foo');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Invalid bitmask 999 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.
-     */
     public function testTransformThrowsExceptionOnInvalifBitmask()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Invalid bitmask 999 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.');
+
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $transformer->transform(999);
@@ -84,34 +83,31 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $this->assertSame($expectedBitmask, $transformer->reverseTransform($flags));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected array. Got "string"
-     */
     public function testReverseTransformThrowsExceptionOnNonArray()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected array. Got "string"');
+
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $transformer->reverseTransform('foo');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected array of integers. Got a "string" inside.
-     */
     public function testReverseTransformThrowsExceptionOnNonIntegers()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected array of integers. Got a "string" inside.');
+
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $transformer->reverseTransform(['foo']);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Invalid bitmask 56 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.
-     */
     public function testReverseTransformThrowsExceptionOnInvalifBitmask()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Invalid bitmask 56 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.');
+
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
         $transformer->reverseTransform([16, 32, 24]);

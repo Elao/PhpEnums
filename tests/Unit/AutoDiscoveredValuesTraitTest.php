@@ -12,6 +12,7 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
+use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
 use PHPUnit\Framework\TestCase;
@@ -36,12 +37,11 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         $this->assertSame([1, 2, 4], AutoDiscoveredFlaggedEnum::values());
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\LogicException
-     * @expectedExceptionMessage Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"
-     */
     public function testThrowsOnChoicesMisuses()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"');
+
         AutoDiscoveredEnumMisusingChoices::foo();
     }
 }

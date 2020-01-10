@@ -34,8 +34,6 @@ interface ReadableEnumInterface extends EnumInterface
 
     /**
      * Gets the human representation of the value.
-     *
-     * @return string
      */
     public function getReadable(): string;
 

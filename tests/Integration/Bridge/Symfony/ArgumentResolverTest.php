@@ -12,14 +12,13 @@ namespace Elao\Enum\Tests\Integration\Bridge\Symfony;
 
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 
 class ArgumentResolverTest extends WebTestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!interface_exists(ArgumentValueResolverInterface::class)) {
             self::markTestSkipped(
@@ -42,7 +41,7 @@ class ArgumentResolverTest extends WebTestCase
     {
         return [
             'valid enum' => [
-                function (Client $client) {
+                function ($client) {
                     $client->request(Request::METHOD_GET, '/enum-resolve/' . Gender::MALE);
                 },
                 function (Response $response) {
@@ -51,7 +50,7 @@ class ArgumentResolverTest extends WebTestCase
                 },
             ],
             'invalid enum' => [
-                function (Client $client) {
+                function ($client) {
                     $client->request(Request::METHOD_GET, '/enum-resolve/bar');
                 },
                 function (Response $response) {
@@ -59,7 +58,7 @@ class ArgumentResolverTest extends WebTestCase
                 },
             ],
             'valid variadic enum' => [
-                function (Client $client) {
+                function ($client) {
                     $client->request(Request::METHOD_GET, '/enum-resolve-variadic', ['genders' => [Gender::MALE, Gender::FEMALE]]);
                 },
                 function (Response $response) {

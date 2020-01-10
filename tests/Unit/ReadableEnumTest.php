@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use PHPUnit\Framework\TestCase;
 
@@ -46,11 +47,10 @@ class ReadableEnumTest extends TestCase
         $this->assertSame('Female', Gender::readableFor(Gender::FEMALE));
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     */
     public function testExceptionIsRaisedWhenValueCannotBeReadable()
     {
+        $this->expectException(InvalidValueException::class);
+
         Gender::readableFor('invalid_value');
     }
 }

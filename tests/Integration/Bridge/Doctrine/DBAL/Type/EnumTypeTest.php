@@ -21,7 +21,7 @@ class EnumTypeTest extends KernelTestCase
     /** @var EntityManagerInterface */
     private $em;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel();
         $kernel = static::$kernel;
@@ -30,7 +30,7 @@ class EnumTypeTest extends KernelTestCase
         (new ORMPurger($this->em))->purge();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->em->close();
         $this->em = null;

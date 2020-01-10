@@ -13,16 +13,16 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\Type;
 use Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 class FlaggedEnumTypeTest extends FormIntegrationTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The "multiple" option of the "Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType" form type cannot be set to false.
-     */
     public function testSetMutipleToFalseThrowsException()
     {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The "multiple" option of the "Elao\Enum\Bridge\Symfony\Form\Type\FlaggedEnumType" form type cannot be set to false.');
+
         $this->factory->create(
             FlaggedEnumType::class,
             null,

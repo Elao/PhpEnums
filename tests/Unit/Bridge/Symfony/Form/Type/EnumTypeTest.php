@@ -15,29 +15,30 @@ use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class EnumTypeTest extends FormIntegrationTestCase
 {
-    /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
-     * @expectedExceptionMessage The required option "enum_class" is missing.
-     */
     public function testThrowExceptionWhenOptionEnumClassIsMissing()
     {
+        $this->expectException(MissingOptionsException::class);
+        $this->expectExceptionMessage('The required option "enum_class" is missing.');
+
         $this->factory->create(EnumType::class);
     }
 
-    /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     * @expectedExceptionMessage The option "enum_class" with value "Foo" is invalid.
-     */
     public function testThrowsExceptionOnInvalidEnumClass()
     {
+        $this->expectException(InvalidOptionsException::class);
+        $this->expectExceptionMessage('The option "enum_class" with value "Foo" is invalid.');
+
         $this->factory->create(
             EnumType::class,
             null,
@@ -45,12 +46,11 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Unable to transform value for property path "enum": Expected an array.
-     */
     public function testThrowExceptionWhenAppDataNotArrayForMultipleChoices()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Unable to transform value for property path "enum": Expected an array.');
+
         $field = $this->factory->create(
             EnumType::class,
             null,

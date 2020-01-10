@@ -48,8 +48,6 @@ class EnumProvider
      *                                  Examples: 'Gender::MALE', 'App\Enum\Gender::FEMALE', 'Permissions::READ|WRITE', etc.
      *
      * @throws InvalidArgumentException When the alias part of $enumValueShortcut is not a valid alias
-     *
-     * @return EnumInterface
      */
     public function enum(string $enumValueShortcut): EnumInterface
     {
@@ -78,11 +76,7 @@ class EnumProvider
     }
 
     /**
-     * @param string $enumClassOrAlias
-     *
      * @throws InvalidArgumentException When $enumClassAlias is not a valid alias
-     *
-     * @return EnumInterface
      */
     public function randomEnum(string $enumClassOrAlias): EnumInterface
     {
@@ -98,8 +92,6 @@ class EnumProvider
 
     /**
      * Make sure that $enumClass is a proper Enum class. Throws exception otherwise.
-     *
-     * @param string $enumClass
      *
      * @throws InvalidArgumentException When $enumClass is not a class or is not a proper Enum
      */

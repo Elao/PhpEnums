@@ -24,7 +24,7 @@ class EnumTypeTest extends TestCase
     /** @var GenderEnumType */
     protected $type;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Type::addType(GenderEnumType::NAME, GenderEnumType::class);
     }
@@ -32,7 +32,7 @@ class EnumTypeTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $this->type = Type::getType(GenderEnumType::NAME);

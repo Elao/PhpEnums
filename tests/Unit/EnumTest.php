@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Tests\Fixtures\Enum\ExtendedSimpleEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
@@ -41,30 +42,27 @@ class EnumTest extends TestCase
         $this->assertSame(2, $enum->getValue());
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage No constant named "FOO" exists in class "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"
-     */
     public function testCallStaticOnInvalidConstantThrowsException()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('No constant named "FOO" exists in class "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"');
+
         SimpleEnum::FOO();
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage "invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.
-     */
     public function testExceptionIsRaisedWhenValueIsNotAcceptable()
     {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('"invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.');
+
         SimpleEnum::get('invalid_value');
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage "0" is not an acceptable value
-     */
     public function testExceptionIsRaisedWhenValueIsNotAcceptableWithStrictCheck()
     {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('"0" is not an acceptable value');
+
         SimpleEnum::get('0');
     }
 

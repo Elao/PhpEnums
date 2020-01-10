@@ -93,8 +93,6 @@ abstract class FlaggedEnum extends ReadableEnum
 
     /**
      * Gets the human representation for the none value.
-     *
-     * @return string
      */
     protected static function readableForNone(): string
     {
@@ -105,8 +103,6 @@ abstract class FlaggedEnum extends ReadableEnum
      * Gets an integer value of the possible flags for enumeration.
      *
      * @throws LogicException If the possibles values are not valid bit flags
-     *
-     * @return int
      */
     private static function getBitmask(): int
     {
@@ -142,8 +138,6 @@ abstract class FlaggedEnum extends ReadableEnum
 
     /**
      * Gets an array of bit flags of the value.
-     *
-     * @return array
      */
     public function getFlags(): array
     {

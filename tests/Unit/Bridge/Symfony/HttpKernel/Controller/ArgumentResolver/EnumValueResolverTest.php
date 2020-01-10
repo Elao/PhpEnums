@@ -16,10 +16,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class EnumValueResolverTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!interface_exists(ArgumentValueResolverInterface::class)) {
             self::markTestSkipped(
@@ -91,11 +92,12 @@ class EnumValueResolverTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @dataProvider invalidDataProvider
      */
     public function testinvalidInput($invalidInput, $expectedErrorMessage)
     {
+        $this->expectException(BadRequestHttpException::class);
+
         $resolver = new EnumValueResolver();
         $metadata = new ArgumentMetadata('permissions', Permissions::class, false, false, null);
 

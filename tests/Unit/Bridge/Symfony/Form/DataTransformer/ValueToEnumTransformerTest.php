@@ -13,15 +13,16 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ValueToEnumTransformerTest extends TestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage "stdClass" is not an instance of "Elao\Enum\EnumInterface"
-     */
     public function testThrowsExceptionIfNotEnumInstance()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"stdClass" is not an instance of "Elao\Enum\EnumInterface"');
+
         new ValueToEnumTransformer(\stdClass::class);
     }
 
@@ -32,12 +33,11 @@ class ValueToEnumTransformerTest extends TestCase
         $this->assertSame(SimpleEnum::FIRST, $transformer->transform(SimpleEnum::FIRST()));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected instance of "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum". Got "string".
-     */
     public function testTransformThrowsExceptionOnNonEnum()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected instance of "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum". Got "string".');
+
         $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $transformer->transform('foo');
@@ -50,12 +50,11 @@ class ValueToEnumTransformerTest extends TestCase
         $this->assertSame(SimpleEnum::FIRST(), $transformer->reverseTransform(SimpleEnum::FIRST));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage "1" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum
-     */
     public function testReverseTransformThrowsExceptionOnValueNotInEnum()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('"1" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum');
+
         $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
         $transformer->reverseTransform('1');

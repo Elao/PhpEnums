@@ -14,15 +14,16 @@ use Elao\Enum\Bridge\Symfony\Form\DataTransformer\SingleToCollectionFlagEnumTran
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class SingleToCollectionFlagEnumTransformerTest extends TestCase
 {
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
-     * @expectedExceptionMessage "Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"
-     */
     public function testThrowsExceptionIfNotFLaggedEnumInstance()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"');
+
         new SingleToCollectionFlagEnumTransformer(Gender::class);
     }
 
@@ -57,12 +58,11 @@ class SingleToCollectionFlagEnumTransformerTest extends TestCase
         $this->assertSame($expectedEnums, $transformer->transform($singleEnum));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected instance of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got "Elao\Enum\Tests\Fixtures\Enum\Gender"
-     */
     public function testTransformThrowsExceptionOnInvalidInstance()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected instance of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got "Elao\Enum\Tests\Fixtures\Enum\Gender"');
+
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
         $transformer->transform(Gender::get(Gender::MALE));
@@ -83,23 +83,21 @@ class SingleToCollectionFlagEnumTransformerTest extends TestCase
         $this->assertSame($expectedEnum, $transformer->reverseTransform($enums));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected array of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got a "Elao\Enum\Tests\Fixtures\Enum\Gender" inside.
-     */
     public function testReverseTransformThrowsExceptionOnInvalidInstance()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected array of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got a "Elao\Enum\Tests\Fixtures\Enum\Gender" inside.');
+
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
         $transformer->reverseTransform([Permissions::get(Permissions::EXECUTE), Gender::get(Gender::MALE)]);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Expected array. Got "Elao\Enum\Tests\Fixtures\Enum\Permissions"
-     */
     public function testReverseTransformThrowsExceptionOnNonArray()
     {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Expected array. Got "Elao\Enum\Tests\Fixtures\Enum\Permissions"');
+
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
         $transformer->reverseTransform(Permissions::get(Permissions::EXECUTE));

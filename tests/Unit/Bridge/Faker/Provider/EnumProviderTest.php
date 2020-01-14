@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Faker\Provider;
 
 use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
+use Elao\Enum\Exception\InvalidArgumentException;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
@@ -53,12 +54,12 @@ class EnumProviderTest extends TestCase
     }
 
     /**
-     * @expectedException \Elao\Enum\Exception\InvalidArgumentException
-     *
      * @dataProvider provideErroneousEnumMapping
      */
     public function testConstructorShouldFailWhenEnumClassIsIncorrect(array $mapping)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new EnumProvider($mapping);
     }
 
@@ -79,11 +80,10 @@ class EnumProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidArgumentException
-     */
     public function testEnumMethodShouldThrowErrorIfFlaggedEnumIsIncorrect()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $enumProvider = $this->getDefaultProvider();
 
         // Simple is not a flagged enum. An InvalidArgumentException should therefore be thrown.

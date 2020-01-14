@@ -55,8 +55,6 @@ interface EnumInterface
      * Determines whether two enumerations instances should be considered the same.
      *
      * @param EnumInterface $enum An enum object to compare with this instance
-     *
-     * @return bool
      */
     public function equals(EnumInterface $enum): bool;
 
@@ -64,8 +62,6 @@ interface EnumInterface
      * Determines if the enumeration instance value is equal to the given value.
      *
      * @param int|string $value
-     *
-     * @return bool
      */
     public function is($value): bool;
 }

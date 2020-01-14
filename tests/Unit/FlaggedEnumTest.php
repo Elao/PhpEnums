@@ -10,6 +10,8 @@
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\Exception\InvalidValueException;
+use Elao\Enum\Exception\LogicException;
 use Elao\Enum\Tests\Fixtures\Enum\AlarmScheduleType;
 use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
@@ -17,12 +19,11 @@ use PHPUnit\Framework\TestCase;
 
 class FlaggedEnumTest extends TestCase
 {
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage "1" is not an acceptable value
-     */
     public function testGetThrowExceptionWhenValueIsNotInteger()
     {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('"1" is not an acceptable value');
+
         Permissions::get('1');
     }
 
@@ -52,12 +53,11 @@ class FlaggedEnumTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\LogicException
-     * @expectedExceptionMessage Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum" is not a bit flag.
-     */
     public function testThrowExceptionWhenBitmaskIsInvalid()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum" is not a bit flag.');
+
         InvalidFlagsEnum::get(InvalidFlagsEnum::FIRST);
     }
 
@@ -163,12 +163,11 @@ class FlaggedEnumTest extends TestCase
         $this->assertTrue($result->hasFlag(Permissions::READ));
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage 8 is not an acceptable value
-     */
     public function testThrowExceptionWhenWithInvalidFlags()
     {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('8 is not an acceptable value');
+
         $value = Permissions::get(Permissions::READ);
         $value->withFlags(Permissions::ALL + 1);
     }
@@ -192,12 +191,11 @@ class FlaggedEnumTest extends TestCase
         $this->assertSame(Permissions::NONE, $result->getValue());
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\InvalidValueException
-     * @expectedExceptionMessage 99 is not an acceptable value
-     */
     public function testThrowExceptionWhenInvalidFlagsRemoved()
     {
+        $this->expectException(InvalidValueException::class);
+        $this->expectExceptionMessage('99 is not an acceptable value');
+
         $value = Permissions::get(Permissions::ALL);
         $value->withoutFlags(99);
     }

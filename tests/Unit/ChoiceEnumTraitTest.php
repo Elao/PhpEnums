@@ -12,6 +12,7 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\ChoiceEnumTrait;
 use Elao\Enum\Enum;
+use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\ReadableEnum;
 use PHPUnit\Framework\TestCase;
@@ -41,21 +42,19 @@ class ChoiceEnumTraitTest extends TestCase
         ], FlaggedEnumWithChoiceEnumTrait::readables());
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\LogicException
-     * @expectedExceptionMessage The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.
-     */
     public function testValuesThrowsOnNonReadable()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.');
+
         NonReadableEnumWithChoiceEnumTrait::values();
     }
 
-    /**
-     * @expectedException \Elao\Enum\Exception\LogicException
-     * @expectedExceptionMessage The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.
-     */
     public function testReadableThrowsOnNonReadable()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.');
+
         NonReadableEnumWithChoiceEnumTrait::readables();
     }
 }

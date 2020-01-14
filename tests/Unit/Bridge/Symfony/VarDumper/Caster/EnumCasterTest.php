@@ -26,12 +26,12 @@ class EnumCasterTest extends TestCase
 {
     use VarDumperTestTrait;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         putenv('DUMP_LIGHT_ARRAY=1');
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         putenv('DUMP_LIGHT_ARRAY');
     }
@@ -148,7 +148,7 @@ EODUMP;
 
         $expectedDump = <<<'EODUMP'
 """
-<header></header><boundary><abbr title="Elao\Enum\Tests\Fixtures\Enum\Permissions" class=sf-dump-note>Permissions</abbr> {<samp>\n
+<header></header><boundary>%aElao\Enum\Tests\Fixtures\Enum\Permissions%a {<samp>\n
   <span class=sf-dump-meta>&#9873; </span>: <span class=sf-dump-const title="7">EXECUTE | WRITE | READ</span>\n
   <span class=sf-dump-meta>readable</span>: "<span class=sf-dump-str title="15 characters">All permissions</span>"\n
   #<span class=sf-dump-protected title="Protected property">value</span>: <span class=sf-dump-num>7</span>\n
@@ -162,7 +162,7 @@ EODUMP;
 """
 EODUMP;
 
-        $this->assertDumpEquals($expectedDump, $dump);
+        $this->assertDumpMatchesFormat($expectedDump, $dump);
     }
 
     private function dumpAsHtml($value): string

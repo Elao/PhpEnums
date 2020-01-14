@@ -27,22 +27,22 @@ matrix:
         env:
           - SYMFONY_VERSION="3.4.*"
           - COMPOSER_FLAGS="--prefer-lowest"
-          - SYMFONY_PHPUNIT_VERSION=5.7
-
+          - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
+          - SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1
+      - php: 7.3
+        env:
+          - SYMFONY_VERSION="4.4.*"
+          - CHECK_CODE_STYLE="yes"
       # most recent versions:
       - php: 7.3
         env:
-          - SYMFONY_VERSION="4.2.*"
-      - php: 7.3
-        env:
-          - SYMFONY_VERSION="4.3.*"
+          - SYMFONY_VERSION="5.0.*"
           - CHECK_CODE_STYLE="yes"
 
-      # bleeding edge (unreleased dev versions where failures are allowed):
-      - php: 7.4snapshot
-        env: SYMFONY_VERSION="4.4.*"
-    allow_failures:
-      - php: 7.4snapshot
+      - php: 7.4
+        env:
+          - SYMFONY_VERSION="5.0.*"
+          - CHECK_CODE_STYLE="yes"
 
 cache:
   directories:

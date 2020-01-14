@@ -13,13 +13,14 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Serializer\Normalizer;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 class EnumNormalizerTest extends TestCase
 {
     /** @var EnumNormalizer */
     private $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->normalizer = new EnumNormalizer();
     }
@@ -47,11 +48,10 @@ class EnumNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
-     */
     public function testsDenormalizeWithWrongValueThrowsException()
     {
+        $this->expectException(UnexpectedValueException::class);
+
         $this->assertSame(
             Gender::get(Gender::MALE),
             $this->normalizer->denormalize('invalid_data', Gender::class)

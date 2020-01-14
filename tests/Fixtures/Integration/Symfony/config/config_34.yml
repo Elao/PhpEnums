@@ -13,7 +13,6 @@ twig:
     strict_variables: false
     paths:
         '%kernel.project_dir%/templates': tests
-    exception_controller: null
 
 doctrine:
     dbal:

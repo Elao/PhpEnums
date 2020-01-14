@@ -30,7 +30,11 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getProjectDir() . '/config/config.yml');
+        if (self::MAJOR_VERSION < 4) {
+            $loader->load($this->getProjectDir() . '/config/config_34.yml');
+        } else {
+            $loader->load($this->getProjectDir() . '/config/config.yml');
+        }
     }
 
     public function getProjectDir()

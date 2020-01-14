@@ -13,6 +13,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 class EnumTest extends TestCase
 {
@@ -30,12 +31,11 @@ class EnumTest extends TestCase
         $this->assertSame([SimpleEnum::class, 'instances'], $constraint->callback);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     * @expectedExceptionMessage The "class" option value must be a class FQCN implementing "Elao\Enum\EnumInterface". "Foo" given.
-     */
     public function testInvalidClassThrowsDefinitionException()
     {
+        $this->expectException(ConstraintDefinitionException::class);
+        $this->expectExceptionMessage('The "class" option value must be a class FQCN implementing "Elao\Enum\EnumInterface". "Foo" given.');
+
         new Enum(\Foo::class);
     }
 
@@ -64,12 +64,11 @@ class EnumTest extends TestCase
         $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $constraint->choices);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     * @expectedExceptionMessage Choice "bar" is not a valid value for enum type "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"
-     */
     public function testInvalidChoiceOptionThrowsDefinitionException()
     {
+        $this->expectException(ConstraintDefinitionException::class);
+        $this->expectExceptionMessage('Choice "bar" is not a valid value for enum type "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"');
+
         new Enum(['class' => SimpleEnum::class, 'choices' => ['bar']]);
     }
 

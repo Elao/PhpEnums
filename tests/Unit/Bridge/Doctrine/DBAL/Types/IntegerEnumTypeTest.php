@@ -24,7 +24,7 @@ class IntegerEnumTypeTest extends TestCase
     /** @var SimpleEnumType */
     protected $type;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Type::addType(SimpleEnumType::NAME, SimpleEnumType::class);
     }
@@ -32,7 +32,7 @@ class IntegerEnumTypeTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->platform = $this->prophesize(AbstractPlatform::class)->reveal();
         $this->type = Type::getType(SimpleEnumType::NAME);

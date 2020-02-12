@@ -127,8 +127,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 $ composer require elao/enum
 ```
 
-Even if you're using the Symfony full stack framework, there is nothing more to do.   
-We won't register anything in the Symfony DIC for now. Simply use provided classes.
+If you're in a Symfony app, you can register the `Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle` bundle.
 
 # Usage
 
@@ -587,28 +586,13 @@ An [argument value resolver](https://symfony.com/doc/current/controller/argument
 seamlessly transform an HTTP request parameter (from route/attributes, query string or post parameters, in this order) 
 into an enum instance by type-hinting the targeted enum in controller action.
 
-Simply register it inside the DIC configuration:
-
-```yaml
-services:
-    Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver:
-        tags:
-          - name: controller.argument_value_resolver 
-            priority: 101 # After the RequestAttributeValueResolver
-```
+The `Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver` is automatically registered by the Symfony Bundle.
 
 ## Symfony Serializer component 
 <a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
 
-Simply register the following normalizer inside the DIC configuration:
-
-```yml
-# config/services.yaml
-services:
-    Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer:
-        public: false
-        tags: ['serializer.normalizer']
-```
+The `Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer` is automatically registered by the Symfony Bundle
+and allows to normalize/denormalize any enumeration to/from its value.
 
 ## Symfony Form component
 <a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>

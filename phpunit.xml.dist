@@ -8,7 +8,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="tests/Fixtures/Integration/Symfony/bootstrap.php"
+         bootstrap="tests/bootstrap.php"
 >
     <php>
         <server name="KERNEL_CLASS" value="AppKernel" />

@@ -39,6 +39,7 @@ Table of Contents
     * [Shortcuts](#shortcuts)
   * [Integrations](#integrations)
     * [Doctrine](#doctrine)
+      * [In a Symfony app](#in-a-symfony-app)
       * [Create the DBAL type](#create-the-dbal-type)
       * [Register the DBAL type](#register-the-dbal-type)
         * [Manually](#manually)
@@ -456,6 +457,20 @@ You can store the raw value of an enumeration in the database, but still manipul
 
 However, this library can help you by providing abstract classes for both string and integer based enumerations.
 
+### In a Symfony app
+
+This configuration is equivalent to the following sections explaining how to create a custom Doctrine DBAL type for your enums. 
+
+```yaml
+elao_enum:
+    doctrine:
+        types:
+            App\Enum\GenderEnum: gender
+            App\Enum\Permissions: { name: permissions, type: int } # values are stored as integers
+```
+
+It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
+
 ### Create the DBAL type
 
 First, create your DBAL type by extending either `AbstractEnumType` (string based enum) or `AbstractIntegerEnumType` (integer based enum, for flagged enums for instance):
@@ -519,7 +534,6 @@ $conn->getDatabasePlatform()->registerDoctrineTypeMapping(GenderEnumType::NAME, 
 refs: 
 
 - [Registering custom Mapping Types](https://symfony.com/doc/current/doctrine/dbal.html#registering-custom-mapping-types)
-- [Registering custom Mapping Types in the SchemaTool](https://symfony.com/doc/current/doctrine/dbal.html#registering-custom-mapping-types-in-the-schematool)
 
 ```yml
 # config/packages/doctrine.yaml
@@ -527,8 +541,6 @@ doctrine:
     dbal:
         types:
             gender: App\Doctrine\DBAL\Types\GenderEnumType
-        mapping_types:
-            gender: string
 ```
 
 ### Mapping

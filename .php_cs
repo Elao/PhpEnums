@@ -11,6 +11,7 @@ EOF;
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude('tests/Fixtures/Integration/Symfony/var')
+    ->exclude('tests/Fixtures/Bridge/Doctrine/DBAL/Types/TypesDumperTest')
 ;
 
 return PhpCsFixer\Config::create()

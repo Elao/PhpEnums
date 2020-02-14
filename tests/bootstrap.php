@@ -17,9 +17,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 date_default_timezone_set('UTC');
 
-$loader = require __DIR__ . '/../../../../vendor/autoload.php';
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
-require __DIR__ . '/src/AppKernel.php';
+const FIXTURES_DIR = __DIR__ . '/Fixtures';
+
+// Prepare integration tests:
+require __DIR__ . '/Fixtures/Integration/Symfony/src/AppKernel.php';
 
 // Empty generated symfony cache
 (new Filesystem())->remove(__DIR__ . '/var/cache');

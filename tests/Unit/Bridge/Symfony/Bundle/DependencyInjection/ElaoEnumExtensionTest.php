@@ -10,9 +10,12 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
+use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
@@ -27,6 +30,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
 
         self::assertTrue($container->hasDefinition(EnumNormalizer::class), 'normalizer is loaded');
         self::assertTrue($container->hasDefinition(EnumValueResolver::class), 'arg resolver is loaded');
+        self::assertFalse($container->hasParameter('.elao_enum.doctrine_types'), 'no doctrine type are registered');
     }
 
     public function testDisabledArgValueResolver()
@@ -43,7 +47,36 @@ abstract class ElaoEnumExtensionTest extends TestCase
         self::assertFalse($container->hasDefinition(EnumNormalizer::class), 'normalizer is removed');
     }
 
-    protected function createContainerFromFile($file): ContainerBuilder
+    public function testDoctrineTypes()
+    {
+        $container = $this->createContainerFromFile('doctrine_types');
+
+        self::assertEquals([
+            [Gender::class, 'string', 'gender'],
+            [Permissions::class, 'int', 'permissions'],
+        ], $container->getParameter('.elao_enum.doctrine_types'));
+    }
+
+    public function testDoctrineTypesArePrepended()
+    {
+        $container = $this->createContainerFromFile('doctrine_types', false);
+        /** @var ElaoEnumExtension $ext */
+        $ext = $container->getExtension('elao_enum');
+        $ext->prepend($container);
+
+        self::assertEquals([
+            [
+                'dbal' => [
+                    'types' => [
+                        'gender' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
+                        'permissions' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
+                    ],
+                ],
+            ],
+        ], $container->getExtensionConfig('doctrine'));
+    }
+
+    protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder
     {
         $container = $this->createContainer();
         $container->registerExtension(new ElaoEnumExtension());
@@ -53,7 +86,9 @@ abstract class ElaoEnumExtensionTest extends TestCase
         $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->getCompilerPassConfig()->setAfterRemovingPasses([]);
 
-        $container->compile();
+        if ($compile) {
+            $container->compile();
+        }
 
         return $container;
     }
@@ -63,7 +98,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
     protected function createContainer(): ContainerBuilder
     {
         return new ContainerBuilder(new EnvPlaceholderParameterBag([
-            'kernel.bundles' => [],
+            'kernel.bundles' => ['DoctrineBundle' => DoctrineBundle::class],
             'kernel.cache_dir' => self::FIXTURES_PATH . '/cache_dir',
         ]));
     }

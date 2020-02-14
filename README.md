@@ -804,8 +804,9 @@ $provider = new EnumProvider([
 
 The provider exposes two public methods:
 
-* `EnumProvider::enum(string $enumValueShortcut): EnumInterface` in order to generate deterministic enums
-* `EnumProvider::randomEnum(string $enumClassOrAlias): EnumInterface` in order to generate random enums
+* `EnumProvider::enum(string $enumValueShortcut): EnumInterface` in order to generate a deterministic enum instance
+* `EnumProvider::randomEnum(string $enumClassOrAlias): EnumInterface` in order to generate a random enum instance
+* `EnumProvider::randomEnums(string $enumClassOrAlias, int $count, bool $variable = true, int $min = 0): array` in order to generate an array of random (unique) enum instances
 
 ### Usage with Alice
 

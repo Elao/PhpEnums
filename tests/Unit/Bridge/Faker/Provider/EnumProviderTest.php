@@ -90,6 +90,29 @@ class EnumProviderTest extends TestCase
         $enumProvider->enum('Simple::FIRST|SECOND');
     }
 
+    public function testRandomEnums()
+    {
+        $enumProvider = $this->getDefaultProvider();
+        $nbOfSimpleValues = \count(SimpleEnum::values());
+
+        // Test generating all values in random order (no duplicates)
+        $simples = $enumProvider->randomEnums('Simple', $nbOfSimpleValues, false);
+        self::assertEmpty(array_udiff(
+            $simples,
+            SimpleEnum::instances(),
+            static function ($a, $b) { return $a === $b; }
+        ), 'contains all unique enumeration values');
+
+        $count = \count($enumProvider->randomEnums('Simple', $max = 1));
+        self::assertTrue($count >= 0, 'at least 1 variable nb of enum generated');
+
+        $count = \count($enumProvider->randomEnums('Simple', $max = 3, true, $min = 1));
+        self::assertTrue($count >= $min && $count <= $max, "variable nb of enum generated beween $min and $max");
+
+        $count = \count($enumProvider->randomEnums('Simple', $nbOfSimpleValues + 1, false));
+        self::assertSame($count, $nbOfSimpleValues, 'won\'t exceed maximum nb of values for the enum');
+    }
+
     private function getDefaultProvider(): EnumProvider
     {
         return new EnumProvider([

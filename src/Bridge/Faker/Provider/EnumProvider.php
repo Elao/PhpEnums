@@ -91,6 +91,42 @@ class EnumProvider
     }
 
     /**
+     * Generate an array of unique enum instances between $count & $min.
+     *
+     * @param int  $count    The max nb of enums to generate
+     * @param bool $variable If false, the exact $count of enums will be generated
+     *                       (unless there is no more unique value available)
+     * @param int  $min      The min nb of enums to generate, if variable
+     *
+     * @return EnumInterface[]
+     */
+    public function randomEnums(string $enumClassOrAlias, int $count, bool $variable = true, int $min = 0): array
+    {
+        $enums = [];
+
+        if ($variable) {
+            $count = random_int($min, $count);
+        }
+
+        /** @var EnumInterface|string $class */
+        $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;
+        $this->ensureEnumClass($class);
+
+        $instances = $class::instances();
+
+        while ($count > 0 && !empty($instances)) {
+            $randomRank = random_int(0, \count($instances) - 1);
+            $enums[] = $instances[$randomRank];
+            unset($instances[$randomRank]);
+            $instances = array_values($instances);
+
+            --$count;
+        }
+
+        return $enums;
+    }
+
+    /**
      * Make sure that $enumClass is a proper Enum class. Throws exception otherwise.
      *
      * @throws InvalidArgumentException When $enumClass is not a class or is not a proper Enum

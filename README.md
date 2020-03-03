@@ -771,10 +771,10 @@ App\Entity\User:
         gender:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
                 class: MyApp\Enum\Gender
-                callback: ['allowedValues']
+                callback: 'allowedValues'
 ```
 
-Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed instances (:warning: should return values if `asValue` is set to `true`).
+Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed values or instances.
 
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 

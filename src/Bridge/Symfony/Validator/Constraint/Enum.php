@@ -68,7 +68,12 @@ class Enum extends Choice
 
         // only set the callback if no choice list set
         if (!\is_array($this->choices)) {
-            $this->callback = $this->asValue ? [$this->class, 'values'] : [$this->class, 'instances'];
+            // Check for a user provided callback first
+            if ($this->callback) {
+                $this->callback = [$this->class, $this->callback];
+            } else {
+                $this->callback = $this->asValue ? [$this->class, 'values'] : [$this->class, 'instances'];
+            }
         }
     }
 

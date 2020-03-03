@@ -31,4 +31,12 @@ class SimpleEnum extends Enum
             self::SECOND,
         ];
     }
+
+    public static function allowedValues(): array
+    {
+        return [
+            self::get(self::FIRST),
+            self::get(self::SECOND),
+        ];
+    }
 }

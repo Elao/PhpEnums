@@ -17,7 +17,7 @@ final class Gender extends Enum
 {
     use AutoDiscoveredValuesTrait;
     
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 }
@@ -141,14 +141,14 @@ use Elao\Enum\Enum;
 
 final class Gender extends Enum
 {
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 
     public static function values(): array
     {
         return [
-            self::UNKNOW, 
+            self::UNKNOWN, 
             self::MALE, 
             self::FEMALE
         ];
@@ -170,7 +170,7 @@ final class Gender extends Enum
 {
     use AutoDiscoveredValuesTrait;
     
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 }
@@ -199,14 +199,14 @@ use Elao\Enum\ReadableEnum;
 
 final class Gender extends ReadableEnum
 {
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 
     public static function values(): array
     {
         return [
-            self::UNKNOW,
+            self::UNKNOWN,
             self::MALE,
             self::FEMALE,
         ];
@@ -215,7 +215,7 @@ final class Gender extends ReadableEnum
     public static function readables(): array
     {
         return [
-            self::UNKNOW => 'Unknown',
+            self::UNKNOWN => 'Unknown',
             self::MALE => 'Male',
             self::FEMALE => 'Female',
         ];
@@ -246,7 +246,7 @@ final class Gender extends ReadableEnum
     public static function readables(): array
     {
         return [
-            self::UNKNOW => 'enum.gender.unknown',
+            self::UNKNOWN => 'enum.gender.unknown',
             self::MALE => 'enum.gender.male',
             self::FEMALE => 'enum.gender.female',
         ];
@@ -285,14 +285,14 @@ final class Gender extends ReadableEnum
 {
     use ChoiceEnumTrait;
 
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 
     public static function choices(): array
     {
         return [
-            self::UNKNOW => 'Unknown',
+            self::UNKNOWN => 'Unknown',
             self::MALE => 'Male',
             self::FEMALE => 'Female',
         ];
@@ -312,7 +312,7 @@ use Elao\Enum\SimpleChoiceEnum;
 
 final class Gender extends SimpleChoiceEnum
 {   
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
 }
@@ -433,13 +433,13 @@ We recommend you to use this method, if and only if, you and your team use an ID
 <?php
 
 /**
- * @method static Gender UNKNOW()
+ * @method static Gender UNKNOWN()
  * @method static Gender MALE()
  * @method static Gender FEMALE()
  */
 final class Gender extends ReadableEnum
 {
-    const UNKNOW = 'unknown';
+    const UNKNOWN = 'unknown';
     const MALE = 'male';
     const FEMALE = 'female';
     

@@ -128,7 +128,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 $ composer require elao/enum
 ```
 
-If you're in a Symfony app, you can register the `Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle` bundle.
+In a Symfony app using Flex, the `Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle` bundle should be registered automatically.
 
 # Usage
 

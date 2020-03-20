@@ -24,11 +24,18 @@ class EnumTest extends TestCase
         $this->assertSame(SimpleEnum::class, $constraint->class);
     }
 
-    public function testNoChoicesSetsCallback()
+    public function testNoChoicesSetsDefaultCallback()
     {
         $constraint = new Enum(SimpleEnum::class);
 
         $this->assertSame([SimpleEnum::class, 'instances'], $constraint->callback);
+    }
+
+    public function testNoChoicesSetsUserCallback()
+    {
+        $constraint = new Enum(['class' => SimpleEnum::class, 'callback' => 'allowedValues']);
+
+        $this->assertSame([SimpleEnum::class, 'allowedValues'], $constraint->callback);
     }
 
     public function testInvalidClassThrowsDefinitionException()

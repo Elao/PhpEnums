@@ -23,8 +23,7 @@ class EnumTypeTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        static::bootKernel();
-        $kernel = static::$kernel;
+        $kernel = static::bootKernel();
         $container = $kernel->getContainer();
         $this->em = $container->get('doctrine.orm.entity_manager');
         (new ORMPurger($this->em))->purge();

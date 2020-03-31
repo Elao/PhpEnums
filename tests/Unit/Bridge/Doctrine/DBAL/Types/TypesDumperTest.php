@@ -39,6 +39,7 @@ class TypesDumperTest extends TestCase
         $this->dumper->dumpToFile($this->dumpPath, [
             ['Foo\Bar\Baz', 'string', 'baz'],
             ['Foo\Bar\Qux', 'int', 'qux'],
+            ['Foo\Baz\Foo', 'int', 'foo'],
         ]);
 
         self::assertFileEquals(self::FIXTURES_DIR . '/dumped_types.php', $this->dumpPath);

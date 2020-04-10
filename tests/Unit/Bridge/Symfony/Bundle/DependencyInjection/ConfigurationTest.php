@@ -33,11 +33,19 @@ class ConfigurationTest extends TestCase
         $config = $processor->processConfiguration(new Configuration(), [[
             'argument_value_resolver' => false,
             'serializer' => false,
+            'translation_extractor' => false,
         ]]);
 
         $this->assertEquals([
             'argument_value_resolver' => ['enabled' => false],
             'serializer' => ['enabled' => false],
+            'translation_extractor' => [
+                'enabled' => false,
+                'paths' => [],
+                'domain' => 'messages',
+                'filename_pattern' => '*.php',
+                'ignore' => [],
+            ],
         ], $config);
     }
 
@@ -78,11 +86,40 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
+    public function testTranslationExtractorConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'translation_extractor' => [
+                'enabled' => true,
+                'paths' => ['%kernel.project_dir%/src/Enum' => 'App\Enum'],
+                'domain' => 'messages_test',
+                'filename_pattern' => '*Enum.php',
+                'ignore' => ['%kernel.project_dir%/src/Enum/Ignored'],
+            ],
+        ]]);
+
+        $this->assertEquals([
+            'enabled' => true,
+            'paths' => ['%kernel.project_dir%/src/Enum' => ['namespace' => 'App\Enum']],
+            'domain' => 'messages_test',
+            'filename_pattern' => '*Enum.php',
+            'ignore' => ['%kernel.project_dir%/src/Enum/Ignored'],
+        ], $config['translation_extractor']);
+    }
+
     private function getDefaultConfig(): array
     {
         return [
             'argument_value_resolver' => ['enabled' => true],
             'serializer' => ['enabled' => true],
+            'translation_extractor' => [
+                'enabled' => false,
+                'paths' => [],
+                'domain' => 'messages',
+                'filename_pattern' => '*.php',
+                'ignore' => [],
+            ],
         ];
     }
 }

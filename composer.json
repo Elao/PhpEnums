@@ -47,6 +47,7 @@
         "symfony/framework-bundle": "^3.4|^4.4|^5.0",
         "symfony/phpunit-bridge": "^3.4|^4.4|^5.0",
         "symfony/serializer": "^3.4|^4.4|^5.0",
+        "symfony/translation": "^3.4|^4.4|^5.0",
         "symfony/twig-bundle": "^3.4|^4.4|^5.0",
         "symfony/validator": "^3.4|^4.4|^5.0",
         "symfony/yaml": "^3.4|^4.4|^5.0"

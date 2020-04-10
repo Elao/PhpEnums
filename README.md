@@ -270,6 +270,20 @@ $enum = Gender::get(Gender::MALE);
 $translator->trans($enum); // returns 'Male'
 ```
 
+If you want to extract and update the translations automatically using the [translation extractor command](https://symfony.com/doc/current/translation.html#extracting-translation-contents-and-updating-catalogs-automatically) you can use the provided custom extractor:
+
+```yaml
+# config/packages/elao_enum.yaml
+elao_enum:
+    translation_extractor:
+        # mandatory, provides the paths where to search for ReadableEnum (will also search subdirectories)
+        paths:
+            '%kernel.project_dir%/src/Enum': App\Enum
+        domain: messages # optional, specifies the domain for translations
+        filename_pattern: '*.php' # optional, specifies the filename pattern when searching in folders
+        ignore: [] # optional, specifies the folders/files to ignore (eg. '%kernel.project_dir%/src/Enum/Ignore/*') 
+```
+
 ## Choice enums
 
 Choice enums are a more opinionated version of readable enums. Using the `ChoiceEnumTrait` in your enum, you'll only 

@@ -13,6 +13,7 @@ namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
+use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -62,6 +63,12 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition(EnumNormalizer::class);
         }
 
+        if (!$this->isConfigEnabled($container, $config['translation_extractor'])) {
+            $container->removeDefinition(EnumExtractor::class);
+        } else {
+            $this->registerTranslationExtractorConfiguration($config['translation_extractor'], $container);
+        }
+
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter('.elao_enum.doctrine_types', array_map(static function (string $k, array $v): array {
                 return [$k, $v['type'], $v['name']];
@@ -77,5 +84,15 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function getXsdValidationBasePath()
     {
         return __DIR__ . '/../Resources/config/schema';
+    }
+
+    private function registerTranslationExtractorConfiguration(array $config, ContainerBuilder $container)
+    {
+        $definition = $container->getDefinition(EnumExtractor::class);
+
+        $definition->replaceArgument(0, $config['paths']);
+        $definition->replaceArgument(1, $config['domain']);
+        $definition->replaceArgument(2, $config['filename_pattern']);
+        $definition->replaceArgument(3, $config['ignore']);
     }
 }

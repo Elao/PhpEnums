@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:elao-enum="http://elao.com/schema/dic/elao_enum"
+    xsi:schemaLocation="http://elao.com/schema/dic/elao_enum http://elao.com/schema/dic/elao_enum/elao_enum.xsd">
+
+    <elao-enum:config>
+        <elao-enum:translation_extractor enabled="true" domain="messages_test" filename_pattern="*Enum.php">
+            <elao-enum:path path="/var/www/elao/src/Enum1" namespace="App\Enum1" />
+            <elao-enum:path path="/var/www/elao/src/Enum2" namespace="App\Enum2" />
+            <elao-enum:ignore>/var/www/elao/src/Enum/Ignore1</elao-enum:ignore>
+            <elao-enum:ignore>/var/www/elao/src/Enum/Ignore2</elao-enum:ignore>
+        </elao-enum:translation_extractor>
+    </elao-enum:config>
+</container>

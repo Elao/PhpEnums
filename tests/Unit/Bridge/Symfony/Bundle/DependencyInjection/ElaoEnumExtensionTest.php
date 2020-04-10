@@ -14,6 +14,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
+use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition(EnumNormalizer::class), 'normalizer is loaded');
         self::assertTrue($container->hasDefinition(EnumValueResolver::class), 'arg resolver is loaded');
         self::assertFalse($container->hasParameter('.elao_enum.doctrine_types'), 'no doctrine type are registered');
+        self::assertFalse($container->hasDefinition(EnumExtractor::class), 'translation extractor is removed');
     }
 
     public function testDisabledArgValueResolver()
@@ -74,6 +76,25 @@ abstract class ElaoEnumExtensionTest extends TestCase
                 ],
             ],
         ], $container->getExtensionConfig('doctrine'));
+    }
+
+    public function testTranslationExtractor()
+    {
+        $container = $this->createContainerFromFile('translation_extractor');
+
+        self::assertTrue($container->hasDefinition(EnumExtractor::class), 'translation extractor is loaded');
+        self::assertEquals([
+            [
+                '/var/www/elao/src/Enum1' => ['namespace' => 'App\Enum1'],
+                '/var/www/elao/src/Enum2' => ['namespace' => 'App\Enum2'],
+            ],
+            'messages_test',
+            '*Enum.php',
+            [
+                '/var/www/elao/src/Enum/Ignore1',
+                '/var/www/elao/src/Enum/Ignore2',
+            ],
+        ], $container->getDefinition(EnumExtractor::class)->getArguments());
     }
 
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder

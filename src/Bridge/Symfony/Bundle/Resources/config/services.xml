@@ -14,5 +14,13 @@
         <service id="Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer">
             <tag name="serializer.normalizer" priority="-800" />
         </service>
+
+        <service id="Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor">
+            <argument /> <!-- Path to namespace mappings -->
+            <argument /> <!-- Domain for extracted translations -->
+            <argument /> <!-- Filename pattern to search for files -->
+            <argument /> <!-- Ignore paths/files -->
+            <tag name="translation.extractor" alias="elao_enum" />
+        </service>
     </services>
 </container>

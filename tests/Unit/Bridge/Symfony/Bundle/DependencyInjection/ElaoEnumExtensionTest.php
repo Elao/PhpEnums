@@ -85,8 +85,8 @@ abstract class ElaoEnumExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition(EnumExtractor::class), 'translation extractor is loaded');
         self::assertEquals([
             [
-                '/var/www/elao/src/Enum1' => ['namespace' => 'App\Enum1'],
-                '/var/www/elao/src/Enum2' => ['namespace' => 'App\Enum2'],
+                'App\Enum1' => '/var/www/elao/src/Enum1',
+                'App\Enum2' => '/var/www/elao/src/Enum2',
             ],
             'messages_test',
             '*Enum.php',

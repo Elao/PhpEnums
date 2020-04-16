@@ -92,7 +92,7 @@ class ConfigurationTest extends TestCase
         $config = $processor->processConfiguration(new Configuration(), [[
             'translation_extractor' => [
                 'enabled' => true,
-                'paths' => ['%kernel.project_dir%/src/Enum' => 'App\Enum'],
+                'paths' => ['App\Enum' => '%kernel.project_dir%/src/Enum'],
                 'domain' => 'messages_test',
                 'filename_pattern' => '*Enum.php',
                 'ignore' => ['%kernel.project_dir%/src/Enum/Ignored'],
@@ -101,7 +101,7 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals([
             'enabled' => true,
-            'paths' => ['%kernel.project_dir%/src/Enum' => ['namespace' => 'App\Enum']],
+            'paths' => ['App\Enum' => '%kernel.project_dir%/src/Enum'],
             'domain' => 'messages_test',
             'filename_pattern' => '*Enum.php',
             'ignore' => ['%kernel.project_dir%/src/Enum/Ignored'],

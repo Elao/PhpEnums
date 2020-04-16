@@ -1,8 +1,8 @@
 elao_enum:
     translation_extractor:
         paths:
-            /var/www/elao/src/Enum1: App\Enum1
-            /var/www/elao/src/Enum2: { namespace: App\Enum2 }
+            App\Enum1: /var/www/elao/src/Enum1
+            App\Enum2: /var/www/elao/src/Enum2
         filename_pattern: '*Enum.php'
         domain: messages_test
         ignore:

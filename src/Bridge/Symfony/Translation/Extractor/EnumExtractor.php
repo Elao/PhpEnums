@@ -21,7 +21,7 @@ class EnumExtractor implements ExtractorInterface
     /**
      * @var array<string, string>
      */
-    private $paths;
+    private $namespacesToDirs;
 
     /**
      * @var string
@@ -49,18 +49,18 @@ class EnumExtractor implements ExtractorInterface
     private $hasRun = false;
 
     /**
-     * @param array<string, string> $paths
+     * @param array<string, string> $namespacesToDirs
      * @param array<string>         $ignore
      */
-    public function __construct(array $paths, string $domain, string $fileNamePattern, array $ignore)
+    public function __construct(array $namespacesToDirs, string $domain, string $fileNamePattern, array $ignore)
     {
-        $this->paths = $paths;
+        $this->namespacesToDirs = $namespacesToDirs;
         $this->domain = $domain;
         $this->fileNamePattern = $fileNamePattern;
         $this->ignore = $ignore;
     }
 
-    public function setPrefix($prefix): void
+    public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
     }
@@ -68,7 +68,7 @@ class EnumExtractor implements ExtractorInterface
     /**
      * @param array|string $resource
      */
-    public function extract($resource, MessageCatalogue $catalog): void
+    public function extract($resource, MessageCatalogue $catalog)
     {
         // Ensure it runs only once.
         if ($this->hasRun) {
@@ -78,9 +78,9 @@ class EnumExtractor implements ExtractorInterface
 
         $finder = new Finder();
 
-        foreach ($this->paths as $dir => $settings) {
+        foreach ($this->namespacesToDirs as $namespace => $dir) {
             // Normalize namespace.
-            $namespace = rtrim($settings['namespace'], '\\') . '\\';
+            $namespace = rtrim($namespace, '\\') . '\\';
 
             /** @var SplFileInfo $file */
             foreach ($finder->files()->name($this->fileNamePattern)->in($dir) as $file) {
@@ -106,17 +106,16 @@ class EnumExtractor implements ExtractorInterface
                 }
 
                 $readables = $class::readables();
-                foreach ($readables as $k => $enum) {
-                    $enum = (string) $enum;
-                    if ('' === $enum) {
+                foreach ($readables as $enumValue => $translationKey) {
+                    if ('' === $translationKey) {
                         continue;
                     }
 
-                    $catalog->set($enum, $this->prefix . $enum, $this->domain);
-                    $metadata = $catalog->getMetadata($enum, $this->domain) ?? [];
+                    $catalog->set($translationKey, $this->prefix . $translationKey, $this->domain);
+                    $metadata = $catalog->getMetadata($translationKey, $this->domain) ?? [];
                     $normalizedFilename = preg_replace('{[\\\\/]+}', '/', $file->getPathName());
-                    $metadata['sources'][] = $normalizedFilename . ':' . $k;
-                    $catalog->setMetadata($enum, $metadata, $this->domain);
+                    $metadata['sources'][] = $normalizedFilename . ':' . $enumValue;
+                    $catalog->setMetadata($translationKey, $metadata, $this->domain);
                 }
             }
         }

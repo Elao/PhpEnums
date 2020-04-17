@@ -44,6 +44,13 @@ matrix:
           - SYMFONY_VERSION="5.0.*"
           - CHECK_CODE_STYLE="yes"
 
+      # bleeding edge (unreleased dev versions where failures are allowed):
+      - php: 7.4
+        env: SYMFONY_VERSION="5.1.*"
+
+    allow_failures:
+      - env: SYMFONY_VERSION="5.1.*"
+
 cache:
   directories:
     - $HOME/.composer/cache

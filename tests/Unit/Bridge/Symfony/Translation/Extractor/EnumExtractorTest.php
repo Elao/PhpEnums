@@ -17,7 +17,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class EnumExtractorTest extends TestCase
 {
-    private $dirToNamespaceMap = [__DIR__ . '/Enum' => ['namespace' => 'Elao\Enum\Tests\Unit\Bridge\Symfony\Translation\Extractor\Enum']];
+    private $namespaceToDirMap = ['Elao\Enum\Tests\Unit\Bridge\Symfony\Translation\Extractor\Enum' => __DIR__ . '/Enum'];
 
     /** @var EnumExtractor */
     private $extractor;
@@ -25,7 +25,7 @@ class EnumExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->extractor = new EnumExtractor(
-            $this->dirToNamespaceMap,
+            $this->namespaceToDirMap,
             'messages_test',
             '*Enum.php',
             [__DIR__ . '/Enum/Ignore/*']
@@ -49,7 +49,7 @@ class EnumExtractorTest extends TestCase
     {
         $this->expectException(DirectoryNotFoundException::class);
 
-        $extractor = new EnumExtractor(['foo' => ['namespace' => 'bar']], 'domain', '*.php', []);
+        $extractor = new EnumExtractor(['bar' => 'foo'], 'domain', '*.php', []);
         $extractor->extract('baz', new MessageCatalogue('en'));
     }
 

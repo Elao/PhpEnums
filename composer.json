@@ -34,6 +34,7 @@
         "php": ">=7.0"
     },
     "require-dev": {
+        "api-platform/core": "^2.5.1",
         "doctrine/data-fixtures": "^1.2",
         "doctrine/doctrine-bundle": "^1.4|^2.0",
         "doctrine/orm": "^2.4",

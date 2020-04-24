@@ -17,9 +17,7 @@ use Symfony\Component\PropertyInfo\Type;
 
 final class ElaoEnumType implements TypeFactoryInterface
 {
-    /**
-     * @var TypeFactoryInterface
-     */
+    /** @var TypeFactoryInterface */
     private $decorated;
 
     public function __construct(TypeFactoryInterface $decorated)

@@ -56,7 +56,7 @@ Table of Contents
     * [Faker](#faker)
       * [Usage with Alice](#usage-with-alice)
     * [Api-Platform](#api-platform)
-      * [OpenApi / Swagger](#OpenApi-/-Swagger)
+      * [OpenApi / Swagger](#openapi--swagger)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -871,7 +871,8 @@ MyEntity:
 ## Api-Platform
 
 ### OpenApi / Swagger
-The PhpEnums library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using this library. 
+
+The PhpEnums library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using the Symfony bundle.
 
 # API
 

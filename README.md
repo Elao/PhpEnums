@@ -55,6 +55,8 @@ Table of Contents
     * [Symfony VarDumper component](#symfony-vardumper-component)
     * [Faker](#faker)
       * [Usage with Alice](#usage-with-alice)
+    * [Api-Platform](#api-platform)
+      * [OpenApi / Swagger](#OpenApi-/-Swagger)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -865,6 +867,11 @@ MyEntity:
 ```
 
 > 📝 `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
+
+## Api-Platform
+
+### OpenApi / Swagger
+The PhpEnums library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using this library. 
 
 # API
 

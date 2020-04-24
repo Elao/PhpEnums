@@ -60,6 +60,7 @@ before_install:
   - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini || true; fi;
   - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - if [[ "$CHECK_CODE_STYLE" != "yes" ]]; then composer remove "friendsofphp/php-cs-fixer" --no-update --no-interaction --dev; fi;
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then composer remove "api-platform/core" --no-update --no-interaction --dev; fi;
 
 install:
   - composer update --prefer-dist --no-interaction --optimize-autoloader --prefer-stable --no-progress $COMPOSER_FLAGS

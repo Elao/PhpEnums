@@ -22,5 +22,9 @@
             <argument /> <!-- Ignore paths/files -->
             <tag name="translation.extractor" alias="elao_enum" />
         </service>
+
+        <service id="Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType" decorates="api_platform.json_schema.type_factory">
+            <argument type="service" id="Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType.inner" />
+        </service>
     </services>
 </container>

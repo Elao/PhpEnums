@@ -10,6 +10,8 @@
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
+use ApiPlatform\Core\JsonSchema\TypeFactory;
+use Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
@@ -67,6 +69,10 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition(EnumExtractor::class);
         } else {
             $this->registerTranslationExtractorConfiguration($config['translation_extractor'], $container);
+        }
+
+        if (!class_exists(TypeFactory::class)) {
+            $container->removeDefinition(ElaoEnumType::class);
         }
 
         if ($types = $config['doctrine']['types'] ?? false) {

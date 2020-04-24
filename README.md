@@ -278,7 +278,7 @@ elao_enum:
     translation_extractor:
         # mandatory, provides the namespace to path mappings where to search for ReadableEnum (will also search subdirectories)
         paths:
-            App\Enum: '%kernel.project_dir%/src/Enum' 
+            App\Enum: '%kernel.project_dir%/src/Enum'
         domain: messages # optional, specifies the domain for translations
         filename_pattern: '*.php' # optional, specifies the filename pattern when searching in folders
         ignore: [] # optional, specifies the folders/files to ignore (eg. '%kernel.project_dir%/src/Enum/Ignore/*') 

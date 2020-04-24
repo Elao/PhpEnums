@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by WhiteRabbitDE at 2020-04-23T12:34:34Z
+
+Im not sure what to do about the test. @ogizanagi can you help me out here ?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2020-04-23T16:00:23Z
+
+For 7.0 build, [let's drop the package from `.travis.yaml`](https://github.com/Elao/PhpEnums/blob/f4f9c9190b66a1aa25900a9ab8c893fb3ecefdd3/.travis.yml#L62) (we could probably drop php 7.0 support as it's end of life, but maybe not just for this) and mark the tests with `@requires PHP 7.1`.
+
+For Sf 5.x build, you should replace `"api-platform/core": "2.5"` by `"api-platform/core": "^2.5.1"`
+
+---------------------------------------------------------------------------
+
+by WhiteRabbitDE at 2020-04-24T07:40:24Z
+
+> For 7.0 build, [let's drop the package from `.travis.yaml`](https://github.com/Elao/PhpEnums/blob/f4f9c9190b66a1aa25900a9ab8c893fb3ecefdd3/.travis.yml#L62) (we could probably drop php 7.0 support as it's end of life, but maybe not just for this) and mark the tests with `@requires PHP 7.1`.
+>
+That change would be part of another PR, right ?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2020-04-24T07:52:25Z
+
+> > For 7.0 build, [let's drop the package from `.travis.yaml`](https://github.com/Elao/PhpEnums/blob/f4f9c9190b66a1aa25900a9ab8c893fb3ecefdd3/.travis.yml#L62) (we could probably drop php 7.0 support as it's end of life, but maybe not just for this) and mark the tests with `@requires PHP 7.1`.
+>
+> That change would be part of another PR, right ?
+
+No you should add it in this PR to make travis happy :)
+Just add a check removing the package in the travis file according to the php version.
+Only mark the api platform `ElaoEnumTypeTest` class with `@requires PHP 7.1`, and that should do it!
+
+---------------------------------------------------------------------------
+
+by WhiteRabbitDE at 2020-04-24T08:51:43Z
+
+PR is a mess but at least the test are successful now :P

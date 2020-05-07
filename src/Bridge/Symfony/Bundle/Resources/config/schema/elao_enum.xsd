@@ -28,16 +28,18 @@
         <xsd:sequence>
             <xsd:element name="type" type="doctrine_type" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
+        <xsd:attribute name="enum_sql_declaration" default="false" />
     </xsd:complexType>
 
     <xsd:complexType name="doctrine_type">
         <xsd:attribute name="class" type="xsd:string" use="required"/>
-        <xsd:attribute name="type" type="doctrine_type_type" default="string"/>
+        <xsd:attribute name="type" type="doctrine_type_type"/>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
 
     <xsd:simpleType name="doctrine_type_type">
         <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="enum"/>
             <xsd:enumeration value="string"/>
             <xsd:enumeration value="int"/>
         </xsd:restriction>

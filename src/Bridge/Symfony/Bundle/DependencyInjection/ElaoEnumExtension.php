@@ -16,6 +16,7 @@ use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
+use Elao\Enum\FlaggedEnum;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -46,6 +47,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
                 'types' => $doctrineTypesConfig,
+                'mapping_types' => ['enum' => 'string'],
             ],
         ]);
     }
@@ -75,10 +77,21 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition(ElaoEnumType::class);
         }
 
+        $useEnumSQLDeclaration = $config['doctrine']['enum_sql_declaration'];
         if ($types = $config['doctrine']['types'] ?? false) {
-            $container->setParameter('.elao_enum.doctrine_types', array_map(static function (string $k, array $v): array {
-                return [$k, $v['type'], $v['name']];
-            }, array_keys($types), $types));
+            $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'string';
+            $container->setParameter(
+                '.elao_enum.doctrine_types',
+                array_map(static function (string $class, array $v) use ($defaultStringType): array {
+                    $type = $v['type'];
+
+                    if (null === $type) {
+                        $type = is_a($class, FlaggedEnum::class, true) ? $type = 'int' : $defaultStringType;
+                    }
+
+                    return [$class, $type, $v['name']];
+                }, array_keys($types), $types)
+            );
         }
     }
 

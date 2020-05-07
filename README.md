@@ -481,15 +481,27 @@ This configuration is equivalent to the following sections explaining how to cre
 elao_enum:
     doctrine:
         types:
-            App\Enum\GenderEnum: gender
-            App\Enum\Permissions: { name: permissions, type: int } # values are stored as integers
+            App\Enum\GenderEnum: gender # Defaults to `{ name: gender, type: string }` for string based enum (translates to VARCHAR)
+            App\Enum\AnotherEnum: { name: another, type: enum } # string based enum with SQL ENUM column definition
+            App\Enum\Permissions: { name: permissions, type: int } # values are stored as integers. Default for flagged enums.
 ```
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
 
+You can also default to SQL `ENUM` column definitions by default for all types by using:
+
+```yaml
+elao_enum:
+    doctrine:
+        enum_sql_declaration: true
+```
+
+Beware that your database platform must support it. Also, the Doctrine diff tool is unable to detect new or removed 
+values, so you'll have to handle this in a migration yourself.
+
 ### Create the DBAL type
 
-First, create your DBAL type by extending either `AbstractEnumType` (string based enum) or `AbstractIntegerEnumType` (integer based enum, for flagged enums for instance):
+First, create your DBAL type by extending either `AbstractEnumType` (string based enum), `AbstractEnumSQLDeclarationType` (if you want to use SQL `ENUM` column definition for string enums) or `AbstractIntegerEnumType` (integer based enum, for flagged enums for instance):
 
 ```php
 <?php
@@ -510,17 +522,6 @@ final class GenderEnumType extends AbstractEnumType
         return static::NAME;
     }
 }
-```
-
-Note: You can map to native sql enum type by overriding declaration method:
-
-```php
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
-    {
-        $values = implode(', ', array_map(function ($value) { return "'$value'";}, Gender::values()));
-
-        return "ENUM($values)";
-    }
 ```
 
 ### Register the DBAL type

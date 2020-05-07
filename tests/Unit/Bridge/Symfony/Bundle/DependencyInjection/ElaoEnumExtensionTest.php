@@ -15,6 +15,7 @@ use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
+use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
@@ -55,6 +56,28 @@ abstract class ElaoEnumExtensionTest extends TestCase
 
         self::assertEquals([
             [Gender::class, 'string', 'gender'],
+            [AnotherEnum::class, 'enum', 'another'],
+            [Permissions::class, 'int', 'permissions'],
+        ], $container->getParameter('.elao_enum.doctrine_types'));
+    }
+
+    public function testDoctrineTypesDefaultType()
+    {
+        $container = $this->createContainerFromFile('doctrine_types_default_type');
+
+        self::assertEquals([
+            [Gender::class, 'string', 'gender'],
+            [Permissions::class, 'int', 'permissions'],
+        ], $container->getParameter('.elao_enum.doctrine_types'));
+    }
+
+    public function testDoctrineTypesEnumSQLDeclaration()
+    {
+        $container = $this->createContainerFromFile('doctrine_types_enum_sql_declaration');
+
+        self::assertEquals([
+            [Gender::class, 'string', 'gender'],
+            [AnotherEnum::class, 'enum', 'another'],
             [Permissions::class, 'int', 'permissions'],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
@@ -71,8 +94,10 @@ abstract class ElaoEnumExtensionTest extends TestCase
                 'dbal' => [
                     'types' => [
                         'gender' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
+                        'another' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\AnotherEnumType',
                         'permissions' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
                     ],
+                    'mapping_types' => ['enum' => 'string'],
                 ],
             ],
         ], $container->getExtensionConfig('doctrine'));

@@ -18,6 +18,8 @@ abstract class AbstractEnumType extends Type
 {
     /**
      * The enum FQCN for which we should make the DBAL conversion.
+     *
+     * @return class-string<EnumInterface>
      */
     abstract protected function getEnumClass(): string;
 

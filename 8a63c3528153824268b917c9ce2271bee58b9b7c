@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2020-05-07T12:21:18Z
+
+@benji07 : Yes indeed. That's one of the reasons (appart for BC reasons) I won't enable this by default in the bundle. But anyone willing to use it despite this drawback can now benefit from this and handle the migration themselves 🤷 .
+Thx for the review.
+
+---------------------------------------------------------------------------
+
+by yvalentin at 2020-05-07T12:36:14Z
+
+@ogizanagi @benji07 I kown this problem about updating the enum definition.
+
+I can test your modification on the current project I'm working on.
+And I will give you a feelback soon.
+
+Thank for this !

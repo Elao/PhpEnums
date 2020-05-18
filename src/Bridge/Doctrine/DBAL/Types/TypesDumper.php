@@ -10,6 +10,8 @@
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
+use Elao\Enum\Exception\LogicException;
+
 /**
  * @internal
  */
@@ -53,7 +55,19 @@ PHP;
 
     private function getTypeCode(string $fqcn, string $classname, string $enumClass, string $type, string $name): string
     {
-        $baseClass = $type === 'int' ? AbstractIntegerEnumType::class : AbstractEnumType::class;
+        switch ($type) {
+            case 'int':
+                $baseClass = AbstractIntegerEnumType::class;
+                break;
+            case 'string':
+                $baseClass = AbstractEnumType::class;
+                break;
+            case 'enum':
+                $baseClass = AbstractEnumSQLDeclarationType::class;
+                break;
+            default:
+                throw new LogicException(sprintf('Unexpected type "%s"', $type));
+        }
 
         return <<<PHP
 

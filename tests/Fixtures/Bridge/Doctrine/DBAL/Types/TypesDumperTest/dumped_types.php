@@ -19,6 +19,23 @@ namespace ELAO_ENUM_DT\Foo\Bar {
         }
     }
 
+    if (!\class_exists(\ELAO_ENUM_DT\Foo\Bar\XyzType::class)) {
+        class XyzType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
+        {
+            const NAME = 'xyz';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Xyz::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+        }
+    }
+
     if (!\class_exists(\ELAO_ENUM_DT\Foo\Bar\QuxType::class)) {
         class QuxType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
         {

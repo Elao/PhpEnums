@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Configuration;
+use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
@@ -46,6 +47,10 @@ class ConfigurationTest extends TestCase
                 'filename_pattern' => '*.php',
                 'ignore' => [],
             ],
+            'doctrine' => [
+                'enum_sql_declaration' => false,
+                'types' => [],
+            ],
         ], $config);
     }
 
@@ -54,21 +59,25 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
             'doctrine' => [
+                'enum_sql_declaration' => true,
                 'types' => [
-                    Gender::class => ['name' => 'gender'],
+                    Gender::class => ['name' => 'gender', 'type' => 'string'],
+                    AnotherEnum::class => ['name' => 'another', 'type' => 'enum'],
                     Permissions::class => ['name' => 'permissions', 'type' => 'int'],
                 ],
             ],
         ]]);
 
-        $this->assertEquals($this->getDefaultConfig() + [
+        $this->assertEquals([
             'doctrine' => [
+                'enum_sql_declaration' => true,
                 'types' => [
                     Gender::class => ['name' => 'gender', 'type' => 'string'],
+                    AnotherEnum::class => ['name' => 'another', 'type' => 'enum'],
                     Permissions::class => ['name' => 'permissions', 'type' => 'int'],
                 ],
             ],
-        ], $config);
+        ] + $this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineTypeConfigWithInvalidEnumClass()
@@ -119,6 +128,10 @@ class ConfigurationTest extends TestCase
                 'domain' => 'messages',
                 'filename_pattern' => '*.php',
                 'ignore' => [],
+            ],
+            'doctrine' => [
+                'enum_sql_declaration' => false,
+                'types' => [],
             ],
         ];
     }

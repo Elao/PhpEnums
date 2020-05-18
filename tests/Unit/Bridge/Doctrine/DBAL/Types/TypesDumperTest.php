@@ -38,6 +38,7 @@ class TypesDumperTest extends TestCase
     {
         $this->dumper->dumpToFile($this->dumpPath, [
             ['Foo\Bar\Baz', 'string', 'baz'],
+            ['Foo\Bar\Xyz', 'enum', 'xyz'],
             ['Foo\Bar\Qux', 'int', 'qux'],
             ['Foo\Baz\Foo', 'int', 'foo'],
         ]);

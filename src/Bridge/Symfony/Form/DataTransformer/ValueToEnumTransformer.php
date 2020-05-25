@@ -56,7 +56,10 @@ class ValueToEnumTransformer implements DataTransformerInterface
             throw new TransformationFailedException(sprintf(
                 'Expected instance of "%s". Got "%s".',
                 $this->enumClass,
-                \is_object($value) ? \get_class($value) : \gettype($value)
+                \PHP_VERSION_ID >= 80000
+                    ? get_debug_type($value)
+                    : (\is_object($value) ? \get_class($value) : \gettype($value)
+                )
             ));
         }
 

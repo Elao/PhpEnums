@@ -33,7 +33,10 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
         if (!\is_int($bitmask)) {
             throw new TransformationFailedException(sprintf(
                 'Expected integer. Got "%s".',
-                \is_object($bitmask) ? \get_class($bitmask) : \gettype($bitmask)
+                \PHP_VERSION_ID >= 80000
+                    ? get_debug_type($bitmask)
+                    : (\is_object($bitmask) ? \get_class($bitmask) : \gettype($bitmask)
+                )
             ));
         }
 
@@ -66,7 +69,10 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
         if (!\is_array($flags)) {
             throw new TransformationFailedException(sprintf(
                 'Expected array. Got "%s".',
-                \is_object($flags) ? \get_class($flags) : \gettype($flags)
+                \PHP_VERSION_ID >= 80000
+                    ? get_debug_type($flags)
+                    : (\is_object($flags) ? \get_class($flags) : \gettype($flags)
+                )
             ));
         }
 
@@ -79,7 +85,10 @@ class BitmaskToBitFlagsValueTransformer extends AbstractFlagEnumTransformer
             if (!\is_int($flag)) {
                 throw new TransformationFailedException(sprintf(
                     'Expected array of integers. Got a "%s" inside.',
-                    \is_object($flag) ? \get_class($flag) : \gettype($flag)
+                    \PHP_VERSION_ID >= 80000
+                        ? get_debug_type($flag)
+                        : (\is_object($flag) ? \get_class($flag) : \gettype($flag)
+                    )
                 ));
             }
             $bitmask |= $flag;

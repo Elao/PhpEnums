@@ -29,6 +29,11 @@ require __DIR__ . '/Fixtures/Integration/Symfony/src/AppKernel.php';
 
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
+if (PHP_MAJOR_VERSION === 8) {
+    // Doctrine is not yet compatible with PHP 8 & PDO
+    return $loader;
+}
+
 $kernel = new AppKernel('test', true);
 $kernel->boot();
 $doctrine = $kernel->getContainer()->get('doctrine');

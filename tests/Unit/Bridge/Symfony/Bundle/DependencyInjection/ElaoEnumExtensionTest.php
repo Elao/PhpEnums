@@ -12,12 +12,14 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
+use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
 use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
@@ -34,6 +36,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition(EnumValueResolver::class), 'arg resolver is loaded');
         self::assertFalse($container->hasParameter('.elao_enum.doctrine_types'), 'no doctrine type are registered');
         self::assertFalse($container->hasDefinition(EnumExtractor::class), 'translation extractor is removed');
+        self::assertTrue($container->hasDefinition(DumpJsEnumsCommand::class), 'dump js command is loaded');
     }
 
     public function testDisabledArgValueResolver()
@@ -120,6 +123,22 @@ abstract class ElaoEnumExtensionTest extends TestCase
                 '/var/www/elao/src/Enum/Ignore2',
             ],
         ], $container->getDefinition(EnumExtractor::class)->getArguments());
+    }
+
+    public function testJsEnumsExtractor()
+    {
+        $container = $this->createContainerFromFile('js_enums');
+
+        self::assertTrue($container->hasDefinition(DumpJsEnumsCommand::class), 'dump js command is loaded');
+        self::assertEquals([
+            [
+                SimpleEnum::class => 'common/SimpleEnum.js',
+                Gender::class => 'common/Gender.js',
+                Permissions::class => 'auth/Permissions.js',
+            ],
+            'assets/js/modules',
+            'assets/js/lib',
+        ], $container->getDefinition(DumpJsEnumsCommand::class)->getArguments());
     }
 
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder

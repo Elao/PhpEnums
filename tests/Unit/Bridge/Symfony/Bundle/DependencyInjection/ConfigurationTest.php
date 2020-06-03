@@ -37,21 +37,10 @@ class ConfigurationTest extends TestCase
             'translation_extractor' => false,
         ]]);
 
-        $this->assertEquals([
+        $this->assertEquals(array_merge($this->getDefaultConfig(), [
             'argument_value_resolver' => ['enabled' => false],
             'serializer' => ['enabled' => false],
-            'translation_extractor' => [
-                'enabled' => false,
-                'paths' => [],
-                'domain' => 'messages',
-                'filename_pattern' => '*.php',
-                'ignore' => [],
-            ],
-            'doctrine' => [
-                'enum_sql_declaration' => false,
-                'types' => [],
-            ],
-        ], $config);
+        ]), $config);
     }
 
     public function testDoctrineConfig()
@@ -117,6 +106,30 @@ class ConfigurationTest extends TestCase
         ], $config['translation_extractor']);
     }
 
+    public function testJsEnumConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'js' => [
+                'lib_path' => 'assets/lib',
+                'base_dir' => 'assets/modules',
+                'paths' => [
+                    Gender::class => 'common/Gender.js',
+                    Permissions::class => 'auth/Permissions.js',
+                ],
+            ],
+        ]]);
+
+        $this->assertEquals([
+            'lib_path' => 'assets/lib',
+            'base_dir' => 'assets/modules',
+            'paths' => [
+                Gender::class => 'common/Gender.js',
+                Permissions::class => 'auth/Permissions.js',
+            ],
+        ], $config['js']);
+    }
+
     private function getDefaultConfig(): array
     {
         return [
@@ -132,6 +145,11 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => false,
                 'types' => [],
+            ],
+            'js' => [
+                'base_dir' => null,
+                'lib_path' => null,
+                'paths' => [],
             ],
         ];
     }

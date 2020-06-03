@@ -13,6 +13,7 @@
             <xsd:element name="argument_value_resolver" type="argument_value_resolver" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="doctrine" type="doctrine" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="translation_extractor" type="translation_extractor" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="js" type="js" minOccurs="0" maxOccurs="1"/>
         </xsd:choice>
     </xsd:complexType>
 
@@ -29,6 +30,21 @@
             <xsd:element name="type" type="doctrine_type" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="enum_sql_declaration" default="false" />
+    </xsd:complexType>
+
+    <xsd:complexType name="js">
+        <xsd:sequence>
+            <xsd:element name="path" type="js_paths" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="base_dir" type="xsd:string"/>
+        <xsd:attribute name="lib_path" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="js_paths" mixed="true">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="path" type="xsd:string"/>
+        </xsd:choice>
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
     </xsd:complexType>
 
     <xsd:complexType name="doctrine_type">

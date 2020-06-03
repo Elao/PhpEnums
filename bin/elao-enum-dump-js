@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
+use Symfony\Component\Console\Application;
+
+function includeIfExists(string $file): bool
+{
+    return file_exists($file) && include $file;
+}
+
+if (
+    !includeIfExists(__DIR__ . '/../../../autoload.php') &&
+    !includeIfExists(__DIR__ . '/../vendor/autoload.php')
+) {
+    fwrite(STDERR, 'Install dependencies using Composer.' . PHP_EOL);
+    exit(1);
+}
+
+if (!class_exists(Application::class)) {
+    fwrite(STDERR, 'You need the "symfony/console" component in order to run the this command.' . PHP_EOL);
+    exit(1);
+}
+
+(new Application())
+    ->add($command = new DumpJsEnumsCommand())
+    ->getApplication()
+    ->setDefaultCommand($command->getName(), true)
+    ->run()
+;

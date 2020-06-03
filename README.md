@@ -57,6 +57,7 @@ Table of Contents
       * [Usage with Alice](#usage-with-alice)
     * [Api-Platform](#api-platform)
       * [OpenApi / Swagger](#openapi--swagger)
+    * [JavaScript](#javascript)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -123,6 +124,8 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Symfony HttpKernel component integration with an enum resolver for controller arguments.
 - Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
 - Faker enum provider to generate random enum instances.
+- An API Platform OpenApi/Swagger type for documentation generation.
+- JavaScript enums code generation.
 
 # Installation
 
@@ -869,11 +872,54 @@ MyEntity:
 
 > 📝 `MISTER` in `<enum(Civility::MISTER)>` refers to a constant defined in the `Civility` enum class, not to a constant's value ('mister' string for instance).
 
-## Api-Platform
+## API Platform
 
 ### OpenApi / Swagger
 
-The PhpEnums library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using the Symfony bundle.
+The library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using the Symfony bundle.
+
+## JavaScript
+
+This library allows to generate JS code from your PHP enums using a command:
+
+```bash
+bin/elao-enum-dump-js --lib-path "./assets/js/lib/enum.js" --base-dir="./assets/js/modules" \
+    "App\Auth\Enum\Permissions:auth/Permissions.js" \
+    "App\Common\Enum\Gender:common/Gender.js"
+```
+
+This command generates:
+- [library sources](./res/js/Enum.js) at path `assets/js/lib/enums.js` containing the base JS classes
+- enums in a base `/assets/js/modules` dir:
+    - `Permissions` in `/assets/js/modules/auth/Permissions.js`
+    - `Gender` in `/assets/js/modules/common/Gender.js`
+    
+Simple enums, readables & flagged enums are supported.
+
+Note that this is not meant to be used as part of an automatic process updating your code.
+There is no BC promise guaranteed on the generated code. Once generated, the code belongs to you.
+
+### In a Symfony app
+
+You can configure the library path, base dir and enum paths in the bundle configuration:
+
+```yaml
+elao_enum:
+    elao_enum:
+        js:
+            base_dir: '%kernel.project_dir%/assets/js/modules'
+            lib_path: '%kernel.project_dir%/assets/js/lib'
+            paths:
+                App\Common\Enum\SimpleEnum: 'common/SimpleEnum.js'
+                App\Common\Enum\Gender: 'common/Gender.js'
+                App\Auth\Enum\Permissions: 'auth/Permissions.js'
+```
+
+Then, use the CLI command to generate the JS files:
+
+```bash
+bin/console elao:enum:dump-js [--lib-path] [--base-dir] [<enum:path>...]
+```
 
 # API
 

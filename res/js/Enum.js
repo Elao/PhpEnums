@@ -9,7 +9,7 @@ class Enum {
    */
   constructor(value) {
     if (!this.constructor.accepts(value)) {
-      throw new InvalidValueException(value, this.constructor.name);
+      throw new InvalidValueException(value, this.constructor);
     }
 
     this.value = value;
@@ -21,19 +21,18 @@ class Enum {
    * @returns {(String|Number)[]} The list of available enum values
    */
   static get values() {
-    const enumClass = eval(this.name);
-    if (enumClass._values) {
-      return enumClass._values;
+    if (this._values) {
+      return this._values;
     }
 
-    return enumClass._values = Object.values(eval(this.name)).filter(v => Number.isInteger(v) || 'string' === typeof v);
+    return this._values = Object.values(this).filter(v => Number.isInteger(v) || 'string' === typeof v);
   }
 
   /**
    * @returns {Enum[]} the list of all possible enum instances.
    */
   static get instances() {
-    return this.values.map(value => new (eval(this.name))(value));
+    return this.values.map(value => new this(value));
   }
 
   /**
@@ -201,7 +200,7 @@ class FlaggedEnum extends ReadableEnum {
    */
   withFlags(flags) {
     if (!this.constructor.accepts(flags)) {
-      throw new InvalidValueException(flags, this.constructor.name);
+      throw new InvalidValueException(flags, this.constructor);
     }
 
     return new this.constructor(this.value | flags);
@@ -218,7 +217,7 @@ class FlaggedEnum extends ReadableEnum {
    */
   withoutFlags(flags) {
     if (!this.constructor.accepts(flags)) {
-      throw new InvalidValueException(flags, this.constructor.name);
+      throw new InvalidValueException(flags, this.constructor);
     }
 
     return new this.constructor(this.value & ~flags);
@@ -272,9 +271,9 @@ class FlaggedEnum extends ReadableEnum {
 class InvalidValueException extends Error {
   constructor(value, enumClass) {
     super(
-      `Invalid value for "${enumClass}" enum type. `
-      + `Expected one of ${JSON.stringify(eval(enumClass).values)}`
-      + (eval(enumClass).prototype instanceof FlaggedEnum ? ' or a valid combination of those flags' : '')
+      `Invalid value for "${enumClass.name}" enum type. `
+      + `Expected one of ${JSON.stringify(enumClass.values)}`
+      + (enumClass.prototype instanceof FlaggedEnum ? ' or a valid combination of those flags' : '')
       + `. Got ${JSON.stringify(value)}.`,
     );
 

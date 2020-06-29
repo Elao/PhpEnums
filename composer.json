@@ -16,6 +16,9 @@
             "homepage": "https://github.com/ogizanagi"
         }
     ],
+    "bin": [
+        "bin/elao-enum-dump-js"
+    ],
     "autoload": {
         "psr-4": {
             "Elao\\Enum\\": "src/"

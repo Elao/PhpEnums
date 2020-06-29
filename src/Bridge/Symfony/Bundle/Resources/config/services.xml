@@ -7,6 +7,13 @@
     <services>
         <defaults public="false" />
 
+        <service id="Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand">
+            <argument /> <!-- Enums FQCN <-> path -->
+            <argument /> <!-- Base dir -->
+            <argument /> <!-- Lib path -->
+            <tag name="console.command" command="elao:enum:dump-js" />
+        </service>
+
         <service id="Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver">
             <tag name="controller.argument_value_resolver" priority="105" /> <!-- Prior RequestAttributeValueResolver -->
         </service>

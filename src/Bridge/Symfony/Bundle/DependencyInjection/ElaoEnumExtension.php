@@ -13,6 +13,7 @@ namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 use ApiPlatform\Core\JsonSchema\TypeFactory;
 use Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
@@ -93,6 +94,13 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
                 }, array_keys($types), $types)
             );
         }
+
+        $jsEnums = $config['js'];
+        $container->getDefinition(DumpJsEnumsCommand::class)
+            ->replaceArgument(0, $jsEnums['paths'])
+            ->replaceArgument(1, $jsEnums['base_dir'])
+            ->replaceArgument(2, $jsEnums['lib_path'])
+        ;
     }
 
     public function getNamespace()

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:elao-enum="http://elao.com/schema/dic/elao_enum"
+           xsi:schemaLocation="http://elao.com/schema/dic/elao_enum http://elao.com/schema/dic/elao_enum/elao_enum.xsd">
+
+    <elao-enum:config>
+        <elao-enum:js base_dir="assets/js/modules" lib_path="assets/js/lib">
+            <elao-enum:path class="Elao\Enum\Tests\Fixtures\Enum\SimpleEnum">common/SimpleEnum.js</elao-enum:path>
+            <elao-enum:path class="Elao\Enum\Tests\Fixtures\Enum\Gender">common/Gender.js</elao-enum:path>
+            <elao-enum:path class="Elao\Enum\Tests\Fixtures\Enum\Permissions">auth/Permissions.js</elao-enum:path>
+        </elao-enum:js>
+    </elao-enum:config>
+</container>

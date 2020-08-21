@@ -19,8 +19,8 @@ namespace Elao\Enum;
  */
 abstract class SimpleChoiceEnum extends ReadableEnum
 {
-    use AutoDiscoveredValuesTrait;
-    use ChoiceEnumTrait {
+    use AutoDiscoveredValuesTrait, ChoiceEnumTrait {
+        AutoDiscoveredValuesTrait::choices as public;
         ChoiceEnumTrait::values insteadof AutoDiscoveredValuesTrait;
     }
 }

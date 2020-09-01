@@ -12,6 +12,8 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
+use Elao\Enum\EnumInterface;
+use Elao\Enum\EnumTrait;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
@@ -43,6 +45,11 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         $this->expectExceptionMessage('Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"');
 
         AutoDiscoveredEnumMisusingChoices::foo();
+    }
+
+    public function testItAutoDiscoveredValuesBasedOnAvailableConstantsInTheParentClass()
+    {
+        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredFromDumbEnum::values());
     }
 }
 
@@ -79,4 +86,18 @@ final class AutoDiscoveredEnumMisusingChoices extends Enum
     {
         self::choices();
     }
+}
+
+class DumbEnum
+{
+    const BAR = 'bar';
+    const BAZ = 'baz';
+}
+
+final class AutoDiscoveredFromDumbEnum extends DumbEnum implements EnumInterface
+{
+    use EnumTrait;
+    use AutoDiscoveredValuesTrait;
+
+    const FOO = 'foo';
 }

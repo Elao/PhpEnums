@@ -16,6 +16,7 @@ use Elao\Enum\EnumInterface;
 use Elao\Enum\EnumTrait;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
+use Elao\Enum\Tests\Fixtures\Enum\DumbEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
 use PHPUnit\Framework\TestCase;
 
@@ -47,7 +48,7 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         AutoDiscoveredEnumMisusingChoices::foo();
     }
 
-    public function testItAutoDiscoveredValuesBasedOnAvailableConstantsInTheParentClass()
+    public function testItAutoDiscoversValuesBasedOnAvailableConstantsInTheParentClass()
     {
         $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredFromDumbEnum::values());
     }
@@ -86,12 +87,6 @@ final class AutoDiscoveredEnumMisusingChoices extends Enum
     {
         self::choices();
     }
-}
-
-class DumbEnum
-{
-    const BAR = 'bar';
-    const BAZ = 'baz';
 }
 
 final class AutoDiscoveredFromDumbEnum extends DumbEnum implements EnumInterface

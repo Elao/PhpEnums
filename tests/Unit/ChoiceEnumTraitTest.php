@@ -10,11 +10,15 @@
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\ChoiceEnumTrait;
 use Elao\Enum\Enum;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\ReadableEnum;
+use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ReadableEnumTrait;
+use Elao\Enum\Tests\Fixtures\Enum\DumbEnum;
 use PHPUnit\Framework\TestCase;
 
 class ChoiceEnumTraitTest extends TestCase
@@ -56,6 +60,16 @@ class ChoiceEnumTraitTest extends TestCase
         $this->expectExceptionMessage('The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.');
 
         NonReadableEnumWithChoiceEnumTrait::readables();
+    }
+
+    public function testItAutoDiscoversChoicesBasedOnAvailableConstantsInTheParentClass()
+    {
+        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredChoiceEnumWithDumbEnum::values());
+        $this->assertSame([
+            'foo' => 'Foo',
+            'bar' => 'Bar',
+            'baz' => 'Baz',
+        ], AutoDiscoveredChoiceEnumWithDumbEnum::readables());
     }
 }
 
@@ -108,4 +122,15 @@ final class NonReadableEnumWithChoiceEnumTrait extends Enum
     {
         return ['foo' => 'Foo label'];
     }
+}
+
+final class AutoDiscoveredChoiceEnumWithDumbEnum extends DumbEnum implements ReadableEnumInterface
+{
+    use ReadableEnumTrait;
+    use AutoDiscoveredValuesTrait;
+    use ChoiceEnumTrait {
+        ChoiceEnumTrait::values insteadof AutoDiscoveredValuesTrait;
+    }
+
+    const FOO = 'foo';
 }

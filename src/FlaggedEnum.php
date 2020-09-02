@@ -13,8 +13,10 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
 
-abstract class FlaggedEnum extends ReadableEnum
+abstract class FlaggedEnum implements ReadableEnumInterface
 {
+    use ReadableEnumTrait;
+
     const NONE = 0;
 
     /** @var array */

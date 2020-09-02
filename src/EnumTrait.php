@@ -13,6 +13,9 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
 
+/**
+ * @see EnumInterface which this trait implements
+ */
 trait EnumTrait
 {
     /**
@@ -21,16 +24,21 @@ trait EnumTrait
      * This means you'll always get the exact same instance for a same enum value.
      *
      * @var array
+     *
+     * @internal
      */
     private static $instances;
 
-    /** @var mixed */
+    /** @var int|string */
     protected $value;
 
     /**
-     * The constructor is private and cannot be overridden: use the static get method instead.
+     * The constructor is private and MUST NOT be overridden: use the static get method instead.
      *
-     * @param mixed $value The raw value of an enumeration
+     * @param int|string $value The raw value of an enumeration
+     *
+     * @internal Use {@see EnumInterface::get()} instead.
+     * @final It must not be overridden in classes using this trait
      */
     final private function __construct($value)
     {
@@ -60,7 +68,7 @@ trait EnumTrait
     public static function get($value): EnumInterface
     {
         // Return the cached instance for given value if it already exists:
-        if (null !== $instance = self::getCachedInstance($value)) {
+        if (null !== $instance = self::$instances[static::class][serialize($value)] ?? null) {
             return $instance;
         }
 
@@ -110,14 +118,6 @@ trait EnumTrait
         return array_map(static function ($value) {
             return static::get($value);
         }, static::values());
-    }
-
-    private static function getCachedInstance($value)
-    {
-        $enumType = static::class;
-        $identifier = serialize($value);
-
-        return self::$instances[$enumType][$identifier] ?? null;
     }
 
     /**

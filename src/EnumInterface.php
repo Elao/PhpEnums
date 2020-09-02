@@ -21,7 +21,7 @@ interface EnumInterface
      *
      * @return EnumInterface The enum instance for given value
      */
-    public static function get($value): self;
+    public static function get($value): EnumInterface;
 
     /**
      * Returns any possible value for the enumeration.

@@ -8,9 +8,10 @@
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum;
+namespace Elao\Enum\Tests\Fixtures\Enum;
 
-abstract class ReadableEnum implements ReadableEnumInterface
+class DumbEnum
 {
-    use ReadableEnumTrait;
+    const BAR = 'bar';
+    const BAZ = 'baz';
 }

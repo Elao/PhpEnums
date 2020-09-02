@@ -12,7 +12,7 @@ namespace Elao\Enum\Bridge\Symfony\VarDumper\Caster;
 
 use Elao\Enum\EnumInterface;
 use Elao\Enum\FlaggedEnum;
-use Elao\Enum\ReadableEnum;
+use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\VarDumper\Caster\Caster;
 use Symfony\Component\VarDumper\Caster\ConstStub;
 
@@ -46,7 +46,7 @@ final class EnumCaster
         }, $enum instanceof FlaggedEnum && $enum->getFlags() ? $enum->getFlags() : (array) $value)), $value);
 
         // Append readable value
-        if ($enum instanceof ReadableEnum) {
+        if ($enum instanceof ReadableEnumInterface) {
             $a[Caster::PREFIX_VIRTUAL . 'readable'] = $enum->getReadable();
         }
 

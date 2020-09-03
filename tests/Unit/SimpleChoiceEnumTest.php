@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\SimpleChoiceEnum;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum;
 use PHPUnit\Framework\TestCase;
 
 class SimpleChoiceEnumTest extends TestCase
@@ -33,6 +34,16 @@ class SimpleChoiceEnumTest extends TestCase
             ChoiceEnum::BAR => 'Bar',
             ChoiceEnum::BAZ => 'Baz',
         ], DummySimpleChoiceEnumWithLabelOverride::readables());
+    }
+
+    public function testSimpleChoiceEnumFromDumbEnum()
+    {
+        $this->assertSame(['foo', 'bar', 'baz'], SimpleChoiceEnumFromDumEnum::values());
+        $this->assertSame([
+            'foo' => 'Foo',
+            'bar' => 'Bar',
+            'baz' => 'Baz',
+        ], SimpleChoiceEnumFromDumEnum::readables());
     }
 }
 

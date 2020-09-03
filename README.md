@@ -161,6 +161,17 @@ final class Gender extends Enum
 }
 ```
 
+Get an instance of your enum type:
+
+```php
+<?php
+$enum = Gender::get(Gender::Male);
+```
+
+You can easily retrieve the enumeration's value by using `$enum->getValue();`
+
+> 📝 Enum values are supposed to be integers or strings.
+
 > 📝 It's recommended to make your enums classes `final`, because it won't make sense to extend them in most situations (unless you're creating a new base enum type), and you won't need to mock an enum type.
 
 > 💡 You can also use the `AutoDiscoveredValuesTrait` to automagically guess values from the constants defined in your enum, so you don't have to implement `EnumInterface::values()` yourself:
@@ -181,16 +192,45 @@ final class Gender extends Enum
 }
 ```
 
-Get an instance of your enum type:
+The `AutoDiscoveredValuesTrait` also allows you to discover values from other classes.
+Given the following class holding constants:
 
 ```php
 <?php
-$enum = Gender::get(Gender::Male);
+
+namespace MangoPay;
+
+final class EventType
+{
+    const KycCreated = "KYC_CREATED";
+    const KycSucceeded = "KYC_SUCCEEDED";
+    const KycFailed = "KYC_FAILED";
+}
 ```
 
-You can easily retrieve the enumeration's value by using `$enum->getValue();`
+You can create an enum from it by overriding the `AutoDiscoveredValuesTrait::getDiscoveredClasses()` method:
 
-> 📝 Enum values are supposed to be integers or strings.
+```php
+<?php
+
+namespace App\Enum;
+
+use Elao\Enum\Enum;
+use Elao\Enum\AutoDiscoveredValuesTrait;
+
+final class MangoPayEventType extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+
+    protected static function getDiscoveredClasses(): array
+    {
+        return [self::class, MangoPay\EventType::class];
+    }
+}
+
+# Usage:
+MangoPayEventType::get(MangoPay\EventType::KycCreated);
+```
 
 ## Readable enums
 

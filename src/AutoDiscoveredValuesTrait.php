@@ -56,28 +56,34 @@ trait AutoDiscoveredValuesTrait
     private static function autodiscoveredValues(): array
     {
         $enumType = static::class;
+        $discoveredClasses = array_reverse(static::getDiscoveredClasses());
 
         if (!isset(self::$guessedValues[$enumType])) {
-            $r = new \ReflectionClass($enumType);
-            $values = $r->getConstants();
+            self::$guessedValues[$enumType] = [];
+            foreach ($discoveredClasses as $discoveredClass) {
+                $r = new \ReflectionClass($discoveredClass);
+                $values = $r->getConstants();
 
-            if (PHP_VERSION_ID >= 70100) {
-                $values = array_filter($values, static function (string $k) use ($r) {
-                    return $r->getReflectionConstant($k)->isPublic();
-                }, ARRAY_FILTER_USE_KEY);
+                if (PHP_VERSION_ID >= 70100) {
+                    $values = array_filter($values, static function (string $k) use ($r) {
+                        return $r->getReflectionConstant($k)->isPublic();
+                    }, ARRAY_FILTER_USE_KEY);
+                }
+
+                if (is_a($enumType, FlaggedEnum::class, true)) {
+                    $values = array_filter($values, static function ($v) {
+                        return \is_int($v) && 0 === ($v & $v - 1) && $v > 0;
+                    });
+                } else {
+                    $values = array_filter($values, static function ($v) {
+                        return \is_int($v) || \is_string($v);
+                    });
+                }
+
+                self::$guessedValues[$enumType] = array_merge(self::$guessedValues[$enumType], array_values($values));
             }
 
-            if (is_a($enumType, FlaggedEnum::class, true)) {
-                $values = array_filter($values, static function ($v) {
-                    return \is_int($v) && 0 === ($v & $v - 1) && $v > 0;
-                });
-            } else {
-                $values = array_filter($values, static function ($v) {
-                    return \is_int($v) || \is_string($v);
-                });
-            }
-
-            self::$guessedValues[$enumType] = array_values($values);
+            self::$guessedValues[$enumType] = array_unique(self::$guessedValues[$enumType]);
         }
 
         return self::$guessedValues[$enumType];
@@ -89,15 +95,32 @@ trait AutoDiscoveredValuesTrait
     private static function autodiscoveredReadables(): array
     {
         $enumType = static::class;
+        $discoveredClasses = array_reverse(static::getDiscoveredClasses());
+        $values = self::autodiscoveredValues();
 
         if (!isset(self::$guessedReadables[$enumType])) {
-            $constants = (new \ReflectionClass($enumType))->getConstants();
-            foreach (self::autodiscoveredValues() as $value) {
+            $constants = [];
+            foreach ($discoveredClasses as $discoveredClass) {
+                $constants = array_replace($constants, (new \ReflectionClass($discoveredClass))->getConstants());
+            }
+
+            foreach ($values as $value) {
                 $constantName = array_search($value, $constants, true);
                 self::$guessedReadables[$enumType][$value] = ucfirst(strtolower(str_replace('_', ' ', $constantName)));
             }
         }
 
         return self::$guessedReadables[$enumType];
+    }
+
+    /**
+     * Override this method in order to discover values from public int/string constants in other classes.
+     * E.g: `return [static::class, DumbEnum::class];` to discover values from DumbEnum as well.
+     *
+     * @return string[]
+     */
+    protected static function getDiscoveredClasses(): array
+    {
+        return [static::class];
     }
 }

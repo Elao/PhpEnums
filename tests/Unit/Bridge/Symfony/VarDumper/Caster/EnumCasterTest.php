@@ -15,6 +15,7 @@ use Elao\Enum\EnumInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\Php71CastedEnumWIthPrivateConstants;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -138,6 +139,31 @@ Elao\Enum\Tests\Fixtures\Enum\Permissions {
 EODUMP;
 
         $this->assertDumpEquals($expectedDump, Permissions::get(Permissions::ALL));
+    }
+
+    public function testCastWithDiscoveringFromOtherClasses()
+    {
+        $expectedDump = <<<'EODUMP'
+[
+  Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum {
+    ⚑ : Foo
+    readable: "Foo"
+    #value: "foo"
+  }
+  Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum {
+    ⚑ : BAR
+    readable: "Bar"
+    #value: "bar"
+  }
+  Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum {
+    ⚑ : BAZ
+    readable: "Baz"
+    #value: "baz"
+  }
+]
+EODUMP;
+
+        $this->assertDumpEquals($expectedDump, SimpleChoiceEnumFromDumEnum::instances());
     }
 
     public function testCastAsHtml()

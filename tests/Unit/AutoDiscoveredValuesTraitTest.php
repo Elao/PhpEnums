@@ -14,6 +14,7 @@ use Elao\Enum\AutoDiscoveredValuesTrait;
 use Elao\Enum\Enum;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
+use Elao\Enum\Tests\Fixtures\Enum\DumbEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
 use PHPUnit\Framework\TestCase;
 
@@ -43,6 +44,11 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         $this->expectExceptionMessage('Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"');
 
         AutoDiscoveredEnumMisusingChoices::foo();
+    }
+
+    public function testItAutoDiscoversValuesFromDumbEnum()
+    {
+        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredDumbEnum::values());
     }
 }
 
@@ -78,5 +84,17 @@ final class AutoDiscoveredEnumMisusingChoices extends Enum
     public static function foo()
     {
         self::choices();
+    }
+}
+
+final class AutoDiscoveredDumbEnum extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+
+    const BAZ = 'baz';
+
+    protected static function getDiscoveredClasses(): array
+    {
+        return [self::class, DumbEnum::class];
     }
 }

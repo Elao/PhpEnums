@@ -134,7 +134,7 @@ class EnumProvider
     private function ensureEnumClass(string $enumClass)
     {
         if (!is_a($enumClass, EnumInterface::class, true)) {
-            throw new InvalidArgumentException("$enumClass is not a proper enum class");
+            throw new InvalidArgumentException(sprintf('"%s" is not a proper enum class', $enumClass));
         }
     }
 }

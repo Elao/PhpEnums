@@ -118,7 +118,7 @@ class EnumProviderTest extends TestCase
         $enumProvider = $this->getDefaultProvider();
 
         self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionMessage('SomeRandomStringToFail is not a proper enum class');
+        self::expectExceptionMessage('"SomeRandomStringToFail" is not a proper enum class');
         $enumProvider->enum('SomeRandomStringToFail::FIRST');
     }
 

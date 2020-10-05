@@ -113,6 +113,15 @@ class EnumProviderTest extends TestCase
         self::assertSame($count, $nbOfSimpleValues, 'won\'t exceed maximum nb of values for the enum');
     }
 
+    public function testEnumMethodShouldThrowAnInvalidArgumentException()
+    {
+        $enumProvider = $this->getDefaultProvider();
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('SomeRandomStringToFail is not a proper enum class');
+        $enumProvider->enum('SomeRandomStringToFail::FIRST');
+    }
+
     private function getDefaultProvider(): EnumProvider
     {
         return new EnumProvider([

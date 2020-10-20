@@ -15,11 +15,14 @@ use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     public function testDefaultConfig()
     {
         $processor = new Processor();
@@ -43,8 +46,13 @@ class ConfigurationTest extends TestCase
         ]), $config);
     }
 
-    public function testDoctrineConfig()
+    /**
+     * @group legacy
+     */
+    public function testDeprecatedDoctrineConfig()
     {
+        $this->expectDeprecation('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.');
+
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
             'doctrine' => [
@@ -78,7 +86,7 @@ class ConfigurationTest extends TestCase
         $processor->processConfiguration(new Configuration(), [[
             'doctrine' => [
                 'types' => [
-                    \stdClass::class => ['name' => 'std'],
+                    'std' => ['class' => \stdClass::class],
                 ],
             ],
         ]]);

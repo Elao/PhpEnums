@@ -55,7 +55,7 @@ class Configuration implements ConfigurationInterface
                             foreach ($values as $name => $config) {
                                 if (class_exists($name)) {
                                     $legacyFormat = true;
-                                    // need to flip
+                                    @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
                                     break;
                                 }
                             }

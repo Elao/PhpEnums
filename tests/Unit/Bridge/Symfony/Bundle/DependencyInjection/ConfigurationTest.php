@@ -61,9 +61,9 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
-                    Gender::class => ['name' => 'gender', 'type' => 'string'],
-                    AnotherEnum::class => ['name' => 'another', 'type' => 'enum'],
-                    Permissions::class => ['name' => 'permissions', 'type' => 'int'],
+                    'gender' => ['class' => Gender::class, 'type' => 'string'],
+                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum'],
+                    'permissions' => ['class' => Permissions::class, 'type' => 'int'],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -72,7 +72,7 @@ class ConfigurationTest extends TestCase
     public function testDoctrineTypeConfigWithInvalidEnumClass()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine.types": Invalid classes ["stdClass"]. Expected instances of "Elao\Enum\EnumInterface"');
+        $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine.types.std.class": Invalid class. Expected instance of "Elao\Enum\EnumInterface"');
 
         $processor = new Processor();
         $processor->processConfiguration(new Configuration(), [[

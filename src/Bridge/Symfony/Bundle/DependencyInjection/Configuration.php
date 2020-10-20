@@ -49,24 +49,54 @@ class Configuration implements ConfigurationInterface
                     ->info('If true, by default for string enumerations, generate DBAL types with an ENUM SQL declaration with enum values instead of a VARCHAR (Your platform must support it)')
                 ->end()
                 ->arrayNode('types')
-                    ->validate()
-                        ->ifTrue(static function (array $v): bool {return self::hasNonEnumKeys($v); })
-                        ->then(static function (array $v) { self::throwsNonEnumKeysException($v); })
+                    ->beforeNormalization()
+                        ->always(function ($values) {
+                            $legacyFormat = false;
+                            foreach ($values as $name => $config) {
+                                if (class_exists($name)) {
+                                    $legacyFormat = true;
+                                    // need to flip
+                                    break;
+                                }
+                            }
+                            $newValues = [];
+
+                            if ($legacyFormat) {
+                                foreach ($values as $name => $value) {
+                                    if (\is_string($value)) {
+                                        $newValues[$value] = $name;
+                                    } else {
+                                        $newValues[$value['name']] = $value + ['class' => $name];
+                                    }
+                                }
+                            } else {
+                                $newValues = $values;
+                            }
+
+                            return $newValues;
+                        })
                     ->end()
-                    ->useAttributeAsKey('class')
+                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
                     ->beforeNormalization()
-                        ->ifString()->then(static function (string $v): array { return ['name' => $v]; })
+                        ->ifString()->then(static function (string $v): array { return ['class' => $v]; })
                     ->end()
                     ->children()
-                        ->scalarNode('name')->cannotBeEmpty()->end()
+                        ->scalarNode('class')
+                            ->cannotBeEmpty()
+                            ->validate()
+                                ->ifTrue(static function (string $class): bool {return !is_a($class, EnumInterface::class, true); })
+                                ->thenInvalid(sprintf('Invalid class. Expected instance of "%s"', EnumInterface::class))
+                            ->end()
+                        ->end()
                         ->enumNode('type')
-                            ->values(['enum', 'string', 'int'])
+                            ->values(['enum', 'string', 'int', 'collection'])
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
 - string: VARCHAR
 - enum: ENUM(...values) (Your platform must support it)
 - int: INT
+- collection: JSON
 
 Default is either "string" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
 Default for flagged enums is "int".
@@ -146,7 +176,7 @@ TXT
 
     private static function hasNonEnumKeys(array $values): bool
     {
-        $classes = array_keys($values);
+        $classes = array_column($values, 'class');
         foreach ($classes as $class) {
             if (!is_a($class, EnumInterface::class, true)) {
                 return true;
@@ -158,7 +188,7 @@ TXT
 
     private static function throwsNonEnumKeysException(array $values)
     {
-        $classes = array_keys($values);
+        $classes = array_column($values, 'class');
         $invalids = [];
         foreach ($classes as $class) {
             if (!is_a($class, EnumInterface::class, true)) {

@@ -1,6 +1,6 @@
 elao_enum:
     doctrine:
         types:
-            Elao\Enum\Tests\Fixtures\Enum\Gender: gender
-            Elao\Enum\Tests\Fixtures\Enum\AnotherEnum: { name: another, type: enum }
-            Elao\Enum\Tests\Fixtures\Enum\Permissions: { name: permissions, type: int }
+            gender: Elao\Enum\Tests\Fixtures\Enum\Gender
+            another: { class: Elao\Enum\Tests\Fixtures\Enum\AnotherEnum, type: enum }
+            permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions, type: int }

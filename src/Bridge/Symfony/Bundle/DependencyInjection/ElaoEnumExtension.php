@@ -41,8 +41,8 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         }
 
         $doctrineTypesConfig = [];
-        foreach ($types as $class => $value) {
-            $doctrineTypesConfig[$value['name']] = TypesDumper::getTypeClassname($class);
+        foreach ($types as $name => $value) {
+            $doctrineTypesConfig[$name] = TypesDumper::getTypeClassname($value['class']);
         }
 
         $container->prependExtensionConfig('doctrine', [
@@ -83,14 +83,15 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'string';
             $container->setParameter(
                 '.elao_enum.doctrine_types',
-                array_map(static function (string $class, array $v) use ($defaultStringType): array {
+                array_map(static function (string $name, array $v) use ($defaultStringType): array {
                     $type = $v['type'];
+                    $class = $v['class'];
 
                     if (null === $type) {
                         $type = is_a($class, FlaggedEnum::class, true) ? $type = 'int' : $defaultStringType;
                     }
 
-                    return [$class, $type, $v['name']];
+                    return [$class, $type, $name];
                 }, array_keys($types), $types)
             );
         }

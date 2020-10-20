@@ -65,6 +65,9 @@ PHP;
             case 'enum':
                 $baseClass = AbstractEnumSQLDeclarationType::class;
                 break;
+            case 'collection':
+                $baseClass = AbstractEnumCollectionType::class;
+                break;
             default:
                 throw new LogicException(sprintf('Unexpected type "%s"', $type));
         }

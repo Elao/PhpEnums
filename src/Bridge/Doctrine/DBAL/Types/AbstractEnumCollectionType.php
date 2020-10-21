@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -21,10 +19,12 @@ abstract class AbstractEnumCollectionType extends JsonType
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (\is_array($value)) {
-            $value = array_map(function (Enum $enum) { return $enum->getValue(); }, $value);
+            $value = array_values(array_map(static function (Enum $enum) {
+                return $enum->getValue();
+            }, $value));
         }
 
-        return parent::convertToDatabaseValue(array_values($value), $platform);
+        return parent::convertToDatabaseValue($value, $platform);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -32,9 +32,7 @@ abstract class AbstractEnumCollectionType extends JsonType
         $values = parent::convertToPHPValue($value, $platform);
 
         if (\is_array($values)) {
-            $values = array_map(function ($value) {
-                return $this->getEnumClass()::get($value);
-            }, $values);
+            $values = array_map([$this->getEnumClass(), 'get'], $values);
         }
 
         return $values;

@@ -42,7 +42,10 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = TypesDumper::getTypeClassname($value['class']);
+            $doctrineTypesConfig[$name] = TypesDumper::getTypeClassname($value['class'], $this->resolveDbalType(
+                $value,
+                $this->usesEnumSQLDeclaration($config)
+            ));
         }
 
         $container->prependExtensionConfig('doctrine', [
@@ -78,20 +81,11 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition(ElaoEnumType::class);
         }
 
-        $useEnumSQLDeclaration = $config['doctrine']['enum_sql_declaration'];
         if ($types = $config['doctrine']['types'] ?? false) {
-            $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'string';
             $container->setParameter(
                 '.elao_enum.doctrine_types',
-                array_map(static function (string $name, array $v) use ($defaultStringType): array {
-                    $type = $v['type'];
-                    $class = $v['class'];
-
-                    if (null === $type) {
-                        $type = is_a($class, FlaggedEnum::class, true) ? $type = 'int' : $defaultStringType;
-                    }
-
-                    return [$class, $type, $name];
+                array_map(function (string $name, array $v) use ($config): array {
+                    return [$v['class'], $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)), $name];
                 }, array_keys($types), $types)
             );
         }
@@ -112,6 +106,25 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function getXsdValidationBasePath()
     {
         return __DIR__ . '/../Resources/config/schema';
+    }
+
+    private function resolveDbalType(array $config, bool $useEnumSQLDeclaration): string
+    {
+        $type = $config['type'];
+        $class = $config['class'];
+
+        $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'string';
+
+        if (null === $type) {
+            $type = is_a($class, FlaggedEnum::class, true) ? $type = 'int' : $defaultStringType;
+        }
+
+        return $type;
+    }
+
+    private function usesEnumSQLDeclaration($config): bool
+    {
+        return $config['doctrine']['enum_sql_declaration'];
     }
 
     private function registerTranslationExtractorConfiguration(array $config, ContainerBuilder $container)

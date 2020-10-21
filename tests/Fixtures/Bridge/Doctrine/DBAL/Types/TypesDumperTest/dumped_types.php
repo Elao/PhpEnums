@@ -2,7 +2,7 @@
 
 namespace ELAO_ENUM_DT\Foo\Bar {
 
-    if (!\class_exists(\ELAO_ENUM_DT\Foo\Bar\BazType::class)) {
+    if (!\class_exists(BazType::class)) {
         class BazType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType
         {
             const NAME = 'baz';
@@ -19,7 +19,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
         }
     }
 
-    if (!\class_exists(\ELAO_ENUM_DT\Foo\Bar\XyzType::class)) {
+    if (!\class_exists(XyzType::class)) {
         class XyzType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
         {
             const NAME = 'xyz';
@@ -36,7 +36,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
         }
     }
 
-    if (!\class_exists(\ELAO_ENUM_DT\Foo\Bar\QuxType::class)) {
+    if (!\class_exists(QuxType::class)) {
         class QuxType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
         {
             const NAME = 'qux';
@@ -53,11 +53,45 @@ namespace ELAO_ENUM_DT\Foo\Bar {
         }
     }
 
+    if (!\class_exists(FooJsonCollectionType::class)) {
+        class FooJsonCollectionType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractJsonCollectionEnumType
+        {
+            const NAME = 'foo_json';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Foo::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+        }
+    }
+
+    if (!\class_exists(FooCsvCollectionType::class)) {
+        class FooCsvCollectionType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractCsvCollectionEnumType
+        {
+            const NAME = 'foo_csv';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Foo::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+        }
+    }
+
 }
 
 namespace ELAO_ENUM_DT\Foo\Baz {
 
-    if (!\class_exists(\ELAO_ENUM_DT\Foo\Baz\FooType::class)) {
+    if (!\class_exists(FooType::class)) {
         class FooType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
         {
             const NAME = 'foo';

@@ -61,6 +61,8 @@ abstract class ElaoEnumExtensionTest extends TestCase
             [Gender::class, 'string', 'gender'],
             [AnotherEnum::class, 'enum', 'another'],
             [Permissions::class, 'int', 'permissions'],
+            [SimpleEnum::class, 'json_collection', 'simple_collection_json'],
+            [SimpleEnum::class, 'csv_collection', 'simple_collection_csv'],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
@@ -99,6 +101,8 @@ abstract class ElaoEnumExtensionTest extends TestCase
                         'gender' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
                         'another' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\AnotherEnumType',
                         'permissions' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
+                        'simple_collection_json' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumJsonCollectionType',
+                        'simple_collection_csv' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumCsvCollectionType',
                     ],
                     'mapping_types' => ['enum' => 'string'],
                 ],

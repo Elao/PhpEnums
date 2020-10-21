@@ -527,7 +527,8 @@ elao_enum:
             gender: App\Enum\GenderEnum # Defaults to `{ class: App\Enum\GenderEnum, type: string }` for string based enum (translates to VARCHAR)
             another: { class: App\Enum\AnotherEnum, type: enum } # string based enum with SQL ENUM column definition
             permissions: { class: App\Enum\Permissions, type: int } # values are stored as integers. Default for flagged enums.
-            genders: { class: App\Enum\GenderEnum, type: collection } # values are stored as a json array of enum values.
+            activity_types: { class: App\Enum\ActivityType, type: json_collection } # values are stored as a json array of enum values.
+            roles: { class: App\Enum\Role, type: csv_collection } # values are stored as a csv (Doctrine simple_array) of enum values.
 ```
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.

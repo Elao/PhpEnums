@@ -50,30 +50,27 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('types')
                     ->beforeNormalization()
-                        ->always(function ($values) {
-                            $legacyFormat = false;
-                            foreach ($values as $name => $config) {
-                                if (class_exists($name)) {
-                                    $legacyFormat = true;
+                        ->always(function (array $values): array {
+                            foreach ($values as $key => $config) {
+                                // BC: detect legacy format with enum classes as keys
+                                if (is_a($key, EnumInterface::class, true)) {
                                     @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
-                                    break;
-                                }
-                            }
-                            $newValues = [];
 
-                            if ($legacyFormat) {
-                                foreach ($values as $name => $value) {
-                                    if (\is_string($value)) {
-                                        $newValues[$value] = $name;
-                                    } else {
-                                        $newValues[$value['name']] = $value + ['class' => $name];
+                                    // Convert to new format:
+                                    $legacyFormat = $values;
+                                    $values = [];
+                                    foreach ($legacyFormat as $name => $value) {
+                                        if (\is_string($value)) {
+                                            $values[$value] = $name;
+                                            continue;
+                                        }
+
+                                        $values[$value['name']] = $value + ['class' => $name];
                                     }
                                 }
-                            } else {
-                                $newValues = $values;
                             }
 
-                            return $newValues;
+                            return $values;
                         })
                     ->end()
                     ->useAttributeAsKey('name')

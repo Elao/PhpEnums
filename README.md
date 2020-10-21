@@ -524,10 +524,10 @@ This configuration is equivalent to the following sections explaining how to cre
 elao_enum:
     doctrine:
         types:
-            gender: App\Enum\GenderEnum # Defaults to `{ name: App\Enum\GenderEnum, type: string }` for string based enum (translates to VARCHAR)
+            gender: App\Enum\GenderEnum # Defaults to `{ class: App\Enum\GenderEnum, type: string }` for string based enum (translates to VARCHAR)
             another: { class: App\Enum\AnotherEnum, type: enum } # string based enum with SQL ENUM column definition
-            permissions: { name: App\Enum\Permissions, type: int } # values are stored as integers. Default for flagged enums.
-            genders: { name: App\Enum\GenderEnum, type: collection } # values are stored as json.
+            permissions: { class: App\Enum\Permissions, type: int } # values are stored as integers. Default for flagged enums.
+            genders: { class: App\Enum\GenderEnum, type: collection } # values are stored as a json array of enum values.
 ```
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.

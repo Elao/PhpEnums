@@ -80,7 +80,7 @@ class ConfigurationTest extends TestCase
     public function testDoctrineTypeConfigWithInvalidEnumClass()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine.types.std.class": Invalid class. Expected instance of "Elao\Enum\EnumInterface"');
+        $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine.types.std.class": Invalid class. Expected instance of "Elao\Enum\EnumInterface". Got "stdClass".');
 
         $processor = new Processor();
         $processor->processConfiguration(new Configuration(), [[

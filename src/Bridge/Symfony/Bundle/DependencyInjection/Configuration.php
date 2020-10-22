@@ -51,22 +51,20 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('types')
                     ->beforeNormalization()
                         ->always(function (array $values): array {
-                            foreach ($values as $key => $config) {
-                                // BC: detect legacy format with enum classes as keys
-                                if (is_a($key, EnumInterface::class, true)) {
-                                    @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
+                            // BC: detect legacy format with enum classes as keys
+                            if (is_a(array_key_first($values), EnumInterface::class, true)) {
+                                @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
 
-                                    // Convert to new format:
-                                    $legacyFormat = $values;
-                                    $values = [];
-                                    foreach ($legacyFormat as $name => $value) {
-                                        if (\is_string($value)) {
-                                            $values[$value] = $name;
-                                            continue;
-                                        }
-
-                                        $values[$value['name']] = $value + ['class' => $name];
+                                // Convert to new format:
+                                $legacyFormat = $values;
+                                $values = [];
+                                foreach ($legacyFormat as $name => $value) {
+                                    if (\is_string($value)) {
+                                        $values[$value] = $name;
+                                        continue;
                                     }
+
+                                    $values[$value['name']] = $value + ['class' => $name];
                                 }
                             }
 
@@ -83,7 +81,7 @@ class Configuration implements ConfigurationInterface
                             ->cannotBeEmpty()
                             ->validate()
                                 ->ifTrue(static function (string $class): bool {return !is_a($class, EnumInterface::class, true); })
-                                ->thenInvalid(sprintf('Invalid class. Expected instance of "%s"', EnumInterface::class))
+                                ->thenInvalid(sprintf('Invalid class. Expected instance of "%s"', EnumInterface::class) . '. Got %s.')
                             ->end()
                         ->end()
                         ->enumNode('type')

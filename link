@@ -1,0 +1,62 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/vendor/symfony/filesystem/Exception/ExceptionInterface.php';
+require __DIR__.'/vendor/symfony/filesystem/Exception/IOExceptionInterface.php';
+require __DIR__.'/vendor/symfony/filesystem/Exception/IOException.php';
+require __DIR__.'/vendor/symfony/filesystem/Filesystem.php';
+
+use Symfony\Component\Filesystem\Filesystem;
+
+/**
+ * Links dependencies of a project to a local clone of the Elao/PhpEnums GitHub repository.
+ */
+
+$copy = false !== $k = array_search('--copy', $argv, true);
+$copy && array_splice($argv, $k, 1);
+$rollback = false !== $k = array_search('--rollback', $argv, true);
+$rollback && array_splice($argv, $k, 1);
+$pathToProject = $argv[1] ?? getcwd();
+
+$projectVendorDir = "$pathToProject/vendor/elao/enum";
+
+if (!is_dir($projectVendorDir)) {
+    echo 'Links dependencies of a project to a local clone of the library.'.PHP_EOL.PHP_EOL;
+    echo "Usage: $argv[0] /path/to/the/project".PHP_EOL;
+    echo '       Use `--copy` to copy dependencies instead of symlink'.PHP_EOL.PHP_EOL;
+    echo '       Use `--rollback` to rollback'.PHP_EOL.PHP_EOL;
+    echo "The directory \"$pathToProject\" does not exist or the dependencies are not installed, did you forget to run \"composer install\" in your project?".PHP_EOL;
+    exit(1);
+}
+
+$package = 'elao/enum';
+$packageDir = __DIR__;
+
+$filesystem = new Filesystem();
+$directories[] = __DIR__;
+
+if ($rollback) {
+    $filesystem->remove($projectVendorDir);
+    echo "\"$package\" has been rollback from \"$packageDir\".".PHP_EOL;
+    echo "Do not forget to run \"composer install\" in your project \"$pathToProject\".".PHP_EOL;
+} elseif (!$copy && is_link($projectVendorDir)) {
+    echo "\"$package\" is already a symlink, skipping.".PHP_EOL;
+} else {
+    $sfDir = ('\\' === DIRECTORY_SEPARATOR || $copy) ? $packageDir : $filesystem->makePathRelative($packageDir, dirname(realpath($projectVendorDir)));
+
+    $filesystem->remove($projectVendorDir);
+
+    if ($copy) {
+        $filesystem->mirror($sfDir, $projectVendorDir);
+        echo "\"$package\" has been copied from \"$packageDir\".".PHP_EOL;
+    } else {
+        $filesystem->symlink($sfDir, $projectVendorDir);
+        echo "\"$package\" has been linked to \"$packageDir\".".PHP_EOL;
+    }
+
+    echo "Run `composer dump-autoload` if necessary".PHP_EOL;
+}
+
+foreach (glob("$pathToProject/var/cache/*", GLOB_NOSORT) as $cacheDir) {
+    $filesystem->remove($cacheDir);
+}

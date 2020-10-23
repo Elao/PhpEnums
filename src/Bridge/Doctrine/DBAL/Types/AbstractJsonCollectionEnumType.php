@@ -12,16 +12,16 @@ namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
-use Elao\Enum\Enum;
+use Elao\Enum\EnumInterface;
 
-abstract class AbstractEnumCollectionType extends JsonType
+abstract class AbstractJsonCollectionEnumType extends JsonType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (\is_array($value)) {
-            $value = array_values(array_map(static function (Enum $enum) {
+            $value = array_unique(array_values(array_map(static function (EnumInterface $enum) {
                 return $enum->getValue();
-            }, $value));
+            }, $value)));
         }
 
         return parent::convertToDatabaseValue($value, $platform);
@@ -32,7 +32,7 @@ abstract class AbstractEnumCollectionType extends JsonType
         $values = parent::convertToPHPValue($value, $platform);
 
         if (\is_array($values)) {
-            $values = array_map([$this->getEnumClass(), 'get'], $values);
+            $values = array_map([$this->getEnumClass(), 'get'], array_unique(array_values($values)));
         }
 
         return $values;

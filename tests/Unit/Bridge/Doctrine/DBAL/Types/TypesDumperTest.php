@@ -41,6 +41,8 @@ class TypesDumperTest extends TestCase
             ['Foo\Bar\Xyz', 'enum', 'xyz'],
             ['Foo\Bar\Qux', 'int', 'qux'],
             ['Foo\Baz\Foo', 'int', 'foo'],
+            ['Foo\Bar\Foo', 'json_collection', 'foo_json'],
+            ['Foo\Bar\Foo', 'csv_collection', 'foo_csv'],
         ]);
 
         self::assertFileEquals(self::FIXTURES_DIR . '/dumped_types.php', $this->dumpPath);

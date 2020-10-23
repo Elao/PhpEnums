@@ -58,7 +58,8 @@
             <xsd:enumeration value="enum"/>
             <xsd:enumeration value="string"/>
             <xsd:enumeration value="int"/>
-            <xsd:enumeration value="collection"/>
+            <xsd:enumeration value="json_collection"/>
+            <xsd:enumeration value="csv_collection"/>
         </xsd:restriction>
     </xsd:simpleType>
 

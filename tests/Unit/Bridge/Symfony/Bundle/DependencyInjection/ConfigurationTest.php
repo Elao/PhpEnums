@@ -14,6 +14,7 @@ use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Configuration;
 use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -44,6 +45,36 @@ class ConfigurationTest extends TestCase
             'argument_value_resolver' => ['enabled' => false],
             'serializer' => ['enabled' => false],
         ]), $config);
+    }
+
+    public function testDoctrineConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                     'gender' => ['class' => Gender::class, 'type' => 'string'],
+                     'another' => ['class' => AnotherEnum::class, 'type' => 'enum'],
+                     'permissions' => ['class' => Permissions::class, 'type' => 'int'],
+                     'simple_collection_json' => ['class' => SimpleEnum::class, 'type' => 'json_collection'],
+                     'simple_collection_csv' => ['class' => SimpleEnum::class, 'type' => 'csv_collection'],
+                ],
+            ],
+        ]]);
+
+        $this->assertEquals([
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                    'gender' => ['class' => Gender::class, 'type' => 'string'],
+                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum'],
+                    'permissions' => ['class' => Permissions::class, 'type' => 'int'],
+                    'simple_collection_json' => ['class' => SimpleEnum::class, 'type' => 'json_collection'],
+                    'simple_collection_csv' => ['class' => SimpleEnum::class, 'type' => 'csv_collection'],
+                ],
+            ],
+        ] + $this->getDefaultConfig(), $config);
     }
 
     /**

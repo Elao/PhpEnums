@@ -10,12 +10,12 @@
 
 namespace Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types;
 
-use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumCollectionType;
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractCsvCollectionEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
-class SimpleEnumCollectionType extends AbstractEnumCollectionType
+class SimpleCsvCollectionEnumType extends AbstractCsvCollectionEnumType
 {
-    const NAME = 'simple_enum_collection';
+    const NAME = 'simple_enum_csv_collection';
 
     protected function getEnumClass(): string
     {

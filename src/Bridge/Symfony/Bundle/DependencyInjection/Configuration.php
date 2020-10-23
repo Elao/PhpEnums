@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\EnumInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -85,13 +86,14 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->enumNode('type')
-                            ->values(['enum', 'string', 'int', 'collection'])
+                            ->values(TypesDumper::TYPES)
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
 - string: VARCHAR
 - enum: ENUM(...values) (Your platform must support it)
 - int: INT
-- collection: JSON
+- json_collection: JSON
+- csv_collection: CSV (Doctrine simple_array type)
 
 Default is either "string" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
 Default for flagged enums is "int".

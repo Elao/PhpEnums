@@ -83,7 +83,7 @@ trait AutoDiscoveredValuesTrait
                 self::$guessedValues[$enumType] = array_merge(self::$guessedValues[$enumType], array_values($values));
             }
 
-            self::$guessedValues[$enumType] = array_unique(self::$guessedValues[$enumType]);
+            self::$guessedValues[$enumType] = array_values(array_unique(self::$guessedValues[$enumType]));
         }
 
         return self::$guessedValues[$enumType];

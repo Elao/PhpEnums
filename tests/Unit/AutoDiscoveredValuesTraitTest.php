@@ -50,6 +50,11 @@ class AutoDiscoveredValuesTraitTest extends TestCase
     {
         $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredDumbEnum::values());
     }
+
+    public function testItRemovesAutoDiscoveredNonUniqueIdentifiersWithContiguousIndices()
+    {
+        $this->assertSame([0 => 'foo', 1 => 'bar'], AutoDiscoveredNonUniqueEnumIndentifiers::values());
+    }
 }
 
 final class AutoDiscoveredEnum extends Enum
@@ -97,4 +102,13 @@ final class AutoDiscoveredDumbEnum extends Enum
     {
         return [self::class, DumbEnum::class];
     }
+}
+
+final class AutoDiscoveredNonUniqueEnumIndentifiers extends Enum
+{
+    use AutoDiscoveredValuesTrait;
+
+    public const FOO = 'foo';
+    public const FOO_ALIAS = 'foo';
+    public const BAR = 'bar';
 }

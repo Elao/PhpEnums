@@ -91,7 +91,7 @@ JS;
     {
         $relativeLibPath = preg_replace('#.js$#', '', rtrim(
             $this->fs->makePathRelative(realpath($this->libPath), realpath(\dirname($path))),
-            DIRECTORY_SEPARATOR
+            '\\/'
         ));
 
         if (is_a($enumFqcn, FlaggedEnum::class, true)) {

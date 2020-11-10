@@ -118,7 +118,7 @@ class EnumValueResolverTest extends TestCase
             ],
             [
                 [],
-                'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value array (' . PHP_EOL . ')',
+                'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value array (' . "\n" . ')',
             ],
         ];
     }

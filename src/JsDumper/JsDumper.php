@@ -307,6 +307,6 @@ JS;
             return $path;
         }
 
-        return rtrim($this->baseDir, DIRECTORY_SEPARATOR) . '/' . $path;
+        return rtrim($this->baseDir, '\\/') . '/' . $path;
     }
 }

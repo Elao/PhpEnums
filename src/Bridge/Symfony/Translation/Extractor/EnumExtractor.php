@@ -12,6 +12,7 @@ namespace Elao\Enum\Bridge\Symfony\Translation\Extractor;
 
 use Elao\Enum\ReadableEnum;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Glob;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
@@ -82,14 +83,12 @@ class EnumExtractor implements ExtractorInterface
             // Normalize namespace.
             $namespace = rtrim($namespace, '\\') . '\\';
 
-            /** @var SplFileInfo $file */
-            foreach ($finder->files()->name($this->fileNamePattern)->in($dir) as $file) {
-                foreach ($this->ignore as $ignore) {
-                    if (fnmatch($ignore, $file->getPathname())) {
-                        continue 2;
-                    }
-                }
+            foreach ($this->ignore as $ignore) {
+                $finder->notPath(Glob::toRegex(str_replace(rtrim($dir, '\\/') . '/', '', $ignore)));
+            }
 
+            /** @var SplFileInfo $file */
+            foreach ($finder->in($dir)->files()->name($this->fileNamePattern) as $file) {
                 // Get file pathinfo and clear dirname.
                 $path = pathinfo($file->getRelativePathname());
                 if ($path['dirname'] === '.') {

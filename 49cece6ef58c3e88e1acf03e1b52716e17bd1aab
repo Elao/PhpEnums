@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2020-11-09T15:45:01Z
+
+I've enabled AppVeyor on the repo. It should trigger on new push.
+
+---------------------------------------------------------------------------
+
+by WhiteRabbitDE at 2020-11-09T16:27:38Z
+
+@ogizanagi I think thats it ! There are 3 tests failing but those are also failing on my local machine so i think thats ok.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2020-11-09T16:28:44Z
+
+Congrats 👏
+Would you have some time to inspect those tests and attempt to fix it? 🙏
+
+---------------------------------------------------------------------------
+
+by WhiteRabbitDE at 2020-11-10T10:54:13Z
+
+I went through the errors and fixed the test. Unfortunatly i really dislike some of the fixes... Most problems are caused by the directory seperator which is "/" in linux and "\" on windows.
+Maybe we can have a short chat on slack or smth before i push those changes.

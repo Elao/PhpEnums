@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\SimpleChoiceEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class SimpleChoiceEnumTest extends TestCase
 {

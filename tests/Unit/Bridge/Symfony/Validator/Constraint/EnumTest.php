@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 
 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 class EnumTest extends TestCase

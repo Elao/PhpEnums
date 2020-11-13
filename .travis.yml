@@ -22,34 +22,26 @@ matrix:
       - php: 7.4
         env: ENABLE_CODE_COVERAGE="yes"
 
-      # oldest supported versions
-      - php: 7.0
-        env:
-          - SYMFONY_VERSION="3.4.*"
-          - COMPOSER_FLAGS="--prefer-lowest"
-          - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
-          - SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1
-
       - php: 7.3
         env:
-          - SYMFONY_VERSION="4.4.*"
+          - SYMFONY_VERSION="^4.4"
+          - COMPOSER_FLAGS="--prefer-lowest"
+          - SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1
 
       # most recent versions:
       - php: 7.4
         env:
-          - SYMFONY_VERSION="5.0.*"
           - CHECK_CODE_STYLE="yes"
 
-      - php: 7.4
-        env:
-          - SYMFONY_VERSION="5.1.*"
+      - php: nightly # PHP 8
+        env: SYMFONY_VERSION="^5.2"
 
       # bleeding edge (unreleased dev versions where failures are allowed):
       - php: nightly # PHP 8
-        env: SYMFONY_VERSION="5.2.*"
+        env: SYMFONY_VERSION="^5.3"
 
     allow_failures:
-      - env: SYMFONY_VERSION="5.2.*"
+      - env: SYMFONY_VERSION="^5.3"
 
 cache:
   directories:
@@ -60,16 +52,16 @@ before_install:
   - if [[ "$ENABLE_CODE_COVERAGE" != "yes" ]]; then phpenv config-rm xdebug.ini || true; fi;
   - if [[ "$SYMFONY_VERSION" != "" ]]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
   - if [[ "$CHECK_CODE_STYLE" != "yes" ]]; then composer remove "friendsofphp/php-cs-fixer" --no-update --no-interaction --dev; fi;
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.0" ]]; then composer remove "api-platform/core" --no-update --no-interaction --dev; fi;
 
 install:
   - |
-    # Set composer's platform to php 7.4 if we're on php 8 & use dev version of phpunit-bridge (which ignores platform reqs)
+    # Set composer's platform to php 7.4 if we're on php 8 and require "phpspec/prophecy"
+    # (as native support for prophecy was removed from PHPUnit 9)
     echo $TRAVIS_PHP_VERSION
     if [[ $TRAVIS_PHP_VERSION = 'nightly' ]]; then
       echo "Set composer's platform to php 7.4"
       composer config platform.php 7.4.99
-      composer require "symfony/phpunit-bridge:5.1.x-dev" --no-update --no-interaction --dev
+      composer require "phpspec/prophecy-phpunit:^2.0" --no-update --no-interaction --dev
     fi
   - composer update --prefer-dist --no-interaction --optimize-autoloader --prefer-stable --no-progress $COMPOSER_FLAGS
   - if [[ "$ENABLE_CODE_COVERAGE" == "yes" ]]; then composer require --dev satooshi/php-coveralls; fi;

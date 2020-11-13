@@ -13,7 +13,7 @@ namespace Elao\Enum\Tests\Unit;
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Tests\Fixtures\Enum\ExtendedSimpleEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class EnumTest extends TestCase
 {

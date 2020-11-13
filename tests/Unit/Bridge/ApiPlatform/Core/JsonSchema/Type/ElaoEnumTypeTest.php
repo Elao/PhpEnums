@@ -13,12 +13,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\ApiPlatform\Core\JsonSchema\Type;
 use ApiPlatform\Core\JsonSchema\TypeFactory;
 use Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 
-/**
- * @requires PHP >= 7.1
- */
 class ElaoEnumTypeTest extends TestCase
 {
     /**
@@ -26,11 +23,15 @@ class ElaoEnumTypeTest extends TestCase
      */
     public function testGetType(array $expected, Type $type): void
     {
+        if (!interface_exists(\ApiPlatform\Core\Exception\ExceptionInterface::class)) {
+            $this->markTestSkipped('API platform not installed');
+        }
+
         $typeFactory = new ElaoEnumType(new TypeFactory());
         $this->assertEquals($expected, $typeFactory->getType($type, 'json'));
     }
 
-    public function typeProvider(): iterable
+    public function typeProvider(): \Generator
     {
         yield [
             [

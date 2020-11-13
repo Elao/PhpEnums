@@ -34,15 +34,9 @@ final class EnumCaster
         foreach ($originClasses as $originClass) {
             $r = new \ReflectionClass($originClass);
             $constants = array_replace($constants, array_filter($r->getConstants(), static function (string $k) use ($r, $enum) {
-                if (PHP_VERSION_ID >= 70100) {
-                    // ReflectionClass::getReflectionConstant() is only available since PHP 7.1
-                    $rConstant = $r->getReflectionConstant($k);
-                    $public = $rConstant->isPublic();
-                    $value = $rConstant->getValue();
-                } else {
-                    $public = true;
-                    $value = \constant("{$r->getName()}::$k");
-                }
+                $rConstant = $r->getReflectionConstant($k);
+                $public = $rConstant->isPublic();
+                $value = $rConstant->getValue();
                 // Only keep public constants, for which value matches enumerable values set:
                 return $public && $enum::accepts($value);
             }, ARRAY_FILTER_USE_KEY));

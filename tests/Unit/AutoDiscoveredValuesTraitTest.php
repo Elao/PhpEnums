@@ -16,7 +16,7 @@ use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\Tests\Fixtures\Enum\DumbEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Php71AutoDiscoveredEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class AutoDiscoveredValuesTraitTest extends TestCase
 {
@@ -25,9 +25,6 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredEnum::values());
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testPHP71ItAutoDiscoveredValuesBasedOnAvailableConstants()
     {
         $this->assertSame(['foo', 'bar', 'baz'], Php71AutoDiscoveredEnum::values());
@@ -108,7 +105,7 @@ final class AutoDiscoveredNonUniqueEnumIndentifiers extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    public const FOO = 'foo';
-    public const FOO_ALIAS = 'foo';
-    public const BAR = 'bar';
+    const FOO = 'foo';
+    const FOO_ALIAS = 'foo';
+    const BAR = 'bar';
 }

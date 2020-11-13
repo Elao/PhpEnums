@@ -3,6 +3,16 @@
 ###########
 
 install:
+	# Require "phpspec/prophecy" for PHPUnit 9 used when PHP 8+ is used
+	php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" && composer require --dev --no-update "phpspec/prophecy-phpunit" || true
+	composer update
+
+install-lowest:
+	composer require "symfony/symfony:^4.4" --no-update --no-interaction --dev
+	composer update --prefer-lowest
+
+install-highest:
+	composer require "symfony/symfony:^5.3" --no-update --no-interaction --dev
 	composer update
 
 ########

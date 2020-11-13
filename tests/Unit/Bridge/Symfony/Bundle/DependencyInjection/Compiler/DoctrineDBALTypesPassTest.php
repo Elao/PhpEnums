@@ -11,7 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Compiler\DoctrineDBALTypesPass;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DoctrineDBALTypesPassTest extends TestCase
@@ -41,7 +41,7 @@ class DoctrineDBALTypesPassTest extends TestCase
         $this->pass->process($container);
 
         self::assertNull($def->getFile());
-        self::assertFileNotExists($this->dumpPath);
+        self::assertFileDoesNotExist($this->dumpPath);
     }
 
     public function testDumpsOnTypesSet()

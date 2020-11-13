@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Serializer\Normalizer;
 
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 class EnumNormalizerTest extends TestCase

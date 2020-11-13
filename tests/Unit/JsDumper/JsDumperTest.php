@@ -14,7 +14,7 @@ use Elao\Enum\JsDumper\JsDumper;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 class JsDumperTest extends TestCase

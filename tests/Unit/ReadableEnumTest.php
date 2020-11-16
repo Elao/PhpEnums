@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class ReadableEnumTest extends TestCase
 {

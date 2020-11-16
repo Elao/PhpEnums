@@ -13,7 +13,6 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
-use Symfony\Component\Validator\Constraints\JsonValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EnumValidatorTest extends ConstraintValidatorTestCase
@@ -32,7 +31,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
             ->setCode(Enum::NO_SUCH_CHOICE_ERROR)
         ;
 
-        $this->is4_3_OrUpper() && $violation->setParameter('{{ choices }}', 'object, object, object');
+        $violation->setParameter('{{ choices }}', 'object, object, object');
 
         $violation->assertRaised();
     }
@@ -79,7 +78,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
             ->setCode(Enum::NO_SUCH_CHOICE_ERROR)
         ;
 
-        $this->is4_3_OrUpper() && $violation->setParameter('{{ choices }}', 'object, object, object');
+        $violation->setParameter('{{ choices }}', 'object, object, object');
 
         $violation->assertRaised();
     }
@@ -87,11 +86,5 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
     protected function createValidator()
     {
         return new ChoiceValidator();
-    }
-
-    private function is4_3_OrUpper(): bool
-    {
-        // JsonValidator was added in 4.3
-        return class_exists(JsonValidator::class);
     }
 }

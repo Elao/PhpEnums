@@ -15,7 +15,7 @@ use Elao\Enum\Exception\InvalidArgumentException;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class EnumProviderTest extends TestCase
 {
@@ -100,7 +100,7 @@ class EnumProviderTest extends TestCase
         self::assertEmpty(array_udiff(
             $simples,
             SimpleEnum::instances(),
-            static function ($a, $b) { return $a === $b; }
+            static function ($a, $b) { return $a === $b ? 1 : 0; }
         ), 'contains all unique enumeration values');
 
         $count = \count($enumProvider->randomEnums('Simple', $max = 1));

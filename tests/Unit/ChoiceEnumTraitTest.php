@@ -15,7 +15,7 @@ use Elao\Enum\Enum;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\ReadableEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class ChoiceEnumTraitTest extends TestCase
 {

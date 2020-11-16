@@ -15,7 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;

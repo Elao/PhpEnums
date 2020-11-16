@@ -6,7 +6,7 @@ Elao Enumerations
 [![Build Status](https://img.shields.io/travis/Elao/PhpEnums/master.svg?style=flat-square)](https://travis-ci.org/Elao/PhpEnums)
 [![Coveralls](https://img.shields.io/coveralls/Elao/PhpEnums.svg?style=flat-square)](https://coveralls.io/github/Elao/PhpEnums)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)
-[![php](https://img.shields.io/badge/PHP-7-green.svg?style=flat-square "Available for PHP 7+")](http://php.net)
+[![php](https://img.shields.io/badge/PHP-7.3-green.svg?style=flat-square "Available for PHP 7.3+")](http://php.net)
 
 This project aims to provide the missing PHP enumerations support:
 
@@ -654,7 +654,7 @@ abstract class AbstractEnumType extends Type
 Override those methods in order to satisfy your needs.
 
 ## Symfony HttpKernel component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.1%2B-green.svg?style=flat-square" title="Available for Symfony 3.1+" alt="Available for Symfony 3.1+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.1%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>
 
 An [argument value resolver](https://symfony.com/doc/current/controller/argument_value_resolver.html) allows to 
 seamlessly transform an HTTP request parameter (from route/attributes, query string or post parameters, in this order) 
@@ -663,13 +663,13 @@ into an enum instance by type-hinting the targeted enum in controller action.
 The `Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver` is automatically registered by the Symfony Bundle.
 
 ## Symfony Serializer component 
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>
 
 The `Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer` is automatically registered by the Symfony Bundle
 and allows to normalize/denormalize any enumeration to/from its value.
 
 ## Symfony Form component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>
 
 ### Simple enums
 
@@ -782,7 +782,7 @@ $form->get('permissions')->getData(); // Will return a single `Permissions` inst
 Same options are available, but on the contrary of the `EnumType`, the `multiple` option is always `true` and cannot be set to `false` (You'll always get a single enum instance though).
 
 ## Symfony Validator component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>
 
 The library provides a `Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum` constraint which makes use of Symfony's built-in [`Choice` constraint](http://symfony.com/doc/current/reference/constraints/Choice.html) and validator internally.
 
@@ -819,7 +819,7 @@ App\Entity\User:
                 class: MyApp\Enum\Gender
                 choices: 
                     - female
-                    - !php/const MyApp\Enum\Gender::MALE # You can use PHP constants with the YAML format since Symfony 3.2
+                    - !php/const MyApp\Enum\Gender::MALE
 ```
 
 The `choice` option only accepts enum values and normalize it internally to enum instances if `asValue` is `false`.
@@ -841,7 +841,7 @@ Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allow
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 
 ## Symfony VarDumper component
-<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 3.4+" alt="Available for Symfony 3.4+" align="right"></a>
+<a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-3.4%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>
 
 By requiring this package and if `symfony/var-dumper` is installed, an `EnumCaster` is registered automatically to enhance enum instances dump output.
 

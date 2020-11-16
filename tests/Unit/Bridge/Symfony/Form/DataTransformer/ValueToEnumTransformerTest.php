@@ -12,7 +12,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\ValueToEnumTransformer;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

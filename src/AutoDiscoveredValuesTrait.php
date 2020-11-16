@@ -64,11 +64,9 @@ trait AutoDiscoveredValuesTrait
                 $r = new \ReflectionClass($discoveredClass);
                 $values = $r->getConstants();
 
-                if (PHP_VERSION_ID >= 70100) {
-                    $values = array_filter($values, static function (string $k) use ($r) {
-                        return $r->getReflectionConstant($k)->isPublic();
-                    }, ARRAY_FILTER_USE_KEY);
-                }
+                $values = array_filter($values, static function (string $k) use ($r) {
+                    return $r->getReflectionConstant($k)->isPublic();
+                }, ARRAY_FILTER_USE_KEY);
 
                 if (is_a($enumType, FlaggedEnum::class, true)) {
                     $values = array_filter($values, static function ($v) {

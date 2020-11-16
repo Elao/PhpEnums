@@ -16,9 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @requires PHP < 8
- */
 class EnumTypeTest extends KernelTestCase
 {
     /** @var EntityManagerInterface */

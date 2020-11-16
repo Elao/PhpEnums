@@ -17,7 +17,7 @@ use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\Php71CastedEnumWIthPrivateConstants;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleChoiceEnumFromDumEnum;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\AbstractDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -58,9 +58,6 @@ EODUMP;
         $this->assertDumpEquals($expectedDump, SimpleEnum::get(SimpleEnum::FIRST));
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testCastWithPrivateConstants()
     {
         $expectedDump = <<<'EODUMP'
@@ -174,11 +171,11 @@ EODUMP;
 
         $expectedDump = <<<'EODUMP'
 """
-<header></header><boundary>%aElao\Enum\Tests\Fixtures\Enum\Permissions%a {<samp>\n
+<header></header><boundary>%aElao\Enum\Tests\Fixtures\Enum\Permissions%a {<samp%S>\n
   <span class=sf-dump-meta>&#9873; </span>: <span class=sf-dump-const title="7">EXECUTE | WRITE | READ</span>\n
   <span class=sf-dump-meta>readable</span>: "<span class=sf-dump-str title="15 characters">All permissions</span>"\n
   #<span class=sf-dump-protected title="Protected property">value</span>: <span class=sf-dump-num>7</span>\n
-  #<span class=sf-dump-protected title="Protected property">flags</span>: [<samp>\n
+  #<span class=sf-dump-protected title="Protected property">flags</span>: [<samp%S>\n
     <span class=sf-dump-const title="EXECUTE">1</span>\n
     <span class=sf-dump-const title="WRITE">2</span>\n
     <span class=sf-dump-const title="READ">4</span>\n

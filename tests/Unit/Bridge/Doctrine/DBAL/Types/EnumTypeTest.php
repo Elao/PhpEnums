@@ -14,7 +14,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\GenderEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class EnumTypeTest extends TestCase
 {
@@ -26,7 +26,9 @@ class EnumTypeTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        Type::addType(GenderEnumType::NAME, GenderEnumType::class);
+        if (!Type::hasType(GenderEnumType::NAME)) {
+            Type::addType(GenderEnumType::NAME, GenderEnumType::class);
+        }
     }
 
     /**

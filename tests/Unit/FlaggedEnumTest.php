@@ -15,7 +15,7 @@ use Elao\Enum\Exception\LogicException;
 use Elao\Enum\Tests\Fixtures\Enum\AlarmScheduleType;
 use Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class FlaggedEnumTest extends TestCase
 {

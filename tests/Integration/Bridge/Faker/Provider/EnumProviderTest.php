@@ -15,10 +15,10 @@ use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Elao\Enum\Tests\Fixtures\EnumAware\SimpleEntity;
+use Elao\Enum\Tests\TestCase;
 use Faker\Factory as FakerGeneratorFactory;
 use Faker\Generator as FakerGenerator;
 use Nelmio\Alice\Loader\NativeLoader;
-use PHPUnit\Framework\TestCase;
 
 class EnumProviderTest extends TestCase
 {

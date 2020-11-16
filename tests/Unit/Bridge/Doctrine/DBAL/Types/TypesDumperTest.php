@@ -11,7 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\DBAL\Types;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class TypesDumperTest extends TestCase
 {

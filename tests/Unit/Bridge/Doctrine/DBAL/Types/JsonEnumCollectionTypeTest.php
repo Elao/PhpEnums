@@ -14,7 +14,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\SimpleJsonCollectionEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 
 class JsonEnumCollectionTypeTest extends TestCase
 {

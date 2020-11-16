@@ -11,7 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Translation\Extractor;
 
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
-use PHPUnit\Framework\TestCase;
+use Elao\Enum\Tests\TestCase;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Translation\MessageCatalogue;
 

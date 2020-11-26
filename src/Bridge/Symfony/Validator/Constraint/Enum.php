@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Enum extends Choice
 {
     /** @var string */
@@ -31,14 +32,41 @@ class Enum extends Choice
      */
     public $asValue = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($options)
-    {
-        parent::__construct($options);
+    public function __construct(
+        $class = null,
+        ?array $choices = null,
+        ?bool $asValue = null,
+        $callback = null,
+        ?bool $multiple = null,
+        ?bool $strict = null,
+        ?int $min = null,
+        ?int $max = null,
+        ?string $message = null,
+        ?string $multipleMessage = null,
+        ?string $minMessage = null,
+        ?string $maxMessage = null,
+        $groups = null,
+        $payload = null
+    ) {
+        parent::__construct(
+            $class, // "class" is the default option here and supersedes "choices" from parent class.
+            $callback,
+            $multiple,
+            $strict,
+            $min,
+            $max,
+            $message,
+            $multipleMessage,
+            $minMessage,
+            $maxMessage,
+            $groups,
+            $payload
+        );
 
-        $this->strict = true;
+        $this->asValue = $asValue ?? $this->asValue;
+        // Choices are either provided as $class argument when used as "options" (Doctrine annotations style) and handled in parent class,
+        // or provided with positional or named argument using PHP construct:
+        $this->choices = $choices ?? $this->choices;
 
         if (!is_a($this->class, EnumInterface::class, true)) {
             throw new ConstraintDefinitionException(sprintf(

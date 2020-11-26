@@ -4,7 +4,9 @@
 
 install:
 	# Require "phpspec/prophecy" for PHPUnit 9 used when PHP 8+ is used
-	php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" && composer require --dev --no-update "phpspec/prophecy-phpunit" || true
+	php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" \
+		&& composer config platform.php 7.4.99 \
+		&& composer require --dev --no-update "phpspec/prophecy-phpunit" || true
 	composer update
 
 install-lowest:

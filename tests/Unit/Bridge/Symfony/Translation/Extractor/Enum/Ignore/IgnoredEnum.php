@@ -14,7 +14,7 @@ use Elao\Enum\ReadableEnum;
 
 final class IgnoredEnum extends ReadableEnum
 {
-    const IGNORED_ENUM = 'ignored_enum';
+    public const IGNORED_ENUM = 'ignored_enum';
 
     /**
      * {@inheritdoc}

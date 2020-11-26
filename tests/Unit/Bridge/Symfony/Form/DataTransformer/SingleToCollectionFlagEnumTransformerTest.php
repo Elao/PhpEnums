@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Form\DataTransformer;
 
 use Elao\Enum\Bridge\Symfony\Form\DataTransformer\SingleToCollectionFlagEnumTransformer;
+use Elao\Enum\EnumInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\TestCase;
@@ -19,7 +20,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class SingleToCollectionFlagEnumTransformerTest extends TestCase
 {
-    public function testThrowsExceptionIfNotFLaggedEnumInstance()
+    public function testThrowsExceptionIfNotFLaggedEnumInstance(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"');
@@ -27,38 +28,33 @@ class SingleToCollectionFlagEnumTransformerTest extends TestCase
         new SingleToCollectionFlagEnumTransformer(Gender::class);
     }
 
-    public function provideSingleToCollection()
+    public function provideSingleToCollection(): iterable
     {
-        return [
-            [null, null],
-            [Permissions::get(Permissions::NONE), []],
-            [Permissions::get(Permissions::EXECUTE), [Permissions::get(Permissions::EXECUTE)]],
-            [
-                Permissions::get(Permissions::EXECUTE | Permissions::READ),
-                [Permissions::get(Permissions::EXECUTE), Permissions::get(Permissions::READ)],
-            ],
-            [
-                Permissions::get(Permissions::ALL),
-                [
-                    Permissions::get(Permissions::EXECUTE),
-                    Permissions::get(Permissions::WRITE),
-                    Permissions::get(Permissions::READ),
-                ],
-            ],
-        ];
+        yield [null, null];
+        yield [Permissions::get(Permissions::NONE), []];
+        yield [Permissions::get(Permissions::EXECUTE), [Permissions::get(Permissions::EXECUTE)]];
+        yield [Permissions::get(Permissions::EXECUTE | Permissions::READ), [
+            Permissions::get(Permissions::EXECUTE),
+            Permissions::get(Permissions::READ),
+        ]];
+        yield [Permissions::get(Permissions::ALL), [
+            Permissions::get(Permissions::EXECUTE),
+            Permissions::get(Permissions::WRITE),
+            Permissions::get(Permissions::READ),
+        ]];
     }
 
     /**
      * @dataProvider provideSingleToCollection
      */
-    public function testTransform($singleEnum, $expectedEnums)
+    public function testTransform(?EnumInterface $singleEnum, ?array $expectedEnums): void
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $this->assertSame($expectedEnums, $transformer->transform($singleEnum));
+        self::assertSame($expectedEnums, $transformer->transform($singleEnum));
     }
 
-    public function testTransformThrowsExceptionOnInvalidInstance()
+    public function testTransformThrowsExceptionOnInvalidInstance(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected instance of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got "Elao\Enum\Tests\Fixtures\Enum\Gender"');
@@ -68,22 +64,22 @@ class SingleToCollectionFlagEnumTransformerTest extends TestCase
         $transformer->transform(Gender::get(Gender::MALE));
     }
 
-    public function provideCollectionToSingle()
+    public function provideCollectionToSingle(): iterable
     {
-        return array_map('array_reverse', $this->provideSingleToCollection());
+        yield from array_map('array_reverse', iterator_to_array($this->provideSingleToCollection()));
     }
 
     /**
      * @dataProvider provideCollectionToSingle
      */
-    public function testReverseTransform($enums, $expectedEnum)
+    public function testReverseTransform(?array $enums, ?EnumInterface $expectedEnum): void
     {
         $transformer = new SingleToCollectionFlagEnumTransformer(Permissions::class);
 
-        $this->assertSame($expectedEnum, $transformer->reverseTransform($enums));
+        self::assertSame($expectedEnum, $transformer->reverseTransform($enums));
     }
 
-    public function testReverseTransformThrowsExceptionOnInvalidInstance()
+    public function testReverseTransformThrowsExceptionOnInvalidInstance(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected array of "Elao\Enum\Tests\Fixtures\Enum\Permissions". Got a "Elao\Enum\Tests\Fixtures\Enum\Gender" inside.');
@@ -93,7 +89,7 @@ class SingleToCollectionFlagEnumTransformerTest extends TestCase
         $transformer->reverseTransform([Permissions::get(Permissions::EXECUTE), Gender::get(Gender::MALE)]);
     }
 
-    public function testReverseTransformThrowsExceptionOnNonArray()
+    public function testReverseTransformThrowsExceptionOnNonArray(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected array. Got "Elao\Enum\Tests\Fixtures\Enum\Permissions"');

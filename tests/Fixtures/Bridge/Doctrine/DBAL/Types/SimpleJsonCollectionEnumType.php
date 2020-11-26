@@ -15,7 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class SimpleJsonCollectionEnumType extends AbstractJsonCollectionEnumType
 {
-    const NAME = 'simple_enum_json_collection';
+    public const NAME = 'simple_enum_json_collection';
 
     protected function getEnumClass(): string
     {

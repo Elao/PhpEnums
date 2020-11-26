@@ -15,7 +15,7 @@ use Elao\Enum\Exception\LogicException;
 
 abstract class FlaggedEnum extends ReadableEnum
 {
-    const NONE = 0;
+    public const NONE = 0;
 
     /** @var array */
     private static $masks = [];

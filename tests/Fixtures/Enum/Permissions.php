@@ -20,11 +20,11 @@ use Elao\Enum\FlaggedEnum;
  */
 final class Permissions extends FlaggedEnum
 {
-    const EXECUTE = 1;
-    const WRITE = 2;
-    const READ = 4;
+    public const EXECUTE = 1;
+    public const WRITE = 2;
+    public const READ = 4;
 
-    const ALL = self::EXECUTE | self::WRITE | self::READ;
+    public const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function values(): array
     {

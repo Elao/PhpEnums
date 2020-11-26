@@ -14,8 +14,8 @@ use Elao\Enum\ReadableEnum as BaseReadableEnum;
 
 final class ReadableEnum extends BaseReadableEnum
 {
-    const READABLE_ENUM = 'readable_enum';
-    const READABLE_ENUM_EMPTY = 'readable_enum_empty';
+    public const READABLE_ENUM = 'readable_enum';
+    public const READABLE_ENUM_EMPTY = 'readable_enum_empty';
 
     /**
      * {@inheritdoc}

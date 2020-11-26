@@ -24,15 +24,15 @@ class ConfigurationTest extends TestCase
 {
     use ExpectDeprecationTrait;
 
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[]]);
 
-        $this->assertEquals($this->getDefaultConfig(), $config);
+        self::assertEquals($this->getDefaultConfig(), $config);
     }
 
-    public function testDisabledConfig()
+    public function testDisabledConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
@@ -41,13 +41,13 @@ class ConfigurationTest extends TestCase
             'translation_extractor' => false,
         ]]);
 
-        $this->assertEquals(array_merge($this->getDefaultConfig(), [
+        self::assertEquals(array_merge($this->getDefaultConfig(), [
             'argument_value_resolver' => ['enabled' => false],
             'serializer' => ['enabled' => false],
         ]), $config);
     }
 
-    public function testDoctrineConfig()
+    public function testDoctrineConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
@@ -63,7 +63,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertEquals([
+        self::assertEquals([
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
@@ -80,7 +80,7 @@ class ConfigurationTest extends TestCase
     /**
      * @group legacy
      */
-    public function testDeprecatedDoctrineConfig()
+    public function testDeprecatedDoctrineConfig(): void
     {
         $this->expectDeprecation('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.');
 
@@ -96,7 +96,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertEquals([
+        self::assertEquals([
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
@@ -108,7 +108,7 @@ class ConfigurationTest extends TestCase
         ] + $this->getDefaultConfig(), $config);
     }
 
-    public function testDoctrineTypeConfigWithInvalidEnumClass()
+    public function testDoctrineTypeConfigWithInvalidEnumClass(): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine.types.std.class": Invalid class. Expected instance of "Elao\Enum\EnumInterface". Got "stdClass".');
@@ -123,7 +123,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testTranslationExtractorConfig()
+    public function testTranslationExtractorConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
@@ -136,7 +136,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertEquals([
+        self::assertEquals([
             'enabled' => true,
             'paths' => ['App\Enum' => '%kernel.project_dir%/src/Enum'],
             'domain' => 'messages_test',
@@ -145,7 +145,7 @@ class ConfigurationTest extends TestCase
         ], $config['translation_extractor']);
     }
 
-    public function testJsEnumConfig()
+    public function testJsEnumConfig(): void
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[
@@ -159,7 +159,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertEquals([
+        self::assertEquals([
             'lib_path' => 'assets/lib',
             'base_dir' => 'assets/modules',
             'paths' => [

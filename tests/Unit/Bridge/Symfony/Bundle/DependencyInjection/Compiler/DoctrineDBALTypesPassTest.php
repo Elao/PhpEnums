@@ -33,7 +33,7 @@ class DoctrineDBALTypesPassTest extends TestCase
         @unlink($this->dumpPath);
     }
 
-    public function testDoesNothingOnNoTypesSet()
+    public function testDoesNothingOnNoTypesSet(): void
     {
         $container = new ContainerBuilder();
         $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);
@@ -44,7 +44,7 @@ class DoctrineDBALTypesPassTest extends TestCase
         self::assertFileDoesNotExist($this->dumpPath);
     }
 
-    public function testDumpsOnTypesSet()
+    public function testDumpsOnTypesSet(): void
     {
         $container = new ContainerBuilder();
         $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);

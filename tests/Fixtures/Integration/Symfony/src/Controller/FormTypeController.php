@@ -17,7 +17,6 @@ use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,15 +68,13 @@ class FormTypeController extends AbstractController
             'simpleEnum' => SimpleEnum::get(SimpleEnum::SECOND),
         ];
 
-        $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
-
         $builder = $this->createFormBuilder($data)
             ->add('gender', ChoiceType::class, [
                 'choices' => ['customMaleLabel' => Gender::MALE, 'customFemaleLabel' => Gender::FEMALE],
-            ] + $options)
+            ])
             ->add('simpleEnum', ChoiceType::class, [
                 'choices' => ['customOneLabel' => SimpleEnum::FIRST, 'customSecondLabel' => SimpleEnum::SECOND],
-            ] + $options)
+            ])
             ->add('submit', SubmitType::class)
         ;
 

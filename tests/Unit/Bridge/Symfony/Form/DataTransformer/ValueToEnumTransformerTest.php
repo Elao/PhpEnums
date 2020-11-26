@@ -18,7 +18,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ValueToEnumTransformerTest extends TestCase
 {
-    public function testThrowsExceptionIfNotEnumInstance()
+    public function testThrowsExceptionIfNotEnumInstance(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"stdClass" is not an instance of "Elao\Enum\EnumInterface"');
@@ -26,14 +26,14 @@ class ValueToEnumTransformerTest extends TestCase
         new ValueToEnumTransformer(\stdClass::class);
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
-        $this->assertSame(SimpleEnum::FIRST, $transformer->transform(SimpleEnum::FIRST()));
+        self::assertSame(SimpleEnum::FIRST, $transformer->transform(SimpleEnum::FIRST()));
     }
 
-    public function testTransformThrowsExceptionOnNonEnum()
+    public function testTransformThrowsExceptionOnNonEnum(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected instance of "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum". Got "string".');
@@ -43,14 +43,14 @@ class ValueToEnumTransformerTest extends TestCase
         $transformer->transform('foo');
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $transformer = new ValueToEnumTransformer(SimpleEnum::class);
 
-        $this->assertSame(SimpleEnum::FIRST(), $transformer->reverseTransform(SimpleEnum::FIRST));
+        self::assertSame(SimpleEnum::FIRST(), $transformer->reverseTransform(SimpleEnum::FIRST));
     }
 
-    public function testReverseTransformThrowsExceptionOnValueNotInEnum()
+    public function testReverseTransformThrowsExceptionOnValueNotInEnum(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('"1" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum');

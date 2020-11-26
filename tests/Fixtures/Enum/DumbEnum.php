@@ -12,6 +12,6 @@ namespace Elao\Enum\Tests\Fixtures\Enum;
 
 final class DumbEnum
 {
-    const Foo = 'foo';
-    const BAR = 'bar';
+    public const Foo = 'foo';
+    public const BAR = 'bar';
 }

@@ -17,7 +17,7 @@ use Elao\Enum\Tests\TestCase;
 
 class EnumTest extends TestCase
 {
-    public function enumValuesProvider()
+    public function enumValuesProvider(): array
     {
         return [
             [1],
@@ -28,21 +28,21 @@ class EnumTest extends TestCase
     /**
      * @dataProvider enumValuesProvider
      */
-    public function testCreateEnumValue($value)
+    public function testCreateEnumValue($value): void
     {
         $enum = SimpleEnum::get($value);
 
-        $this->assertSame($value, $enum->getValue());
+        self::assertSame($value, $enum->getValue());
     }
 
-    public function testCallStaticEnumValue()
+    public function testCallStaticEnumValue(): void
     {
         $enum = SimpleEnum::SECOND();
 
-        $this->assertSame(2, $enum->getValue());
+        self::assertSame(2, $enum->getValue());
     }
 
-    public function testCallStaticOnInvalidConstantThrowsException()
+    public function testCallStaticOnInvalidConstantThrowsException(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('No constant named "FOO" exists in class "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"');
@@ -50,7 +50,7 @@ class EnumTest extends TestCase
         SimpleEnum::FOO();
     }
 
-    public function testExceptionIsRaisedWhenValueIsNotAcceptable()
+    public function testExceptionIsRaisedWhenValueIsNotAcceptable(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('"invalid_value" is not an acceptable value for "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum" enum.');
@@ -58,7 +58,7 @@ class EnumTest extends TestCase
         SimpleEnum::get('invalid_value');
     }
 
-    public function testExceptionIsRaisedWhenValueIsNotAcceptableWithStrictCheck()
+    public function testExceptionIsRaisedWhenValueIsNotAcceptableWithStrictCheck(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('"0" is not an acceptable value');
@@ -66,39 +66,39 @@ class EnumTest extends TestCase
         SimpleEnum::get('0');
     }
 
-    public function testEnumsForEqualsWithSameClass()
+    public function testEnumsForEqualsWithSameClass(): void
     {
         $enum = SimpleEnum::get(SimpleEnum::FIRST);
 
-        $this->assertTrue($enum->equals(SimpleEnum::get(SimpleEnum::FIRST)));
-        $this->assertFalse($enum->equals(SimpleEnum::get(SimpleEnum::SECOND)));
+        self::assertTrue($enum->equals(SimpleEnum::get(SimpleEnum::FIRST)));
+        self::assertFalse($enum->equals(SimpleEnum::get(SimpleEnum::SECOND)));
     }
 
-    public function testEnumsForEqualsWithExtendedClasses()
+    public function testEnumsForEqualsWithExtendedClasses(): void
     {
         $enum = SimpleEnum::get(SimpleEnum::FIRST);
 
-        $this->assertFalse($enum->equals(ExtendedSimpleEnum::get(ExtendedSimpleEnum::FIRST)));
+        self::assertFalse($enum->equals(ExtendedSimpleEnum::get(ExtendedSimpleEnum::FIRST)));
     }
 
-    public function testSameEnumValueActsAsSingleton()
+    public function testSameEnumValueActsAsSingleton(): void
     {
-        $this->assertTrue(SimpleEnum::get(SimpleEnum::FIRST) === SimpleEnum::get(SimpleEnum::FIRST));
+        self::assertSame(SimpleEnum::get(SimpleEnum::FIRST), SimpleEnum::get(SimpleEnum::FIRST));
     }
 
-    public function testInstances()
+    public function testInstances(): void
     {
-        $this->assertSame([
+        self::assertSame([
             SimpleEnum::get(SimpleEnum::ZERO),
             SimpleEnum::get(SimpleEnum::FIRST),
             SimpleEnum::get(SimpleEnum::SECOND),
         ], SimpleEnum::instances());
     }
 
-    public function testIs()
+    public function testIs(): void
     {
         $enum = SimpleEnum::get(SimpleEnum::SECOND);
 
-        $this->assertTrue($enum->is(2));
+        self::assertTrue($enum->is(2));
     }
 }

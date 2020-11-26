@@ -40,37 +40,37 @@ class EnumTypeTest extends TestCase
         $this->type = Type::getType(GenderEnumType::NAME);
     }
 
-    public function testConvertToDatabaseValue()
+    public function testConvertToDatabaseValue(): void
     {
         $databaseValue = $this->type->convertToDatabaseValue(Gender::get(Gender::MALE), $this->platform);
-        $this->assertSame('male', $databaseValue);
+        self::assertSame('male', $databaseValue);
     }
 
-    public function testConvertToDatabaseValueOnNull()
+    public function testConvertToDatabaseValueOnNull(): void
     {
         $databaseValue = $this->type->convertToDatabaseValue(null, $this->platform);
-        $this->assertSame('unknown', $databaseValue);
+        self::assertSame('unknown', $databaseValue);
     }
 
-    public function testConvertToPHPValue()
+    public function testConvertToPHPValue(): void
     {
         $PHPValue = $this->type->convertToPHPValue('male', $this->platform);
-        $this->assertSame(Gender::get(Gender::MALE), $PHPValue);
+        self::assertSame(Gender::get(Gender::MALE), $PHPValue);
     }
 
-    public function testConvertToPHPValueOnNull()
+    public function testConvertToPHPValueOnNull(): void
     {
         $PHPValue = $this->type->convertToPHPValue(null, $this->platform);
-        $this->assertSame(Gender::get(Gender::UNKNOW), $PHPValue);
+        self::assertSame(Gender::get(Gender::UNKNOW), $PHPValue);
     }
 
-    public function testRequiresSQLCommentHintIsTrue()
+    public function testRequiresSQLCommentHintIsTrue(): void
     {
-        $this->assertTrue($this->type->requiresSQLCommentHint($this->platform));
+        self::assertTrue($this->type->requiresSQLCommentHint($this->platform));
     }
 
-    public function testIntegerBindingType()
+    public function testIntegerBindingType(): void
     {
-        $this->assertSame(\PDO::PARAM_STR, $this->type->getBindingType());
+        self::assertSame(\PDO::PARAM_STR, $this->type->getBindingType());
     }
 }

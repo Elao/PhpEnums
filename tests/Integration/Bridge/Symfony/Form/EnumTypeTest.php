@@ -18,16 +18,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnumTypeTest extends WebTestCase
 {
-    public function testReadableEnumForm()
+    public function testReadableEnumForm(): void
     {
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/form-type/readable-enum');
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertCount(1, $crawler->filter('form select[name="form[gender]"]'));
-        $this->assertCount(3, $crawler->filter('form select[name="form[gender]"] option'));
-        $this->assertSame([
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertCount(1, $crawler->filter('form select[name="form[gender]"]'));
+        self::assertCount(3, $crawler->filter('form select[name="form[gender]"] option'));
+        self::assertSame([
             ['', 'unknown', 'Unknown'],
             ['selected', 'male', 'Male'],
             ['', 'female', 'Female'],
@@ -39,24 +39,24 @@ class EnumTypeTest extends WebTestCase
         $crawler = $client->submit($form);
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $form = $crawler->filter('form')->form();
 
-        $this->assertSame(['form[gender]' => Gender::FEMALE], $form->getValues());
+        self::assertSame(['form[gender]' => Gender::FEMALE], $form->getValues());
     }
 
-    public function testFlaggedEnumForm()
+    public function testFlaggedEnumForm(): void
     {
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/form-type/flagged-enum');
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertCount(1, $crawler->filter('form select[name="form[permissions][]"]'));
-        $this->assertSame('multiple', $crawler->filter('form select[name="form[permissions][]"]')->attr('multiple'));
-        $this->assertCount(3, $crawler->filter('form select[name="form[permissions][]"] option'));
-        $this->assertSame([
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertCount(1, $crawler->filter('form select[name="form[permissions][]"]'));
+        self::assertSame('multiple', $crawler->filter('form select[name="form[permissions][]"]')->attr('multiple'));
+        self::assertCount(3, $crawler->filter('form select[name="form[permissions][]"] option'));
+        self::assertSame([
             ['', '1', 'Execute'],
             ['', '2', 'Write'],
             ['selected', '4', 'Read'],
@@ -69,25 +69,25 @@ class EnumTypeTest extends WebTestCase
         $crawler = $client->submit($form);
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $form = $crawler->filter('form')->form();
 
-        $this->assertSame(['form[permissions]' => ['1', '2']], $form->getValues());
+        self::assertSame(['form[permissions]' => ['1', '2']], $form->getValues());
 
         // Submit empty
         $crawler = $client->submit($form);
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $form = $crawler->filter('form')->form();
         $form['form[permissions]'] = [];
 
-        $this->assertSame(['form[permissions]' => []], $form->getValues());
+        self::assertSame(['form[permissions]' => []], $form->getValues());
     }
 
-    public function provideFormWithChoicesAsEnumValuesUrls()
+    public function provideFormWithChoicesAsEnumValuesUrls(): iterable
     {
         yield 'ChoiceType with value to enum transformer' => ['/form-type/value-to-enum-transformer-choice-form'];
         yield 'EnumType with choices_as_enum_values' => ['/form-type/choices-as-enum-values-enum-form'];
@@ -96,19 +96,19 @@ class EnumTypeTest extends WebTestCase
     /**
      * @dataProvider provideFormWithChoicesAsEnumValuesUrls
      */
-    public function testWithChoicesAsEnumValues(string $url)
+    public function testWithChoicesAsEnumValues(string $url): void
     {
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, $url);
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame([
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame([
             ['selected', 'male', 'customMaleLabel'],
             ['', 'female', 'customFemaleLabel'],
         ], $crawler->filter('form select[name="form[gender]"] option')->extract(['selected', 'value', '_text']));
-        $this->assertSame([
+        self::assertSame([
             ['', '1', 'customOneLabel'],
             ['selected', '2', 'customSecondLabel'],
         ], $crawler->filter('form select[name="form[simpleEnum]"] option')->extract(['selected', 'value', '_text']));
@@ -120,10 +120,10 @@ class EnumTypeTest extends WebTestCase
         $crawler = $client->submit($form);
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $form = $crawler->filter('form')->form();
 
-        $this->assertSame(['form[gender]' => 'female', 'form[simpleEnum]' => '1'], $form->getValues());
+        self::assertSame(['form[gender]' => 'female', 'form[simpleEnum]' => '1'], $form->getValues());
     }
 }

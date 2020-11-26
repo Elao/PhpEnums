@@ -17,9 +17,9 @@ final class Gender extends Enum
 {
     use AutoDiscoveredValuesTrait;
     
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 }
 ```
 
@@ -146,9 +146,9 @@ use Elao\Enum\Enum;
 
 final class Gender extends Enum
 {
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 
     public static function values(): array
     {
@@ -186,9 +186,9 @@ final class Gender extends Enum
 {
     use AutoDiscoveredValuesTrait;
     
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 }
 ```
 
@@ -202,9 +202,9 @@ namespace MangoPay;
 
 final class EventType
 {
-    const KycCreated = "KYC_CREATED";
-    const KycSucceeded = "KYC_SUCCEEDED";
-    const KycFailed = "KYC_FAILED";
+    public const KycCreated = "KYC_CREATED";
+    public const KycSucceeded = "KYC_SUCCEEDED";
+    public const KycFailed = "KYC_FAILED";
 }
 ```
 
@@ -244,9 +244,9 @@ use Elao\Enum\ReadableEnum;
 
 final class Gender extends ReadableEnum
 {
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 
     public static function values(): array
     {
@@ -344,9 +344,9 @@ final class Gender extends ReadableEnum
 {
     use ChoiceEnumTrait;
 
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 
     public static function choices(): array
     {
@@ -371,9 +371,9 @@ use Elao\Enum\SimpleChoiceEnum;
 
 final class Gender extends SimpleChoiceEnum
 {   
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
 }
 ```
 
@@ -393,12 +393,12 @@ use Elao\Enum\FlaggedEnum;
 
 final class Permissions extends FlaggedEnum
 {
-    const EXECUTE = 1;
-    const WRITE = 2;
-    const READ = 4;
+    public const EXECUTE = 1;
+    public const WRITE = 2;
+    public const READ = 4;
 
     // You can declare shortcuts for common bit flag combinations
-    const ALL = self::EXECUTE | self::WRITE | self::READ;
+    public const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function values(): array
     {
@@ -498,9 +498,9 @@ We recommend you to use this method, if and only if, you and your team use an ID
  */
 final class Gender extends ReadableEnum
 {
-    const UNKNOWN = 'unknown';
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const UNKNOWN = 'unknown';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
     
     // ...
 }
@@ -555,7 +555,7 @@ use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType;
 
 final class GenderEnumType extends AbstractEnumType
 {
-    const NAME = 'gender';
+    public const NAME = 'gender';
 
     protected function getEnumClass(): string
     {
@@ -614,7 +614,7 @@ When registering the custom types in the configuration, you specify a unique nam
 class User
 {
     /** @Column(type="gender") */
-    private $gender;
+    private Gender $gender;
 }
 ```
 

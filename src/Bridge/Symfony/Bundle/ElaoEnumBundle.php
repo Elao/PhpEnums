@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ElaoEnumBundle extends Bundle
 {
-    const DOCTRINE_TYPES_FILENAME = 'elao_enum_doctrine_types.php';
+    public const DOCTRINE_TYPES_FILENAME = 'elao_enum_doctrine_types.php';
 
     public function build(ContainerBuilder $container)
     {

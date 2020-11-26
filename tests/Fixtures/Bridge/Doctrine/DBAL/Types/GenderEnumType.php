@@ -15,7 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\Gender;
 
 class GenderEnumType extends AbstractEnumType
 {
-    const NAME = 'gender';
+    public const NAME = 'gender';
 
     protected function getEnumClass(): string
     {

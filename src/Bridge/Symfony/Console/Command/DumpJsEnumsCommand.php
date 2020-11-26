@@ -33,9 +33,6 @@ class DumpJsEnumsCommand extends Command
     /** @var string|null */
     private $libPath;
 
-    /** @var JsDumper */
-    private $dumper;
-
     public function __construct(array $enums = [], string $baseDir = null, string $libPath = null)
     {
         $this->enums = $enums;
@@ -78,21 +75,21 @@ TXT
         if ($enumArgs = $input->getArgument('enums')) {
             $enums = [];
             foreach ($enumArgs as $arg) {
-                list($fqcn, $path) = explode(':', $arg, 2);
+                [$fqcn, $path] = explode(':', $arg, 2);
                 $enums[$fqcn] = $path;
             }
         }
 
-        $this->dumper = new JsDumper($libPath, $input->getOption('base-dir'));
+        $dumper = new JsDumper($libPath, $input->getOption('base-dir'));
 
-        $io->comment("Generating library sources at path <info>{$this->dumper->normalizePath($libPath)}</info>");
+        $io->comment("Generating library sources at path <info>{$dumper->normalizePath($libPath)}</info>");
 
-        $this->dumper->dumpLibrarySources();
+        $dumper->dumpLibrarySources();
 
         foreach ($enums as $fqcn => $path) {
             $shortName = (new \ReflectionClass($fqcn))->getShortName();
-            $io->comment("Generating <info>$shortName</info> enum at path <info>{$this->dumper->normalizePath($path)}</info>");
-            $this->dumper->dumpEnumToFile($fqcn, $path);
+            $io->comment("Generating <info>$shortName</info> enum at path <info>{$dumper->normalizePath($path)}</info>");
+            $dumper->dumpEnumToFile($fqcn, $path);
         }
 
         return 0;

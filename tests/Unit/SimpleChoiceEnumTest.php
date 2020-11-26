@@ -16,30 +16,30 @@ use Elao\Enum\Tests\TestCase;
 
 class SimpleChoiceEnumTest extends TestCase
 {
-    public function testSimpleChoiceEnum()
+    public function testSimpleChoiceEnum(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], DummySimpleChoiceEnum::values());
-        $this->assertSame([
+        self::assertSame(['foo', 'bar', 'baz'], DummySimpleChoiceEnum::values());
+        self::assertSame([
             ChoiceEnum::FOO => 'Foo',
             ChoiceEnum::BAR => 'Bar',
             ChoiceEnum::BAZ => 'Baz',
         ], DummySimpleChoiceEnum::readables());
     }
 
-    public function testSimpleChoiceEnumWithLabelOverride()
+    public function testSimpleChoiceEnumWithLabelOverride(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], DummySimpleChoiceEnumWithLabelOverride::values());
-        $this->assertSame([
+        self::assertSame(['foo', 'bar', 'baz'], DummySimpleChoiceEnumWithLabelOverride::values());
+        self::assertSame([
             ChoiceEnum::FOO => 'Foo label',
             ChoiceEnum::BAR => 'Bar',
             ChoiceEnum::BAZ => 'Baz',
         ], DummySimpleChoiceEnumWithLabelOverride::readables());
     }
 
-    public function testSimpleChoiceEnumFromDumbEnum()
+    public function testSimpleChoiceEnumFromDumbEnum(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], SimpleChoiceEnumFromDumEnum::values());
-        $this->assertSame([
+        self::assertSame(['foo', 'bar', 'baz'], SimpleChoiceEnumFromDumEnum::values());
+        self::assertSame([
             'foo' => 'Foo',
             'bar' => 'Bar',
             'baz' => 'Baz',
@@ -49,9 +49,9 @@ class SimpleChoiceEnumTest extends TestCase
 
 class DummySimpleChoiceEnum extends SimpleChoiceEnum
 {
-    const FOO = 'foo';
-    const BAR = 'bar';
-    const BAZ = 'baz';
+    public const FOO = 'foo';
+    public const BAR = 'bar';
+    public const BAZ = 'baz';
 }
 
 final class DummySimpleChoiceEnumWithLabelOverride extends DummySimpleChoiceEnum

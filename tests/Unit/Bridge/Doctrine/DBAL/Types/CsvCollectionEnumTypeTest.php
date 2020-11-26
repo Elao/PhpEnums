@@ -38,7 +38,7 @@ class CsvCollectionEnumTypeTest extends TestCase
         $this->type = Type::getType(SimpleCsvCollectionEnumType::NAME);
     }
 
-    public function testConvertToDatabaseValue()
+    public function testConvertToDatabaseValue(): void
     {
         self::assertSame('0,2', $this->type->convertToDatabaseValue([
             SimpleEnum::ZERO(),
@@ -46,7 +46,7 @@ class CsvCollectionEnumTypeTest extends TestCase
         ], $this->platform));
     }
 
-    public function testConvertToDatabaseValueReturnsUniqueValues()
+    public function testConvertToDatabaseValueReturnsUniqueValues(): void
     {
         self::assertSame('0,2', $this->type->convertToDatabaseValue([
             SimpleEnum::ZERO(),
@@ -56,12 +56,12 @@ class CsvCollectionEnumTypeTest extends TestCase
         ], $this->platform));
     }
 
-    public function testConvertToDatabaseValueOnNull()
+    public function testConvertToDatabaseValueOnNull(): void
     {
         self::assertNull($this->type->convertToDatabaseValue(null, $this->platform));
     }
 
-    public function testConvertToPHPValue()
+    public function testConvertToPHPValue(): void
     {
         self::assertSame(
             [SimpleEnum::ZERO(), SimpleEnum::SECOND()],
@@ -69,7 +69,7 @@ class CsvCollectionEnumTypeTest extends TestCase
         );
     }
 
-    public function testConvertToPHPValueReturnsUniqueValue()
+    public function testConvertToPHPValueReturnsUniqueValue(): void
     {
         self::assertSame(
             [SimpleEnum::ZERO(), SimpleEnum::SECOND()],
@@ -77,12 +77,12 @@ class CsvCollectionEnumTypeTest extends TestCase
         );
     }
 
-    public function testConvertToPHPValueOnNull()
+    public function testConvertToPHPValueOnNull(): void
     {
         self::assertNull($this->type->convertToPHPValue(null, $this->platform));
     }
 
-    public function testConvertToPHPValueOnEmptyArray()
+    public function testConvertToPHPValueOnEmptyArray(): void
     {
         self::assertSame([], $this->type->convertToPHPValue('', $this->platform));
     }

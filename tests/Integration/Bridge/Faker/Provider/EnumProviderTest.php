@@ -22,7 +22,7 @@ use Nelmio\Alice\Loader\NativeLoader;
 
 class EnumProviderTest extends TestCase
 {
-    public function testEnumProvider()
+    public function testEnumProvider(): void
     {
         $loader = new EnumLoader();
 
@@ -45,20 +45,20 @@ class EnumProviderTest extends TestCase
 
         /** @var SimpleEntity $entity1 */
         $entity1 = $entities['simple_entity1'];
-        $this->assertInstanceOf(Permissions::class, $entity1->permissions);
-        $this->assertInstanceOf(SimpleEnum::class, $entity1->simpleEnum);
-        $this->assertInstanceOf(Gender::class, $entity1->gender);
-        $this->assertTrue($entity1->permissions->hasFlag(Permissions::READ));
-        $this->assertTrue($entity1->permissions->hasFlag(Permissions::WRITE));
-        $this->assertFalse($entity1->permissions->hasFlag(Permissions::EXECUTE));
-        $this->assertTrue($entity1->simpleEnum->is(SimpleEnum::FIRST));
-        $this->assertTrue($entity1->gender->is(Gender::MALE));
+        self::assertInstanceOf(Permissions::class, $entity1->permissions);
+        self::assertInstanceOf(SimpleEnum::class, $entity1->simpleEnum);
+        self::assertInstanceOf(Gender::class, $entity1->gender);
+        self::assertTrue($entity1->permissions->hasFlag(Permissions::READ));
+        self::assertTrue($entity1->permissions->hasFlag(Permissions::WRITE));
+        self::assertFalse($entity1->permissions->hasFlag(Permissions::EXECUTE));
+        self::assertTrue($entity1->simpleEnum->is(SimpleEnum::FIRST));
+        self::assertTrue($entity1->gender->is(Gender::MALE));
 
         /** @var SimpleEntity $entity2 */
         $entity2 = $entities['simple_entity2'];
-        $this->assertInstanceOf(Permissions::class, $entity2->permissions);
-        $this->assertInstanceOf(SimpleEnum::class, $entity2->simpleEnum);
-        $this->assertInstanceOf(Gender::class, $entity2->gender);
+        self::assertInstanceOf(Permissions::class, $entity2->permissions);
+        self::assertInstanceOf(SimpleEnum::class, $entity2->simpleEnum);
+        self::assertInstanceOf(Gender::class, $entity2->gender);
     }
 }
 

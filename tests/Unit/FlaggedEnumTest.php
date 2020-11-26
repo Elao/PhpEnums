@@ -19,7 +19,7 @@ use Elao\Enum\Tests\TestCase;
 
 class FlaggedEnumTest extends TestCase
 {
-    public function testGetThrowExceptionWhenValueIsNotInteger()
+    public function testGetThrowExceptionWhenValueIsNotInteger(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('"1" is not an acceptable value');
@@ -27,7 +27,7 @@ class FlaggedEnumTest extends TestCase
         Permissions::get('1');
     }
 
-    public function acceptableValueProvider()
+    public function acceptableValueProvider(): array
     {
         return [
             [Permissions::NONE, true],
@@ -44,16 +44,16 @@ class FlaggedEnumTest extends TestCase
     /**
      * @dataProvider acceptableValueProvider
      */
-    public function testAcceptableValue($value, $result)
+    public function testAcceptableValue($value, $result): void
     {
-        $this->assertSame(
+        self::assertSame(
             $result,
             Permissions::accepts($value),
             sprintf('->accepts() returns %s if the value %d.', $result ? 'true' : 'false', $value)
         );
     }
 
-    public function testThrowExceptionWhenBitmaskIsInvalid()
+    public function testThrowExceptionWhenBitmaskIsInvalid(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Possible value 3 of the enumeration "Elao\Enum\Tests\Fixtures\Enum\InvalidFlagsEnum" is not a bit flag.');
@@ -61,80 +61,80 @@ class FlaggedEnumTest extends TestCase
         InvalidFlagsEnum::get(InvalidFlagsEnum::FIRST);
     }
 
-    public function testSameEnumValueActsAsSingleton()
+    public function testSameEnumValueActsAsSingleton(): void
     {
-        $this->assertSame(Permissions::get(Permissions::NONE), Permissions::get(Permissions::NONE));
-        $this->assertSame(Permissions::get(Permissions::READ), Permissions::get(Permissions::READ));
+        self::assertSame(Permissions::get(Permissions::NONE), Permissions::get(Permissions::NONE));
+        self::assertSame(Permissions::get(Permissions::READ), Permissions::get(Permissions::READ));
         $all = Permissions::get(Permissions::ALL);
-        $this->assertSame($all, Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
-        $this->assertSame(
+        self::assertSame($all, Permissions::get(Permissions::READ | Permissions::WRITE | Permissions::EXECUTE));
+        self::assertSame(
             $all->withoutFlags(Permissions::READ),
             Permissions::get(Permissions::WRITE | Permissions::EXECUTE)
         );
     }
 
-    public function testGetFlagsOfValue()
+    public function testGetFlagsOfValue(): void
     {
         $value = Permissions::get(Permissions::NONE | Permissions::WRITE | Permissions::READ);
 
-        $this->assertSame([Permissions::WRITE, Permissions::READ], $value->getFlags());
+        self::assertSame([Permissions::WRITE, Permissions::READ], $value->getFlags());
     }
 
-    public function testSingleFlagIsReadable()
+    public function testSingleFlagIsReadable(): void
     {
-        $this->assertSame('Execute', Permissions::readableFor(Permissions::EXECUTE));
+        self::assertSame('Execute', Permissions::readableFor(Permissions::EXECUTE));
 
         $instance = Permissions::get(Permissions::EXECUTE);
 
-        $this->assertSame('Execute', $instance->getReadable());
+        self::assertSame('Execute', $instance->getReadable());
     }
 
-    public function testMultipleFlagsAreReadable()
+    public function testMultipleFlagsAreReadable(): void
     {
-        $this->assertSame(
+        self::assertSame(
             'Execute; Write',
             Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE)
         );
 
         $instance = Permissions::get(Permissions::EXECUTE | Permissions::WRITE);
 
-        $this->assertSame('Execute; Write', $instance->getReadable());
+        self::assertSame('Execute; Write', $instance->getReadable());
     }
 
-    public function testFlagsCombinationCanHaveOwnReadable()
+    public function testFlagsCombinationCanHaveOwnReadable(): void
     {
-        $this->assertSame(
+        self::assertSame(
             'Read & write',
             Permissions::readableFor(Permissions::READ | Permissions::WRITE)
         );
 
         $instance = Permissions::get(Permissions::ALL);
 
-        $this->assertSame('All permissions', $instance->getReadable());
+        self::assertSame('All permissions', $instance->getReadable());
     }
 
-    public function testNoneCanBeReadable()
+    public function testNoneCanBeReadable(): void
     {
-        $this->assertSame('None', Permissions::readableFor(Permissions::NONE));
+        self::assertSame('None', Permissions::readableFor(Permissions::NONE));
 
         $instance = Permissions::get(Permissions::NONE);
 
-        $this->assertSame('None', $instance->getReadable());
+        self::assertSame('None', $instance->getReadable());
     }
 
-    public function testReadableSeparatorCanBeChanged()
+    public function testReadableSeparatorCanBeChanged(): void
     {
-        $this->assertSame(
+        self::assertSame(
             'Execute | Write',
             Permissions::readableFor(Permissions::EXECUTE | Permissions::WRITE, ' | ')
         );
         $instance = Permissions::get(Permissions::EXECUTE | Permissions::WRITE);
-        $this->assertSame('Execute | Write', $instance->getReadable(' | '));
+        self::assertSame('Execute | Write', $instance->getReadable(' | '));
     }
 
-    public function testHasBaseReadableImplementation()
+    public function testHasBaseReadableImplementation(): void
     {
-        $this->assertSame([
+        self::assertSame([
             1 => 'Monday morning',
             2 => 'Monday afternoon',
             4 => 'Tuesday morning',
@@ -152,18 +152,18 @@ class FlaggedEnumTest extends TestCase
         ], AlarmScheduleType::readables());
     }
 
-    public function testWithFlags()
+    public function testWithFlags(): void
     {
         $original = Permissions::get(Permissions::READ);
         $result = $original->withFlags(Permissions::WRITE | Permissions::EXECUTE);
 
-        $this->assertNotSame($original, $result);
-        $this->assertTrue($result->hasFlag(Permissions::EXECUTE));
-        $this->assertTrue($result->hasFlag(Permissions::WRITE));
-        $this->assertTrue($result->hasFlag(Permissions::READ));
+        self::assertNotSame($original, $result);
+        self::assertTrue($result->hasFlag(Permissions::EXECUTE));
+        self::assertTrue($result->hasFlag(Permissions::WRITE));
+        self::assertTrue($result->hasFlag(Permissions::READ));
     }
 
-    public function testThrowExceptionWhenWithInvalidFlags()
+    public function testThrowExceptionWhenWithInvalidFlags(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('8 is not an acceptable value');
@@ -172,26 +172,26 @@ class FlaggedEnumTest extends TestCase
         $value->withFlags(Permissions::ALL + 1);
     }
 
-    public function testWithoutFlags()
+    public function testWithoutFlags(): void
     {
         $original = Permissions::get(Permissions::ALL);
         $result = $original->withoutFlags(Permissions::READ | Permissions::WRITE);
 
-        $this->assertNotSame($original, $result);
-        $this->assertTrue($result->hasFlag(Permissions::EXECUTE));
-        $this->assertFalse($result->hasFlag(Permissions::READ));
-        $this->assertFalse($result->hasFlag(Permissions::WRITE));
+        self::assertNotSame($original, $result);
+        self::assertTrue($result->hasFlag(Permissions::EXECUTE));
+        self::assertFalse($result->hasFlag(Permissions::READ));
+        self::assertFalse($result->hasFlag(Permissions::WRITE));
     }
 
-    public function testWithoutAnyFlag()
+    public function testWithoutAnyFlag(): void
     {
         $original = Permissions::get(Permissions::ALL);
         $result = $original->withoutFlags(Permissions::ALL);
-        $this->assertCount(0, $result->getFlags());
-        $this->assertSame(Permissions::NONE, $result->getValue());
+        self::assertCount(0, $result->getFlags());
+        self::assertSame(Permissions::NONE, $result->getValue());
     }
 
-    public function testThrowExceptionWhenInvalidFlagsRemoved()
+    public function testThrowExceptionWhenInvalidFlagsRemoved(): void
     {
         $this->expectException(InvalidValueException::class);
         $this->expectExceptionMessage('99 is not an acceptable value');
@@ -200,9 +200,9 @@ class FlaggedEnumTest extends TestCase
         $value->withoutFlags(99);
     }
 
-    public function testInstances()
+    public function testInstances(): void
     {
-        $this->assertSame([
+        self::assertSame([
             Permissions::get(Permissions::EXECUTE),
             Permissions::get(Permissions::WRITE),
             Permissions::get(Permissions::READ),

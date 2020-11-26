@@ -15,7 +15,7 @@ use Elao\Enum\Tests\TestCase;
 
 class TypesDumperTest extends TestCase
 {
-    const FIXTURES_DIR = FIXTURES_DIR . '/Bridge/Doctrine/DBAL/Types/TypesDumperTest';
+    public const FIXTURES_DIR = FIXTURES_DIR . '/Bridge/Doctrine/DBAL/Types/TypesDumperTest';
 
     /** @var TypesDumper */
     private $dumper;
@@ -34,7 +34,7 @@ class TypesDumperTest extends TestCase
         @unlink($this->dumpPath);
     }
 
-    public function testDumpToFile()
+    public function testDumpToFile(): void
     {
         $this->dumper->dumpToFile($this->dumpPath, [
             ['Foo\Bar\Baz', 'string', 'baz'],

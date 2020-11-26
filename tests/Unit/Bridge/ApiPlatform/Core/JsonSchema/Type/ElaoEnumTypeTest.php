@@ -24,14 +24,14 @@ class ElaoEnumTypeTest extends TestCase
     public function testGetType(array $expected, Type $type): void
     {
         if (!interface_exists(\ApiPlatform\Core\Exception\ExceptionInterface::class)) {
-            $this->markTestSkipped('API platform not installed');
+            self::markTestSkipped('API platform not installed');
         }
 
         $typeFactory = new ElaoEnumType(new TypeFactory());
-        $this->assertEquals($expected, $typeFactory->getType($type, 'json'));
+        self::assertEquals($expected, $typeFactory->getType($type, 'json'));
     }
 
-    public function typeProvider(): \Generator
+    public function typeProvider(): iterable
     {
         yield [
             [

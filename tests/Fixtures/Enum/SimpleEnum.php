@@ -19,9 +19,9 @@ use Elao\Enum\Enum;
  */
 class SimpleEnum extends Enum
 {
-    const ZERO = 0;
-    const FIRST = 1;
-    const SECOND = 2;
+    public const ZERO = 0;
+    public const FIRST = 1;
+    public const SECOND = 2;
 
     public static function values(): array
     {

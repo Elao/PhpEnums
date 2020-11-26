@@ -15,7 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class SimpleEnumType extends AbstractIntegerEnumType
 {
-    const NAME = 'simple_enum';
+    public const NAME = 'simple_enum';
 
     protected function getEnumClass(): string
     {

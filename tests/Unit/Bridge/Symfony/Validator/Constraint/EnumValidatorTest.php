@@ -17,13 +17,13 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EnumValidatorTest extends ConstraintValidatorTestCase
 {
-    public function testNullIsValid()
+    public function testNullIsValid(): void
     {
         $this->validator->validate(null, new Enum(Gender::class));
         $this->assertNoViolation();
     }
 
-    public function testBlankStringIsInvalid()
+    public function testBlankStringIsInvalid(): void
     {
         $this->validator->validate('', new Enum(Gender::class));
         $violation = $this->buildViolation('The value you selected is not a valid choice.')
@@ -36,7 +36,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
         $violation->assertRaised();
     }
 
-    public function testValid()
+    public function testValid(): void
     {
         foreach (Gender::instances() as $value) {
             $this->validator->validate($value, new Enum(Gender::class));
@@ -45,7 +45,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testValidMultiple()
+    public function testValidMultiple(): void
     {
         $this->validator->validate([
             Gender::get(Gender::MALE),
@@ -58,7 +58,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testValidValues()
+    public function testValidValues(): void
     {
         foreach (Gender::values() as $value) {
             $this->validator->validate($value, new Enum([
@@ -70,7 +70,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testInvalidValue()
+    public function testInvalidValue(): void
     {
         $this->validator->validate(42, new Enum(Gender::class));
         $violation = $this->buildViolation('The value you selected is not a valid choice.')

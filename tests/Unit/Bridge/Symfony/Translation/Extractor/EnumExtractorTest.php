@@ -34,18 +34,18 @@ class EnumExtractorTest extends TestCase
         $this->extractor->setPrefix('__');
     }
 
-    public function testRunsOnlyOnce()
+    public function testRunsOnlyOnce(): void
     {
         $catalog1 = new MessageCatalogue('en');
         $this->extractor->extract('foo', $catalog1);
         $catalog2 = new MessageCatalogue('en');
         $this->extractor->extract('bar', $catalog2);
 
-        $this->assertCount(1, $catalog1->all());
-        $this->assertEmpty($catalog2->all());
+        self::assertCount(1, $catalog1->all());
+        self::assertEmpty($catalog2->all());
     }
 
-    public function testInvalidDirectoryThrowsException()
+    public function testInvalidDirectoryThrowsException(): void
     {
         $this->expectException(DirectoryNotFoundException::class);
 
@@ -53,19 +53,19 @@ class EnumExtractorTest extends TestCase
         $extractor->extract('baz', new MessageCatalogue('en'));
     }
 
-    public function testGenerateTranslations()
+    public function testGenerateTranslations(): void
     {
         $catalog = new MessageCatalogue('en');
         $this->extractor->extract('foo', $catalog);
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'messages_test' => ['trans_readable_enum' => '__trans_readable_enum'],
             ],
             $catalog->all()
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'trans_readable_enum' => ['sources' => [str_replace(\DIRECTORY_SEPARATOR, '/', __DIR__) . '/Enum/ReadableEnum.php:readable_enum']],
             ],

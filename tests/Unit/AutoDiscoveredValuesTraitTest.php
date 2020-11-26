@@ -20,22 +20,22 @@ use Elao\Enum\Tests\TestCase;
 
 class AutoDiscoveredValuesTraitTest extends TestCase
 {
-    public function testItAutoDiscoveredValuesBasedOnAvailableConstants()
+    public function testItAutoDiscoveredValuesBasedOnAvailableConstants(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredEnum::values());
+        self::assertSame(['foo', 'bar', 'baz'], AutoDiscoveredEnum::values());
     }
 
-    public function testPHP71ItAutoDiscoveredValuesBasedOnAvailableConstants()
+    public function testPHP71ItAutoDiscoveredValuesBasedOnAvailableConstants(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], Php71AutoDiscoveredEnum::values());
+        self::assertSame(['foo', 'bar', 'baz'], Php71AutoDiscoveredEnum::values());
     }
 
-    public function testItAutoDiscoveredValuesBasedOnAvailableBitFlagConstants()
+    public function testItAutoDiscoveredValuesBasedOnAvailableBitFlagConstants(): void
     {
-        $this->assertSame([1, 2, 4], AutoDiscoveredFlaggedEnum::values());
+        self::assertSame([1, 2, 4], AutoDiscoveredFlaggedEnum::values());
     }
 
-    public function testThrowsOnChoicesMisuses()
+    public function testThrowsOnChoicesMisuses(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Method "Elao\Enum\AutoDiscoveredValuesTrait::choices" is only meant to be used when using the "Elao\Enum\ChoiceEnumTrait" trait which is not used in "Elao\Enum\Tests\Unit\AutoDiscoveredEnumMisusingChoices"');
@@ -43,14 +43,14 @@ class AutoDiscoveredValuesTraitTest extends TestCase
         AutoDiscoveredEnumMisusingChoices::foo();
     }
 
-    public function testItAutoDiscoversValuesFromDumbEnum()
+    public function testItAutoDiscoversValuesFromDumbEnum(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], AutoDiscoveredDumbEnum::values());
+        self::assertSame(['foo', 'bar', 'baz'], AutoDiscoveredDumbEnum::values());
     }
 
-    public function testItRemovesAutoDiscoveredNonUniqueIdentifiersWithContiguousIndices()
+    public function testItRemovesAutoDiscoveredNonUniqueIdentifiersWithContiguousIndices(): void
     {
-        $this->assertSame([0 => 'foo', 1 => 'bar'], AutoDiscoveredNonUniqueEnumIndentifiers::values());
+        self::assertSame([0 => 'foo', 1 => 'bar'], AutoDiscoveredNonUniqueEnumIndentifiers::values());
     }
 }
 
@@ -58,32 +58,32 @@ final class AutoDiscoveredEnum extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    const FOO = 'foo';
-    const BAR = 'bar';
-    const BAZ = 'baz';
+    public const FOO = 'foo';
+    public const BAR = 'bar';
+    public const BAZ = 'baz';
 
-    const NOT_AN_INT_NOR_STRING = ['foo'];
+    public const NOT_AN_INT_NOR_STRING = ['foo'];
 }
 
 final class AutoDiscoveredFlaggedEnum extends FlaggedEnum
 {
     use AutoDiscoveredValuesTrait;
 
-    const FOO = 1;
-    const BAR = 2;
-    const BAZ = 4;
+    public const FOO = 1;
+    public const BAR = 2;
+    public const BAZ = 4;
 
-    const NOT_A_BIT_FLAG = 3;
-    const NOT_EVEN_AN_INT = 'not_even_an_int';
+    public const NOT_A_BIT_FLAG = 3;
+    public const NOT_EVEN_AN_INT = 'not_even_an_int';
 }
 
 final class AutoDiscoveredEnumMisusingChoices extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    const FOO = 'foo';
+    public const FOO = 'foo';
 
-    public static function foo()
+    public static function foo(): void
     {
         self::choices();
     }
@@ -93,7 +93,7 @@ final class AutoDiscoveredDumbEnum extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    const BAZ = 'baz';
+    public const BAZ = 'baz';
 
     protected static function getDiscoveredClasses(): array
     {
@@ -105,7 +105,7 @@ final class AutoDiscoveredNonUniqueEnumIndentifiers extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    const FOO = 'foo';
-    const FOO_ALIAS = 'foo';
-    const BAR = 'bar';
+    public const FOO = 'foo';
+    public const FOO_ALIAS = 'foo';
+    public const BAR = 'bar';
 }

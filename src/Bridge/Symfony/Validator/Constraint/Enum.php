@@ -132,8 +132,6 @@ class Enum extends Choice
     /**
      * Fixup deserialized enum instances by replacing them with actual multiton instances,
      * so strict comparison works.
-     *
-     * {@inheritdoc}
      */
     public function __wakeup()
     {

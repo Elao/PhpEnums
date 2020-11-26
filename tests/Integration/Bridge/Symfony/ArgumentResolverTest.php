@@ -30,45 +30,45 @@ class ArgumentResolverTest extends WebTestCase
     /**
      * @dataProvider requestProvider
      */
-    public function testEnumPassedInRequest(\Closure $setupClient, \Closure $assert)
+    public function testEnumPassedInRequest(\Closure $setupClient, \Closure $assert): void
     {
         $client = static::createClient();
         $setupClient($client);
         $assert($client->getResponse());
     }
 
-    public function requestProvider()
+    public function requestProvider(): iterable
     {
-        return [
-            'valid enum' => [
-                function ($client) {
-                    $client->request(Request::METHOD_GET, '/enum-resolve/' . Gender::MALE);
-                },
-                function (Response $response) {
-                    $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-                    $this->assertEquals(Gender::MALE()->getReadable(), $response->getContent());
-                },
-            ],
-            'invalid enum' => [
-                function ($client) {
-                    $client->request(Request::METHOD_GET, '/enum-resolve/bar');
-                },
-                function (Response $response) {
-                    $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-                },
-            ],
-            'valid variadic enum' => [
-                function ($client) {
-                    $client->request(Request::METHOD_GET, '/enum-resolve-variadic', ['genders' => [Gender::MALE, Gender::FEMALE]]);
-                },
-                function (Response $response) {
-                    $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-                    $this->assertEquals(
-                        sprintf('%s,%s', Gender::MALE()->getReadable(), Gender::FEMALE()->getReadable()),
-                        $response->getContent()
-                    );
-                },
-            ],
+        yield 'valid enum' => [
+            function ($client) {
+                $client->request(Request::METHOD_GET, '/enum-resolve/' . Gender::MALE);
+            },
+            function (Response $response) {
+                $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+                $this->assertEquals(Gender::MALE()->getReadable(), $response->getContent());
+            },
+        ];
+
+        yield 'invalid enum' => [
+            function ($client) {
+                $client->request(Request::METHOD_GET, '/enum-resolve/bar');
+            },
+            function (Response $response) {
+                $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+            },
+        ];
+
+        yield 'valid variadic enum' => [
+            function ($client) {
+                $client->request(Request::METHOD_GET, '/enum-resolve-variadic', ['genders' => [Gender::MALE, Gender::FEMALE]]);
+            },
+            function (Response $response) {
+                $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+                $this->assertEquals(
+                    sprintf('%s,%s', Gender::MALE()->getReadable(), Gender::FEMALE()->getReadable()),
+                    $response->getContent()
+                );
+            },
         ];
     }
 }

@@ -28,7 +28,7 @@ class YamlElaoEnumExtensionTest extends ElaoEnumExtensionTest
     /**
      * @group legacy
      */
-    public function testDoctrineLegacyTypes()
+    public function testDoctrineLegacyTypes(): void
     {
         $container = $this->createContainerFromFile('doctrine_types_legacy');
 

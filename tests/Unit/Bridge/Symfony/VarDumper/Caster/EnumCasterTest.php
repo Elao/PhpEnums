@@ -39,7 +39,7 @@ class EnumCasterTest extends TestCase
 
     public function testCasterIsRegistered()
     {
-        $this->assertArrayHasKey(
+        self::assertArrayHasKey(
             EnumInterface::class,
             VarCloner::$defaultCasters,
             'the caster is registered through composer autoload files'
@@ -208,10 +208,10 @@ EODUMP;
 
 class EnumWithNonEnumerablePublicConstants extends Enum
 {
-    const FOO = 'foo';
-    const BAR = 'bar';
+    public const FOO = 'foo';
+    public const BAR = 'bar';
 
-    const NOT_AN_ENUMERABLE_VALUE = [self::FOO, self::BAR];
+    public const NOT_AN_ENUMERABLE_VALUE = [self::FOO, self::BAR];
 
     public static function values(): array
     {

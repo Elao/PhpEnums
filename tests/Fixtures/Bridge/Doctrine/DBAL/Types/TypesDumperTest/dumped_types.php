@@ -5,7 +5,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
     if (!\class_exists(BazType::class)) {
         class BazType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType
         {
-            const NAME = 'baz';
+            public const NAME = 'baz';
 
             protected function getEnumClass(): string
             {
@@ -22,7 +22,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
     if (!\class_exists(XyzType::class)) {
         class XyzType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
         {
-            const NAME = 'xyz';
+            public const NAME = 'xyz';
 
             protected function getEnumClass(): string
             {
@@ -39,7 +39,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
     if (!\class_exists(QuxType::class)) {
         class QuxType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
         {
-            const NAME = 'qux';
+            public const NAME = 'qux';
 
             protected function getEnumClass(): string
             {
@@ -56,7 +56,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
     if (!\class_exists(FooJsonCollectionType::class)) {
         class FooJsonCollectionType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractJsonCollectionEnumType
         {
-            const NAME = 'foo_json';
+            public const NAME = 'foo_json';
 
             protected function getEnumClass(): string
             {
@@ -73,7 +73,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
     if (!\class_exists(FooCsvCollectionType::class)) {
         class FooCsvCollectionType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractCsvCollectionEnumType
         {
-            const NAME = 'foo_csv';
+            public const NAME = 'foo_csv';
 
             protected function getEnumClass(): string
             {
@@ -94,7 +94,7 @@ namespace ELAO_ENUM_DT\Foo\Baz {
     if (!\class_exists(FooType::class)) {
         class FooType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
         {
-            const NAME = 'foo';
+            public const NAME = 'foo';
 
             protected function getEnumClass(): string
             {

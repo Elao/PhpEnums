@@ -22,9 +22,6 @@ class JsDumperTest extends TestCase
     /** @var string */
     private static $dumpDir;
 
-    /** @var Filesystem */
-    private $fs;
-
     public static function setUpBeforeClass(): void
     {
         self::$dumpDir = self::getDumpDir();
@@ -32,21 +29,21 @@ class JsDumperTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->fs = new Filesystem();
-        $this->fs->remove(self::$dumpDir);
+        $fs = new Filesystem();
+        $fs->remove(self::$dumpDir);
     }
 
     /**
      * @dataProvider provide testNormalizePath data
      */
-    public function testNormalizePath(string $path, string $baseDir = null, string $expectedPath)
+    public function testNormalizePath(string $path, string $baseDir = null, string $expectedPath): void
     {
         $dumper = new JsDumper('lib-path', $baseDir);
 
         self::assertSame($expectedPath, $dumper->normalizePath($path));
     }
 
-    public function provide testNormalizePath data()
+    public function provide testNormalizePath data(): iterable
     {
         yield 'no base dir' => ['foo/enum.js', null, 'foo/enum.js'];
         yield 'with base dir' => ['enum.js', 'foo', 'foo/enum.js'];
@@ -58,7 +55,7 @@ class JsDumperTest extends TestCase
     /**
      * @dataProvider provide testDumpLibrary data
      */
-    public function testDumpLibrary(string $libPath, string $baseDir = null, string $expectedPath)
+    public function testDumpLibrary(string $libPath, string $baseDir = null, string $expectedPath): void
     {
         $dumper = new JsDumper($libPath, $baseDir);
         $dumper->dumpLibrarySources();
@@ -69,7 +66,7 @@ class JsDumperTest extends TestCase
         );
     }
 
-    public function provide testDumpLibrary data()
+    public function provide testDumpLibrary data(): iterable
     {
         $dumpDir = self::getDumpDir();
 
@@ -87,7 +84,7 @@ class JsDumperTest extends TestCase
         string $baseDir = null,
         string $expectedPath,
         string $expectedImportPath
-    ) {
+    ): void {
         $dumper = new JsDumper($libPath, $baseDir);
         $dumper->dumpLibrarySources();
         $dumper->dumpEnumToFile($enumClass, $path);
@@ -96,7 +93,7 @@ class JsDumperTest extends TestCase
         self::assertStringContainsString("import Enum from '$expectedImportPath'", file_get_contents($expectedPath));
     }
 
-    public function provide testDumpEnumToFile data()
+    public function provide testDumpEnumToFile data(): iterable
     {
         $dumpDir = self::getDumpDir();
 
@@ -131,7 +128,7 @@ class JsDumperTest extends TestCase
     /**
      * @dataProvider provide testDumpEnumClass data
      */
-    public function testDumpEnumClass(string $enumClass, string $expectationFilePath)
+    public function testDumpEnumClass(string $enumClass, string $expectationFilePath): void
     {
         $dumper = new JsDumper('enum.js');
         $js = $dumper->dumpEnumClass($enumClass);
@@ -139,7 +136,7 @@ class JsDumperTest extends TestCase
         self::assertStringEqualsFile(FIXTURES_DIR . "/JsDumper/expected/$expectationFilePath", $js);
     }
 
-    public function provide testDumpEnumClass data()
+    public function provide testDumpEnumClass data(): iterable
     {
         yield 'simple enum' => [
             'enumClass' => SimpleEnum::class,

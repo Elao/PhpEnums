@@ -14,7 +14,7 @@ use Elao\Enum\ReadableEnum;
 
 final class Readable extends ReadableEnum
 {
-    const READABLE = 'readable';
+    public const READABLE = 'readable';
 
     /**
      * {@inheritdoc}

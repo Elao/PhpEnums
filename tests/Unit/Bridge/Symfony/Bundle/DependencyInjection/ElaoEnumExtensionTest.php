@@ -26,9 +26,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBa
 
 abstract class ElaoEnumExtensionTest extends TestCase
 {
-    const FIXTURES_PATH = __DIR__ . '/../../../../../Fixtures/Bridge/Symfony/Bundle/DependencyInjection/ElaoEnumExtension';
+    protected const FIXTURES_PATH = __DIR__ . '/../../../../../Fixtures/Bridge/Symfony/Bundle/DependencyInjection/ElaoEnumExtension';
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $container = $this->createContainerFromFile('defaults');
 
@@ -39,21 +39,21 @@ abstract class ElaoEnumExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition(DumpJsEnumsCommand::class), 'dump js command is loaded');
     }
 
-    public function testDisabledArgValueResolver()
+    public function testDisabledArgValueResolver(): void
     {
         $container = $this->createContainerFromFile('disabled_arg_value_resolver');
 
         self::assertFalse($container->hasDefinition(EnumValueResolver::class), 'arg resolver is removed');
     }
 
-    public function testDisabledSerializer()
+    public function testDisabledSerializer(): void
     {
         $container = $this->createContainerFromFile('disabled_serializer');
 
         self::assertFalse($container->hasDefinition(EnumNormalizer::class), 'normalizer is removed');
     }
 
-    public function testDoctrineTypes()
+    public function testDoctrineTypes(): void
     {
         $container = $this->createContainerFromFile('doctrine_types');
 
@@ -66,7 +66,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
-    public function testDoctrineTypesDefaultType()
+    public function testDoctrineTypesDefaultType(): void
     {
         $container = $this->createContainerFromFile('doctrine_types_default_type');
 
@@ -76,7 +76,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
-    public function testDoctrineTypesEnumSQLDeclaration()
+    public function testDoctrineTypesEnumSQLDeclaration(): void
     {
         $container = $this->createContainerFromFile('doctrine_types_enum_sql_declaration');
 
@@ -87,7 +87,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
-    public function testDoctrineTypesArePrepended()
+    public function testDoctrineTypesArePrepended(): void
     {
         $container = $this->createContainerFromFile('doctrine_types', false);
         /** @var ElaoEnumExtension $ext */
@@ -110,7 +110,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getExtensionConfig('doctrine'));
     }
 
-    public function testTranslationExtractor()
+    public function testTranslationExtractor(): void
     {
         $container = $this->createContainerFromFile('translation_extractor');
 
@@ -129,7 +129,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getDefinition(EnumExtractor::class)->getArguments());
     }
 
-    public function testJsEnumsExtractor()
+    public function testJsEnumsExtractor(): void
     {
         $container = $this->createContainerFromFile('js_enums');
 

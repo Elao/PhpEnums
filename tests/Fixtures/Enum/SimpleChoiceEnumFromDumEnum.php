@@ -14,7 +14,7 @@ use Elao\Enum\SimpleChoiceEnum;
 
 final class SimpleChoiceEnumFromDumEnum extends SimpleChoiceEnum
 {
-    const BAZ = 'baz';
+    public const BAZ = 'baz';
 
     protected static function getDiscoveredClasses(): array
     {

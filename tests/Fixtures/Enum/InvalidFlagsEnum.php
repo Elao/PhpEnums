@@ -14,9 +14,9 @@ use Elao\Enum\FlaggedEnum;
 
 final class InvalidFlagsEnum extends FlaggedEnum
 {
-    const FIRST = 1;
-    const SECOND = 2;
-    const INVALID = 3;
+    public const FIRST = 1;
+    public const SECOND = 2;
+    public const INVALID = 3;
 
     public static function readables(): array
     {

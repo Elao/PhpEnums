@@ -37,7 +37,7 @@ class EnumTypeTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testEnumType()
+    public function testEnumType(): void
     {
         $this->em->persist(new User($uuid = 'user01', Gender::get(Gender::MALE)));
         $this->em->flush();
@@ -45,16 +45,16 @@ class EnumTypeTest extends KernelTestCase
 
         $user = $this->em->find(User::class, $uuid);
 
-        $this->assertTrue($user->getGender()->is(Gender::MALE));
+        self::assertTrue($user->getGender()->is(Gender::MALE));
     }
 
-    public function testEnumTypeOnNullFromPHP()
+    public function testEnumTypeOnNullFromPHP(): void
     {
         $this->em->persist(new User($uuid = 'user01', null));
         $this->em->flush();
         $this->em->clear();
 
-        $this->assertSame(
+        self::assertSame(
             ['gender' => 'unknown'],
             $this->em->getConnection()->executeQuery(
                 'SELECT gender FROM user WHERE user.uuid = :uuid',
@@ -63,7 +63,7 @@ class EnumTypeTest extends KernelTestCase
         );
     }
 
-    public function testEnumTypeOnNullFromDatabase()
+    public function testEnumTypeOnNullFromDatabase(): void
     {
         $this->em->getConnection()->executeUpdate(
             'INSERT INTO user (uuid, gender) VALUES(:uuid, null)',
@@ -72,6 +72,6 @@ class EnumTypeTest extends KernelTestCase
 
         $user = $this->em->find(User::class, $uuid);
 
-        $this->assertTrue($user->getGender()->is(Gender::UNKNOW));
+        self::assertTrue($user->getGender()->is(Gender::UNKNOW));
     }
 }

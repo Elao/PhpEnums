@@ -25,13 +25,13 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testDefaultValueIsEnumClass data
      */
-    public function testDefaultValueIsEnumClass(Enum $constraint, bool $skipped = false)
+    public function testDefaultValueIsEnumClass(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
 
-        $this->assertSame(SimpleEnum::class, $constraint->class);
+        self::assertSame(SimpleEnum::class, $constraint->class);
     }
 
     public function provide testDefaultValueIsEnumClass data(): iterable
@@ -54,13 +54,13 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testNoChoicesSetsDefaultCallback data
      */
-    public function testNoChoicesSetsDefaultCallback(Enum $constraint, bool $skipped = false)
+    public function testNoChoicesSetsDefaultCallback(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
-        $this->assertSame(SimpleEnum::class, $constraint->class);
-        $this->assertSame([SimpleEnum::class, 'instances'], $constraint->callback);
+        self::assertSame(SimpleEnum::class, $constraint->class);
+        self::assertSame([SimpleEnum::class, 'instances'], $constraint->callback);
     }
 
     public function provide testNoChoicesSetsDefaultCallback data(): iterable
@@ -83,13 +83,13 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testNoChoicesSetsUserCallback data
      */
-    public function testNoChoicesSetsUserCallback(Enum $constraint, bool $skipped = false)
+    public function testNoChoicesSetsUserCallback(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
-        $this->assertSame(SimpleEnum::class, $constraint->class);
-        $this->assertSame([SimpleEnum::class, 'allowedValues'], $constraint->callback);
+        self::assertSame(SimpleEnum::class, $constraint->class);
+        self::assertSame([SimpleEnum::class, 'allowedValues'], $constraint->callback);
     }
 
     public function provide testNoChoicesSetsUserCallback data(): iterable
@@ -107,7 +107,7 @@ class EnumTest extends TestCase
         }
     }
 
-    public function testInvalidClassThrowsDefinitionException()
+    public function testInvalidClassThrowsDefinitionException(): void
     {
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('The "class" option value must be a class FQCN implementing "Elao\Enum\EnumInterface". "Foo" given.');
@@ -118,14 +118,14 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testValidChoiceOption data
      */
-    public function testValidChoiceOption(Enum $constraint, bool $skipped = false)
+    public function testValidChoiceOption(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
-        $this->assertSame(SimpleEnum::class, $constraint->class);
-        $this->assertNull($constraint->callback);
-        $this->assertSame([
+        self::assertSame(SimpleEnum::class, $constraint->class);
+        self::assertNull($constraint->callback);
+        self::assertSame([
             SimpleEnum::get(SimpleEnum::FIRST),
             SimpleEnum::get(SimpleEnum::SECOND),
         ], $constraint->choices);
@@ -155,14 +155,14 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testValidChoiceOptionAsValues data
      */
-    public function testValidChoiceOptionAsValues(Enum $constraint, bool $skipped = false)
+    public function testValidChoiceOptionAsValues(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
-        $this->assertSame(SimpleEnum::class, $constraint->class);
-        $this->assertNull($constraint->callback);
-        $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $constraint->choices);
+        self::assertSame(SimpleEnum::class, $constraint->class);
+        self::assertNull($constraint->callback);
+        self::assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $constraint->choices);
     }
 
     public function provide testValidChoiceOptionAsValues data(): iterable
@@ -186,7 +186,7 @@ class EnumTest extends TestCase
         }
     }
 
-    public function testInvalidChoiceOptionThrowsDefinitionException()
+    public function testInvalidChoiceOptionThrowsDefinitionException(): void
     {
         $this->expectException(ConstraintDefinitionException::class);
         $this->expectExceptionMessage('Choice "bar" is not a valid value for enum type "Elao\Enum\Tests\Fixtures\Enum\SimpleEnum"');
@@ -197,14 +197,14 @@ class EnumTest extends TestCase
     /**
      * @dataProvider provide testDeserializingConstraintRespectsMultitonInstance data
      */
-    public function testDeserializingConstraintRespectsMultitonInstance(Enum $constraint, bool $skipped = false)
+    public function testDeserializingConstraintRespectsMultitonInstance(Enum $constraint, bool $skipped = false): void
     {
         if ($skipped) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
         $constraint = unserialize(serialize($constraint));
 
-        $this->assertSame([
+        self::assertSame([
             SimpleEnum::get(SimpleEnum::FIRST),
             SimpleEnum::get(SimpleEnum::SECOND),
         ], $constraint->choices);
@@ -236,7 +236,7 @@ class EnumTest extends TestCase
      */
     public function testPhp8AttributeIsLoaded(): void
     {
-        if (!$this->isSf52()) {
+        if (!self::isSf52()) {
             self::markTestSkipped('Requires Symfony Validator Component 5.2+');
         }
 

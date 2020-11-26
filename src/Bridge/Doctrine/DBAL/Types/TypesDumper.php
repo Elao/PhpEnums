@@ -17,12 +17,12 @@ use Elao\Enum\Exception\LogicException;
  */
 class TypesDumper
 {
-    const TYPE_INT = 'int';
-    const TYPE_STRING = 'string';
-    const TYPE_ENUM = 'enum';
-    const TYPE_JSON_COLLECTION = 'json_collection';
-    const TYPE_CSV_COLLECTION = 'csv_collection';
-    const TYPES = [
+    public const TYPE_INT = 'int';
+    public const TYPE_STRING = 'string';
+    public const TYPE_ENUM = 'enum';
+    public const TYPE_JSON_COLLECTION = 'json_collection';
+    public const TYPE_CSV_COLLECTION = 'csv_collection';
+    public const TYPES = [
         self::TYPE_INT,
         self::TYPE_STRING,
         self::TYPE_ENUM,
@@ -30,7 +30,7 @@ class TypesDumper
         self::TYPE_CSV_COLLECTION,
     ];
 
-    const TYPES_SUFFIXES = [
+    public const TYPES_SUFFIXES = [
         self::TYPE_INT => 'Type',
         self::TYPE_STRING => 'Type',
         self::TYPE_ENUM => 'Type',
@@ -38,7 +38,7 @@ class TypesDumper
         self::TYPE_CSV_COLLECTION => 'CsvCollectionType',
     ];
 
-    const MARKER = 'ELAO_ENUM_DT';
+    public const MARKER = 'ELAO_ENUM_DT';
 
     public function dumpToFile(string $file, array $types)
     {
@@ -101,7 +101,7 @@ PHP;
     if (!\class_exists($classname::class)) {
         class $classname extends \\{$baseClass}
         {
-            const NAME = '$name';
+            public const NAME = '$name';
 
             protected function getEnumClass(): string
             {

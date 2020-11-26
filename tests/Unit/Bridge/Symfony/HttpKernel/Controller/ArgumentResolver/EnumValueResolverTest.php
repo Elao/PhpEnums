@@ -32,69 +32,67 @@ class EnumValueResolverTest extends TestCase
     /**
      * @dataProvider inputDataProvider
      */
-    public function testValidInput(ArgumentMetadata $metadata, Request $request, array $expected)
+    public function testValidInput(ArgumentMetadata $metadata, Request $request, array $expected): void
     {
         $resolver = new EnumValueResolver();
 
-        $this->assertTrue($resolver->supports($request, $metadata));
-        $this->assertSame($expected, iterator_to_array($resolver->resolve($request, $metadata)));
+        self::assertTrue($resolver->supports($request, $metadata));
+        self::assertSame($expected, iterator_to_array($resolver->resolve($request, $metadata)));
     }
 
-    public function inputDataProvider()
+    public function inputDataProvider(): iterable
     {
-        return [
-            'valid enum submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, false, false, null),
-                Request::create('/', Request::METHOD_GET, ['permissions' => Permissions::READ]),
-                [Permissions::READ()],
-            ],
-            'optional value with nothing submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, false, true, null),
-                Request::create('/'),
-                [null],
-            ],
-            'optional value with null submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, false, true, null),
-                Request::create('/', Request::METHOD_GET, ['permissions' => null]),
-                [null],
-            ],
-            'nullable value with nothing submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, false, false, null, true),
-                Request::create('/'),
-                [null],
-            ],
-            'nullable value with null submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, false, false, null, true),
-                Request::create('/', Request::METHOD_GET, ['permissions' => null]),
-                [null],
-            ],
-            'nullable variadic with nothing submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
-                Request::create('/'),
-                [null],
-            ],
-            'nullable variadic with null submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
-                Request::create('/', Request::METHOD_GET, ['permissions' => null]),
-                [null],
-            ],
-            'empty variadic submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
-                Request::create('/', Request::METHOD_GET, ['permissions' => []]),
-                [],
-            ],
-            'valid variadic submitted' => [
-                new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
-                Request::create('/', Request::METHOD_GET, ['permissions' => [Permissions::READ, Permissions::WRITE]]),
-                [Permissions::READ(), Permissions::WRITE()],
-            ],
+        yield 'valid enum submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, false, false, null),
+            Request::create('/', Request::METHOD_GET, ['permissions' => Permissions::READ]),
+            [Permissions::READ()],
+        ];
+        yield 'optional value with nothing submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, false, true, null),
+            Request::create('/'),
+            [null],
+        ];
+        yield 'optional value with null submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, false, true, null),
+            Request::create('/', Request::METHOD_GET, ['permissions' => null]),
+            [null],
+        ];
+        yield 'nullable value with nothing submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, false, false, null, true),
+            Request::create('/'),
+            [null],
+        ];
+        yield 'nullable value with null submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, false, false, null, true),
+            Request::create('/', Request::METHOD_GET, ['permissions' => null]),
+            [null],
+        ];
+        yield 'nullable variadic with nothing submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
+            Request::create('/'),
+            [null],
+        ];
+        yield 'nullable variadic with null submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
+            Request::create('/', Request::METHOD_GET, ['permissions' => null]),
+            [null],
+        ];
+        yield 'empty variadic submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
+            Request::create('/', Request::METHOD_GET, ['permissions' => []]),
+            [],
+        ];
+        yield 'valid variadic submitted' => [
+            new ArgumentMetadata('permissions', Permissions::class, true, false, null, true),
+            Request::create('/', Request::METHOD_GET, ['permissions' => [Permissions::READ, Permissions::WRITE]]),
+            [Permissions::READ(), Permissions::WRITE()],
         ];
     }
 
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testinvalidInput($invalidInput, $expectedErrorMessage)
+    public function testinvalidInput($invalidInput, $expectedErrorMessage): void
     {
         $this->expectException(BadRequestHttpException::class);
 
@@ -102,24 +100,16 @@ class EnumValueResolverTest extends TestCase
         $metadata = new ArgumentMetadata('permissions', Permissions::class, false, false, null);
 
         $request = Request::create('/', Request::METHOD_GET, ['permissions' => $invalidInput]);
-        $this->assertTrue($resolver->supports($request, $metadata));
+        self::assertTrue($resolver->supports($request, $metadata));
 
         $this->expectExceptionMessage($expectedErrorMessage);
 
         iterator_to_array($resolver->resolve($request, $metadata));
     }
 
-    public function invalidDataProvider()
+    public function invalidDataProvider(): iterable
     {
-        return [
-            [
-                null,
-                'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value NULL',
-            ],
-            [
-                [],
-                'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value array (' . "\n" . ')',
-            ],
-        ];
+        yield [null, 'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value NULL'];
+        yield [[], 'Enum "Elao\Enum\Tests\Fixtures\Enum\Permissions" does not accept value array (' . "\n" . ')'];
     }
 }

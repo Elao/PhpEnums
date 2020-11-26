@@ -19,20 +19,20 @@ use Elao\Enum\Tests\TestCase;
 
 class ChoiceEnumTraitTest extends TestCase
 {
-    public function testItProvidesValuesAndReadablesImplementations()
+    public function testItProvidesValuesAndReadablesImplementations(): void
     {
-        $this->assertSame(['foo', 'bar', 'baz'], ChoiceEnum::values());
-        $this->assertSame([
+        self::assertSame(['foo', 'bar', 'baz'], ChoiceEnum::values());
+        self::assertSame([
             ChoiceEnum::FOO => 'Foo label',
             ChoiceEnum::BAR => 'Bar label',
             ChoiceEnum::BAZ => 'Baz label',
         ], ChoiceEnum::readables());
     }
 
-    public function testItFiltersValuesForFlaggedEnumImplementations()
+    public function testItFiltersValuesForFlaggedEnumImplementations(): void
     {
-        $this->assertSame([1, 2, 4], FlaggedEnumWithChoiceEnumTrait::values());
-        $this->assertSame([
+        self::assertSame([1, 2, 4], FlaggedEnumWithChoiceEnumTrait::values());
+        self::assertSame([
             FlaggedEnumWithChoiceEnumTrait::EXECUTE => 'Execute',
             FlaggedEnumWithChoiceEnumTrait::WRITE => 'Write',
             FlaggedEnumWithChoiceEnumTrait::READ => 'Read',
@@ -42,7 +42,7 @@ class ChoiceEnumTraitTest extends TestCase
         ], FlaggedEnumWithChoiceEnumTrait::readables());
     }
 
-    public function testValuesThrowsOnNonReadable()
+    public function testValuesThrowsOnNonReadable(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.');
@@ -50,7 +50,7 @@ class ChoiceEnumTraitTest extends TestCase
         NonReadableEnumWithChoiceEnumTrait::values();
     }
 
-    public function testReadableThrowsOnNonReadable()
+    public function testReadableThrowsOnNonReadable(): void
     {
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('The "Elao\Enum\ChoiceEnumTrait" trait is meant to be used by "Elao\Enum\ReadableEnumInterface" implementations, but "Elao\Enum\Tests\Unit\NonReadableEnumWithChoiceEnumTrait" does not implement it.');
@@ -63,9 +63,9 @@ final class ChoiceEnum extends ReadableEnum
 {
     use ChoiceEnumTrait;
 
-    const FOO = 'foo';
-    const BAR = 'bar';
-    const BAZ = 'baz';
+    public const FOO = 'foo';
+    public const BAR = 'bar';
+    public const BAZ = 'baz';
 
     protected static function choices(): array
     {
@@ -81,11 +81,11 @@ final class FlaggedEnumWithChoiceEnumTrait extends FlaggedEnum
 {
     use ChoiceEnumTrait;
 
-    const EXECUTE = 1;
-    const WRITE = 2;
-    const READ = 4;
+    public const EXECUTE = 1;
+    public const WRITE = 2;
+    public const READ = 4;
 
-    const ALL = self::EXECUTE | self::WRITE | self::READ;
+    public const ALL = self::EXECUTE | self::WRITE | self::READ;
 
     public static function choices(): array
     {

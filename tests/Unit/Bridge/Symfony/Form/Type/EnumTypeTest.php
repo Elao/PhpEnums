@@ -16,7 +16,6 @@ use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -26,7 +25,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class EnumTypeTest extends FormIntegrationTestCase
 {
-    public function testThrowExceptionWhenOptionEnumClassIsMissing()
+    public function testThrowExceptionWhenOptionEnumClassIsMissing(): void
     {
         $this->expectException(MissingOptionsException::class);
         $this->expectExceptionMessage('The required option "enum_class" is missing.');
@@ -34,7 +33,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         $this->factory->create(EnumType::class);
     }
 
-    public function testThrowsExceptionOnInvalidEnumClass()
+    public function testThrowsExceptionOnInvalidEnumClass(): void
     {
         $this->expectException(InvalidOptionsException::class);
         $this->expectExceptionMessage('The option "enum_class" with value "Foo" is invalid.');
@@ -46,7 +45,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
     }
 
-    public function testThrowExceptionWhenAppDataNotArrayForMultipleChoices()
+    public function testThrowExceptionWhenAppDataNotArrayForMultipleChoices(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Unable to transform value for property path "enum": Expected an array.');
@@ -63,7 +62,7 @@ class EnumTypeTest extends FormIntegrationTestCase
         $field->setData(SimpleEnum::FIRST);
     }
 
-    public function testSubmitSingleNull()
+    public function testSubmitSingleNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -73,12 +72,12 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit(null);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertNull($field->getData());
-        $this->assertSame('', $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertNull($field->getData());
+        self::assertSame('', $field->getViewData());
     }
 
-    public function testSubmitSingle()
+    public function testSubmitSingle(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -88,12 +87,12 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit(SimpleEnum::FIRST);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(SimpleEnum::get(SimpleEnum::FIRST), $field->getData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(SimpleEnum::get(SimpleEnum::FIRST), $field->getData());
+        self::assertSame((string) SimpleEnum::FIRST, $field->getViewData());
     }
 
-    public function testSubmitMultipleNull()
+    public function testSubmitMultipleNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -106,11 +105,11 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit(null);
 
-        $this->assertSame([], $field->getData());
-        $this->assertSame([], $field->getViewData());
+        self::assertSame([], $field->getData());
+        self::assertSame([], $field->getViewData());
     }
 
-    public function testSubmitMultipleExpanded()
+    public function testSubmitMultipleExpanded(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -124,16 +123,16 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit([SimpleEnum::FIRST]);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame([SimpleEnum::get(SimpleEnum::FIRST)], $field->getData());
-        $this->assertSame([SimpleEnum::get(SimpleEnum::FIRST)], $field->getNormData());
-        $this->assertTrue($field['1']->getData());
-        $this->assertFalse($field['2']->getData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field['1']->getViewData());
-        $this->assertNull($field['2']->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame([SimpleEnum::get(SimpleEnum::FIRST)], $field->getData());
+        self::assertSame([SimpleEnum::get(SimpleEnum::FIRST)], $field->getNormData());
+        self::assertTrue($field['1']->getData());
+        self::assertFalse($field['2']->getData());
+        self::assertSame((string) SimpleEnum::FIRST, $field['1']->getViewData());
+        self::assertNull($field['2']->getViewData());
     }
 
-    public function testSetDataSingleNull()
+    public function testSetDataSingleNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -141,11 +140,11 @@ class EnumTypeTest extends FormIntegrationTestCase
             ['enum_class' => SimpleEnum::class]
         );
         $field->setData(null);
-        $this->assertNull($field->getData());
-        $this->assertSame('', $field->getViewData());
+        self::assertNull($field->getData());
+        self::assertSame('', $field->getViewData());
     }
 
-    public function testSetDataMultipleExpandedNull()
+    public function testSetDataMultipleExpandedNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -157,14 +156,14 @@ class EnumTypeTest extends FormIntegrationTestCase
             ]
         );
         $field->setData(null);
-        $this->assertNull($field->getData());
-        $this->assertSame([], $field->getViewData());
+        self::assertNull($field->getData());
+        self::assertSame([], $field->getViewData());
         foreach ($field->all() as $child) {
             $this->assertSubForm($child, false, null);
         }
     }
 
-    public function testSetDataMultipleNonExpandedNull()
+    public function testSetDataMultipleNonExpandedNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -176,11 +175,11 @@ class EnumTypeTest extends FormIntegrationTestCase
             ]
         );
         $field->setData(null);
-        $this->assertNull($field->getData());
-        $this->assertSame([], $field->getViewData());
+        self::assertNull($field->getData());
+        self::assertSame([], $field->getViewData());
     }
 
-    public function testSetDataSingle()
+    public function testSetDataSingle(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -191,11 +190,11 @@ class EnumTypeTest extends FormIntegrationTestCase
         $data = SimpleEnum::get(SimpleEnum::FIRST);
         $field->setData($data);
 
-        $this->assertSame($data, $field->getData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
+        self::assertSame($data, $field->getData());
+        self::assertSame((string) SimpleEnum::FIRST, $field->getViewData());
     }
 
-    public function testSetDataMultipleExpanded()
+    public function testSetDataMultipleExpanded(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -213,14 +212,14 @@ class EnumTypeTest extends FormIntegrationTestCase
         ];
         $field->setData($data);
 
-        $this->assertSame($data, $field->getData());
-        $this->assertEquals([SimpleEnum::FIRST, SimpleEnum::ZERO], $field->getViewData());
+        self::assertSame($data, $field->getData());
+        self::assertEquals([SimpleEnum::FIRST, SimpleEnum::ZERO], $field->getViewData());
         $this->assertSubForm($field->get('0'), true, (string) SimpleEnum::ZERO);
         $this->assertSubForm($field->get('1'), true, (string) SimpleEnum::FIRST);
         $this->assertSubForm($field->get('2'), false, null);
     }
 
-    public function testSetDataExpanded()
+    public function testSetDataExpanded(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -235,15 +234,15 @@ class EnumTypeTest extends FormIntegrationTestCase
         $data = SimpleEnum::get(SimpleEnum::FIRST);
         $field->setData($data);
 
-        $this->assertSame($data, $field->getData());
-        $this->assertSame(SimpleEnum::get(SimpleEnum::FIRST), $field->getNormData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
+        self::assertSame($data, $field->getData());
+        self::assertSame(SimpleEnum::get(SimpleEnum::FIRST), $field->getNormData());
+        self::assertSame((string) SimpleEnum::FIRST, $field->getViewData());
         $this->assertSubForm($field->get('0'), false, null);
         $this->assertSubForm($field->get('1'), true, (string) SimpleEnum::FIRST);
         $this->assertSubForm($field->get('2'), false, null);
     }
 
-    public function testSubmitSingleAsValue()
+    public function testSubmitSingleAsValue(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -254,12 +253,12 @@ class EnumTypeTest extends FormIntegrationTestCase
             ]
         );
         $field->submit(SimpleEnum::FIRST);
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(SimpleEnum::FIRST, $field->getData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(SimpleEnum::FIRST, $field->getData());
+        self::assertSame((string) SimpleEnum::FIRST, $field->getViewData());
     }
 
-    public function testSubmitMultipleAsValue()
+    public function testSubmitMultipleAsValue(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -274,21 +273,21 @@ class EnumTypeTest extends FormIntegrationTestCase
 
         $field->submit([SimpleEnum::SECOND, SimpleEnum::FIRST]);
 
-        $this->assertTrue($field->isSynchronized());
+        self::assertTrue($field->isSynchronized());
 
-        $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getData());
-        $this->assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getNormData());
+        self::assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getData());
+        self::assertSame([SimpleEnum::FIRST, SimpleEnum::SECOND], $field->getNormData());
 
-        $this->assertFalse($field['0']->getData());
-        $this->assertTrue($field['2']->getData());
-        $this->assertTrue($field['2']->getData());
+        self::assertFalse($field['0']->getData());
+        self::assertTrue($field['2']->getData());
+        self::assertTrue($field['2']->getData());
 
-        $this->assertNull($field['0']->getViewData());
-        $this->assertSame((string) SimpleEnum::FIRST, $field['1']->getViewData());
-        $this->assertSame((string) SimpleEnum::SECOND, $field['2']->getViewData());
+        self::assertNull($field['0']->getViewData());
+        self::assertSame((string) SimpleEnum::FIRST, $field['1']->getViewData());
+        self::assertSame((string) SimpleEnum::SECOND, $field['2']->getViewData());
     }
 
-    public function testSubmitReadable()
+    public function testSubmitReadable(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -300,31 +299,31 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(3, $choices);
+        self::assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
-        $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertSame(Gender::get(Gender::UNKNOW), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        self::assertSame(Gender::UNKNOW, $choice->value);
+        self::assertSame(Gender::get(Gender::UNKNOW), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::MALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::get(Gender::MALE), $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::FEMALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::get(Gender::FEMALE), $choice->data);
 
         $field->submit(Gender::MALE);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::get(Gender::MALE), $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::get(Gender::MALE), $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    public function testSubmitReadableNull()
+    public function testSubmitReadableNull(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -333,12 +332,12 @@ class EnumTypeTest extends FormIntegrationTestCase
         );
         $field->submit(null);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertNull($field->getData());
-        $this->assertSame('', $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertNull($field->getData());
+        self::assertSame('', $field->getViewData());
     }
 
-    public function testSubmitReadableAsValue()
+    public function testSubmitReadableAsValue(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -353,30 +352,30 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(3, $choices);
+        self::assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
-        $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertSame(Gender::UNKNOW, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        self::assertSame(Gender::UNKNOW, $choice->value);
+        self::assertSame(Gender::UNKNOW, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::MALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::FEMALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::FEMALE, $choice->data);
 
         $field->submit(Gender::MALE);
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::MALE, $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::MALE, $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    public function testChoicesCanBeLimitedUsingChoicesOption()
+    public function testChoicesCanBeLimitedUsingChoicesOption(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -394,26 +393,26 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(2, $choices);
+        self::assertCount(2, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::MALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::get(Gender::MALE), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::FEMALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::get(Gender::FEMALE), $choice->data);
 
         $field->submit(Gender::UNKNOW);
 
-        $this->assertFalse($field->isSynchronized());
-        $this->assertNull($field->getData());
-        $this->assertSame(Gender::UNKNOW, $field->getViewData());
+        self::assertFalse($field->isSynchronized());
+        self::assertNull($field->getData());
+        self::assertSame(Gender::UNKNOW, $field->getViewData());
     }
 
-    public function testChoicesAsValueCanBeLimitedUsingChoicesOption()
+    public function testChoicesAsValueCanBeLimitedUsingChoicesOption(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -432,26 +431,26 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(2, $choices);
+        self::assertCount(2, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::MALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::FEMALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::FEMALE, $choice->data);
 
         $field->submit(Gender::UNKNOW);
 
-        $this->assertFalse($field->isSynchronized());
-        $this->assertNull($field->getData());
-        $this->assertSame(Gender::UNKNOW, $field->getViewData());
+        self::assertFalse($field->isSynchronized());
+        self::assertNull($field->getData());
+        self::assertSame(Gender::UNKNOW, $field->getViewData());
     }
 
-    public function provideFormWithChoicesAsEnumValues()
+    public function provideFormWithChoicesAsEnumValues(): iterable
     {
         yield 'EnumType with choices_as_enum_values' => [function (FormFactoryInterface $factory): FormInterface {
             return $factory->createBuilder(
@@ -466,14 +465,12 @@ class EnumTypeTest extends FormIntegrationTestCase
         }];
 
         yield 'ChoiceType with value to enum transformer' => [function (FormFactoryInterface $factory): FormInterface {
-            $options = interface_exists(ChoiceListInterface::class) ? ['choices_as_values' => true] : [];
-
             return $factory->createBuilder(
                 ChoiceType::class,
                 Gender::FEMALE(),
                 [
                     'choices' => ['maleLabel' => Gender::MALE, 'femaleLabel' => Gender::FEMALE],
-                ] + $options
+                ]
             )
                 ->addModelTransformer(new ValueToEnumTransformer(Gender::class))
                 ->getForm()
@@ -484,7 +481,7 @@ class EnumTypeTest extends FormIntegrationTestCase
     /**
      * @dataProvider provideFormWithChoicesAsEnumValues
      */
-    public function testWithChoicesAsEnumValues(callable $createForm)
+    public function testWithChoicesAsEnumValues(callable $createForm): void
     {
         /** @var FormInterface $field */
         $field = $createForm($this->factory);
@@ -492,22 +489,22 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(2, $choices);
+        self::assertCount(2, $choices);
 
         $choice = $choices[0];
-        $this->assertSame('maleLabel', $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::MALE, $choice->data);
-        $this->assertSame(Gender::FEMALE(), $field->getData());
+        self::assertSame('maleLabel', $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::MALE, $choice->data);
+        self::assertSame(Gender::FEMALE(), $field->getData());
 
         $field->submit(Gender::MALE);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::MALE(), $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::MALE(), $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    public function testWithChoicesAsEnumValuesWithoutChoicesOptions()
+    public function testWithChoicesAsEnumValuesWithoutChoicesOptions(): void
     {
         $field = $this->factory->createBuilder(
             EnumType::class,
@@ -522,33 +519,33 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(3, $choices);
+        self::assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
-        $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertSame(Gender::UNKNOW, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        self::assertSame(Gender::UNKNOW, $choice->value);
+        self::assertSame(Gender::UNKNOW, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::MALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::FEMALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::FEMALE, $choice->data);
 
-        $this->assertSame(Gender::FEMALE(), $field->getData());
+        self::assertSame(Gender::FEMALE(), $field->getData());
 
         $field->submit(Gender::MALE);
 
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::MALE(), $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::MALE(), $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    public function testAsValueAndNotChoicesAsEnumValues()
+    public function testAsValueAndNotChoicesAsEnumValues(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -564,30 +561,30 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(3, $choices);
+        self::assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
-        $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertSame(Gender::get(Gender::UNKNOW), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        self::assertSame(Gender::UNKNOW, $choice->value);
+        self::assertSame(Gender::get(Gender::UNKNOW), $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::MALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::get(Gender::MALE), $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::get(Gender::FEMALE), $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::get(Gender::FEMALE), $choice->data);
 
         $field->submit(Gender::MALE);
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::MALE, $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::MALE, $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    public function testAsInstancesAndChoicesAsEnumValues()
+    public function testAsInstancesAndChoicesAsEnumValues(): void
     {
         $field = $this->factory->create(
             EnumType::class,
@@ -603,32 +600,32 @@ class EnumTypeTest extends FormIntegrationTestCase
         /** @var ChoiceView[] $choices */
         $choices = $view->vars['choices'];
 
-        $this->assertCount(3, $choices);
+        self::assertCount(3, $choices);
 
         $choice = $choices[0];
-        $this->assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
-        $this->assertSame(Gender::UNKNOW, $choice->value);
-        $this->assertSame(Gender::UNKNOW, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::UNKNOW), $choice->label);
+        self::assertSame(Gender::UNKNOW, $choice->value);
+        self::assertSame(Gender::UNKNOW, $choice->data);
 
         $choice = $choices[1];
-        $this->assertSame(Gender::readableFor(Gender::MALE), $choice->label);
-        $this->assertSame(Gender::MALE, $choice->value);
-        $this->assertSame(Gender::MALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::MALE), $choice->label);
+        self::assertSame(Gender::MALE, $choice->value);
+        self::assertSame(Gender::MALE, $choice->data);
 
         $choice = $choices[2];
-        $this->assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
-        $this->assertSame(Gender::FEMALE, $choice->value);
-        $this->assertSame(Gender::FEMALE, $choice->data);
+        self::assertSame(Gender::readableFor(Gender::FEMALE), $choice->label);
+        self::assertSame(Gender::FEMALE, $choice->value);
+        self::assertSame(Gender::FEMALE, $choice->data);
 
         $field->submit(Gender::MALE);
-        $this->assertTrue($field->isSynchronized());
-        $this->assertSame(Gender::get(Gender::MALE), $field->getData());
-        $this->assertSame(Gender::MALE, $field->getViewData());
+        self::assertTrue($field->isSynchronized());
+        self::assertSame(Gender::get(Gender::MALE), $field->getData());
+        self::assertSame(Gender::MALE, $field->getViewData());
     }
 
-    private function assertSubForm(FormInterface $form, $data, $viewData)
+    private function assertSubForm(FormInterface $form, $data, $viewData): void
     {
-        $this->assertSame($data, $form->getData(), '->getData() of sub form #' . $form->getName());
-        $this->assertSame($viewData, $form->getViewData(), '->getViewData() of sub form #' . $form->getName());
+        self::assertSame($data, $form->getData(), '->getData() of sub form #' . $form->getName());
+        self::assertSame($viewData, $form->getViewData(), '->getViewData() of sub form #' . $form->getName());
     }
 }

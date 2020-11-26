@@ -15,7 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
 class SimpleCsvCollectionEnumType extends AbstractCsvCollectionEnumType
 {
-    const NAME = 'simple_enum_csv_collection';
+    public const NAME = 'simple_enum_csv_collection';
 
     protected function getEnumClass(): string
     {

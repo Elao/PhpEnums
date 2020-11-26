@@ -14,7 +14,7 @@ use Elao\Enum\Enum;
 
 final class SimpleEnum extends Enum
 {
-    const SIMPLE = 'simple';
+    public const SIMPLE = 'simple';
 
     /**
      * {@inheritdoc}

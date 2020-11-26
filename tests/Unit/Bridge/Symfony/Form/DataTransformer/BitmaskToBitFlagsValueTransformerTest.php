@@ -19,7 +19,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class BitmaskToBitFlagsValueTransformerTest extends TestCase
 {
-    public function testThrowsExceptionIfNotFLaggedEnumInstance()
+    public function testThrowsExceptionIfNotFLaggedEnumInstance(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Gender" is not an instance of "Elao\Enum\FlaggedEnum"');
@@ -27,28 +27,26 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         new BitmaskToBitFlagsValueTransformer(Gender::class);
     }
 
-    public function provideBitmaskToFlags()
+    public function provideBitmaskToFlags(): iterable
     {
-        return [
-            [null, null],
-            [Permissions::NONE, []],
-            [Permissions::EXECUTE, [Permissions::EXECUTE]],
-            [Permissions::EXECUTE | Permissions::READ, [Permissions::EXECUTE, Permissions::READ]],
-            [Permissions::ALL, [Permissions::EXECUTE, Permissions::WRITE, Permissions::READ]],
-        ];
+        yield [null, null];
+        yield [Permissions::NONE, []];
+        yield [Permissions::EXECUTE, [Permissions::EXECUTE]];
+        yield [Permissions::EXECUTE | Permissions::READ, [Permissions::EXECUTE, Permissions::READ]];
+        yield [Permissions::ALL, [Permissions::EXECUTE, Permissions::WRITE, Permissions::READ]];
     }
 
     /**
      * @dataProvider provideBitmaskToFlags
      */
-    public function testTransform($bitmask, $expectedFlags)
+    public function testTransform(?int $bitmask, ?array $expectedFlags): void
     {
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
-        $this->assertSame($expectedFlags, $transformer->transform($bitmask));
+        self::assertSame($expectedFlags, $transformer->transform($bitmask));
     }
 
-    public function testTransformThrowsExceptionOnNonInteger()
+    public function testTransformThrowsExceptionOnNonInteger(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected integer. Got "string"');
@@ -58,7 +56,7 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $transformer->transform('foo');
     }
 
-    public function testTransformThrowsExceptionOnInvalifBitmask()
+    public function testTransformThrowsExceptionOnInvalifBitmask(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Invalid bitmask 999 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.');
@@ -68,22 +66,22 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $transformer->transform(999);
     }
 
-    public function provideFlagsToBitmask()
+    public function provideFlagsToBitmask(): iterable
     {
-        return array_map('array_reverse', $this->provideBitmaskToFlags());
+        yield from array_map('array_reverse', iterator_to_array($this->provideBitmaskToFlags()));
     }
 
     /**
      * @dataProvider provideFlagsToBitmask
      */
-    public function testReverseTransform($flags, $expectedBitmask)
+    public function testReverseTransform(?array $flags, ?int $expectedBitmask): void
     {
         $transformer = new BitmaskToBitFlagsValueTransformer(Permissions::class);
 
-        $this->assertSame($expectedBitmask, $transformer->reverseTransform($flags));
+        self::assertSame($expectedBitmask, $transformer->reverseTransform($flags));
     }
 
-    public function testReverseTransformThrowsExceptionOnNonArray()
+    public function testReverseTransformThrowsExceptionOnNonArray(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected array. Got "string"');
@@ -93,7 +91,7 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $transformer->reverseTransform('foo');
     }
 
-    public function testReverseTransformThrowsExceptionOnNonIntegers()
+    public function testReverseTransformThrowsExceptionOnNonIntegers(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Expected array of integers. Got a "string" inside.');
@@ -103,7 +101,7 @@ class BitmaskToBitFlagsValueTransformerTest extends TestCase
         $transformer->reverseTransform(['foo']);
     }
 
-    public function testReverseTransformThrowsExceptionOnInvalifBitmask()
+    public function testReverseTransformThrowsExceptionOnInvalifBitmask(): void
     {
         $this->expectException(TransformationFailedException::class);
         $this->expectExceptionMessage('Invalid bitmask 56 for "Elao\Enum\Tests\Fixtures\Enum\Permissions" flagged enum.');

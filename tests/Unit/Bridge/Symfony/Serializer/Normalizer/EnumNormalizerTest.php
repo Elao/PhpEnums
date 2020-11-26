@@ -25,34 +25,34 @@ class EnumNormalizerTest extends TestCase
         $this->normalizer = new EnumNormalizer();
     }
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
-        $this->assertTrue($this->normalizer->supportsNormalization(Gender::get(Gender::MALE)));
+        self::assertTrue($this->normalizer->supportsNormalization(Gender::get(Gender::MALE)));
     }
 
-    public function testsNormalize()
+    public function testsNormalize(): void
     {
-        $this->assertSame(Gender::MALE, $this->normalizer->normalize(Gender::get(Gender::MALE)));
+        self::assertSame(Gender::MALE, $this->normalizer->normalize(Gender::get(Gender::MALE)));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
-        $this->assertTrue($this->normalizer->supportsDenormalization(Gender::MALE, Gender::class));
+        self::assertTrue($this->normalizer->supportsDenormalization(Gender::MALE, Gender::class));
     }
 
-    public function testsDenormalize()
+    public function testsDenormalize(): void
     {
-        $this->assertSame(
+        self::assertSame(
             Gender::get(Gender::MALE),
             $this->normalizer->denormalize(Gender::MALE, Gender::class)
         );
     }
 
-    public function testsDenormalizeWithWrongValueThrowsException()
+    public function testsDenormalizeWithWrongValueThrowsException(): void
     {
         $this->expectException(UnexpectedValueException::class);
 
-        $this->assertSame(
+        self::assertSame(
             Gender::get(Gender::MALE),
             $this->normalizer->denormalize('invalid_data', Gender::class)
         );

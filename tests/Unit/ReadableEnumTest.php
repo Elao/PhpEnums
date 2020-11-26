@@ -16,38 +16,36 @@ use Elao\Enum\Tests\TestCase;
 
 class ReadableEnumTest extends TestCase
 {
-    public function enumValuesProvider()
+    public function enumValuesProvider(): iterable
     {
-        return [
-            [Gender::MALE, 'Male'],
-            [Gender::FEMALE, 'Female'],
-        ];
+        yield [Gender::MALE, 'Male'];
+        yield [Gender::FEMALE, 'Female'];
     }
 
     /**
      * @dataProvider enumValuesProvider
      */
-    public function testCreateEnumValue($value, $expectedReadable)
+    public function testCreateEnumValue($value, $expectedReadable): void
     {
         $enumValue = Gender::get($value);
 
-        $this->assertSame($value, $enumValue->getValue());
-        $this->assertSame($expectedReadable, $enumValue->getReadable());
+        self::assertSame($value, $enumValue->getValue());
+        self::assertSame($expectedReadable, $enumValue->getReadable());
     }
 
-    public function testEnumToString()
+    public function testEnumToString(): void
     {
         $enumValue = Gender::get(Gender::MALE);
 
-        $this->assertSame('Male', (string) $enumValue);
+        self::assertSame('Male', (string) $enumValue);
     }
 
-    public function testValueCanBeReadabled()
+    public function testValueCanBeReadabled(): void
     {
-        $this->assertSame('Female', Gender::readableFor(Gender::FEMALE));
+        self::assertSame('Female', Gender::readableFor(Gender::FEMALE));
     }
 
-    public function testExceptionIsRaisedWhenValueCannotBeReadable()
+    public function testExceptionIsRaisedWhenValueCannotBeReadable(): void
     {
         $this->expectException(InvalidValueException::class);
 

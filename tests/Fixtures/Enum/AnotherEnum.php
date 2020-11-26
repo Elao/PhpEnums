@@ -17,7 +17,7 @@ final class AnotherEnum extends Enum
 {
     use AutoDiscoveredValuesTrait;
 
-    const SOMETHING = 'something';
-    const SOMETHING_ELSE = 'something_else';
-    const ANOTHER_THING = 'another_thing';
+    public const SOMETHING = 'something';
+    public const SOMETHING_ELSE = 'something_else';
+    public const ANOTHER_THING = 'another_thing';
 }

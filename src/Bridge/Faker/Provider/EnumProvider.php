@@ -51,7 +51,7 @@ class EnumProvider
      */
     public function enum(string $enumValueShortcut): EnumInterface
     {
-        list($enumClassOrAlias, $constants) = explode('::', $enumValueShortcut);
+        [$enumClassOrAlias, $constants] = explode('::', $enumValueShortcut);
 
         /** @var EnumInterface|string $class */
         $class = $this->enumMapping[$enumClassOrAlias] ?? $enumClassOrAlias;

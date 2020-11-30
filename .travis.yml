@@ -33,11 +33,11 @@ matrix:
         env:
           - CHECK_CODE_STYLE="yes"
 
-      - php: nightly # PHP 8
+      - php: 8.0snapshot
         env: SYMFONY_VERSION="^5.2"
 
       # bleeding edge (unreleased dev versions where failures are allowed):
-      - php: nightly # PHP 8
+      - php: nightly # PHP 8.1
         env: SYMFONY_VERSION="^5.3"
 
     allow_failures:
@@ -58,7 +58,7 @@ install:
     # Set composer's platform to php 7.4 if we're on php 8 and require "phpspec/prophecy"
     # (as native support for prophecy was removed from PHPUnit 9)
     echo $TRAVIS_PHP_VERSION
-    if [[ $TRAVIS_PHP_VERSION = 'nightly' ]]; then
+    if php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);"; then
       echo "Set composer's platform to php 7.4"
       composer config platform.php 7.4.99
       composer require "phpspec/prophecy-phpunit:^2.0" --no-update --no-interaction --dev

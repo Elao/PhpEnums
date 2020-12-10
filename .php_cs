@@ -17,14 +17,15 @@ $finder = PhpCsFixer\Finder::create()
     ->notPath('tests/Fixtures/Bridge/Symfony/Validator/Constraint/ObjectWithEnumChoiceAsPhpAttribute.php')
 ;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setUsingCache(true)
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
         'php_unit_namespaced' => true,
-        'psr0' => false,
+        'php_unit_method_casing' => false,
+        'psr_autoloading' => true,
         'concat_space' => ['spacing' => 'one'],
         'phpdoc_summary' => false,
         'phpdoc_annotation_without_dot' => false,

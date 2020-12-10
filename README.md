@@ -58,6 +58,7 @@ Table of Contents
     * [Api-Platform](#api-platform)
       * [OpenApi / Swagger](#openapi--swagger)
     * [JavaScript](#javascript)
+    * [Twig](#twig)
   * [API](#api)
     * [Simple enum](#simple-enum)
     * [Readable enum](#readable-enum)
@@ -962,6 +963,18 @@ Then, use the CLI command to generate the JS files:
 ```bash
 bin/console elao:enum:dump-js [--lib-path] [--base-dir] [<enum:path>...]
 ```
+
+## Twig
+
+The [EnumExtension](src/Bridge/Twig/Extension/EnumExtension.php) exposes 
+static methods of the enum classes through the following Twig functions:
+
+- `enum_get($class, $value)`
+- `enum_values($class)`
+- `enum_accepts($class, $value)`
+- `enum_instances($class)`
+- `enum_readables($class)`
+- `enum_readable_for($class, $value)`
 
 # API
 

@@ -33,5 +33,9 @@
         <service id="Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType" decorates="api_platform.json_schema.type_factory">
             <argument type="service" id="Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType.inner" />
         </service>
+
+        <service id="Elao\Enum\Bridge\Twig\Extension\EnumExtension">
+            <tag name="twig.extension" />
+        </service>
     </services>
 </container>

@@ -11,6 +11,8 @@
 namespace Elao\Enum\Bridge\Twig\Extension;
 
 use Elao\Enum\EnumInterface;
+use Elao\Enum\Exception\InvalidArgumentException;
+use Elao\Enum\ReadableEnumInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -23,41 +25,62 @@ class EnumExtension extends AbstractExtension
             new TwigFunction('enum_values', [$this, 'values']),
             new TwigFunction('enum_accepts', [$this, 'accepts']),
             new TwigFunction('enum_instances', [$this, 'instances']),
+            new TwigFunction('enum_readables', [$this, 'readables']),
+            new TwigFunction('enum_readable_for', [$this, 'readableFor']),
         ];
     }
 
     public function get(string $className, $value): EnumInterface
     {
-        $this->esureEnum($className);
+        if (!is_a($className, EnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not an "%s".', $className, EnumInterface::class));
+        }
 
         return \call_user_func([$className, 'get'], $value);
     }
 
     public function values(string $className): array
     {
-        $this->esureEnum($className);
+        if (!is_a($className, EnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not an "%s".', $className, EnumInterface::class));
+        }
 
         return \call_user_func([$className, 'values']);
     }
 
     public function accepts(string $className, $value): bool
     {
-        $this->esureEnum($className);
+        if (!is_a($className, EnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not an "%s".', $className, EnumInterface::class));
+        }
 
         return \call_user_func([$className, 'accepts'], $value);
     }
 
     public function instances(string $className): array
     {
-        $this->esureEnum($className);
+        if (!is_a($className, EnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not an "%s".', $className, EnumInterface::class));
+        }
 
         return \call_user_func([$className, 'instances']);
     }
 
-    private function esureEnum(string $className)
+    public function readables(string $className): array
     {
-        if (!is_subclass_of($className, EnumInterface::class)) {
-            throw new \Exception("$className is not an Enum.");
+        if (!is_a($className, ReadableEnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not a "%s".', $className, ReadableEnumInterface::class));
         }
+
+        return \call_user_func([$className, 'readables']);
+    }
+
+    public function readableFor(string $className, $value): string
+    {
+        if (!is_a($className, ReadableEnumInterface::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not a "%s".', $className, ReadableEnumInterface::class));
+        }
+
+        return \call_user_func([$className, 'readableFor'], $value);
     }
 }

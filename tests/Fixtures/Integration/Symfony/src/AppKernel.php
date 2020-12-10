@@ -9,6 +9,7 @@
  */
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -25,6 +26,7 @@ class AppKernel extends Kernel
             new FrameworkBundle(),
             new TwigBundle(),
             new DoctrineBundle(),
+            new ElaoEnumBundle(),
         ];
     }
 

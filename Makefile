@@ -26,6 +26,12 @@ test:
 # Lint #
 ########
 
-fix-phpcsfixer: export PHP_CS_FIXER_FUTURE_MODE = 1
-fix-phpcsfixer:
+lint: lint-php-cs-fixer
+
+fix-php-cs-fixer: export PHP_CS_FIXER_FUTURE_MODE = 1
+fix-php-cs-fixer:
 	vendor/bin/php-cs-fixer fix --config=.php_cs --no-interaction
+
+lint-php-cs-fixer: export PHP_CS_FIXER_FUTURE_MODE = 1
+lint-php-cs-fixer:
+	vendor/bin/php-cs-fixer fix --config=.php_cs --no-interaction --dry-run --diff

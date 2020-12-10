@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
+use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use ApiPlatform\Core\JsonSchema\TypeFactory;
 use Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
@@ -17,7 +18,9 @@ use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Bridge\Symfony\Translation\Extractor\EnumExtractor;
+use Elao\Enum\Bridge\Twig\Extension\EnumExtension;
 use Elao\Enum\FlaggedEnum;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -77,7 +80,9 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $this->registerTranslationExtractorConfiguration($config['translation_extractor'], $container);
         }
 
-        if (!class_exists(TypeFactory::class)) {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (!class_exists(TypeFactory::class) || !\in_array(ApiPlatformBundle::class, $bundles, true)) {
             $container->removeDefinition(ElaoEnumType::class);
         }
 
@@ -88,6 +93,10 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
                     return [$v['class'], $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)), $name];
                 }, array_keys($types), $types)
             );
+        }
+
+        if (!\in_array(TwigBundle::class, $bundles, true)) {
+            $container->removeDefinition(EnumExtension::class);
         }
 
         $jsEnums = $config['js'];

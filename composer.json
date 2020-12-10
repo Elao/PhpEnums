@@ -1,7 +1,11 @@
 {
     "name": "elao/enum",
     "description": "Enumerations for PHP and frameworks integrations",
-    "keywords": ["enum", "symfony", "doctrine"],
+    "keywords": [
+        "enum",
+        "symfony",
+        "doctrine"
+    ],
     "type": "library",
     "homepage": "https://github.com/Elao/PhpEnums",
     "license": "MIT",
@@ -23,7 +27,9 @@
         "psr-4": {
             "Elao\\Enum\\": "src/"
         },
-        "files": ["src/Bridge/Symfony/VarDumper/Resources/register_caster.php"]
+        "files": [
+            "src/Bridge/Symfony/VarDumper/Resources/register_caster.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -55,7 +61,6 @@
         "symfony/twig-bundle": "^4.4|^5.1",
         "symfony/validator": "^4.4|^5.1",
         "symfony/yaml": "^4.4|^5.1",
-        "symfony/twig-bridge": "^4.4|^5.1",
         "twig/twig": "^2.12|^3.0"
     },
     "extra": {

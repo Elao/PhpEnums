@@ -54,7 +54,6 @@
         "symfony/console": "^4.4|^5.1",
         "symfony/css-selector": "^4.4|^5.1",
         "symfony/form": "^4.4|^5.1",
-        "symfony/framework-bundle": "^4.4|^5.1",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/serializer": "^4.4|^5.1",
         "symfony/translation": "^4.4|^5.1",

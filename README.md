@@ -951,7 +951,7 @@ elao_enum:
     elao_enum:
         js:
             base_dir: '%kernel.project_dir%/assets/js/modules'
-            lib_path: '%kernel.project_dir%/assets/js/lib'
+            lib_path: '%kernel.project_dir%/assets/js/lib/enum.js'
             paths:
                 App\Common\Enum\SimpleEnum: 'common/SimpleEnum.js'
                 App\Common\Enum\Gender: 'common/Gender.js'

@@ -43,7 +43,51 @@ class ElaoEnumTypeTest extends TestCase
                 ],
                 'example' => 'unknown',
             ],
+            new Type(Type::BUILTIN_TYPE_OBJECT, false, Gender::class),
+        ];
+        yield 'can be nullable' => [
+            [
+                'type' => 'string',
+                'enum' => [
+                    0 => 'unknown',
+                    1 => 'male',
+                    2 => 'female',
+                ],
+                'example' => 'unknown',
+                'nullable' => true,
+            ],
             new Type(Type::BUILTIN_TYPE_OBJECT, true, Gender::class),
+        ];
+        yield 'can be an array of enum' =>[
+            [
+                'type' => 'array',
+                'items' => [
+                    'type' => 'string',
+                    'enum' => [
+                        0 => 'unknown',
+                        1 => 'male',
+                        2 => 'female',
+                    ],
+                    'example' => 'unknown',
+                ],
+            ],
+            new Type(Type::BUILTIN_TYPE_OBJECT, false, Gender::class, true),
+        ];
+        yield 'can be a nullable array of enum' =>[
+            [
+                'type' => 'array',
+                'items' => [
+                    'type' => 'string',
+                    'enum' => [
+                        0 => 'unknown',
+                        1 => 'male',
+                        2 => 'female',
+                    ],
+                    'example' => 'unknown',
+                ],
+                'nullable' => true
+            ],
+            new Type(Type::BUILTIN_TYPE_OBJECT, true, Gender::class, true),
         ];
         yield [['type' => 'integer'], new Type(Type::BUILTIN_TYPE_INT)];
     }

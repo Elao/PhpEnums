@@ -34,12 +34,25 @@ final class ElaoEnumType implements TypeFactoryInterface
             return $this->decorated->getType($type, $format, $readableLink, $serializerContext, $schema);
         }
 
+        $schema = [];
         $values = $enumClass::values();
-
-        return [
+        $enumSchema = [
             'type' => 'string',
             'enum' => $values,
             'example' => $values[0],
         ];
+
+        if ($type->isCollection()) {
+            $schema['type'] = 'array';
+            $schema['items'] = $enumSchema;
+        } else {
+            $schema = $enumSchema;
+        }
+
+        if ($type->isNullable()) {
+            $schema['nullable'] = true;
+        }
+
+        return $schema;
     }
 }

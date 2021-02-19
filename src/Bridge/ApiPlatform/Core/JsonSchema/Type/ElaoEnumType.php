@@ -42,7 +42,7 @@ final class ElaoEnumType implements TypeFactoryInterface
             'example' => $values[0],
         ];
 
-        if ($type->isCollection()){
+        if ($type->isCollection()) {
             $schema['type'] = 'array';
             $schema['items'] = $enumSchema;
         } else {

@@ -58,7 +58,7 @@ class ElaoEnumTypeTest extends TestCase
             ],
             new Type(Type::BUILTIN_TYPE_OBJECT, true, Gender::class),
         ];
-        yield 'can be an array of enum' =>[
+        yield 'can be an array of enum' => [
             [
                 'type' => 'array',
                 'items' => [
@@ -73,7 +73,7 @@ class ElaoEnumTypeTest extends TestCase
             ],
             new Type(Type::BUILTIN_TYPE_OBJECT, false, Gender::class, true),
         ];
-        yield 'can be a nullable array of enum' =>[
+        yield 'can be a nullable array of enum' => [
             [
                 'type' => 'array',
                 'items' => [
@@ -85,7 +85,7 @@ class ElaoEnumTypeTest extends TestCase
                     ],
                     'example' => 'unknown',
                 ],
-                'nullable' => true
+                'nullable' => true,
             ],
             new Type(Type::BUILTIN_TYPE_OBJECT, true, Gender::class, true),
         ];

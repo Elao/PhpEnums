@@ -104,6 +104,8 @@ abstract class Enum implements EnumInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return static[]
      */
     public static function instances(): array
     {

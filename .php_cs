@@ -34,7 +34,7 @@ return (new PhpCsFixer\Config())
         'ordered_imports' => true,
         'simplified_null_return' => false,
         'header_comment' => ['header' => $header],
-        'yoda_style' => null,
+        'yoda_style' => [],
         'no_unneeded_final_method' => false, // final private __construct is a valid use-case
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'single_line_throw' => false,

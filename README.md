@@ -57,6 +57,8 @@ Table of Contents
       * [Usage with Alice](#usage-with-alice)
     * [Api-Platform](#api-platform)
       * [OpenApi / Swagger](#openapi--swagger)
+    * [EasyAdmin](#easyadmin)
+      * [EasyAdmin3](#easyadmin3) 
     * [JavaScript](#javascript)
     * [Twig](#twig)
   * [API](#api)
@@ -920,6 +922,21 @@ MyEntity:
 ### OpenApi / Swagger
 
 The library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType` to generate a OpenApi (formally Swagger) documentation based on your enums. This decorator is automatically wired for you when using the Symfony bundle.
+
+## EasyAdmin
+
+### EasyAdmin3
+
+Instead of using the ChoiceType, use a TextType and configure it to use the EnumType
+
+```php
+public function configureFields(string $pageName): iterable
+{
+    return [
+        TextField::new('answerType')->setFormType(EnumType::class)->setFormTypeOptions(['enum_class' => AnswerTypeEnum::class])
+    ];
+}
+```
 
 ## JavaScript
 

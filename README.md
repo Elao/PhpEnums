@@ -58,6 +58,7 @@ Table of Contents
     * [Api-Platform](#api-platform)
       * [OpenApi / Swagger](#openapi--swagger)
     * [EasyAdmin](#easyadmin)
+      * [EasyAdmin2](#easyadmin2)
       * [EasyAdmin3](#easyadmin3) 
     * [JavaScript](#javascript)
     * [Twig](#twig)
@@ -925,15 +926,34 @@ The library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoE
 
 ## EasyAdmin
 
+### EasyAdmin2
+
+In the form/fields section, set the type to the FQCN of the EnumType and configure it appropriately with type_options.
+
+```yaml
+form: 
+  fields:
+    - { property: language, type: 'Elao\Enum\Bridge\Symfony\Form\Type\EnumType', type_options: { enum_class: 'App\Entity\Enum\LanguageEnum', required: true, }, label: 'Language', help: 'Select language from the drop down above'}
+```
+
+To ensure the listing is working, set the type to text.
+
+```yml
+list:
+  fields:
+    - { property: language, label: 'Language', type: 'text'}
+```
+
 ### EasyAdmin3
 
-Instead of using the ChoiceType, use a TextType and configure it to use the EnumType
+Instead of using the ChoiceField, use a TextField and configure it to use the EnumType
 
 ```php
 public function configureFields(string $pageName): iterable
 {
-    return [
-        TextField::new('answerType')->setFormType(EnumType::class)->setFormTypeOptions(['enum_class' => AnswerTypeEnum::class])
+    return [TextField::new('answerType')->
+        setFormType(EnumType::class)->
+        setFormTypeOptions(['enum_class' => AnswerTypeEnum::class])
     ];
 }
 ```

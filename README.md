@@ -958,7 +958,6 @@ A solution for this is to create a custom template `templates/easyadmin/enum.htm
 
 and use it like this:
 
-
 ```yml
 list:
   fields:

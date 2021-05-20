@@ -928,7 +928,7 @@ The library provides an `Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoE
 
 ### EasyAdmin2
 
-In the form/fields section, set the type to the FQCN of the EnumType and configure it appropriately with type_options.
+In the form/fields section, set the type to the FQCN of the EnumType and configure it appropriately with type_options. 
 
 ```yaml
 form: 
@@ -936,12 +936,33 @@ form:
     - { property: language, type: 'Elao\Enum\Bridge\Symfony\Form\Type\EnumType', type_options: { enum_class: 'App\Entity\Enum\LanguageEnum', required: true, }, label: 'Language', help: 'Select language from the drop down above'}
 ```
 
-To ensure the listing is working, set the type to text.
+To ensure the listing is working, set the type to text. For this to work, the enum must be a readable enum.
+
+```yaml
+list:
+  fields:
+    - { property: language, label: 'Language', type: 'text'}
+```
+
+However, it won't translate in case you use translation keys as readable values, nor null values.
+
+A solution for this is to create a custom template `templates/easyadmin/enum.html.twig`, like:
+
+```twig
+{% if value is empty %}
+    {{ include(entity_config.templates.label_null) }}
+{% else %}
+    {{ value|trans }}
+{% endif %}
+```
+
+and use it like this:
+
 
 ```yml
 list:
   fields:
-    - { property: language, label: 'Language', type: 'text'}
+    - { property: language, label: 'Language', template: easyadmin/enum.html.twig }
 ```
 
 ### EasyAdmin3

@@ -25,8 +25,13 @@ class TypesDumper extends AbstractTypesDumper
         self::TYPE_COLLECTION,
     ];
 
-    protected function getTypeCode(string $classname, string $enumClass, string $type, string $name): string
-    {
+    protected function getTypeCode(
+        string $classname,
+        string $enumClass,
+        string $type,
+        string $name,
+        $defaultOnNull = null
+    ): string {
         switch ($type) {
             case self::TYPE_SINGLE:
                 $baseClass = AbstractEnumType::class;

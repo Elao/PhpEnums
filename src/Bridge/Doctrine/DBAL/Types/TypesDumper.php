@@ -31,17 +31,38 @@ class TypesDumper extends AbstractTypesDumper
         self::TYPE_CSV_COLLECTION,
     ];
 
-    protected function getTypeCode(string $classname, string $enumClass, string $type, string $name): string
-    {
+    protected function getTypeCode(
+        string $classname,
+        string $enumClass,
+        string $type,
+        string $name,
+        $defaultOnNull = null
+    ): string {
+        $code = <<<PHP
+            public const NAME = '$name';
+
+            protected function getEnumClass(): string
+            {
+                return \\{$enumClass}::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+PHP;
         switch ($type) {
             case self::TYPE_INT:
                 $baseClass = AbstractIntegerEnumType::class;
+                $this->appendDefaultOnNullMethods($defaultOnNull, $enumClass, $code);
                 break;
             case self::TYPE_STRING:
                 $baseClass = AbstractEnumType::class;
+                $this->appendDefaultOnNullMethods($defaultOnNull, $enumClass, $code);
                 break;
             case self::TYPE_ENUM:
                 $baseClass = AbstractEnumSQLDeclarationType::class;
+                $this->appendDefaultOnNullMethods($defaultOnNull, $enumClass, $code);
                 break;
             case self::TYPE_JSON_COLLECTION:
                 $baseClass = AbstractJsonCollectionEnumType::class;
@@ -58,17 +79,7 @@ class TypesDumper extends AbstractTypesDumper
     if (!\class_exists($classname::class)) {
         class $classname extends \\{$baseClass}
         {
-            public const NAME = '$name';
-
-            protected function getEnumClass(): string
-            {
-                return \\{$enumClass}::class;
-            }
-
-            public function getName(): string
-            {
-                return static::NAME;
-            }
+$code
         }
     }
 
@@ -89,5 +100,24 @@ PHP;
     protected static function getMarker(): string
     {
         return 'ELAO_ENUM_DT_DBAL';
+    }
+
+    private function appendDefaultOnNullMethods($defaultOnNull, string $enumClass, string &$code): void
+    {
+        if ($defaultOnNull !== null) {
+            $defaultOnNullCode = var_export($defaultOnNull, true);
+            $code .= <<<PHP
+
+            protected function onNullFromDatabase()
+            {
+                return \\{$enumClass}::get({$defaultOnNullCode});
+            }
+
+            protected function onNullFromPhp()
+            {
+                return {$defaultOnNullCode};
+            }
+PHP;
+        }
     }
 }

@@ -38,9 +38,12 @@ class TypesDumperTest extends TestCase
     {
         $this->dumper->dumpToFile($this->dumpPath, [
             ['Foo\Bar\Baz', 'string', 'baz'],
+            ['Foo\Bar\BazWithDefault', 'string', 'baz_with_default', 'foo'],
             ['Foo\Bar\Xyz', 'enum', 'xyz'],
+            ['Foo\Bar\XyzWithDefault', 'enum', 'xyz', 'foo'],
             ['Foo\Bar\Qux', 'int', 'qux'],
             ['Foo\Baz\Foo', 'int', 'foo'],
+            ['Foo\Baz\FooWithDefault', 'int', 'foo_with_default', 3],
             ['Foo\Bar\Foo', 'json_collection', 'foo_json'],
             ['Foo\Bar\Foo', 'csv_collection', 'foo_csv'],
         ]);

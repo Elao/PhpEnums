@@ -77,7 +77,12 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             $container->setParameter(
                 '.elao_enum.doctrine_types',
                 array_map(function (string $name, array $v) use ($config): array {
-                    return [$v['class'], $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)), $name];
+                    return [
+                        $v['class'],
+                        $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)),
+                        $name,
+                        $v['default'],
+                    ];
                 }, array_keys($types), $types)
             );
         }
@@ -157,7 +162,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'string';
 
         if (null === $type) {
-            $type = is_a($class, FlaggedEnum::class, true) ? $type = 'int' : $defaultStringType;
+            $type = is_a($class, FlaggedEnum::class, true) ? 'int' : $defaultStringType;
         }
 
         return $type;

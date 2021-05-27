@@ -33,9 +33,9 @@ class YamlElaoEnumExtensionTest extends ElaoEnumExtensionTest
         $container = $this->createContainerFromFile('doctrine_types_legacy');
 
         self::assertEquals([
-            [Gender::class, 'string', 'gender'],
-            [AnotherEnum::class, 'enum', 'another'],
-            [Permissions::class, 'int', 'permissions'],
+            [Gender::class, 'string', 'gender', null],
+            [AnotherEnum::class, 'enum', 'another', null],
+            [Permissions::class, 'int', 'permissions', null],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 }

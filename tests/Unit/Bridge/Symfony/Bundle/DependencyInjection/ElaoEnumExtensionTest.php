@@ -59,11 +59,11 @@ abstract class ElaoEnumExtensionTest extends TestCase
         $container = $this->createContainerFromFile('doctrine_types');
 
         self::assertEquals([
-            [Gender::class, 'string', 'gender'],
-            [AnotherEnum::class, 'enum', 'another'],
-            [Permissions::class, 'int', 'permissions'],
-            [SimpleEnum::class, 'json_collection', 'simple_collection_json'],
-            [SimpleEnum::class, 'csv_collection', 'simple_collection_csv'],
+            [Gender::class, 'string', 'gender', null],
+            [AnotherEnum::class, 'enum', 'another', null],
+            [Permissions::class, 'int', 'permissions', null],
+            [SimpleEnum::class, 'json_collection', 'simple_collection_json', null],
+            [SimpleEnum::class, 'csv_collection', 'simple_collection_csv', null],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
@@ -72,8 +72,8 @@ abstract class ElaoEnumExtensionTest extends TestCase
         $container = $this->createContainerFromFile('doctrine_types_default_type');
 
         self::assertEquals([
-            [Gender::class, 'string', 'gender'],
-            [Permissions::class, 'int', 'permissions'],
+            [Gender::class, 'string', 'gender', null],
+            [Permissions::class, 'int', 'permissions', null],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
@@ -82,9 +82,9 @@ abstract class ElaoEnumExtensionTest extends TestCase
         $container = $this->createContainerFromFile('doctrine_types_enum_sql_declaration');
 
         self::assertEquals([
-            [Gender::class, 'string', 'gender'],
-            [AnotherEnum::class, 'enum', 'another'],
-            [Permissions::class, 'int', 'permissions'],
+            [Gender::class, 'string', 'gender', null],
+            [AnotherEnum::class, 'enum', 'another', null],
+            [Permissions::class, 'int', 'permissions', null],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 

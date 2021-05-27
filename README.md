@@ -538,6 +538,17 @@ elao_enum:
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
 
+A default value in case of `null` from the database or from PHP can be configured with the `default` option:
+
+````yaml
+elao_enum:
+    doctrine:
+        types:
+            gender:
+                class: App\Enum\GenderEnum
+                default: !php/const App\Enum\GenderEnum::UNKNOWN
+```
+
 You can also default to SQL `ENUM` column definitions by default for all types by using:
 
 ```yaml

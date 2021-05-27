@@ -10,6 +10,9 @@
 
 namespace Elao\Enum\Bridge\Doctrine\Common;
 
+/**
+ * @internal
+ */
 abstract class AbstractTypesDumper
 {
     public function dumpToFile(string $file, array $types)
@@ -24,8 +27,12 @@ abstract class AbstractTypesDumper
 
     protected function dump(array $types): string
     {
+        array_walk($types, static function (&$type) {
+            $type = array_pad($type, 4, null);
+        });
+
         $namespaces = [];
-        foreach ($types as [$enumClass, $type, $name]) {
+        foreach ($types as [$enumClass, $type, $name, $default]) {
             $fqcn = self::getTypeClassname($enumClass, $type);
             $classname = basename(str_replace('\\', '/', $fqcn));
             $ns = substr($fqcn, 0, -\strlen($classname) - 1);
@@ -34,7 +41,7 @@ abstract class AbstractTypesDumper
                 $namespaces[$ns] = '';
             }
 
-            $namespaces[$ns] .= $this->getTypeCode($classname, $enumClass, $type, $name);
+            $namespaces[$ns] .= $this->getTypeCode($classname, $enumClass, $type, $name, $default);
         }
 
         $code = "<?php\n";
@@ -51,7 +58,13 @@ PHP;
         return $code;
     }
 
-    abstract protected function getTypeCode(string $classname, string $enumClass, string $type, string $name): string;
+    abstract protected function getTypeCode(
+        string $classname,
+        string $enumClass,
+        string $type,
+        string $name,
+        $defaultOnNull = null
+    ): string;
 
     abstract protected static function getSuffixes(): array;
 

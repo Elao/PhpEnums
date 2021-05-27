@@ -49,8 +49,8 @@ class DoctrineDBALTypesPassTest extends TestCase
         $container = new ContainerBuilder();
         $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);
         $container->getParameterBag()->set('.elao_enum.doctrine_types', [
-            ['Foo\Bar\Baz', 'string', 'baz'],
-            ['Foo\Bar\Qux', 'int', 'qux'],
+            ['Foo\Bar\Baz', 'string', 'baz', null],
+            ['Foo\Bar\Qux', 'int', 'qux', null],
         ]);
 
         $this->pass->process($container);

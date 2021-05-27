@@ -19,7 +19,7 @@ interface EnumInterface
      *
      * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *
-     * @return EnumInterface The enum instance for given value
+     * @return static The enum instance for given value
      */
     public static function get($value): self;
 
@@ -40,7 +40,7 @@ interface EnumInterface
     /**
      * Returns the list of all possible enum instances.
      *
-     * @return EnumInterface[]
+     * @return static[]
      */
     public static function instances(): array;
 

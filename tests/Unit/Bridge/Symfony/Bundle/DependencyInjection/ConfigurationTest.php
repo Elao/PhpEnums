@@ -67,11 +67,11 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
-                    'gender' => ['class' => Gender::class, 'type' => 'string'],
-                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum'],
-                    'permissions' => ['class' => Permissions::class, 'type' => 'int'],
-                    'simple_collection_json' => ['class' => SimpleEnum::class, 'type' => 'json_collection'],
-                    'simple_collection_csv' => ['class' => SimpleEnum::class, 'type' => 'csv_collection'],
+                    'gender' => ['class' => Gender::class, 'type' => 'string', 'default' => null],
+                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum', 'default' => null],
+                    'permissions' => ['class' => Permissions::class, 'type' => 'int', 'default' => null],
+                    'simple_collection_json' => ['class' => SimpleEnum::class, 'type' => 'json_collection', 'default' => null],
+                    'simple_collection_csv' => ['class' => SimpleEnum::class, 'type' => 'csv_collection', 'default' => null],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -100,9 +100,9 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
-                    'gender' => ['class' => Gender::class, 'type' => 'string'],
-                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum'],
-                    'permissions' => ['class' => Permissions::class, 'type' => 'int'],
+                    'gender' => ['class' => Gender::class, 'type' => 'string', 'default' => null],
+                    'another' => ['class' => AnotherEnum::class, 'type' => 'enum', 'default' => null],
+                    'permissions' => ['class' => Permissions::class, 'type' => 'int', 'default' => null],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);

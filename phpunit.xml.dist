@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         bootstrap="tests/bootstrap.php"
->
-    <php>
-        <server name="KERNEL_CLASS" value="AppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1" />
-    </php>
-
-    <testsuites>
-        <testsuite name="Elao Enumerations Test Suite">
-            <directory>./tests/</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-            <exclude>
-                <directory>./tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    colors="true"
+    bootstrap="tests/bootstrap.php"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>./src/</directory>
+    </include>
+  </coverage>
+  <php>
+    <server name="KERNEL_CLASS" value="AppKernel"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1"/>
+    <env name="SYMFONY_PHPUNIT_REQUIRE" value="phpspec/prophecy-phpunit"/>
+    <env name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
+  </php>
+  <testsuites>
+    <testsuite name="Elao Enumerations Test Suite">
+      <directory>./tests/</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

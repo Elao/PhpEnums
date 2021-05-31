@@ -13,9 +13,6 @@ namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\DBAL\Types;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Tests\TestCase;
 
-/**
- * @requires OS Linux|Darwin
- */
 class TypesDumperTest extends TestCase
 {
     public const FIXTURES_DIR = FIXTURES_DIR . '/Bridge/Doctrine/DBAL/Types/TypesDumperTest';

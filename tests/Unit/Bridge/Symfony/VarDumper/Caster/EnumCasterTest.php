@@ -23,9 +23,6 @@ use Symfony\Component\VarDumper\Dumper\AbstractDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
-/**
- * @requires OS Linux|Darwin
- */
 class EnumCasterTest extends TestCase
 {
     use VarDumperTestTrait;

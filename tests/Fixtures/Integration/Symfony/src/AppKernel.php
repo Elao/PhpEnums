@@ -33,6 +33,12 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getProjectDir() . '/config/config.yml');
+
+        if (self::VERSION_ID < 50300) {
+            $loader->load($this->getProjectDir() . '/config/config_prev_5.3.0.yml');
+        } else {
+            $loader->load($this->getProjectDir() . '/config/config_5.3.0.yml');
+        }
     }
 
     public function getProjectDir()

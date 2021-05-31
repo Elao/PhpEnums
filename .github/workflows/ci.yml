@@ -1,0 +1,127 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request: ~
+
+jobs:
+
+  lint:
+    name: Lint
+    runs-on: 'ubuntu-latest'
+    timeout-minutes: 5
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: 'Get composer cache directory'
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: 'Cache dependencies'
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: 'Install dependencies'
+        run: composer update --prefer-dist
+
+      - name: 'Check style'
+        run: vendor/bin/php-cs-fixer fix --dry-run --no-interaction --diff
+
+  test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    continue-on-error: ${{ matrix.allow-failure == 1 }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Previous Symfony versions & lowest deps
+          - name: 'Test lowest deps [Linux, PHP 7.3]'
+            os: 'ubuntu-latest'
+            php: '7.3'
+            composer-flags: '--prefer-lowest'
+            symfony-version: '^4.4'
+
+          # Previous PHP versions
+          - name: 'Test latest Symfony [Linux, PHP 7.3]'
+            os: 'ubuntu-latest'
+            php: '7.3'
+            composer-flags: '--prefer-lowest'
+
+          - name: 'Test latest Symfony [Linux, PHP 7.4]'
+            os: 'ubuntu-latest'
+            php: '7.4'
+
+          # Most recent versions
+          - name: 'Test latest Symfony [Linux, PHP 8.0] (with code coverage)'
+            os: 'ubuntu-latest'
+            php: '8.0'
+            code-coverage: true
+
+          - name: 'Test latest Symfony [Window, PHP 8.0]'
+            os: 'windows-latest'
+            php: '8.0'
+
+          # bleeding edge (unreleased dev versions where failures are allowed)
+          - name: 'Test Next Symfony [Linux, PHP 8.1]'
+            os: 'ubuntu-latest'
+            php: '8.1'
+            symfony-version: '^5.3'
+            composer-flags: '--ignore-platform-req php'
+            allow-unstable: true
+            allow-failure: true
+
+    steps:
+      - name: 'Set git to use LF'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+          extensions: pdo_sqlite
+
+      - name: 'Get composer cache directory'
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: 'Cache dependencies'
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: 'Allow unstable packages'
+        run: composer config prefer-stable false
+        if: ${{ matrix.allow-unstable }}
+
+      - name: 'Lock Symfony version'
+        run: composer require "symfony/symfony:${{ matrix.symfony-version }}" --no-update
+        if: ${{ matrix.symfony-version != '' }}
+
+      - name: 'Install dependencies'
+        run: composer update --prefer-dist ${{ matrix.composer-flags }}
+
+      - name: 'Run PHPUnit tests'
+        run: vendor/bin/simple-phpunit ${{ matrix.code-coverage && '--coverage-text --coverage-clover build/logs/clover.xml' }}

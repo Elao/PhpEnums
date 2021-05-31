@@ -1,0 +1,71 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  test:
+    name: PHP ${{ matrix.php }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.php == '8.1' }}
+
+    strategy:
+      matrix:
+        include:
+          - os: 'ubuntu-latest'
+            php: '7.3'
+            composer-flags: '--prefer-lowest'
+          - os: 'ubuntu-latest'
+            php: '7.4'
+            check-cs: true
+          - os: 'ubuntu-latest'
+            php: '8.0'
+          - os: 'windows-latest'
+            php: '8.0'
+          - os: 'ubuntu-latest'
+            php: '8.1'
+            symfony-version: '^5.3'
+            composer-flags: '--ignore-platform-req php'
+            allow-unstable: true
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+          extensions: pdo_sqlite
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Allow unstable packages
+        run: composer config prefer-stable false
+        if: ${{ matrix.allow-unstable }}
+
+      - name: Lock Symfony version
+        run: composer require "symfony/symfony:${{ matrix.symfony-version }}" --no-update
+        if: ${{ matrix.symfony-version != '' }}
+
+      - name: Install dependencies
+        run: composer update --prefer-dist ${{ matrix.composer-flags }}
+
+      - name: Run PHPUnit tests
+        run: vendor/bin/simple-phpunit --coverage-text --coverage-clover build/logs/clover.xml
+
+      - name: Check style
+        run: vendor/bin/php-cs-fixer fix --dry-run --no-interaction --diff
+        if: ${{ matrix.check-cs }}

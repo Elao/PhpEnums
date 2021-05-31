@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-05-31T09:59:30Z
+
+Seems that GitHub is marking the commit as failed ❌  even when build has `continue-on-error: true` Maybe we should add conditional `${{ matrix.allow-fail && '|| true' }}` to the PHPUnit step 🤔
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-05-31T11:27:42Z
+
+> Seems that GitHub is marking the commit as failed ❌ even when build has `continue-on-error: true` Maybe we should add conditional `${{ matrix.allow-fail && '|| true' }}` to the PHPUnit step 🤔
+
+True, but we still require the check to appear as failed, otherwise we'll never spot a new failure (if we fix it later).
+At least the workflow run is properly marked as successful.
+
+Ideally, Github should provide something to exclude some checks from the commit.
+Or we could update the check conclusion to `neutral`, but it's not allowed neither.
+
+Perhaps only keep the bleeding edges job for PRs, but not on pushes. So we still get a feedback on this job per code change.
+
+EDIT: [not already supported](https://github.community/t/matrix-cannot-be-used-in-jobs-level-if/17177)
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-05-31T12:05:56Z
+
+Roger that!
+BTW, Symfony 5.3 has been released, so we can use `symfony/phpunit-bridge` at `^5.3` 🎉

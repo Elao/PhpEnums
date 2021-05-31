@@ -127,7 +127,6 @@ class JsDumperTest extends TestCase
 
     /**
      * @dataProvider provide testDumpEnumClass data
-     * @requires OS Linux|Darwin
      */
     public function testDumpEnumClass(string $enumClass, string $expectationFilePath): void
     {

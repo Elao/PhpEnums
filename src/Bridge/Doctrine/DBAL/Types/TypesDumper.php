@@ -48,7 +48,7 @@ class TypesDumper
     private function dump(array $types): string
     {
         $namespaces = [];
-        foreach ($types as [$enumClass, $type, $name]) {
+        foreach ($types as [$enumClass, $type, $name, $default]) {
             $fqcn = self::getTypeClassname($enumClass, $type);
             $classname = basename(str_replace('\\', '/', $fqcn));
             $ns = substr($fqcn, 0, -\strlen($classname) - 1);
@@ -57,7 +57,13 @@ class TypesDumper
                 $namespaces[$ns] = '';
             }
 
-            $namespaces[$ns] .= $this->getTypeCode($classname, $enumClass, $type, $name);
+            $namespaces[$ns] .= $this->getTypeCode(
+                $classname,
+                $enumClass,
+                $type,
+                $name,
+                $default
+            );
         }
 
         $code = "<?php\n";
@@ -74,14 +80,48 @@ PHP;
         return $code;
     }
 
-    private function getTypeCode(string $classname, string $enumClass, string $type, string $name): string
-    {
+    private function getTypeCode(
+        string $classname,
+        string $enumClass,
+        string $type,
+        string $name,
+        $defaultOnNull
+    ): string {
+        $code = <<<PHP
+            public const NAME = '$name';
+
+            protected function getEnumClass(): string
+            {
+                return \\{$enumClass}::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+PHP;
         switch ($type) {
             case self::TYPE_INT:
                 $baseClass = AbstractIntegerEnumType::class;
                 break;
             case self::TYPE_STRING:
                 $baseClass = AbstractEnumType::class;
+
+                if ($defaultOnNull !== null) {
+                    $defaultOnNullCode = var_export($defaultOnNull, true);
+                    $code .= <<<PHP
+
+            protected function onNullFromDatabase()
+            {
+                return \\{$enumClass}::get({$defaultOnNullCode});
+            }
+
+            protected function onNullFromPhp()
+            {
+                return {$defaultOnNullCode};
+            }
+PHP;
+                }
                 break;
             case self::TYPE_ENUM:
                 $baseClass = AbstractEnumSQLDeclarationType::class;
@@ -101,17 +141,7 @@ PHP;
     if (!\class_exists($classname::class)) {
         class $classname extends \\{$baseClass}
         {
-            public const NAME = '$name';
-
-            protected function getEnumClass(): string
-            {
-                return \\{$enumClass}::class;
-            }
-
-            public function getName(): string
-            {
-                return static::NAME;
-            }
+$code
         }
     }
 

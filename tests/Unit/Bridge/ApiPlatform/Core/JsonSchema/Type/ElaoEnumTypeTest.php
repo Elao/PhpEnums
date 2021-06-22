@@ -52,6 +52,7 @@ class ElaoEnumTypeTest extends TestCase
                     0 => 'unknown',
                     1 => 'male',
                     2 => 'female',
+                    3 => null,
                 ],
                 'example' => 'unknown',
                 'nullable' => true,

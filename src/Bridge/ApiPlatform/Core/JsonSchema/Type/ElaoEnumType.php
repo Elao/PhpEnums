@@ -36,6 +36,9 @@ final class ElaoEnumType implements TypeFactoryInterface
 
         $schema = [];
         $values = $enumClass::values();
+        if ($type->isNullable() && !$type->isCollection()) {
+            $values[] = null;
+        }
         $enumSchema = [
             'type' => 'string',
             'enum' => $values,

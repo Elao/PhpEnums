@@ -38,5 +38,13 @@ abstract class AbstractJsonCollectionEnumType extends JsonType
         return $values;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
+
     abstract protected function getEnumClass(): string;
 }

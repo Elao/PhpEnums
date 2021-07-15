@@ -24,9 +24,12 @@ trait AutoDiscoveredValuesTrait
     private static $guessedReadables = [];
 
     /**
+     * @template T of int|string
+     *
      * @see EnumInterface::values()
      *
      * @return int[]|string[]
+     * @psalm-return list<T>
      */
     public static function values(): array
     {
@@ -116,6 +119,7 @@ trait AutoDiscoveredValuesTrait
      * E.g: `return [static::class, DumbEnum::class];` to discover values from DumbEnum as well.
      *
      * @return string[]
+     * @psalm-return class-string[]
      */
     protected static function getDiscoveredClasses(): array
     {

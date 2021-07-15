@@ -16,6 +16,9 @@ namespace Elao\Enum;
  * - auto-discovers enumerated values from public constants.
  * - implements {@link \Elao\Enum\ReadableEnumInterface} with default labels
  *   identical to enumerated values's constant name.
+ *
+ * @template T of int|string
+ * @extends ReadableEnum<T>
  */
 abstract class SimpleChoiceEnum extends ReadableEnum
 {

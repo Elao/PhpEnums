@@ -13,6 +13,10 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
 
+/**
+ * @template T of int|string
+ * @implements EnumInterface<T>
+ */
 abstract class Enum implements EnumInterface
 {
     /**
@@ -20,11 +24,14 @@ abstract class Enum implements EnumInterface
      * This cache is used in order to make single enums values act as singletons.
      * This means you'll always get the exact same instance for a same enum value.
      *
-     * @var array
+     * @var EnumInterface<int|string>[]
      */
     private static $instances;
 
-    /** @var mixed */
+    /**
+     * @var int|string
+     * @psalm-var T
+     */
     protected $value;
 
     /**

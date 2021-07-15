@@ -13,14 +13,17 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
 
+/**
+ * @extends ReadableEnum<int>
+ */
 abstract class FlaggedEnum extends ReadableEnum
 {
     public const NONE = 0;
 
-    /** @var array */
+    /** @var array<class-string<FlaggedEnum>, int> */
     private static $masks = [];
 
-    /** @var array */
+    /** @var array<class-string<FlaggedEnum>, array<int, string>> */
     private static $readables = [];
 
     /** @var int[] */

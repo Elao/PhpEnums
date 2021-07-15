@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Bridge\Symfony\Console\Command;
 
+use Elao\Enum\EnumInterface;
 use Elao\Enum\JsDumper\JsDumper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

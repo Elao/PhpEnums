@@ -12,10 +12,16 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
 
+/**
+ * @template T of int|string
+ */
 interface EnumInterface
 {
     /**
+     * @template T of int|string
+     *
      * @param int|string $value The value of a particular enumerated constant
+     * @psalm-param T $value
      *
      * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *
@@ -26,12 +32,18 @@ interface EnumInterface
     /**
      * Returns any possible value for the enumeration.
      *
-     * @return int[]|string[]
+     * @template T of int|string
+     *
+     * @return list<int|string>
+     * @psalm-return list<T>
      */
     public static function values(): array;
 
     /**
+     * @template T of int|string
+     *
      * @param int|string $value
+     * @psalm-param  T $value
      *
      * @return bool True if the value is acceptable for this enumeration
      */
@@ -48,13 +60,14 @@ interface EnumInterface
      * Gets the raw value.
      *
      * @return int|string
+     * @psalm-return T
      */
     public function getValue();
 
     /**
      * Determines whether two enumerations instances should be considered the same.
      *
-     * @param EnumInterface $enum An enum object to compare with this instance
+     * @param EnumInterface<int|string> $enum An enum object to compare with this instance
      */
     public function equals(EnumInterface $enum): bool;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ELAO_ENUM_DT\Foo\Bar {
+namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
 
     if (!\class_exists(BazType::class)) {
         class BazType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType
@@ -89,7 +89,7 @@ namespace ELAO_ENUM_DT\Foo\Bar {
 
 }
 
-namespace ELAO_ENUM_DT\Foo\Baz {
+namespace ELAO_ENUM_DT_DBAL\Foo\Baz {
 
     if (!\class_exists(FooType::class)) {
         class FooType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType

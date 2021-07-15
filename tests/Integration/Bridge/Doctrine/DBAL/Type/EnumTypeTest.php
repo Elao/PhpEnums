@@ -11,8 +11,8 @@
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
 use App\Entity\User;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\SchemaTool;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -26,7 +26,9 @@ class EnumTypeTest extends KernelTestCase
         $kernel = static::bootKernel();
         $container = $kernel->getContainer();
         $this->em = $container->get('doctrine.orm.entity_manager');
-        (new ORMPurger($this->em))->purge();
+        $schemaTool = new SchemaTool($this->em);
+        $schemaTool->dropDatabase();
+        $schemaTool->createSchema($this->em->getMetadataFactory()->getAllMetadata());
     }
 
     protected function tearDown(): void

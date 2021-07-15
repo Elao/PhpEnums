@@ -8,17 +8,20 @@
  * @author Elao <contact@elao.com>
  */
 
+namespace App;
+
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 /**
- * AppKernel for tests.
+ * Kernel for tests.
  */
-class AppKernel extends Kernel
+class Kernel extends BaseKernel
 {
     public function registerBundles()
     {
@@ -26,6 +29,7 @@ class AppKernel extends Kernel
             new FrameworkBundle(),
             new TwigBundle(),
             new DoctrineBundle(),
+            new DoctrineMongoDBBundle(),
             new ElaoEnumBundle(),
         ];
     }

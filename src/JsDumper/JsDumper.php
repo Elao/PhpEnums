@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\JsDumper;
 
+use Elao\Enum\EnumInterface;
 use Elao\Enum\FlaggedEnum;
 use Elao\Enum\ReadableEnumInterface;
 use Symfony\Component\Filesystem\Filesystem;

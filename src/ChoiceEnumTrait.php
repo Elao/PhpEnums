@@ -25,7 +25,10 @@ trait ChoiceEnumTrait
     /**
      * @see EnumInterface::values()
      *
+     * @template T of int|string
+     *
      * @return int[]|string[]
+     * @psalm-return list<T>
      */
     public static function values(): array
     {
@@ -45,7 +48,11 @@ trait ChoiceEnumTrait
     /**
      * @see ReadableEnumInterface::readables()
      *
-     * @return string[] labels indexed by enumerated value
+     * @template T of int|string
+     *
+     * @return array<int|string, string> labels indexed by enumerated value
+     *
+     * @psalm-return array<T, string>
      */
     public static function readables(): array
     {
@@ -55,7 +62,11 @@ trait ChoiceEnumTrait
     }
 
     /**
-     * @return string[] The enumerated values as keys and their labels as values.
+     * @template T of int|string
+     *
+     * @return array<int|string, string> The enumerated values as keys and their labels as values.
+     *
+     * @psalm-return array<T, string>
      */
     abstract protected static function choices(): array;
 

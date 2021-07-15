@@ -12,19 +12,29 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
 
+/**
+ * @template T of int|string
+ * @implements EnumInterface<T>
+ */
 interface ReadableEnumInterface extends EnumInterface
 {
     /**
      * Gets an array of the human representations indexed by possible values.
      *
+     * @template T of int|string
+     *
      * @return string[] labels indexed by enumerated value
+     * @psalm-return array<T, string>
      */
     public static function readables(): array;
 
     /**
      * Gets the human representation for a given value.
      *
-     * @param mixed $value The value of a particular enumerated constant
+     * @template T of int|string
+     *
+     * @param int|string $value The value of a particular enumerated constant
+     * @psalm-param T $value
      *
      * @throws InvalidValueException When $value is not acceptable for this enumeration type
      *

@@ -12,6 +12,11 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
 
+/**
+ * @template T of int|string
+ * @extends Enum<T>
+ * @implements ReadableEnumInterface<T>
+ */
 abstract class ReadableEnum extends Enum implements ReadableEnumInterface
 {
     /**

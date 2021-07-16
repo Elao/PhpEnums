@@ -106,8 +106,15 @@ jobs:
           coverage: pcov
           extensions: pdo_sqlite, mongodb
 
-      - name: Start MongoDB
+      - name: Start MongoDB (Linux)
         uses: supercharge/mongodb-github-action@1.6.0
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+
+      - name: Start MongoDB (Windows)
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install mongodb
+        if: ${{ matrix.os == 'windows-latest' }}
 
       - name: 'Get composer cache directory'
         id: composer-cache

@@ -44,8 +44,7 @@ class EnumTypeTest extends TestCase
 
     public function testConvertToDatabaseValueOnNull(): void
     {
-        $databaseValue = $this->type->convertToDatabaseValue(null);
-        self::assertSame('unknown', $databaseValue);
+        self::assertNull($this->type->convertToDatabaseValue(null));
     }
 
     public function testConvertToPHPValue(): void
@@ -56,7 +55,6 @@ class EnumTypeTest extends TestCase
 
     public function testConvertToPHPValueOnNull(): void
     {
-        $PHPValue = $this->type->convertToPHPValue(null);
-        self::assertSame(Gender::get(Gender::UNKNOW), $PHPValue);
+        self::assertNull($this->type->convertToPHPValue(null));
     }
 }

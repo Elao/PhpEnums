@@ -42,8 +42,7 @@ class IntegerEnumTypeTest extends TestCase
 
     public function testConvertToDatabaseValueOnNull(): void
     {
-        $databaseValue = $this->type->convertToDatabaseValue(null);
-        self::assertSame(0, $databaseValue);
+        self::assertNull($this->type->convertToDatabaseValue(null));
     }
 
     public function testConvertToPHPValue(): void
@@ -54,7 +53,6 @@ class IntegerEnumTypeTest extends TestCase
 
     public function testConvertToPHPValueOnNull(): void
     {
-        $PHPValue = $this->type->convertToPHPValue(null);
-        self::assertSame(SimpleEnum::get(SimpleEnum::ZERO), $PHPValue);
+        self::assertNull($this->type->convertToPHPValue(null));
     }
 }

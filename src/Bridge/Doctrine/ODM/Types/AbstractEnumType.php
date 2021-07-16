@@ -22,32 +22,12 @@ abstract class AbstractEnumType extends Type
     use ClosureToPHP;
 
     /**
-     * What should be returned on null value from the database.
-     *
-     * @return mixed
-     */
-    protected function onNullFromDatabase()
-    {
-        return null;
-    }
-
-    /**
-     * What should be returned on null value from PHP.
-     *
-     * @return mixed
-     */
-    protected function onNullFromPhp()
-    {
-        return null;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function convertToDatabaseValue($value)
     {
         if (null === $value) {
-            return $this->onNullFromPhp();
+            return null;
         }
 
         $class = static::getEnumClass();
@@ -67,7 +47,7 @@ abstract class AbstractEnumType extends Type
     public function convertToPHPValue($value): ?EnumInterface
     {
         if (null === $value) {
-            return $this->onNullFromDatabase();
+            return null;
         }
 
         $class = $this->getEnumClass();

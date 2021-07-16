@@ -65,7 +65,6 @@ jobs:
           - name: 'Test latest Symfony [Linux, PHP 7.3]'
             os: 'ubuntu-latest'
             php: '7.3'
-            composer-flags: '--prefer-lowest'
 
           - name: 'Test latest Symfony [Linux, PHP 7.4]'
             os: 'ubuntu-latest'
@@ -85,7 +84,7 @@ jobs:
           - name: 'Test Next Symfony [Linux, PHP 8.1] (allowed failure)'
             os: 'ubuntu-latest'
             php: '8.1'
-            symfony-version: '^5.4'
+            symfony-version: '^5.4@dev'
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true
             allow-failure: true

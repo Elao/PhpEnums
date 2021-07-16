@@ -32,19 +32,18 @@ class EnumTypeTest extends KernelTestCase
 
     public function testEnumType(): void
     {
-        $user = new User(Gender::get(Gender::MALE));
+        $user = new User(Gender::MALE());
         $this->dm->persist($user);
         $this->dm->flush();
         $this->dm->clear();
 
         $user = $this->dm->find(User::class, $user->getId());
 
-        self::assertTrue($user->getGender()->is(Gender::MALE));
+        self::assertSame(Gender::MALE(), $user->getGender());
     }
 
     public function testEnumTypeOnNullFromPHP(): void
     {
-        $this->markTestIncomplete('Null behavior is not working on Mongo');
         $user = new User();
         $this->dm->persist($user);
         $this->dm->flush();
@@ -53,15 +52,42 @@ class EnumTypeTest extends KernelTestCase
         /** @var User $user */
         $user = $this->dm->find(User::class, $user->getId());
 
-        self::assertSame(Gender::UNKNOW(), $user->getGender());
+        self::assertNull($user->getGender());
+    }
+
+    public function testQueryByValueOrEnumInstance(): void
+    {
+        $user = new User(Gender::FEMALE());
+        $this->dm->persist($user);
+        $this->dm->flush();
+        $this->dm->clear();
+
+        $qb = $this->dm->createQueryBuilder(User::class);
+        $repo = $this->dm->getRepository(User::class);
+
+        self::assertEquals($user, $qb->field('gender')->equals(Gender::FEMALE())->getQuery()->toArray()[0]);
+        self::assertEquals($user, $qb->field('gender')->equals(Gender::FEMALE)->getQuery()->toArray()[0]);
+        self::assertEmpty($qb->field('gender')->equals(Gender::MALE())->getQuery()->toArray());
+
+        self::assertEquals($user, $repo->findOneBy(['gender' => Gender::FEMALE()]));
+        self::assertEquals($user, $repo->findOneBy(['gender' => Gender::FEMALE]));
+        self::assertNull($repo->findOneBy(['gender' => Gender::MALE()]));
+    }
+
+    public function testEnumIsConvertedToValueDuringQuery(): void
+    {
+        $qb = $this->dm->createQueryBuilder(User::class);
+
+        self::assertSame('female', $qb->field('gender')->equals(Gender::FEMALE())->getQuery()->debug('query')['gender']);
+        self::assertSame('male', $qb->field('gender')->equals(Gender::MALE)->getQuery()->debug('query')['gender']);
+        self::assertNull($qb->field('gender')->equals(null)->getQuery()->debug('query')['gender']);
     }
 
     public function testEnumTypeOnNullFromDatabase(): void
     {
-        $this->markTestIncomplete('Null behavior is not working on Mongo');
         $insert = $this->dm->getDocumentCollection(User::class)->insertOne(['_id' => new ObjectId(), 'gender' => null]);
         $user = $this->dm->find(User::class, $insert->getInsertedId());
 
-        self::assertSame(Gender::UNKNOW(), $user->getGender());
+        self::assertNull($user->getGender());
     }
 }

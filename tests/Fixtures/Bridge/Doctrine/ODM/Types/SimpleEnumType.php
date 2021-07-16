@@ -19,14 +19,4 @@ class SimpleEnumType extends AbstractEnumType
     {
         return SimpleEnum::class;
     }
-
-    protected function onNullFromDatabase()
-    {
-        return SimpleEnum::get(SimpleEnum::ZERO);
-    }
-
-    protected function onNullFromPhp()
-    {
-        return SimpleEnum::ZERO;
-    }
 }

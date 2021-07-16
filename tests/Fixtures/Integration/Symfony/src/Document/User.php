@@ -26,7 +26,7 @@ class User
     /**
      * @var Gender
      *
-     * @ODM\Field(type="gender", nullable=true)
+     * @ODM\Field(type="gender")
      */
     private $gender;
 

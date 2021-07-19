@@ -10,10 +10,12 @@
     </include>
   </coverage>
   <php>
-    <server name="KERNEL_CLASS" value="AppKernel"/>
+    <server name="KERNEL_CLASS" value="App\Kernel"/>
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1"/>
     <env name="SYMFONY_PHPUNIT_REQUIRE" value="phpspec/prophecy-phpunit"/>
     <env name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
+    <env name="MONGODB_URL" value="mongodb://localhost:27017" />
+    <env name="MONGODB_DB" value="enum-test" />
   </php>
   <testsuites>
     <testsuite name="Elao Enumerations Test Suite">

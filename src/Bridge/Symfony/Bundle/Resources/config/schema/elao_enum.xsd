@@ -12,6 +12,7 @@
             <xsd:element name="serializer" type="serializer" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="argument_value_resolver" type="argument_value_resolver" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="doctrine" type="doctrine" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="doctrine_mongodb" type="doctrine_mongodb" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="translation_extractor" type="translation_extractor" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="js" type="js" minOccurs="0" maxOccurs="1"/>
         </xsd:choice>
@@ -30,6 +31,12 @@
             <xsd:element name="type" type="doctrine_type" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="enum_sql_declaration" default="false" />
+    </xsd:complexType>
+
+    <xsd:complexType name="doctrine_mongodb">
+        <xsd:sequence>
+            <xsd:element name="type" type="doctrine_mongodb_type" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
     </xsd:complexType>
 
     <xsd:complexType name="js">
@@ -53,6 +60,12 @@
         <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
 
+    <xsd:complexType name="doctrine_mongodb_type">
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
+        <xsd:attribute name="type" type="doctrine_mongodb_type_type"/>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
     <xsd:simpleType name="doctrine_type_type">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="enum"/>
@@ -60,6 +73,13 @@
             <xsd:enumeration value="int"/>
             <xsd:enumeration value="json_collection"/>
             <xsd:enumeration value="csv_collection"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="doctrine_mongodb_type_type">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="single"/>
+            <xsd:enumeration value="collection"/>
         </xsd:restriction>
     </xsd:simpleType>
 

@@ -38,7 +38,6 @@
         }
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.3"
     },
@@ -48,6 +47,8 @@
         "doctrine/data-fixtures": "^1.2",
         "doctrine/doctrine-bundle": "^1.12|^2.0",
         "doctrine/orm": "^2.4",
+        "doctrine/mongodb-odm-bundle": "^4.2",
+        "doctrine/mongodb-odm": "^2.1",
         "friendsofphp/php-cs-fixer": "^3.0",
         "nelmio/alice": "^3.0",
         "symfony/browser-kit": "^4.4|^5.1",

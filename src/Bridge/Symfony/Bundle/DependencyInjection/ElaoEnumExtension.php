@@ -13,7 +13,8 @@ namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
 use ApiPlatform\Core\JsonSchema\TypeFactory;
 use Elao\Enum\Bridge\ApiPlatform\Core\JsonSchema\Type\ElaoEnumType;
-use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DbalTypesDumper;
+use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as OdmTypesDumper;
 use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
@@ -32,31 +33,17 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles['DoctrineBundle'])) {
-            return;
-        }
 
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
-        if (!($types = $config['doctrine']['types'] ?? false)) {
-            return;
+        if (isset($bundles['DoctrineBundle'])) {
+            $this->prependDoctrineDbalConfig($config, $container);
         }
 
-        $doctrineTypesConfig = [];
-        foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = TypesDumper::getTypeClassname($value['class'], $this->resolveDbalType(
-                $value,
-                $this->usesEnumSQLDeclaration($config)
-            ));
+        if (isset($bundles['DoctrineMongoDBBundle'])) {
+            $this->prependDoctrineOdmConfig($config, $container);
         }
-
-        $container->prependExtensionConfig('doctrine', [
-            'dbal' => [
-                'types' => $doctrineTypesConfig,
-                'mapping_types' => ['enum' => 'string'],
-            ],
-        ]);
     }
 
     public function load(array $configs, ContainerBuilder $container)
@@ -95,6 +82,15 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
             );
         }
 
+        if ($types = $config['doctrine_mongodb']['types'] ?? false) {
+            $container->setParameter(
+                '.elao_enum.doctrine_mongodb_types',
+                array_map(static function (string $name, array $v): array {
+                    return [$v['class'], $v['type'], $name];
+                }, array_keys($types), $types)
+            );
+        }
+
         if (!\in_array(TwigBundle::class, $bundles, true)) {
             $container->removeDefinition(EnumExtension::class);
         }
@@ -115,6 +111,42 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function getXsdValidationBasePath()
     {
         return __DIR__ . '/../Resources/config/schema';
+    }
+
+    private function prependDoctrineOdmConfig(array $config, ContainerBuilder $container): void
+    {
+        if (!($types = $config['doctrine_mongodb']['types'] ?? false)) {
+            return;
+        }
+
+        $doctrineTypesConfig = [];
+        foreach ($types as $name => $value) {
+            $doctrineTypesConfig[$name] = OdmTypesDumper::getTypeClassname($value['class'], $value['type']);
+        }
+
+        $container->prependExtensionConfig('doctrine_mongodb', ['types' => $doctrineTypesConfig]);
+    }
+
+    private function prependDoctrineDbalConfig(array $config, ContainerBuilder $container): void
+    {
+        if (!($types = $config['doctrine']['types'] ?? false)) {
+            return;
+        }
+
+        $doctrineTypesConfig = [];
+        foreach ($types as $name => $value) {
+            $doctrineTypesConfig[$name] = DbalTypesDumper::getTypeClassname($value['class'], $this->resolveDbalType(
+                $value,
+                $this->usesEnumSQLDeclaration($config)
+            ));
+        }
+
+        $container->prependExtensionConfig('doctrine', [
+            'dbal' => [
+                'types' => $doctrineTypesConfig,
+                'mapping_types' => ['enum' => 'string'],
+            ],
+        ]);
     }
 
     private function resolveDbalType(array $config, bool $useEnumSQLDeclaration): string

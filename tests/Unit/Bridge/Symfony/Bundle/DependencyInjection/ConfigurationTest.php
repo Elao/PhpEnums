@@ -185,6 +185,9 @@ class ConfigurationTest extends TestCase
                 'enum_sql_declaration' => false,
                 'types' => [],
             ],
+            'doctrine_mongodb' => [
+                'types' => [],
+            ],
             'js' => [
                 'base_dir' => null,
                 'lib_path' => null,

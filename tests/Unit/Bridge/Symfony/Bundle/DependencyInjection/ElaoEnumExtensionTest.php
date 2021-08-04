@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
 use Elao\Enum\Bridge\Symfony\Console\Command\DumpJsEnumsCommand;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\EnumValueResolver;
@@ -98,16 +99,34 @@ abstract class ElaoEnumExtensionTest extends TestCase
             [
                 'dbal' => [
                     'types' => [
-                        'gender' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
-                        'another' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\AnotherEnumType',
-                        'permissions' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
-                        'simple_collection_json' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumJsonCollectionType',
-                        'simple_collection_csv' => 'ELAO_ENUM_DT\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumCsvCollectionType',
+                        'gender' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
+                        'another' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\AnotherEnumType',
+                        'permissions' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
+                        'simple_collection_json' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumJsonCollectionType',
+                        'simple_collection_csv' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SimpleEnumCsvCollectionType',
                     ],
                     'mapping_types' => ['enum' => 'string'],
                 ],
             ],
         ], $container->getExtensionConfig('doctrine'));
+    }
+
+    public function testDoctrineOdmTypesArePrepended(): void
+    {
+        $container = $this->createContainerFromFile('doctrine_mongodb_types', false);
+        /** @var ElaoEnumExtension $ext */
+        $ext = $container->getExtension('elao_enum');
+        $ext->prepend($container);
+
+        self::assertEquals([
+            [
+                'types' => [
+                    'gender' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\GenderType',
+                    'another' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\AnotherEnumCollectionType',
+                    'permissions' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
+                ],
+            ],
+        ], $container->getExtensionConfig('doctrine_mongodb'));
     }
 
     public function testTranslationExtractor(): void
@@ -167,7 +186,10 @@ abstract class ElaoEnumExtensionTest extends TestCase
     protected function createContainer(): ContainerBuilder
     {
         return new ContainerBuilder(new EnvPlaceholderParameterBag([
-            'kernel.bundles' => ['DoctrineBundle' => DoctrineBundle::class],
+            'kernel.bundles' => [
+                'DoctrineBundle' => DoctrineBundle::class,
+                'DoctrineMongoDBBundle' => DoctrineMongoDBBundle::class,
+            ],
             'kernel.cache_dir' => self::FIXTURES_PATH . '/cache_dir',
         ]));
     }

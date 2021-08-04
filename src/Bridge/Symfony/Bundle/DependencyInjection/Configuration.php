@@ -10,7 +10,8 @@
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
-use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DBALTypesDumper;
+use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as ODMTypesDumper;
 use Elao\Enum\EnumInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -31,14 +32,15 @@ class Configuration implements ConfigurationInterface
             ->end()
         ->end();
 
-        $this->addDoctrineSection($rootNode);
+        $this->addDoctrineDbalSection($rootNode);
+        $this->addDoctrineOdmSection($rootNode);
         $this->addTranslationExtractorSection($rootNode);
         $this->addJsEnumsSection($rootNode);
 
         return $treeBuilder;
     }
 
-    private function addDoctrineSection(ArrayNodeDefinition $rootNode)
+    private function addDoctrineDbalSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode->children()
             ->arrayNode('doctrine')
@@ -86,7 +88,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->enumNode('type')
-                            ->values(TypesDumper::TYPES)
+                            ->values(DBALTypesDumper::TYPES)
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
 - string: VARCHAR
@@ -101,6 +103,38 @@ TXT
                             )
                             ->cannotBeEmpty()
                             ->defaultValue(null)
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
+    }
+
+    private function addDoctrineOdmSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode->children()
+            ->arrayNode('doctrine_mongodb')
+            ->addDefaultsIfNotSet()
+            ->fixXmlConfig('type')
+            ->children()
+                ->arrayNode('types')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                    ->beforeNormalization()
+                        ->ifString()->then(static function (string $v): array { return ['class' => $v]; })
+                    ->end()
+                    ->children()
+                        ->scalarNode('class')
+                            ->cannotBeEmpty()
+                            ->validate()
+                                ->ifTrue(static function (string $class): bool {return !is_a($class, EnumInterface::class, true); })
+                                ->thenInvalid(sprintf('Invalid class. Expected instance of "%s"', EnumInterface::class) . '. Got %s.')
+                            ->end()
+                        ->end()
+                        ->enumNode('type')
+                            ->values(ODMTypesDumper::TYPES)
+                            ->cannotBeEmpty()
+                            ->defaultValue(ODMTypesDumper::TYPE_SINGLE)
                         ->end()
                     ->end()
                 ->end()

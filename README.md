@@ -38,7 +38,7 @@ Table of Contents
     * [Compare](#compare)
     * [Shortcuts](#shortcuts)
   * [Integrations](#integrations)
-    * [Doctrine](#doctrine)
+    * [Doctrine DBAL](#doctrine)
       * [In a Symfony app](#in-a-symfony-app)
       * [Create the DBAL type](#create-the-dbal-type)
       * [Register the DBAL type](#register-the-dbal-type)
@@ -46,6 +46,7 @@ Table of Contents
         * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
       * [Mapping](#mapping)
       * [Default value on null](#default-value-on-null)
+    * [Doctrine ODM](#doctrine-odm)
     * [Symfony HttpKernel component](#symfony-httpkernel-component)
     * [Symfony Serializer component](#symfony-serializer-component)
     * [Symfony Form component](#symfony-form-component)
@@ -656,6 +657,86 @@ abstract class AbstractEnumType extends Type
 ```
 
 Override those methods in order to satisfy your needs.
+
+## Doctrine MongoDB ODM
+
+You can store enumeration values as string or integer in your MongoDB database and manipulate them as objects thanks to [custom mapping types](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/2.2/reference/custom-mapping-types.html) included in this library.
+
+### In a Symfony app
+
+This configuration is equivalent to the following sections explaining how to create a custom Doctrine ODM type for your enums.
+
+```yaml
+elao_enum:
+    doctrine_mongodb:
+        types:
+            gender: App\Enum\GenderEnum # Defaults to `{ class: App\Enum\GenderEnum, type: single }`
+            another: { class: App\Enum\AnotherEnum, type: collection } # values are stored as an array of integers or strings
+```
+
+It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
+
+
+### Create the ODM type
+
+First, create your ODM type by extending either `AbstractEnumType` (single value) or  `AbstractCollectionEnumType` (multiple values):
+
+```php
+<?php
+
+use Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractEnumType;
+
+final class GenderEnumType extends AbstractEnumType
+{
+    protected function getEnumClass(): string
+    {
+        return Gender::class;
+    }
+}
+```
+
+### Register the ODM type
+
+Then, you'll simply need to register your custom type:
+
+#### Manually
+
+```php
+<?php
+// in bootstrapping code
+// ...
+use Doctrine\ODM\MongoDB\Types\Type;
+Type::addType('gender', GenderEnumType::class);
+```
+
+#### Using the Doctrine Bundle with Symfony
+
+refs:
+
+- [Registering custom Mapping Types](https://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/config.html#custom-types)
+
+```yml
+# config/packages/doctrine_mongodb.yaml
+doctrine_mongodb:
+    types:
+        gender: App\Doctrine\ODM\Types\GenderEnumType
+```
+
+### Mapping
+
+When registering the custom types in the configuration, you specify a unique name for the mapping type and map it to the corresponding fully qualified class name. Now the new type can be used when mapping columns:
+
+```php
+<?php
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Field;
+
+class User
+{
+    /** @Field(type="gender") */
+    private Gender $gender;
+}
+```
 
 ## Symfony HttpKernel component
 <a href="https://symfony.com"><img src="https://img.shields.io/badge/Symfony-4.4%2B-green.svg?style=flat-square" title="Available for Symfony 4.4+" alt="Available for Symfony 4.4+" align="right"></a>

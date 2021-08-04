@@ -65,7 +65,6 @@ jobs:
           - name: 'Test latest Symfony [Linux, PHP 7.3]'
             os: 'ubuntu-latest'
             php: '7.3'
-            composer-flags: '--prefer-lowest'
 
           - name: 'Test latest Symfony [Linux, PHP 7.4]'
             os: 'ubuntu-latest'
@@ -77,7 +76,7 @@ jobs:
             php: '8.0'
             code-coverage: true
 
-          - name: 'Test latest Symfony [Window, PHP 8.0]'
+          - name: 'Test latest Symfony [Windows, PHP 8.0]'
             os: 'windows-latest'
             php: '8.0'
 
@@ -85,7 +84,7 @@ jobs:
           - name: 'Test Next Symfony [Linux, PHP 8.1] (allowed failure)'
             os: 'ubuntu-latest'
             php: '8.1'
-            symfony-version: '^5.4'
+            symfony-version: '^5.4@dev'
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true
             allow-failure: true
@@ -104,7 +103,17 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: pcov
-          extensions: pdo_sqlite
+          extensions: pdo_sqlite, mongodb
+
+      - name: Start MongoDB (Linux)
+        uses: supercharge/mongodb-github-action@1.6.0
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+
+      - name: Start MongoDB (Windows)
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install mongodb
+        if: ${{ matrix.os == 'windows-latest' }}
 
       - name: 'Get composer cache directory'
         id: composer-cache

@@ -11,12 +11,13 @@
 namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
+use Stringable;
 
 /**
  * @template T of int|string
  * @implements EnumInterface<T>
  */
-interface ReadableEnumInterface extends EnumInterface
+interface ReadableEnumInterface extends EnumInterface, Stringable
 {
     /**
      * Gets an array of the human representations indexed by possible values.

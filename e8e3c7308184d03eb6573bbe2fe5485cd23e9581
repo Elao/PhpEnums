@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-07-15T11:03:25Z
+
+@ogizanagi can you take a look on this when you're free before I move to the next steps?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-07-15T11:32:54Z
+
+Looks great so far. Do you plan to add some integration tests so we can test the implementations against a real ODM, as done for https://github.com/Elao/PhpEnums/blob/master/tests/Integration/Bridge/Doctrine/DBAL/Type/EnumTypeTest.php for instance ?
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-07-15T11:44:06Z
+
+I will try to 😄  The logic behind the types is quite simple but there are many edge cases, it deserves to be tested thoroughly.
+I will need to spin off a Mongo container in the CI to test the operations on DB.
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-07-16T03:23:45Z
+
+@ogizanagi I think this is ready for review - I will add readme instructions for non-bundle usage later today and implement TypesDumper and Bundle integration in a separate PR.
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-07-19T16:40:38Z
+
+@ogizanagi I managed to add ODM TypeDumper and integrate it with Symfony Bundle. I tested it with one of my existing projects and confirm it is working as expected 🚀
+I would suggest to split the readme into multiple files in `doc` directory as it becomes really long.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-07-19T17:00:26Z
+
+Hi @IonBazan , that's awesome, thanks for your reactivity. I may not be able to review it in the next days though.
+
+I agree about the README.md, and we may rework it later. I might give [Stenope](https://stenopephp.github.io/Stenope/) a chance to generate this doc on Github Pages btw (👀 poke @Tom32i).

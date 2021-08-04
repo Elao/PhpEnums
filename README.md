@@ -38,7 +38,7 @@ Table of Contents
     * [Compare](#compare)
     * [Shortcuts](#shortcuts)
   * [Integrations](#integrations)
-    * [Doctrine DBAL](#doctrine)
+    * [Doctrine DBAL](#doctrine-dbal)
       * [In a Symfony app](#in-a-symfony-app)
       * [Create the DBAL type](#create-the-dbal-type)
       * [Register the DBAL type](#register-the-dbal-type)
@@ -127,7 +127,7 @@ Providing our own package inspired from the best ones, on which we'll apply our 
 - Symfony Validator component integration with an enum constraint.
 - Symfony VarDumper component integration with a dedicated caster.
 - Symfony HttpKernel component integration with an enum resolver for controller arguments.
-- Doctrine DBAL integration with abstract classes in order to persist your enumeration in database.
+- Doctrine integration in order to persist your enumeration in database.
 - Faker enum provider to generate random enum instances.
 - An API Platform OpenApi/Swagger type for documentation generation.
 - JavaScript enums code generation.
@@ -515,7 +515,7 @@ Otherwise, simply implement the static methods yourself.
 
 # Integrations
 
-## Doctrine
+## Doctrine DBAL
 
 You can store the raw value of an enumeration in the database, but still manipulate it as an object from your entities by [creating a custom DBAL type](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/custom-mapping-types.html), from scratch.
 
@@ -658,7 +658,7 @@ abstract class AbstractEnumType extends Type
 
 Override those methods in order to satisfy your needs.
 
-## Doctrine MongoDB ODM
+## Doctrine ODM
 
 You can store enumeration values as string or integer in your MongoDB database and manipulate them as objects thanks to [custom mapping types](https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/2.2/reference/custom-mapping-types.html) included in this library.
 
@@ -675,7 +675,6 @@ elao_enum:
 ```
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
-
 
 ### Create the ODM type
 

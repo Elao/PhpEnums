@@ -3,12 +3,9 @@
 ###########
 
 install:
-	composer remove --dev "symfony/symfony"
-	# Require "phpspec/prophecy" for PHPUnit 9 used when PHP 8+ is used
-	php -r "exit (PHP_MAJOR_VERSION == 8 ? 0 : 1);" \
-		&& composer config platform.php 7.4.99 \
-		&& composer require --dev --no-update "phpspec/prophecy-phpunit" || true
-	composer update
+	rm -f composer.lock
+	composer remove --no-interaction --dev "symfony/symfony" "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
+	composer update --prefer-dist
 
 install-lowest:
 	composer require "symfony/symfony:4.4.x" --no-update --no-interaction --dev
@@ -18,6 +15,11 @@ install-highest:
 	composer require "symfony/symfony:5.4.x" --no-update --no-interaction --dev
 	composer update
 
+install-odm:
+	rm -f composer.lock
+	composer require --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
+	composer update --prefer-dist
+
 ########
 # Test #
 ########
@@ -25,16 +27,17 @@ install-highest:
 test:
 	vendor/bin/simple-phpunit
 
+testdox:
+	vendor/bin/simple-phpunit --testdox --verbose
+
 ########
 # Lint #
 ########
 
 lint: lint-php-cs-fixer
 
-fix-php-cs-fixer: export PHP_CS_FIXER_FUTURE_MODE = 1
 fix-php-cs-fixer:
-	vendor/bin/php-cs-fixer fix --config=.php_cs --no-interaction
+	vendor/bin/php-cs-fixer fix --no-interaction
 
-lint-php-cs-fixer: export PHP_CS_FIXER_FUTURE_MODE = 1
 lint-php-cs-fixer:
-	vendor/bin/php-cs-fixer fix --config=.php_cs --no-interaction --dry-run --diff
+	vendor/bin/php-cs-fixer fix --no-interaction --dry-run --diff

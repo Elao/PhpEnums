@@ -25,18 +25,22 @@ class Kernel extends BaseKernel
 {
     public function registerBundles()
     {
-        return [
+        return array_filter([
             new FrameworkBundle(),
             new TwigBundle(),
             new DoctrineBundle(),
-            new DoctrineMongoDBBundle(),
+            class_exists(DoctrineMongoDBBundle::class) ? new DoctrineMongoDBBundle() : null,
             new ElaoEnumBundle(),
-        ];
+        ]);
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getProjectDir() . '/config/config.yml');
+
+        if (class_exists(DoctrineMongoDBBundle::class)) {
+            $loader->load($this->getProjectDir() . '/config/mongodb.yml');
+        }
 
         if (self::VERSION_ID < 50300) {
             $loader->load($this->getProjectDir() . '/config/config_prev_5.3.0.yml');

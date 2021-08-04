@@ -11,6 +11,7 @@
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\ODM\Type;
 
 use App\Document\User;
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
@@ -21,6 +22,13 @@ class EnumTypeTest extends KernelTestCase
 {
     /** @var DocumentManager */
     private $dm;
+
+    public static function setUpBeforeClass(): void
+    {
+        if (!class_exists(DoctrineMongoDBBundle::class)) {
+            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+        }
+    }
 
     protected function setUp(): void
     {

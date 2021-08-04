@@ -23,6 +23,10 @@ class EnumTypeTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        if (!class_exists(Type::class)) {
+            self::markTestSkipped('Doctrine MongoDB ODM not installed');
+        }
+
         if (!Type::hasType(self::NAME)) {
             Type::addType(self::NAME, GenderEnumType::class);
         }

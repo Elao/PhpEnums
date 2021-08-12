@@ -13,6 +13,8 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\LogicException;
 
 /**
+ * @template T of int|string
+ *
  * Auto-discover enumerated values from public constants.
  */
 trait AutoDiscoveredValuesTrait
@@ -24,12 +26,10 @@ trait AutoDiscoveredValuesTrait
     private static $guessedReadables = [];
 
     /**
-     * @template T of int|string
-     *
      * @see EnumInterface::values()
      *
      * @return int[]|string[]
-     * @psalm-return list<T>
+     * @psalm-return T[]
      */
     public static function values(): array
     {

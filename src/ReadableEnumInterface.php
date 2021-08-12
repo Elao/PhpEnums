@@ -15,14 +15,12 @@ use Stringable;
 
 /**
  * @template T of int|string
- * @implements EnumInterface<T>
+ * @extends EnumInterface<T>
  */
 interface ReadableEnumInterface extends EnumInterface, Stringable
 {
     /**
      * Gets an array of the human representations indexed by possible values.
-     *
-     * @template T of int|string
      *
      * @return string[] labels indexed by enumerated value
      * @psalm-return array<T, string>
@@ -31,8 +29,6 @@ interface ReadableEnumInterface extends EnumInterface, Stringable
 
     /**
      * Gets the human representation for a given value.
-     *
-     * @template T of int|string
      *
      * @param int|string $value The value of a particular enumerated constant
      * @psalm-param T $value

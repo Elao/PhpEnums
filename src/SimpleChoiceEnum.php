@@ -22,7 +22,9 @@ namespace Elao\Enum;
  */
 abstract class SimpleChoiceEnum extends ReadableEnum
 {
+    /* @use AutoDiscoveredValuesTrait<T> */
     use AutoDiscoveredValuesTrait;
+    /* @use ChoiceEnumTrait<T> */
     use ChoiceEnumTrait {
         ChoiceEnumTrait::values insteadof AutoDiscoveredValuesTrait;
     }

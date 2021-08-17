@@ -1,0 +1,107 @@
+---------------------------------------------------------------------------
+
+by B-Galati at 2021-08-12T08:31:52Z
+
+> I was thinking whether we could annotate the fixture enums we keep in test directories and run phpstan against them to verify the annotations are correct?
+
+That would be great, it's quite hard now to test every single case possible for both psalm and phpstan.
+
+---------------------------------------------------------------------------
+
+by B-Galati at 2021-08-12T19:24:16Z
+
+@ogizanagi @IonBazan It's ready for review again :-)
+
+---------------------------------------------------------------------------
+
+by B-Galati at 2021-08-13T06:50:06Z
+
+@IonBazan Done! Thanks!
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-08-13T07:15:35Z
+
+I've tested your branch and I had some issues regarding the `ReadableEnum`:
+```
+Return type (array<int|string, string>) of method App\Domain\Company\ReviewStatus::readables() should be covariant with return type (array<string, string>) of method Elao\Enum\ReadableEnumInterface<string>::readables()
+```
+
+Not sure where is that type `array<int|string, string>` as my `ReviewStatus` seems to be annotated correctly:
+```php
+/**
+ * @extends RenderableEnum<string>
+ */
+final class ReviewStatus extends RenderableEnum
+```
+
+---------------------------------------------------------------------------
+
+by B-Galati at 2021-08-13T11:38:19Z
+
+@IonBazan
+
+There is a typo, it's `ReadableEnum` and not `RenderableEnum`.
+
+I tested it with this wit PHPStan:
+
+```
+/**
+ * @extends ReadableEnum<string>
+ */
+final class ReviewStatus extends ReadableEnum
+{
+
+    public static function values(): array
+    {
+        return ['string'];
+    }
+
+    public static function readables(): array
+    {
+        return ['key' => 'value'];
+    }
+}
+```
+
+And it looks fine to me.
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-08-13T11:50:38Z
+
+@B-Galati sorry, I forgot to mention extending a class adding extra features there but it's still the same issue just a bit more nested. If it's not reproducible by you, it might be just something wrong with my annotations. Thanks anyway!
+```php
+/**
+ * @template T of int|string
+ * @extends SimpleChoiceEnum<T>
+ */
+abstract class RenderableEnum extends SimpleChoiceEnum
+```
+
+---------------------------------------------------------------------------
+
+by B-Galati at 2021-08-13T12:24:11Z
+
+@IonBazan
+
+I just tried with this and it's ok:
+
+```
+/**
+ * @template T of int|string
+ * @extends SimpleChoiceEnum<T>
+ */
+abstract class RenderableEnum extends SimpleChoiceEnum
+{
+
+}
+
+/**
+ * @extends RenderableEnum<string>
+ */
+final class Test extends RenderableEnum
+{
+
+}
+```

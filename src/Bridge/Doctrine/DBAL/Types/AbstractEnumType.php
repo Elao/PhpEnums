@@ -14,12 +14,16 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\EnumInterface;
 
+/**
+ * @template T of EnumInterface
+ */
 abstract class AbstractEnumType extends Type
 {
     /**
      * The enum FQCN for which we should make the DBAL conversion.
      *
-     * @return class-string<EnumInterface>
+     * @return string&EnumInterface
+     * @psalm-return class-string<T>
      */
     abstract protected function getEnumClass(): string;
 
@@ -46,7 +50,8 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      *
-     * @param EnumInterface $value
+     * @param EnumInterface|null $value
+     * @psalm-param T|null $value
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -66,7 +71,6 @@ abstract class AbstractEnumType extends Type
             return $this->onNullFromDatabase();
         }
 
-        /** @var string|EnumInterface $class */
         $class = $this->getEnumClass();
 
         return $class::get($this->cast($value));

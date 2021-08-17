@@ -25,6 +25,7 @@ abstract class Enum implements EnumInterface
      * This means you'll always get the exact same instance for a same enum value.
      *
      * @var EnumInterface<int|string>[]
+     * @psalm-var EnumInterface<T>[]
      */
     private static $instances;
 
@@ -37,7 +38,8 @@ abstract class Enum implements EnumInterface
     /**
      * The constructor is private and cannot be overridden: use the static get method instead.
      *
-     * @param mixed $value The raw value of an enumeration
+     * @param int|string $value The raw value of an enumeration
+     * @psalm-param T $value
      */
     final private function __construct($value)
     {

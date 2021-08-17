@@ -13,6 +13,8 @@ namespace Elao\Enum;
 use Elao\Enum\Exception\LogicException;
 
 /**
+ * @template T of int|string
+ *
  * Discover readable enumerated values by returning the enumerated values as keys and their labels as values
  * in {@link \Elao\Enum\ChoiceEnumTrait::choices()}, replacing the need to provide both:
  * - {@link \Elao\Enum\ReadableEnumInterface::readables()}
@@ -25,10 +27,8 @@ trait ChoiceEnumTrait
     /**
      * @see EnumInterface::values()
      *
-     * @template T of int|string
-     *
      * @return int[]|string[]
-     * @psalm-return list<T>
+     * @psalm-return T[]
      */
     public static function values(): array
     {
@@ -48,10 +48,7 @@ trait ChoiceEnumTrait
     /**
      * @see ReadableEnumInterface::readables()
      *
-     * @template T of int|string
-     *
      * @return array<int|string, string> labels indexed by enumerated value
-     *
      * @psalm-return array<T, string>
      */
     public static function readables(): array
@@ -62,10 +59,7 @@ trait ChoiceEnumTrait
     }
 
     /**
-     * @template T of int|string
-     *
      * @return array<int|string, string> The enumerated values as keys and their labels as values.
-     *
      * @psalm-return array<T, string>
      */
     abstract protected static function choices(): array;

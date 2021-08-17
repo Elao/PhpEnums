@@ -42,7 +42,7 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      *
-     * @phpstan-return TEnum
+     * @psalm-return TEnum
      */
     public function convertToPHPValue($value): ?EnumInterface
     {

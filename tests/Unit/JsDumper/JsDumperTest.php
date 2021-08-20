@@ -12,6 +12,7 @@ namespace Elao\Enum\Tests\Unit\JsDumper;
 
 use Elao\Enum\JsDumper\JsDumper;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\NeedsEscapingEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Elao\Enum\Tests\TestCase;
@@ -146,6 +147,11 @@ class JsDumperTest extends TestCase
         yield 'readable enum' => [
             'enumClass' => Gender::class,
             'expectationFilePath' => 'readable_enum.js',
+        ];
+
+        yield 'readable enum which requires escaping' => [
+            'enumClass' => NeedsEscapingEnum::class,
+            'expectationFilePath' => 'needs_escaping_readable_enum.js',
         ];
 
         yield 'flagged enum' => [

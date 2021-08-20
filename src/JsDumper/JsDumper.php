@@ -163,10 +163,17 @@ JS;
                 continue;
             }
 
+            $flags = JSON_UNESCAPED_UNICODE
+                | JSON_UNESCAPED_SLASHES
+                | JSON_PRESERVE_ZERO_FRACTION
+                | JSON_THROW_ON_ERROR;
+
+            $readable = json_encode($readable, $flags);
+
             $readablesCode .=
                     <<<JS
 
-      [{$shortName}.{$constant}]: '{$readable}',
+      [{$shortName}.{$constant}]: {$readable},
 JS;
         }
 
@@ -177,10 +184,17 @@ JS;
                     continue;
                 }
 
+                $flags = JSON_UNESCAPED_UNICODE
+                    | JSON_UNESCAPED_SLASHES
+                    | JSON_PRESERVE_ZERO_FRACTION
+                    | JSON_THROW_ON_ERROR;
+
+                $readable = json_encode($readable, $flags);
+
                 $readablesCode .=
                     <<<JS
 
-      [{$shortName}.{$constant}]: '{$readable}',
+      [{$shortName}.{$constant}]: {$readable},
 JS;
             }
         }

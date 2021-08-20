@@ -10,6 +10,7 @@
 
 namespace Elao\Enum\Bridge\Doctrine\ODM\Types;
 
+use Doctrine\ODM\MongoDB\Types\ClosureToPHP;
 use Doctrine\ODM\MongoDB\Types\CollectionType;
 use Elao\Enum\EnumInterface;
 
@@ -18,6 +19,8 @@ use Elao\Enum\EnumInterface;
  */
 abstract class AbstractCollectionEnumType extends CollectionType
 {
+    use ClosureToPHP;
+
     public function convertToDatabaseValue($value)
     {
         if (\is_array($value)) {

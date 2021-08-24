@@ -12,12 +12,13 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\InvalidValueException;
 use Elao\Enum\Exception\LogicException;
+use JsonSerializable;
 
 /**
  * @template T of int|string
  * @implements EnumInterface<T>
  */
-abstract class Enum implements EnumInterface
+abstract class Enum implements EnumInterface, JsonSerializable
 {
     /**
      * Cached array of enum instances by enum type (FQCN).
@@ -153,5 +154,13 @@ abstract class Enum implements EnumInterface
     public function is($value): bool
     {
         return $this->getValue() === $value;
+    }
+
+    /**
+     * @return T
+     */
+    public function jsonSerialize()
+    {
+        return $this->getValue();
     }
 }

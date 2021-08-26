@@ -5,9 +5,9 @@ class Gender extends ReadableEnum {
 
   static get readables() {
     return {
-      [Gender.UNKNOW]: 'Unknown',
-      [Gender.MALE]: 'Male',
-      [Gender.FEMALE]: 'Female',
+      [Gender.UNKNOW]: "Unknown",
+      [Gender.MALE]: "Male",
+      [Gender.FEMALE]: "Female",
     };
   }
 }

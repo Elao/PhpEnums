@@ -40,6 +40,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.3",
+        "ext-json": "*",
         "symfony/polyfill-php80": "^1.15"
     },
     "require-dev": {

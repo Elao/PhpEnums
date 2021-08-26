@@ -8,12 +8,12 @@ class Permissions extends FlaggedEnum {
 
   static get readables() {
     return {
-      [Permissions.EXECUTE]: 'Execute',
-      [Permissions.WRITE]: 'Write',
-      [Permissions.READ]: 'Read',
+      [Permissions.EXECUTE]: "Execute",
+      [Permissions.WRITE]: "Write",
+      [Permissions.READ]: "Read",
 
       // Named masks
-      [Permissions.ALL]: 'All permissions',
+      [Permissions.ALL]: "All permissions",
     };
   }
 }

@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-08-24T09:47:02Z
+
+Hi @IonBazan . I'm not sure I'd like to provide this feature out-of-the-box. The format would be arbitrary and one might also render differently readable enums for instance. Of course this could be overwritten, but then I don't see much value into providing this default implementation here? WDYT?
+This could also lead to unexpected behaviors / minor BC-breaks in some place were JsonSerializable objects are handled, without the user noticing it.
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2021-08-24T09:52:42Z
+
+You are right, the `JsonSerializable` introduces a lot of magic but on the other hand, most of the time you expect it to serialize into string instead of empty object. I ended up adding `jsonSerialize` to my enums just in case they will be serialized somewhere which should be provided by this lib.
+
+Moreover, `myclabs/php-enum` implements that interface too: https://github.com/myclabs/php-enum/blob/db0158242788c972cd137780a278d292eaaa6e6c/src/Enum.php#L314
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-08-26T14:10:43Z
+
+Alright, let's do it

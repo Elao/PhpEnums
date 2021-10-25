@@ -2,17 +2,26 @@
 # Install #
 ###########
 
+setup:
+	composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
+install: setup
 install:
 	rm -f composer.lock
-	composer remove --no-interaction --dev "symfony/symfony" "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
+	composer config minimum-stability --unset
+	composer remove --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
 	composer update --prefer-dist
 
+install-lowest: setup
+install-lowest: export SYMFONY_REQUIRE = 4.4.*
 install-lowest:
-	composer require "symfony/symfony:4.4.x" --no-update --no-interaction --dev
+	composer config minimum-stability --unset
 	composer update --prefer-lowest
 
+install-highest: setup
+install-highest: export SYMFONY_REQUIRE = 5.4.*@dev
 install-highest:
-	composer require "symfony/symfony:5.4.x" --no-update --no-interaction --dev
+	composer config minimum-stability dev
 	composer update
 
 install-odm:

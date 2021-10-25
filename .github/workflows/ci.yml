@@ -58,7 +58,7 @@ jobs:
           # Previous Symfony versions
           - name: 'Test 5.2 Symfony [Linux, PHP 8.0]'
             os: 'ubuntu-latest'
-            symfony-version: '5.2.x'
+            symfony: '5.2.*'
             php: '8.0'
 
           # Previous PHP versions
@@ -84,7 +84,7 @@ jobs:
           - name: 'Test Next Symfony [Linux, PHP 8.1] (allowed failure)'
             os: 'ubuntu-latest'
             php: '8.1'
-            symfony-version: '^5.4@dev'
+            symfony: '5.4.*@dev'
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true
             allow-failure: true
@@ -104,12 +104,13 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: pcov
           extensions: pdo_sqlite, mongodb
+          tools: 'composer:v2,flex'
 
-      - name: Start MongoDB (Linux)
+      - name: 'Start MongoDB (Linux)'
         uses: supercharge/mongodb-github-action@1.6.0
         if: ${{ matrix.os == 'ubuntu-latest' }}
 
-      - name: Start MongoDB (Windows)
+      - name: 'Start MongoDB (Windows)'
         uses: crazy-max/ghaction-chocolatey@v1
         with:
           args: install mongodb
@@ -123,16 +124,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-php-${{ matrix.php }}-symfony-${{ matrix.symfony }}-${{ hashFiles('**/composer.json') }}-flags-${{ matrix.composer-flags }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: 'Allow unstable packages'
-        run: composer config prefer-stable false
+        run: |
+          composer config prefer-stable false
+          composer config minimum-stability dev
         if: ${{ matrix.allow-unstable }}
-
-      - name: 'Lock Symfony version'
-        run: composer require --no-update --ansi "symfony/symfony:${{ matrix.symfony-version }}"
-        if: ${{ matrix.symfony-version != '' }}
 
       - name: 'Require Doctrine MongoDB dependencies'
         run: composer require --no-update ${{ matrix.composer-flags }} --dev --no-interaction --ansi "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
@@ -140,6 +139,8 @@ jobs:
 
       - name: 'Install dependencies'
         run: composer update --prefer-dist ${{ matrix.composer-flags }} --ansi
+        env:
+          SYMFONY_REQUIRE: "${{ matrix.symfony }}"
 
       - name: 'Run PHPUnit tests'
         run: vendor/bin/simple-phpunit --testdox --verbose ${{ matrix.code-coverage && '--coverage-text --coverage-clover build/logs/clover.xml' }}

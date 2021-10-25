@@ -20,6 +20,9 @@ use Symfony\Component\Form\ReversedTransformer;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final
+ */
 class EnumType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -102,7 +105,7 @@ class EnumType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }

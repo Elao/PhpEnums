@@ -16,12 +16,15 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @final
+ */
 class EnumValueResolver implements ArgumentValueResolverInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supports(Request $request, ArgumentMetadata $argument)
+    public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         return is_subclass_of($argument->getType(), EnumInterface::class);
     }
@@ -29,7 +32,7 @@ class EnumValueResolver implements ArgumentValueResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(Request $request, ArgumentMetadata $argument)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         /** @var EnumInterface $enumClass */
         $enumClass = $argument->getType();

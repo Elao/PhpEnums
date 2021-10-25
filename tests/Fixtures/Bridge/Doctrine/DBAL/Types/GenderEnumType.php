@@ -32,7 +32,7 @@ class GenderEnumType extends AbstractEnumType
         return Gender::UNKNOW;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }

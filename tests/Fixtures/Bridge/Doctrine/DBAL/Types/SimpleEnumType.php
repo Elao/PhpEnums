@@ -32,7 +32,7 @@ class SimpleEnumType extends AbstractIntegerEnumType
         return SimpleEnum::ZERO;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }

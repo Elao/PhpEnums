@@ -52,6 +52,8 @@ abstract class AbstractEnumType extends Type
      *
      * @param EnumInterface|null $value
      * @psalm-param T|null $value
+     *
+     * @return mixed
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -64,6 +66,8 @@ abstract class AbstractEnumType extends Type
 
     /**
      * {@inheritdoc}
+     *
+     * @return mixed
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -79,7 +83,7 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
@@ -95,7 +99,7 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

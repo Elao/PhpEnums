@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
  */
 class Kernel extends BaseKernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         return array_filter([
             new FrameworkBundle(),
@@ -49,7 +49,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__ . '/../';
     }

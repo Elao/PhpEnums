@@ -16,6 +16,9 @@ use Elao\Enum\EnumInterface;
 
 abstract class AbstractJsonCollectionEnumType extends JsonType
 {
+    /**
+     * @return mixed
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (\is_array($value)) {
@@ -27,6 +30,9 @@ abstract class AbstractJsonCollectionEnumType extends JsonType
         return parent::convertToDatabaseValue($value, $platform);
     }
 
+    /**
+     * @return mixed
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         $values = parent::convertToPHPValue($value, $platform);
@@ -41,7 +47,7 @@ abstract class AbstractJsonCollectionEnumType extends JsonType
     /**
      * {@inheritdoc}
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
     }

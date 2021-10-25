@@ -16,6 +16,9 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @final
+ */
 class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
@@ -23,7 +26,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
      *
      * @param EnumInterface $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): string
     {
         return $object->getValue();
     }
@@ -31,7 +34,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EnumInterface;
     }
@@ -39,7 +42,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): EnumInterface
     {
         try {
             return \call_user_func([$class, 'get'], $data);
@@ -51,7 +54,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return is_a($type, EnumInterface::class, true);
     }

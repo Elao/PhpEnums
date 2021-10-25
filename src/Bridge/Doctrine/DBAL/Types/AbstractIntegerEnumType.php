@@ -17,7 +17,7 @@ abstract class AbstractIntegerEnumType extends AbstractEnumType
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
@@ -25,7 +25,7 @@ abstract class AbstractIntegerEnumType extends AbstractEnumType
     /**
      * {@inheritdoc}
      */
-    public function getBindingType()
+    public function getBindingType(): int
     {
         return \PDO::PARAM_INT;
     }

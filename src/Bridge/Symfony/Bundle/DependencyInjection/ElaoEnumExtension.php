@@ -103,12 +103,12 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         ;
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://elao.com/schema/dic/elao_enum';
     }
 
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): string
     {
         return __DIR__ . '/../Resources/config/schema';
     }

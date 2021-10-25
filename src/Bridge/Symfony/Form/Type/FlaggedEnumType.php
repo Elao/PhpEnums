@@ -18,6 +18,9 @@ use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final
+ */
 class FlaggedEnumType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -53,7 +56,7 @@ class FlaggedEnumType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return EnumType::class;
     }

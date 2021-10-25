@@ -23,6 +23,8 @@ abstract class AbstractEnumType extends Type
 
     /**
      * {@inheritdoc}
+     *
+     * @return mixed
      */
     public function convertToDatabaseValue($value)
     {

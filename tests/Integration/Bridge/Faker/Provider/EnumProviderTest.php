@@ -22,6 +22,15 @@ use Nelmio\Alice\Loader\NativeLoader;
 
 class EnumProviderTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        if (!class_exists(NativeLoader::class)) {
+            self::markTestSkipped(
+                sprintf('nelmio/alice is not installed', NativeLoader::class)
+            );
+        }
+    }
+
     public function testEnumProvider(): void
     {
         $loader = new EnumLoader();
@@ -60,6 +69,10 @@ class EnumProviderTest extends TestCase
         self::assertInstanceOf(SimpleEnum::class, $entity2->simpleEnum);
         self::assertInstanceOf(Gender::class, $entity2->gender);
     }
+}
+
+if (!class_exists(NativeLoader::class)) {
+    return;
 }
 
 class EnumLoader extends NativeLoader

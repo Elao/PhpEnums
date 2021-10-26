@@ -12,7 +12,11 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Serializer\Normalizer;
 
 use Elao\Enum\Bridge\Symfony\Serializer\Normalizer\EnumNormalizer;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 use Elao\Enum\Tests\TestCase;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 class EnumNormalizerTest extends TestCase
@@ -46,6 +50,29 @@ class EnumNormalizerTest extends TestCase
             Gender::get(Gender::MALE),
             $this->normalizer->denormalize(Gender::MALE, Gender::class)
         );
+    }
+
+    /**
+     * @dataProvider provide testsDenormalizeWithCastForIntegerEnum data
+     */
+    public function testsDenormalizeWithCastForIntegerEnum(?string $format, bool $expectError): void
+    {
+        if ($expectError) {
+            $this->expectException(UnexpectedValueException::class);
+        }
+
+        self::assertSame(
+            SimpleEnum::get(SimpleEnum::FIRST),
+            $this->normalizer->denormalize((string) SimpleEnum::FIRST, SimpleEnum::class, $format)
+        );
+    }
+
+    public function provide testsDenormalizeWithCastForIntegerEnum data(): iterable
+    {
+        yield [null, true];
+        yield [JsonEncoder::FORMAT, true];
+        yield [CsvEncoder::FORMAT, false];
+        yield [XmlEncoder::FORMAT, false];
     }
 
     public function testsDenormalizeWithWrongValueThrowsException(): void

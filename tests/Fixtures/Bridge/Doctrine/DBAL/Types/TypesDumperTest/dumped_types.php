@@ -19,6 +19,32 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
         }
     }
 
+    if (!\class_exists(BazWithDefaultType::class)) {
+        class BazWithDefaultType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType
+        {
+            public const NAME = 'baz_with_default';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\BazWithDefault::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+            protected function onNullFromDatabase()
+            {
+                return \Foo\Bar\BazWithDefault::get('foo');
+            }
+
+            protected function onNullFromPhp()
+            {
+                return 'foo';
+            }
+        }
+    }
+
     if (!\class_exists(XyzType::class)) {
         class XyzType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
         {
@@ -32,6 +58,32 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
             public function getName(): string
             {
                 return static::NAME;
+            }
+        }
+    }
+
+    if (!\class_exists(XyzWithDefaultType::class)) {
+        class XyzWithDefaultType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
+        {
+            public const NAME = 'xyz';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\XyzWithDefault::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+            protected function onNullFromDatabase()
+            {
+                return \Foo\Bar\XyzWithDefault::get('foo');
+            }
+
+            protected function onNullFromPhp()
+            {
+                return 'foo';
             }
         }
     }
@@ -104,6 +156,32 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Baz {
             public function getName(): string
             {
                 return static::NAME;
+            }
+        }
+    }
+
+    if (!\class_exists(FooWithDefaultType::class)) {
+        class FooWithDefaultType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType
+        {
+            public const NAME = 'foo_with_default';
+
+            protected function getEnumClass(): string
+            {
+                return \Foo\Baz\FooWithDefault::class;
+            }
+
+            public function getName(): string
+            {
+                return static::NAME;
+            }
+            protected function onNullFromDatabase()
+            {
+                return \Foo\Baz\FooWithDefault::get(3);
+            }
+
+            protected function onNullFromPhp()
+            {
+                return 3;
             }
         }
     }

@@ -49,8 +49,8 @@ class DoctrineODMTypesPassTest extends TestCase
         $container = new ContainerBuilder();
         $def = $container->register('doctrine_mongodb.odm.manager_configurator.abstract', \stdClass::class);
         $container->getParameterBag()->set('.elao_enum.doctrine_mongodb_types', [
-            ['Foo\Bar\Baz', 'single', 'baz'],
-            ['Foo\Bar\Qux', 'collection', 'qux'],
+            ['Foo\Bar\Baz', 'single', 'baz', null],
+            ['Foo\Bar\Qux', 'collection', 'qux', null],
         ]);
 
         $this->pass->process($container);

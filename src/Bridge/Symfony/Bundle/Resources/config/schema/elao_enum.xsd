@@ -58,6 +58,7 @@
         <xsd:attribute name="class" type="xsd:string" use="required"/>
         <xsd:attribute name="type" type="doctrine_type_type"/>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="default" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="doctrine_mongodb_type">

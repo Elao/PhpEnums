@@ -9,7 +9,6 @@ install: setup
 install:
 	rm -f composer.lock
 	composer config minimum-stability --unset
-	composer remove --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
 	composer update --prefer-dist
 
 install-lowest: setup
@@ -24,10 +23,13 @@ install-highest:
 	composer config minimum-stability dev
 	composer update
 
-install-odm:
-	rm -f composer.lock
-	composer require --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
-	composer update --prefer-dist
+add-odm:
+	composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
+	@echo "Run again appropriate install target to update dependencies"
+
+remove-odm:
+	composer remove --no-update --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
+	@echo "Run again appropriate install target to update dependencies"
 
 ########
 # Test #

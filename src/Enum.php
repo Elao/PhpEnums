@@ -159,6 +159,7 @@ abstract class Enum implements EnumInterface, JsonSerializable
     /**
      * @return T
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getValue();

@@ -22,7 +22,7 @@ class SimpleCsvCollectionEnumType extends AbstractCsvCollectionEnumType
         return SimpleEnum::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }

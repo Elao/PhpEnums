@@ -24,20 +24,21 @@ return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'concat_space' => ['spacing' => 'one'],
+        'header_comment' => ['header' => $header],
+        'native_function_invocation' => ['include' => ['@compiler_optimized']],
+        'no_unneeded_final_method' => false, // final private __construct is a valid use-case
+        'ordered_imports' => true,
         'php_unit_namespaced' => true,
         'php_unit_method_casing' => false,
-        'psr_autoloading' => true,
-        'concat_space' => ['spacing' => 'one'],
-        'phpdoc_summary' => false,
         'phpdoc_annotation_without_dot' => false,
+        'phpdoc_summary' => false,
         'phpdoc_order' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'ordered_imports' => true,
-        'simplified_null_return' => false,
-        'header_comment' => ['header' => $header],
-        'yoda_style' => [],
-        'no_unneeded_final_method' => false, // final private __construct is a valid use-case
-        'native_function_invocation' => ['include' => ['@compiler_optimized']],
+        'phpdoc_trim_consecutive_blank_line_separation' => true,
+        'psr_autoloading' => true,
         'single_line_throw' => false,
+        'simplified_null_return' => false,
+        'yoda_style' => [],
     ])
 ;

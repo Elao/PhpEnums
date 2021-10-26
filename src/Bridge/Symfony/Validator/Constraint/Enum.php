@@ -107,6 +107,8 @@ class Enum extends Choice
 
     /**
      * {@inheritdoc}
+     *
+     * @return string
      */
     public function validatedBy()
     {
@@ -116,13 +118,15 @@ class Enum extends Choice
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'class';
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return string[]
      */
     public function getRequiredOptions()
     {

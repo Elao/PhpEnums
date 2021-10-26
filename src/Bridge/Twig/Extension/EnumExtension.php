@@ -18,7 +18,10 @@ use Twig\TwigFunction;
 
 class EnumExtension extends AbstractExtension
 {
-    public function getFunctions()
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('enum_get', [$this, 'get']),

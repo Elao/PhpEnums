@@ -21,6 +21,9 @@ abstract class AbstractCollectionEnumType extends CollectionType
 {
     use ClosureToPHP;
 
+    /**
+     * @return mixed
+     */
     public function convertToDatabaseValue($value)
     {
         if (\is_array($value)) {
@@ -36,6 +39,8 @@ abstract class AbstractCollectionEnumType extends CollectionType
      * {@inheritdoc}
      *
      * @psalm-return array<TEnum>|null
+     *
+     * @return mixed
      */
     public function convertToPHPValue($value)
     {

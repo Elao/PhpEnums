@@ -20,7 +20,7 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         $values = implode(', ', array_map(static function (string $value): string {
             return "'$value'";

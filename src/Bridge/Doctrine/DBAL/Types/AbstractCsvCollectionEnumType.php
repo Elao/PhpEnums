@@ -16,6 +16,9 @@ use Elao\Enum\EnumInterface;
 
 abstract class AbstractCsvCollectionEnumType extends SimpleArrayType
 {
+    /**
+     * @return mixed
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (\is_array($value)) {
@@ -27,6 +30,9 @@ abstract class AbstractCsvCollectionEnumType extends SimpleArrayType
         return parent::convertToDatabaseValue($value, $platform);
     }
 
+    /**
+     * @return mixed
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {

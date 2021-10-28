@@ -540,7 +540,7 @@ It'll actually generate & register the types classes for you, saving you from wr
 
 A default value in case of `null` from the database or from PHP can be configured with the `default` option:
 
-````yaml
+```yaml
 elao_enum:
     doctrine:
         types:

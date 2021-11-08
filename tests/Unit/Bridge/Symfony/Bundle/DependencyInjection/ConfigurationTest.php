@@ -15,6 +15,7 @@ use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
+use Elao\Enum\Tests\Fixtures\Enum\YetAnotherEnum;
 use Elao\Enum\Tests\TestCase;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -89,6 +90,7 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
+                    YetAnotherEnum::class => YetAnotherEnum::class,
                     Gender::class => ['name' => 'gender', 'type' => 'string'],
                     AnotherEnum::class => ['name' => 'another', 'type' => 'enum'],
                     Permissions::class => ['name' => 'permissions', 'type' => 'int'],
@@ -100,9 +102,34 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => true,
                 'types' => [
+                    YetAnotherEnum::class => ['class' => YetAnotherEnum::class, 'type' => null, 'default' => null],
                     'gender' => ['class' => Gender::class, 'type' => 'string', 'default' => null],
                     'another' => ['class' => AnotherEnum::class, 'type' => 'enum', 'default' => null],
                     'permissions' => ['class' => Permissions::class, 'type' => 'int', 'default' => null],
+                ],
+            ],
+        ] + $this->getDefaultConfig(), $config);
+    }
+
+    public function testFQCNAsKeyValuesAllowed(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                    Gender::class => Gender::class,
+                    AnotherEnum::class => AnotherEnum::class,
+                ],
+            ],
+        ]]);
+
+        self::assertEquals([
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                    Gender::class => ['class' => Gender::class, 'type' => null, 'default' => null],
+                    AnotherEnum::class => ['class' => AnotherEnum::class, 'type' => null, 'default' => null],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);

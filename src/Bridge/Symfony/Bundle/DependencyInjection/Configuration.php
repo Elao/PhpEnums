@@ -54,20 +54,28 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('types')
                     ->beforeNormalization()
                         ->always(function (array $values): array {
-                            // BC: detect legacy format with enum classes as keys
-                            if (is_a(array_key_first($values), EnumInterface::class, true)) {
-                                @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
+                            foreach ($values as $key => $value) {
+                                if (
+                                    // BC: detect legacy format with enum classes as keys
+                                    is_a($key, EnumInterface::class, true) &&
+                                    // (but if both keys and values are the FQCN, it's fine)
+                                    !is_a($value, EnumInterface::class, true)
+                                ) {
+                                    @trigger_error('Using enum FQCN as keys at path "elao_enum.doctrine.types" is deprecated. Provide the name as keys and add the "class" option for each entry instead.', E_USER_DEPRECATED);
 
-                                // Convert to new format:
-                                $legacyFormat = $values;
-                                $values = [];
-                                foreach ($legacyFormat as $name => $value) {
-                                    if (\is_string($value)) {
-                                        $values[$value] = $name;
-                                        continue;
+                                    // Convert to new format:
+                                    $legacyFormat = $values;
+                                    $values = [];
+                                    foreach ($legacyFormat as $name => $config) {
+                                        if (\is_string($config)) {
+                                            $values[$config] = $name;
+                                            continue;
+                                        }
+
+                                        $values[$config['name']] = $config + ['class' => $name];
                                     }
 
-                                    $values[$value['name']] = $value + ['class' => $name];
+                                    break;
                                 }
                             }
 

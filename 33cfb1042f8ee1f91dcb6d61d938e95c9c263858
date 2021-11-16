@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by chalasr at 2021-11-15T17:47:09Z
+
+Don't ask me how but ext-mongodb is the culprit here: https://github.com/symfony/symfony/pull/44036
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-11-15T21:14:38Z
+
+@chalasr Ok, thx. I knew you'll get me the answer 😇
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-11-16T08:24:27Z
+
+All green 💚 , as planned 🤘🏻

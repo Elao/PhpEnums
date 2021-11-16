@@ -22,22 +22,11 @@ jobs:
         with:
           php-version: '8.0'
 
-      - name: 'Get composer cache directory'
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: 'Cache dependencies'
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
-
       - name: 'Install dependencies'
-        run: composer update --prefer-dist
+        run: make php-cs-fixer.phar
 
       - name: 'Check style'
-        run: vendor/bin/php-cs-fixer fix --dry-run --no-interaction --diff
+        run: ./php-cs-fixer.phar fix --dry-run --no-interaction --diff
 
   test:
     name: ${{ matrix.name }}
@@ -153,7 +142,7 @@ jobs:
         if: ${{ matrix.allow-unstable }}
 
       - name: 'Remove packages not allowing Symfony 6 yet'
-        run: composer remove --no-update ${{ matrix.composer-flags }} --dev --no-interaction --ansi "nelmio/alice" "api-platform/core" "friendsofphp/php-cs-fixer"
+        run: composer remove --no-update ${{ matrix.composer-flags }} --dev --no-interaction --ansi "nelmio/alice" "api-platform/core"
         if: ${{ matrix.symfony == '6.0.*@dev' }}
 
       - name: 'Require Doctrine MongoDB dependencies'

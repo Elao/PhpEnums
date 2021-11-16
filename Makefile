@@ -1,3 +1,5 @@
+PHP_CS_FIXER_VERSION=v3.3.2
+
 ###########
 # Install #
 ###########
@@ -39,7 +41,7 @@ install-61:
 
 remove-60unready-deps:
 	# Tmp remove packages not allowing Symfony 6 yet
-	composer remove --no-update --no-interaction --dev "nelmio/alice" "api-platform/core" "friendsofphp/php-cs-fixer"
+	composer remove --no-update --no-interaction --dev "nelmio/alice" "api-platform/core"
 
 add-odm:
 	composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
@@ -65,8 +67,18 @@ testdox:
 
 lint: lint-php-cs-fixer
 
-fix-php-cs-fixer:
-	vendor/bin/php-cs-fixer fix --no-interaction
+php-cs-fixer.phar:
+	wget --no-verbose https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar
+	chmod +x php-cs-fixer.phar
 
+update-php-cs-fixer.phar:
+	rm -f php-cs-fixer.phar
+	make php-cs-fixer.phar
+
+fix-php-cs-fixer: php-cs-fixer.phar
+fix-php-cs-fixer:
+	./php-cs-fixer.phar fix --no-interaction
+
+lint-php-cs-fixer: php-cs-fixer.phar
 lint-php-cs-fixer:
-	vendor/bin/php-cs-fixer fix --no-interaction --dry-run --diff
+	./php-cs-fixer.phar fix --no-interaction --dry-run --diff

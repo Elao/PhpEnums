@@ -19,9 +19,9 @@ install-lowest:
 	composer config minimum-stability --unset
 	composer update --prefer-lowest
 
-install-5.4: setup
-install-5.4: export SYMFONY_REQUIRE = 5.4.*@dev
-install-5.4:
+install-54: setup
+install-54: export SYMFONY_REQUIRE = 5.4.*@dev
+install-54:
 	composer config minimum-stability dev
 	composer update
 

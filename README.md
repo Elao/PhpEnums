@@ -13,8 +13,12 @@ This project aims to provide the missing PHP enumerations support:
 ```php
 <?php
 
+/**
+ * @extends Enum<string> 
+ */
 final class Gender extends Enum
 {
+    /** @use AutoDiscoveredValuesTrait<string> */
     use AutoDiscoveredValuesTrait;
     
     public const UNKNOWN = 'unknown';
@@ -149,6 +153,9 @@ Declare your own enumeration by creating a class extending `Elao\Enum\Enum`:
 
 use Elao\Enum\Enum;
 
+/**
+ * @extends Enum<string> 
+ */
 final class Gender extends Enum
 {
     public const UNKNOWN = 'unknown';
@@ -187,6 +194,9 @@ You can easily retrieve the enumeration's value by using `$enum->getValue();`
 use Elao\Enum\Enum;
 use Elao\Enum\AutoDiscoveredValuesTrait;
 
+/**
+ * @extends Enum<string> 
+ */
 final class Gender extends Enum
 {
     use AutoDiscoveredValuesTrait;
@@ -223,8 +233,12 @@ namespace App\Enum;
 use Elao\Enum\Enum;
 use Elao\Enum\AutoDiscoveredValuesTrait;
 
+/**
+ * @extends Enum<string> 
+ */
 final class MangoPayEventType extends Enum
 {
+    /** @use AutoDiscoveredValuesTrait<string> */
     use AutoDiscoveredValuesTrait;
 
     protected static function getDiscoveredClasses(): array
@@ -247,6 +261,9 @@ Hence comes the `ReadableEnum`:
 
 use Elao\Enum\ReadableEnum;
 
+/**
+ * @extends ReadableEnum<string> 
+ */
 final class Gender extends ReadableEnum
 {
     public const UNKNOWN = 'unknown';
@@ -289,6 +306,9 @@ If you're using a translation library, you can also simply return translation ke
 
 use Elao\Enum\ReadableEnum;
 
+/**
+ * @extends ReadableEnum<string> 
+ */
 final class Gender extends ReadableEnum
 {
     // ...
@@ -345,8 +365,12 @@ need to implement a `choices()` method instead of both `EnumInterface::values()`
 use Elao\Enum\ChoiceEnumTrait;
 use Elao\Enum\ReadableEnum;
 
+/**
+ * @extends ReadableEnum<string> 
+ */
 final class Gender extends ReadableEnum
 {
+    /** @use ChoiceEnumTrait<string> */
     use ChoiceEnumTrait;
 
     public const UNKNOWN = 'unknown';
@@ -374,6 +398,9 @@ The `SimpleChoiceEnum` base class allows you to benefit from both choice enums c
 
 use Elao\Enum\SimpleChoiceEnum;
 
+/**
+ * @extends SimpleChoiceEnum<string> 
+ */
 final class Gender extends SimpleChoiceEnum
 {   
     public const UNKNOWN = 'unknown';
@@ -497,6 +524,8 @@ We recommend you to use this method, if and only if, you and your team use an ID
 <?php
 
 /**
+ * @extends ReadableEnum<string>
+ *     
  * @method static Gender UNKNOWN()
  * @method static Gender MALE()
  * @method static Gender FEMALE()
@@ -569,6 +598,9 @@ First, create your DBAL type by extending either `AbstractEnumType` (string base
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType;
 
+/**
+ * @extends AbstractEnumType<Gender>
+ */
 final class GenderEnumType extends AbstractEnumType
 {
     public const NAME = 'gender';
@@ -696,6 +728,9 @@ First, create your ODM type by extending either `AbstractEnumType` (single value
 
 use Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractEnumType;
 
+/**
+ * @extends AbstractEnumType<Gender>
+ */
 final class GenderEnumType extends AbstractEnumType
 {
     protected function getEnumClass(): string

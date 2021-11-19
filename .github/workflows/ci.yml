@@ -39,33 +39,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Previous Symfony versions & lowest deps
-          - name: 'Test lowest deps [Linux, PHP 7.3]'
+          # Lowest deps
+          - name: 'Test lowest deps [Linux, PHP 8.1]'
             os: 'ubuntu-latest'
-            php: '7.3'
+            php: '8.1'
             composer-flags: '--prefer-lowest'
-            mongodb: true
+            allow-unstable: true
+            #mongodb: true
 
           # Previous Symfony versions
-          - name: 'Test Symfony 5.3 [Linux, PHP 8.0]'
-            os: 'ubuntu-latest'
-            php: '8.0'
-            symfony: '5.3.*'
+          # …
 
           # Previous PHP versions
-          - name: 'Test Symfony 5.4 [Linux, PHP 7.3]'
-            os: 'ubuntu-latest'
-            php: '7.3'
-            symfony: '5.4.*@dev'
-            allow-unstable: true
-
-          - name: 'Test Symfony 5.4 [Linux, PHP 7.4] (with code coverage)'
-            os: 'ubuntu-latest'
-            php: '7.4'
-            mongodb: true
-            symfony: '5.4.*@dev'
-            allow-unstable: true
-            code-coverage: true
+          # …
 
           # Most recent versions
           - name: 'Test Symfony 5.4 [Linux, PHP 8.1]'
@@ -76,11 +62,11 @@ jobs:
             #mongodb: true
             allow-unstable: true
 
-          - name: 'Test Symfony 5.4 [Windows, PHP 8.0]'
+          - name: 'Test Symfony 5.4 [Windows, PHP 8.1]'
             os: 'windows-latest'
-            php: '8.0'
+            php: '8.1'
             symfony: '5.4.*@dev'
-            mongodb: true
+            #mongodb: true
             allow-unstable: true
 
           - name: 'Test Symfony 6.0 [Linux, PHP 8.1]'

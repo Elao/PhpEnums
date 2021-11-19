@@ -1,5 +1,0 @@
-elao_enum:
-    doctrine:
-        types:
-            gender: Elao\Enum\Tests\Fixtures\Enum\Gender
-            permissions: Elao\Enum\Tests\Fixtures\Enum\Permissions

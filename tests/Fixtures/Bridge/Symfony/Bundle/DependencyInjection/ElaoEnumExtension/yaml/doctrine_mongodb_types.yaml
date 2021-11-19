@@ -1,6 +1,0 @@
-elao_enum:
-    doctrine_mongodb:
-        types:
-            gender: Elao\Enum\Tests\Fixtures\Enum\Gender
-            another: { class: Elao\Enum\Tests\Fixtures\Enum\AnotherEnum, type: collection }
-            permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions, type: single }

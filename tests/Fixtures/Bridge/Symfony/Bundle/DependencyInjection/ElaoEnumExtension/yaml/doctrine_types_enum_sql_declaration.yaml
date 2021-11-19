@@ -1,7 +1,0 @@
-elao_enum:
-    doctrine:
-        enum_sql_declaration: true
-        types:
-            gender: { class: Elao\Enum\Tests\Fixtures\Enum\Gender, type: string }
-            another: Elao\Enum\Tests\Fixtures\Enum\AnotherEnum
-            permissions: Elao\Enum\Tests\Fixtures\Enum\Permissions

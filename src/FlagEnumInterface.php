@@ -10,8 +10,8 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Exception;
+namespace Elao\Enum;
 
-interface ExceptionInterface extends \Throwable
+interface FlagEnumInterface extends \BackedEnum /*\IntBackedEnum*/
 {
 }

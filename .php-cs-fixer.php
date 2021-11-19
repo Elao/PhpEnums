@@ -26,6 +26,7 @@ return (new PhpCsFixer\Config())
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
         'concat_space' => ['spacing' => 'one'],
+        'declare_strict_types' => true,
         'header_comment' => ['header' => $header],
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'no_unneeded_final_method' => false, // final private __construct is a valid use-case

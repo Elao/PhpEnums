@@ -33,6 +33,10 @@ return (new PhpCsFixer\Config())
         'php_unit_namespaced' => true,
         'php_unit_method_casing' => false,
         'phpdoc_annotation_without_dot' => false,
+        'phpdoc_to_comment' => ['ignored_tags' => [
+            // https://github.com/phpstan/phpstan/issues/5465
+            'use',
+        ]],
         'phpdoc_summary' => false,
         'phpdoc_order' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,

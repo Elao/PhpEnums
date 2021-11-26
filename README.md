@@ -16,14 +16,15 @@ This project aims to provide the missing PHP enumerations support:
 /**
  * @extends Enum<string> 
  */
-final class Gender extends Enum
+final class Suit extends Enum
 {
     /** @use AutoDiscoveredValuesTrait<string> */
     use AutoDiscoveredValuesTrait;
     
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'H';
+    public const DIAMONDS = 'D';
+    public const CLUBS = 'C';
+    public const SPADES = 'S';
 }
 ```
 
@@ -105,7 +106,7 @@ Enumerations are not options and are not meant to replace constants. Designing a
 
 **Valid use-cases:**
 
-- Gender, civility, predictable roles and permissions, ...
+- Suit, civility, predictable roles and permissions, ...
 - A set of supported nodes in an importer, or a set of predefined attributes.
 - In a game: predefined actions, movement directions, character classes, weapon types, ...
 - Any other set of restricted elements.
@@ -156,18 +157,20 @@ use Elao\Enum\Enum;
 /**
  * @extends Enum<string> 
  */
-final class Gender extends Enum
+final class Suit extends Enum
 {
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'H';
+    public const DIAMONDS = 'D';
+    public const CLUBS = 'C';
+    public const SPADES = 'S';
 
     public static function values(): array
     {
         return [
-            self::UNKNOWN, 
-            self::MALE, 
-            self::FEMALE
+            self::HEARTS, 
+            self::DIAMONDS, 
+            self::CLUBS,
+            self::SPADES,
         ];
     }
 }
@@ -177,7 +180,7 @@ Get an instance of your enum type:
 
 ```php
 <?php
-$enum = Gender::get(Gender::Male);
+$enum = Suit::get(Suit::HEARTS);
 ```
 
 You can easily retrieve the enumeration's value by using `$enum->getValue();`
@@ -197,13 +200,14 @@ use Elao\Enum\AutoDiscoveredValuesTrait;
 /**
  * @extends Enum<string> 
  */
-final class Gender extends Enum
+final class Suit extends Enum
 {
     use AutoDiscoveredValuesTrait;
     
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'H';
+    public const DIAMONDS = 'D';
+    public const CLUBS = 'C';
+    public const SPADES = 'S';
 }
 ```
 
@@ -264,27 +268,30 @@ use Elao\Enum\ReadableEnum;
 /**
  * @extends ReadableEnum<string> 
  */
-final class Gender extends ReadableEnum
+final class Suit extends ReadableEnum
 {
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'H';
+    public const DIAMONDS = 'D';
+    public const CLUBS = 'C';
+    public const SPADES = 'S';
 
     public static function values(): array
     {
         return [
-            self::UNKNOWN,
-            self::MALE,
-            self::FEMALE,
+            self::HEARTS,
+            self::DIAMONDS,
+            self::CLUBS,
+            self::SPADES,
         ];
     }
 
     public static function readables(): array
     {
         return [
-            self::UNKNOWN => 'Unknown',
-            self::MALE => 'Male',
-            self::FEMALE => 'Female',
+            self::HEARTS => 'Hearts',
+            self::DIAMONDS => 'Diamonds',
+            self::CLUBS => 'Clubs',
+            self::SPADES => 'Spades',
         ];
     }
 }
@@ -294,9 +301,9 @@ The following snippet shows how to render the human readable value of an enum:
 
 ```php
 <?php
-$enum = Gender::get(Gender::Male); 
-$enum->getReadable(); // returns 'Male'
-(string) $enum; // returns 'Male'
+$enum = Suit::get(Suit::HEARTS); 
+$enum->getReadable(); // returns 'Hearts'
+(string) $enum; // returns 'Hearts'
 ```
 
 If you're using a translation library, you can also simply return translation keys from the `ReadableEnumInterface::readables()` method:
@@ -309,16 +316,17 @@ use Elao\Enum\ReadableEnum;
 /**
  * @extends ReadableEnum<string> 
  */
-final class Gender extends ReadableEnum
+final class Suit extends ReadableEnum
 {
     // ...
     
     public static function readables(): array
     {
         return [
-            self::UNKNOWN => 'enum.gender.unknown',
-            self::MALE => 'enum.gender.male',
-            self::FEMALE => 'enum.gender.female',
+            self::HEARTS => 'enum.suit.hearts',
+            self::DIAMONDS => 'enum.suit.diamonds',
+            self::CLUBS => 'enum.suit.clubs',
+            self::SPADES => 'enum.suit.spades',
         ];
     }
 }
@@ -328,16 +336,17 @@ Using Symfony's translation component:
 
 ```yaml
  # translations/messages.en.yaml
- enum.gender.unknown: 'Unknown'
- enum.gender.male: 'Male'
- enum.gender.female: 'Female'
+ enum.suit.hearts: 'Hearts'
+ enum.suit.diamonds: 'Diamonds'
+ enum.suit.clubs: 'Clubs'
+ enum.suit.spades: 'Spades'
 ```
 
 ```php
 <?php
-$enum = Gender::get(Gender::MALE);
+$enum = Suit::get(Suit::HEARTS);
 // get translator instance...
-$translator->trans($enum); // returns 'Male'
+$translator->trans($enum); // returns 'Hearts'
 ```
 
 If you want to extract and update the translations automatically using the [translation extractor command](https://symfony.com/doc/current/translation.html#extracting-translation-contents-and-updating-catalogs-automatically) you can use the provided custom extractor:
@@ -368,21 +377,23 @@ use Elao\Enum\ReadableEnum;
 /**
  * @extends ReadableEnum<string> 
  */
-final class Gender extends ReadableEnum
+final class Suit extends ReadableEnum
 {
     /** @use ChoiceEnumTrait<string> */
     use ChoiceEnumTrait;
 
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'hearts';
+    public const DIAMONDS = 'diamonds';
+    public const CLUBS = 'clubs';
+    public const SPADES = 'spades';
 
     public static function choices(): array
     {
         return [
-            self::UNKNOWN => 'Unknown',
-            self::MALE => 'Male',
-            self::FEMALE => 'Female',
+            self::HEARTS => 'Hearts',
+            self::DIAMONDS => 'Diamonds',
+            self::CLUBS => 'Clubs',
+            self::SPADES => 'Spades',
         ];
     }
 }
@@ -401,16 +412,17 @@ use Elao\Enum\SimpleChoiceEnum;
 /**
  * @extends SimpleChoiceEnum<string> 
  */
-final class Gender extends SimpleChoiceEnum
+final class Suit extends SimpleChoiceEnum
 {   
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'hearts';
+    public const DIAMONDS = 'diamonds';
+    public const CLUBS = 'clubs';
+    public const SPADES = 'spades';
 }
 ```
 
 In addition, it'll provide default labels for each enumerated values based on a humanized version of their constant name 
-(i.e: "MALE" becomes "Male". "SOME_VALUE" becomes "Some value").
+(i.e: "HEARTS" becomes "Hearts". "SOME_VALUE" becomes "Some value").
 In case you need more accurate labels, simply override the `SimpleChoiceEnum::choices()` implementation.
 
 ## Flagged enums
@@ -485,8 +497,8 @@ Thus, in order to compare two instances, you can simply use the strict compariso
 
 ```php
 <?php
-Gender::get(Gender::MALE) === Gender::get(Gender::FEMALE); // False
-Gender::get(Gender::MALE) === Gender::get(Gender::MALE); // True
+Suit::get(Suit::HEARTS) === Suit::get(Suit::SPADES); // False
+Suit::get(Suit::HEARTS) === Suit::get(Suit::HEARTS); // True
 Permissions::get(Permissions::ALL) === Permissions::get(
     Permissions::READ | Permissions::WRITE | Permissions::EXECUTE
 ); // True
@@ -497,16 +509,16 @@ The default implementation compares both enum type (the class) and value.
 
 ```php
 <?php
-Gender::get(Gender::MALE)->equals(Gender::get(Gender::FEMALE)); // False
-Gender::get(Gender::MALE)->equals(Gender::get(Gender::MALE)); // True
+Suit::get(Suit::HEARTS)->equals(Suit::get(Suit::SPADES)); // False
+Suit::get(Suit::HEARTS)->equals(Suit::get(Suit::HEARTS)); // True
 ```
 
 Lastly, you can simply compare an instance with a value by using the `EnumInterface::is($value)`:
 
 ```php
 <?php
-Gender::get(Gender::MALE)->is(Gender::FEMALE); // False
-Gender::get(Gender::MALE)->is(Gender::MALE); // True
+Suit::get(Suit::HEARTS)->is(Suit::SPADES); // False
+Suit::get(Suit::HEARTS)->is(Suit::HEARTS); // True
 ```
 
 ## Shortcuts
@@ -515,7 +527,7 @@ Inspired from [myclabs/php-enum](https://github.com/myclabs/php-enum#static-meth
 
 ```php
 <?php
-Gender::MALE(); // Returns an instance of Gender with the MALE value
+Suit::HEARTS(); // Returns an instance of Suit with the HEARTS value
 ```
 
 We recommend you to use this method, if and only if, you and your team use an IDE (e.g PhpStorm) able to interpret the [`@method` tag](https://phpdoc.org/docs/latest/references/phpdoc/tags/method.html) in class definitions. Then, you can benefit from IDE completion by declaring the following:
@@ -526,15 +538,17 @@ We recommend you to use this method, if and only if, you and your team use an ID
 /**
  * @extends ReadableEnum<string>
  *     
- * @method static Gender UNKNOWN()
- * @method static Gender MALE()
- * @method static Gender FEMALE()
+ * @method static Suit HEARTS()
+ * @method static Suit DIAMONDS()
+ * @method static Suit CLUBS()
+ * @method static Suit SPADES()
  */
-final class Gender extends ReadableEnum
+final class Suit extends ReadableEnum
 {
-    public const UNKNOWN = 'unknown';
-    public const MALE = 'male';
-    public const FEMALE = 'female';
+    public const HEARTS = 'hearts';
+    public const DIAMONDS = 'diamonds';
+    public const CLUBS = 'clubs';
+    public const SPADES = 'spades';
     
     // ...
 }
@@ -558,7 +572,7 @@ This configuration is equivalent to the following sections explaining how to cre
 elao_enum:
     doctrine:
         types:
-            gender: App\Enum\GenderEnum # Defaults to `{ class: App\Enum\GenderEnum, type: string }` for string based enum (translates to VARCHAR)
+            suit: App\Enum\SuitEnum # Defaults to `{ class: App\Enum\SuitEnum, type: string }` for string based enum (translates to VARCHAR)
             another: { class: App\Enum\AnotherEnum, type: enum } # string based enum with SQL ENUM column definition
             permissions: { class: App\Enum\Permissions, type: int } # values are stored as integers. Default for flagged enums.
             activity_types: { class: App\Enum\ActivityType, type: json_collection } # values are stored as a json array of enum values.
@@ -573,9 +587,9 @@ A default value in case of `null` from the database or from PHP can be configure
 elao_enum:
     doctrine:
         types:
-            gender:
-                class: App\Enum\GenderEnum
-                default: !php/const App\Enum\GenderEnum::UNKNOWN
+            suit:
+                class: App\Enum\SuitEnum
+                default: !php/const App\Enum\SuitEnum::UNKNOWN
 ```
 
 You can also default to SQL `ENUM` column definitions by default for all types by using:
@@ -599,15 +613,15 @@ First, create your DBAL type by extending either `AbstractEnumType` (string base
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType;
 
 /**
- * @extends AbstractEnumType<Gender>
+ * @extends AbstractEnumType<Suit>
  */
-final class GenderEnumType extends AbstractEnumType
+final class SuitEnumType extends AbstractEnumType
 {
-    public const NAME = 'gender';
+    public const NAME = 'Suit';
 
     protected function getEnumClass(): string
     {
-        return Gender::class;
+        return Suit::class;
     }
 
     public function getName(): string
@@ -628,15 +642,15 @@ Then, you'll simply need to register your DBAL type:
 // in bootstrapping code
 // ...
 use Doctrine\DBAL\Types\Type;
-Type::addType(GenderEnumType::NAME, GenderEnumType::class);
+Type::addType(SuitEnumType::NAME, SuitEnumType::class);
 ```
 
-To convert the underlying database type of your new "gender" type directly into an instance of `Gender` when performing schema operations, the type has to be registered with the database platform as well:
+To convert the underlying database type of your new "Suit" type directly into an instance of `Suit` when performing schema operations, the type has to be registered with the database platform as well:
 
 ```php
 <?php
 $conn = $em->getConnection();
-$conn->getDatabasePlatform()->registerDoctrineTypeMapping(GenderEnumType::NAME, GenderEnumType::class);
+$conn->getDatabasePlatform()->registerDoctrineTypeMapping(SuitEnumType::NAME, SuitEnumType::class);
 ```
 
 #### Using the Doctrine Bundle with Symfony
@@ -650,7 +664,7 @@ refs:
 doctrine:
     dbal:
         types:
-            gender: App\Doctrine\DBAL\Types\GenderEnumType
+            suit: App\Doctrine\DBAL\Types\SuitEnumType
 ```
 
 ### Mapping
@@ -661,8 +675,8 @@ When registering the custom types in the configuration, you specify a unique nam
 <?php
 class User
 {
-    /** @Column(type="gender") */
-    private Gender $gender;
+    /** @Column(type="suit") */
+    private Suit $Suit;
 }
 ```
 
@@ -713,7 +727,7 @@ This configuration is equivalent to the following sections explaining how to cre
 elao_enum:
     doctrine_mongodb:
         types:
-            gender: App\Enum\GenderEnum # Defaults to `{ class: App\Enum\GenderEnum, type: single }`
+            Suit: App\Enum\SuitEnum # Defaults to `{ class: App\Enum\SuitEnum, type: single }`
             another: { class: App\Enum\AnotherEnum, type: collection } # values are stored as an array of integers or strings
 ```
 
@@ -729,13 +743,13 @@ First, create your ODM type by extending either `AbstractEnumType` (single value
 use Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractEnumType;
 
 /**
- * @extends AbstractEnumType<Gender>
+ * @extends AbstractEnumType<Suit>
  */
-final class GenderEnumType extends AbstractEnumType
+final class SuitEnumType extends AbstractEnumType
 {
     protected function getEnumClass(): string
     {
-        return Gender::class;
+        return Suit::class;
     }
 }
 ```
@@ -751,7 +765,7 @@ Then, you'll simply need to register your custom type:
 // in bootstrapping code
 // ...
 use Doctrine\ODM\MongoDB\Types\Type;
-Type::addType('gender', GenderEnumType::class);
+Type::addType('suit', SuitEnumType::class);
 ```
 
 #### Using the Doctrine Bundle with Symfony
@@ -764,7 +778,7 @@ refs:
 # config/packages/doctrine_mongodb.yaml
 doctrine_mongodb:
     types:
-        gender: App\Doctrine\ODM\Types\GenderEnumType
+        suit: App\Doctrine\ODM\Types\SuitEnumType
 ```
 
 ### Mapping
@@ -778,8 +792,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\Field;
 
 class User
 {
-    /** @Field(type="gender") */
-    private Gender $gender;
+    /** @Field(type="suit") */
+    private Suit $Suit;
 }
 ```
 
@@ -809,18 +823,18 @@ Simply use the `EnumType`:
 <?php
 
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
-use MyApp\Enum\Gender;
+use MyApp\Enum\Suit;
 
 // ...
 
-$builder->add('gender', EnumType::class, [
-    'enum_class' => Gender::class,
+$builder->add('suit', EnumType::class, [
+    'enum_class' => Suit::class,
 ]);
 
 // ...
 
 $form->submit($data);
-$form->get('gender')->getData(); // Will return a `Gender` instance (or null)
+$form->get('suit')->getData(); // Will return a `Suit` instance (or null)
 ```
 
 Only the `enum_class` option is required.
@@ -833,19 +847,19 @@ The field data will be an instance of your enum. If you only want to map values,
 <?php
 
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
-use MyApp\Enum\Gender;
+use MyApp\Enum\Suit;
 
 // ...
 
-$builder->add('gender', EnumType::class, [
-    'enum_class' => Gender::class,
+$builder->add('suit', EnumType::class, [
+    'enum_class' => Suit::class,
     'as_value' => true,
 ]);
 
 // ...
 
 $form->submit($data);
-$form->get('gender')->getData(); // Will return a string value defined in the `Gender` enum (or null)
+$form->get('suit')->getData(); // Will return a string value defined in the `Suit` enum (or null)
 ```
 
 You can restrict the list of proposed enumerations by overriding the `choices` option:
@@ -854,26 +868,26 @@ You can restrict the list of proposed enumerations by overriding the `choices` o
 <?php
 
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
-use MyApp\Enum\Gender;
+use MyApp\Enum\Suit;
 
 // ...
 
-$builder->add('gender', EnumType::class, [
-    'enum_class' => Gender::class,
+$builder->add('suit', EnumType::class, [
+    'enum_class' => Suit::class,
     'choices' => [
-        Gender::get(Gender::MALE), 
-        Gender::get(Gender::FEMALE),
+        Suit::get(Suit::HEARTS), 
+        Suit::get(Suit::SPADES),
     ],
 ]);
 
 // or:
 
-$builder->add('gender', EnumType::class, [
-    'enum_class' => Gender::class,
+$builder->add('suit', EnumType::class, [
+    'enum_class' => Suit::class,
     'as_value' => true,
     'choices' => [
-        Gender::readableFor(Gender::MALE) => Gender::MALE,
-        Gender::readableFor(Gender::FEMALE) => Gender::FEMALE,
+        Suit::readableFor(Suit::HEARTS) => Suit::HEARTS,
+        Suit::readableFor(Suit::SPADES) => Suit::SPADES,
     ],
 ]);
 ```
@@ -922,8 +936,8 @@ To use the constraint, simply provide the enum `class`:
 # config/validator/validation.yaml
 App\Entity\User:
     properties:
-        gender:
-            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum: MyApp\Enum\Gender
+        suit:
+            - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum: MyApp\Enum\Suit
 ```
 
 If the property value is not an enum instance, set the `asValue` option to true in order to simply validate the enum value:
@@ -932,9 +946,9 @@ If the property value is not an enum instance, set the `asValue` option to true 
 # config/validator/validation.yaml
 App\Entity\User:
     properties:
-        gender:
+        suit:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
-                class: MyApp\Enum\Gender
+                class: MyApp\Enum\Suit
                 asValue: true
 ```
 
@@ -944,12 +958,12 @@ You can restrict the available choices by setting the allowed values in the `cho
 # config/validator/validation.yaml
 App\Entity\User:
     properties:
-        gender:
+        suit:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
-                class: MyApp\Enum\Gender
+                class: MyApp\Enum\Suit
                 choices: 
-                    - female
-                    - !php/const MyApp\Enum\Gender::MALE
+                    - spades
+                    - !php/const MyApp\Enum\Suit::HEARTS
 ```
 
 The `choice` option only accepts enum values and normalize it internally to enum instances if `asValue` is `false`.
@@ -960,13 +974,13 @@ You can also use a [`callback`](http://symfony.com/doc/current/reference/constra
 # config/validator/validation.yaml
 App\Entity\User:
     properties:
-        gender:
+        suit:
             - Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum:
-                class: MyApp\Enum\Gender
+                class: MyApp\Enum\Suit
                 callback: 'allowedValues'
 ```
 
-Where `allowedValues` is a static method of `MyApp\Enum\Gender`, returning allowed values or instances.
+Where `allowedValues` is a static method of `MyApp\Enum\Suit`, returning allowed values or instances.
 
 Any other [Choice option](http://symfony.com/doc/current/reference/constraints/Choice.html#available-options) (as `multiple`, `min`, ...) is available with the `Enum` constraint.
 
@@ -1002,7 +1016,7 @@ use Elao\Enum\Bridge\Faker\Provider\EnumProvider;
 
 $provider = new EnumProvider([
     'Civility' => Namespace\To\MyCivilityEnum::class,
-    'Gender' => Namespace\To\MyGenderEnum::class,
+    'Suit' => Namespace\To\MySuitEnum::class,
 ]);
 ```
 
@@ -1022,7 +1036,7 @@ services:
     Elao\Enum\Bridge\Faker\Provider\EnumProvider:
         arguments:
             - Civility: Namespace\To\MyCivilityEnum
-              Gender: Namespace\To\MyGenderEnum
+              Suit: Namespace\To\MySuitEnum
         tags: ['nelmio_alice.faker.provider']
 ```
 
@@ -1033,12 +1047,12 @@ MyEntity:
     entity1:
         civility: <enum(Civility::MISTER)>
         # You can use enums outside of map if you specify full path to Enum class:
-        gender: <enum("App\Model\Enum\Gender::MALE">
+        Suit: <enum("App\Model\Enum\Suit::HEARTS">
         # You can use the pipe character in order to combine flagged enums:
         permissions: <enum(Permissions::READ|WRITE>
     entity2:
         civility: <randomEnum(Civility)>
-        gender: <randomEnum("App\Model\Enum\Gender")>
+        Suit: <randomEnum("App\Model\Enum\Suit")>
         permissions: <randomEnum(Permissions)>
 ```
 
@@ -1111,14 +1125,14 @@ This library allows to generate JS code from your PHP enums using a command:
 ```bash
 bin/elao-enum-dump-js --lib-path "./assets/js/lib/enum.js" --base-dir="./assets/js/modules" \
     "App\Auth\Enum\Permissions:auth/Permissions.js" \
-    "App\Common\Enum\Gender:common/Gender.js"
+    "App\Common\Enum\Suit:common/Suit.js"
 ```
 
 This command generates:
 - [library sources](./res/js/Enum.js) at path `assets/js/lib/enums.js` containing the base JS classes
 - enums in a base `/assets/js/modules` dir:
     - `Permissions` in `/assets/js/modules/auth/Permissions.js`
-    - `Gender` in `/assets/js/modules/common/Gender.js`
+    - `Suit` in `/assets/js/modules/common/Suit.js`
     
 Simple enums, readables & flagged enums are supported.
 
@@ -1137,7 +1151,7 @@ elao_enum:
             lib_path: '%kernel.project_dir%/assets/js/lib/enum.js'
             paths:
                 App\Common\Enum\SimpleEnum: 'common/SimpleEnum.js'
-                App\Common\Enum\Gender: 'common/Gender.js'
+                App\Common\Enum\Suit: 'common/Suit.js'
                 App\Auth\Enum\Permissions: 'auth/Permissions.js'
 ```
 

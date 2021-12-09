@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Fixtures\Enum;
 
-use Elao\Enum\ReadableEnumTrait;
 use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ReadableEnumTrait;
 
 enum Suit: string implements ReadableEnumInterface
 {
@@ -24,13 +24,11 @@ enum Suit: string implements ReadableEnumInterface
     case Clubs = 'C';
     case Spades = 'S';
 
-    public static function readables(): array
+    public static function readables(): iterable
     {
-        return [
-            self::Hearts->name => 'suit.hearts',
-            self::Diamonds->name => 'suit.diamonds',
-            self::Clubs->name => 'suit.clubs',
-            self::Spades->name => 'suit.spades',
-        ];
+        yield self::Hearts => 'suit.hearts';
+        yield self::Diamonds => 'suit.diamonds';
+        yield self::Clubs => 'suit.clubs';
+        yield self::Spades => 'suit.spades';
     }
 }

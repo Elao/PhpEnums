@@ -48,7 +48,7 @@ class ReadableEnumFromAttributesTest extends TestCase
     public function testMissingAttributeThrows(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('enum "Elao\Enum\Tests\Fixtures\Enum\SuitWithAttributesMissingAttribute" using the "Elao\Enum\ReadableEnumFromAttributesTrait" trait must define a "Elao\Enum\Attribute\EnumCase" attribute on every cases. Case "Clubs" is missing one.');
+        $this->expectExceptionMessage('enum "Elao\Enum\Tests\Fixtures\Enum\SuitWithAttributesMissingAttribute" using the "Elao\Enum\ReadableEnumTrait" trait must define a "Elao\Enum\Attribute\EnumCase" attribute on every cases. Case "Clubs" is missing one.');
 
         SuitWithAttributesMissingAttribute::readables();
     }
@@ -56,7 +56,7 @@ class ReadableEnumFromAttributesTest extends TestCase
     public function testMissingLabelThrows(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('enum "Elao\Enum\Tests\Fixtures\Enum\SuitWithAttributesMissingLabel" using the "Elao\Enum\ReadableEnumFromAttributesTrait" trait must define a label using the "Elao\Enum\Attribute\EnumCase" attribute on every cases. Case "Clubs" is missing a label.');
+        $this->expectExceptionMessage('enum "Elao\Enum\Tests\Fixtures\Enum\SuitWithAttributesMissingLabel" using the "Elao\Enum\ReadableEnumTrait" trait must define a label using the "Elao\Enum\Attribute\EnumCase" attribute on every cases. Case "Clubs" is missing a label.');
 
         SuitWithAttributesMissingLabel::readables();
     }

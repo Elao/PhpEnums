@@ -13,7 +13,7 @@ Elao Enumerations
 
 enum Suit: string implements ReadableEnumInterface
 {
-    use ReadableEnumFromAttributesTrait;
+    use ReadableEnumTrait;
 
     #[EnumCase('suit.hearts')]
     case Hearts = 'H';

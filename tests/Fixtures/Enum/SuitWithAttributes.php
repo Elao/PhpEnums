@@ -13,12 +13,12 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\Attribute\EnumCase;
-use Elao\Enum\ReadableEnumFromAttributesTrait;
 use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ReadableEnumTrait;
 
 enum SuitWithAttributes: string implements ReadableEnumInterface
 {
-    use ReadableEnumFromAttributesTrait;
+    use ReadableEnumTrait;
 
     #[EnumCase('suit.hearts')]
     case Hearts = 'H';

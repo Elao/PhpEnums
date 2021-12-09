@@ -27,29 +27,15 @@ install-54:
 
 install-60: setup
 install-60: export SYMFONY_REQUIRE = 6.0.*@dev
-install-60: remove-60unready-deps
 install-60:
 	composer config minimum-stability dev
 	composer update
 
 install-61: setup
 install-61: export SYMFONY_REQUIRE = 6.1.*@dev
-install-61: remove-60unready-deps
 install-61:
 	composer config minimum-stability dev
 	composer update
-
-remove-60unready-deps:
-	# Tmp remove packages not allowing Symfony 6 yet
-	composer remove --no-update --no-interaction --dev "nelmio/alice" "api-platform/core"
-
-add-odm:
-	composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
-	@echo "Run again appropriate install target to update dependencies"
-
-remove-odm:
-	composer remove --no-update --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
-	@echo "Run again appropriate install target to update dependencies"
 
 ########
 # Test #

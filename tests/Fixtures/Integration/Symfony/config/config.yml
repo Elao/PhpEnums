@@ -1,0 +1,38 @@
+framework:
+    secret: 'elao'
+    form: true
+    router:
+        resource: '%kernel.project_dir%/config/routing.yml'
+        strict_requirements: '%kernel.debug%'
+        utf8: true
+    session:
+        storage_factory_id: 'session.storage.factory.mock_file'
+    test: ~
+    assets: false
+
+doctrine:
+    dbal:
+        driver: 'pdo_sqlite'
+        path: '%kernel.cache_dir%/db.sqlite'
+        charset: 'UTF8'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        mappings:
+            App:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+
+elao_enum:
+    doctrine:
+        types:
+            Elao\Enum\Tests\Fixtures\Enum\Suit:
+                default: !php/const Elao\Enum\Tests\Fixtures\Enum\Suit::Spades
+
+services:
+    logger:
+        class: Psr\Log\NullLogger
+        public: false

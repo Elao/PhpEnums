@@ -24,12 +24,12 @@ class SuitEnumTypeWithDefaultOnNull extends AbstractEnumType
         return Suit::class;
     }
 
-    protected function onNullFromDatabase()
+    protected function onNullFromDatabase(): ?\BackedEnum
     {
         return Suit::Spades;
     }
 
-    protected function onNullFromPhp()
+    protected function onNullFromPhp(): int|string|null
     {
         return Suit::Spades->value;
     }

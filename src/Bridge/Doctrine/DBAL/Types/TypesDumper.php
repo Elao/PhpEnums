@@ -18,9 +18,6 @@ namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 class TypesDumper
 {
     /**
-     * @param string $file
-     * @param array  $types
-     *
      * @return void
      */
     public function dumpToFile(string $file, array $types)
@@ -35,7 +32,7 @@ class TypesDumper
 
     private function dump(array $types): string
     {
-        array_walk($types, static function (&$type) {
+        array_walk($types, static function (& $type) {
             $type = array_pad($type, 3, null);
         });
 
@@ -70,7 +67,7 @@ PHP;
         string $classname,
         string $enumClass,
         string $name,
-        int|string|null $defaultOnNull = null
+        \BackedEnum|int|string|null $defaultOnNull = null
     ): string {
         $code = <<<PHP
                         protected function getEnumClass(): string
@@ -110,19 +107,23 @@ PHP;
         return 'ELAO_ENUM_DT_DBAL';
     }
 
-    private function appendDefaultOnNullMethods(string &$code, string $enumClass, int|string|null $defaultOnNull): void
+    private function appendDefaultOnNullMethods(string & $code, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
     {
         if ($defaultOnNull !== null) {
-            $defaultOnNullCode = var_export($defaultOnNull, true);
+            $defaultOnNullCode = var_export(
+                $defaultOnNull instanceof \BackedEnum ? $defaultOnNull->value : $defaultOnNull,
+                true,
+            );
+
             $code .= <<<PHP
 
 
-                        protected function onNullFromDatabase()
+                        protected function onNullFromDatabase(): ?\BackedEnum
                         {
-                            return \\{$enumClass}::get({$defaultOnNullCode});
+                            return \\{$enumClass}::from($defaultOnNullCode);
                         }
 
-                        protected function onNullFromPhp()
+                        protected function onNullFromPhp(): int|string|null
                         {
                             return {$defaultOnNullCode};
                         }

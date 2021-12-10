@@ -25,12 +25,12 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
                 return 'baz_with_default';
             }
 
-            protected function onNullFromDatabase()
+            protected function onNullFromDatabase(): ?\BackedEnum
             {
-                return \Foo\Bar\BazWithDefault::get('foo');
+                return \Foo\Bar\BazWithDefault::from('foo');
             }
 
-            protected function onNullFromPhp()
+            protected function onNullFromPhp(): int|string|null
             {
                 return 'foo';
             }
@@ -79,12 +79,12 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Baz {
                 return 'foo_with_default';
             }
 
-            protected function onNullFromDatabase()
+            protected function onNullFromDatabase(): ?\BackedEnum
             {
-                return \Foo\Baz\FooWithDefault::get(3);
+                return \Foo\Baz\FooWithDefault::from(3);
             }
 
-            protected function onNullFromPhp()
+            protected function onNullFromPhp(): int|string|null
             {
                 return 3;
             }

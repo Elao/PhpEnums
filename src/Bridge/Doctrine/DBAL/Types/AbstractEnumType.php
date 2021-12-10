@@ -24,27 +24,22 @@ abstract class AbstractEnumType extends Type
     /**
      * The enum FQCN for which we should make the DBAL conversion.
      *
-     * @return string
      * @psalm-return class-string<\BackedEnum>
      */
     abstract protected function getEnumClass(): string;
 
     /**
      * What should be returned on null value from the database.
-     *
-     * @return mixed
      */
-    protected function onNullFromDatabase()
+    protected function onNullFromDatabase(): ?\BackedEnum
     {
         return null;
     }
 
     /**
      * What should be returned on null value from PHP.
-     *
-     * @return mixed
      */
-    protected function onNullFromPhp()
+    protected function onNullFromPhp(): int|string|null
     {
         return null;
     }
@@ -120,10 +115,8 @@ abstract class AbstractEnumType extends Type
      * Cast the value from database to proper enumeration internal type.
      *
      * @param int|string $value
-     *
-     * @return mixed
      */
-    protected function cast($value)
+    private function cast($value): int|string
     {
         return $this->isIntBackedEnum() ? (int) $value : (string) $value;
     }

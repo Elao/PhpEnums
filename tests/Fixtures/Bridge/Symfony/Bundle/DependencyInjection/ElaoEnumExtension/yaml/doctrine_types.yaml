@@ -1,0 +1,8 @@
+elao_enum:
+    doctrine:
+        types:
+            suit: Elao\Enum\Tests\Fixtures\Enum\Suit
+            permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions }
+            request_status:
+                class: Elao\Enum\Tests\Fixtures\Enum\RequestStatus
+                default: !php/const Elao\Enum\Tests\Fixtures\Enum\RequestStatus::Success

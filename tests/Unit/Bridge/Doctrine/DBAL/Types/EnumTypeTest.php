@@ -39,15 +39,21 @@ class EnumTypeTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        if (!Type::hasType(Suit::class)) {
+        if (Type::hasType(Suit::class)) {
+            Type::overrideType(Suit::class, SuitEnumType::class);
+        } else {
             Type::addType(Suit::class, SuitEnumType::class);
         }
 
-        if (!Type::hasType(RequestStatus::class)) {
+        if (Type::hasType(RequestStatus::class)) {
+            Type::overrideType(RequestStatus::class, RequestStatusType::class);
+        } else {
             Type::addType(RequestStatus::class, RequestStatusType::class);
         }
 
-        if (!Type::hasType(SuitEnumTypeWithDefaultOnNull::NAME)) {
+        if (Type::hasType(SuitEnumTypeWithDefaultOnNull::NAME)) {
+            Type::overrideType(SuitEnumTypeWithDefaultOnNull::NAME, SuitEnumTypeWithDefaultOnNull::class);
+        } else {
             Type::addType(SuitEnumTypeWithDefaultOnNull::NAME, SuitEnumTypeWithDefaultOnNull::class);
         }
     }

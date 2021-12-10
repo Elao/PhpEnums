@@ -11,6 +11,8 @@ Elao Enumerations
 ```php
 <?php
 
+namespace App\Enum;
+
 enum Suit: string implements ReadableEnumInterface
 {
     use ReadableEnumTrait;
@@ -43,9 +45,11 @@ each case instead of their names.
 Use it instead of Symfony's one:
 
 ```php
+<?php
+
 namespace App\Form\Type;
 
-use App\Config\Suit;
+use App\Enum\Suit;
 use Symfony\Component\Form\AbstractType;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -64,5 +68,84 @@ class CardType extends AbstractType
     }
 
     // ...
+}
+```
+
+## Doctrine
+
+Given Doctrine DBAL and ORM [does not provide yet](https://github.com/doctrine/orm/issues/9021) a way to easily write
+DBAL types for enums, this library provides some base classes to save your PHP backed enumerations in your database.
+
+### In a Symfony app
+
+This configuration is equivalent to the following sections explaining how to create a custom Doctrine DBAL type:
+
+```yaml
+elao_enum:
+  doctrine:
+    types:
+      App\Enum\Suit: ~ # Defaults to `{ class: App\Enum\Suit, default: null }`
+      permissions: { class: App\Enum\Permission } # You can set a name different from the enum FQCN
+      App\Enum\RequestStatus: { default: 200 } # Default value from enum cases, in case the db value is NULL
+```
+
+It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
+
+### Manually
+
+Read the
+[Doctrine DBAL docs](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/custom-mapping-types.html)
+first.
+
+Extend the [AbstractEnumType](src/Bridge/Doctrine/DBAL/Types/AbstractEnumType.php):
+
+```php
+<?php
+
+namespace App\Doctrine\DBAL\Type;
+
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType;
+use App\Enum\Suit;
+
+class SuitType extends AbstractEnumType
+{
+    protected function getEnumClass(): string
+    {
+        return Suit::class;
+    }
+}
+```
+
+In your application bootstrapping code:
+
+```php
+<?php
+
+use App\Doctrine\DBAL\Type\SuitType;
+use Doctrine\DBAL\Types\Type;
+
+Type::addType(Suit::class, SuitType::class);
+```
+
+To convert the underlying database type of your new "Suit" type directly into an instance of `Suit` when performing
+schema operations, the type has to be registered with the database platform as well:
+
+```php
+<?php
+$conn = $em->getConnection();
+$conn->getDatabasePlatform()->registerDoctrineTypeMapping(Suit::class, SuitType::class);
+```
+
+Then use as:
+
+```php
+<?php
+
+use App\Enum\Suit;
+
+class Card
+{
+    /** @Column(Suit::class, nullable=false) */
+    private Suit $field;
 }
 ```

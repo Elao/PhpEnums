@@ -93,6 +93,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: pdo_sqlite
           coverage: pcov
           tools: 'composer:v2,flex'
 

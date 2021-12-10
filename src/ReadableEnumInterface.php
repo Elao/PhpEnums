@@ -29,18 +29,18 @@ interface ReadableEnumInterface extends \UnitEnum
      *
      * Gets the human representation for a given value.
      *
-     * @return string The human representation for a given value
-     *
      * @throws \ValueError When $value is not acceptable for this enum
+     *
+     * @return string The human representation for a given value
      */
     public static function readableForValue(string|int $value): string;
 
     /**
      * Gets the human representation for a given name.
      *
-     * @return string The human representation for a given value
-     *
      * @throws NameException When $name is not acceptable for this enum
+     *
+     * @return string The human representation for a given value
      */
     public static function readableForName(string $value): string;
 

@@ -11,11 +11,7 @@ EOF;
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude('tests/Fixtures/Integration/Symfony/var')
-    ->exclude('tests/Fixtures/Bridge/Doctrine/DBAL/Types/TypesDumperTest')
-    ->exclude('tests/Fixtures/Bridge/Doctrine/ODM/Types/TypesDumperTest')
-    // Excluded until php-cs-fixer supports PHP 8 attributes:
-    ->notPath('src/Bridge/Symfony/Validator/Constraint/Enum.php')
-    ->notPath('tests/Fixtures/Bridge/Symfony/Validator/Constraint/ObjectWithEnumChoiceAsPhpAttribute.php')
+    ->exclude('tests/Unit/Bridge/Doctrine/DBAL/Types/TypesDumperTest')
 ;
 
 return (new PhpCsFixer\Config())

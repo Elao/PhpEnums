@@ -30,8 +30,14 @@ enum Suit: string implements ReadableEnumInterface
 }
 ```
 
-**📢  This project used to emulate enumerations before PHP 8.1.**  
-For the 1.x documentation, [click here](https://github.com/Elao/PhpEnums/tree/1.x)
+---
+
+<p align="center">
+    <strong>📢  This project used to emulate enumerations before PHP 8.1.</strong><br/>
+    For the 1.x documentation, <a href="https://github.com/Elao/PhpEnums/tree/1.x">click here</a>
+</p>
+
+---
 
 ## Readable enums
 
@@ -97,7 +103,6 @@ $translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
 ## Flag enums
 
 Flagged enumerations are used for bitwise operations.
-Each value of the enumeration is a single bit flag and can be combined together into a valid bitmask in a single enum instance.
 
 ```php
 namespace App\Enum;
@@ -110,7 +115,8 @@ enum Permissions: int
 }
 ```
 
-Manipulate flags using a [`FlagBag`](src/FlagBag.php) instance:
+Each enumerated case is a bit flag and can be combined with other cases into a valid bitmask and manipulated 
+using a [`FlagBag`](src/FlagBag.php) object:
 
 ```php
 use App\Enum\Permissions;

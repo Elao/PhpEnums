@@ -68,7 +68,6 @@ enum Suit: string implements ReadableEnumInterface
 The following snippet shows how to render the human readable value of an enum:
 
 ```php
-<?php
 $enum = Suit::get(Suit::HEARTS);
 $enum->getReadable(); // returns 'suit.hearts'
 ```
@@ -91,12 +90,54 @@ suit.spades: 'Trèfles'
 ```
 
 ```php
-<?php
 $enum = Suit::get(Suit::HEARTS);
 $translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
 ```
 
-## Symfony Form
+## Flag enums
+
+Flagged enumerations are used for bitwise operations.
+Each value of the enumeration is a single bit flag and can be combined together into a valid bitmask in a single enum instance.
+
+```php
+namespace App\Enum;
+
+enum Permissions: int
+{
+    case Execute = 1 << 0;
+    case Write = 1 << 1;
+    case Read = 1 << 2;
+}
+```
+
+Manipulate flags using a [`FlagBag`](src/FlagBag.php) instance:
+
+```php
+use App\Enum\Permissions;
+use Elao\Enum\FlagBag;
+
+$permissions = new FlagBag(Permissions::Execute, Permissions::Write, Permissions::Read);
+$permissions = $permissions->withoutFlags(Permissions::Execute); // Returns an instance without "execute" flag
+
+$permissions->getBits(); // Returns [2, 4]
+$permissions->getFlags(); // Returns [Permissions::Write, Permissions::Read]
+
+$permissions = $permissions->withoutFlags(Permissions::Read, Permissions::Write); // Returns an instance without "read" and "write" flags
+$permissions->getBits(); // Returns []
+$permissions->getFlags(); // Returns []
+
+$permissions = new FlagBag(Permissions::class, FlagBag::NONE); // Returns an empty bag
+
+$permissions = $permissions->withFlags(Permissions::Read, Permissions::Execute); // Returns an instance with "read" and "execute" flags
+
+$permissions->hasFlags(Permissions::Read); // True
+$permissions->hasFlags(Permissions::Read, Permissions::Execute); // True
+$permissions->hasFlags(Permissions::Write); // False
+```
+
+## Integrations
+
+### Symfony Form
 
 Symfony already provides an [EnumType](https://symfony.com/doc/current/reference/forms/types/enum.html)
 for allowing the user to choose one or more options defined in a PHP enumeration.  
@@ -134,12 +175,12 @@ class CardType extends AbstractType
 }
 ```
 
-## Doctrine
+### Doctrine
 
 Given Doctrine DBAL and ORM [does not provide yet](https://github.com/doctrine/orm/issues/9021) a way to easily write
 DBAL types for enums, this library provides some base classes to save your PHP backed enumerations in your database.
 
-### In a Symfony app
+#### In a Symfony app
 
 This configuration is equivalent to the following sections explaining how to create a custom Doctrine DBAL type:
 
@@ -154,7 +195,7 @@ elao_enum:
 
 It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
 
-### Manually
+#### Manually
 
 Read the
 [Doctrine DBAL docs](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/custom-mapping-types.html)
@@ -198,10 +239,12 @@ Then, use it as a column type:
 
 ```php
 use App\Enum\Suit;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
 class Card
 {
-    /** @Column(Suit::class, nullable=false) */
+    #[ORM\Column(Suit::class, nullable: false)]
     private Suit $field;
 }
 ```

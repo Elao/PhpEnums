@@ -12,11 +12,9 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Fixtures\Enum;
 
-use Elao\Enum\FlagEnumInterface;
-
-enum Permissions: int implements FlagEnumInterface
+enum Permissions: int
 {
-    case Execute = 1;
-    case Write = 2;
-    case Read = 4;
+    case Execute = 1 << 0;
+    case Write = 1 << 1;
+    case Read = 1 << 2;
 }

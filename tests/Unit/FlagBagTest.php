@@ -14,7 +14,6 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\Exception\InvalidArgumentException;
 use Elao\Enum\FlagBag;
-use Elao\Enum\FlagEnumInterface;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +23,7 @@ class FlagBagTest extends TestCase
     public function testConstructThrowsExceptionOnInvalidEnumType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Suit" does not implements "Elao\Enum\FlagEnumInterface"');
+        $this->expectExceptionMessage('"Elao\Enum\Tests\Fixtures\Enum\Suit" is not an int backed enum');
 
         new FlagBag(Suit::class, 3);
     }
@@ -76,7 +75,7 @@ class FlagBagTest extends TestCase
     /**
      * @dataProvider from valid values
      */
-    public function testFrom(string $enumType, FlagEnumInterface ...$flags)
+    public function testFrom(string $enumType, \BackedEnum ...$flags)
     {
         FlagBag::from($enumType, ...$flags);
 

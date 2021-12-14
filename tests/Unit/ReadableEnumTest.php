@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -10,45 +12,33 @@
 
 namespace Elao\Enum\Tests\Unit;
 
-use Elao\Enum\Exception\InvalidValueException;
-use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use Elao\Enum\Tests\TestCase;
+use Elao\Enum\Exception\NameException;
+use Elao\Enum\Tests\Fixtures\Enum\Suit;
+use PHPUnit\Framework\TestCase;
 
 class ReadableEnumTest extends TestCase
 {
-    public function enumValuesProvider(): iterable
+    public function testReadableForName(): void
     {
-        yield [Gender::MALE, 'Male'];
-        yield [Gender::FEMALE, 'Female'];
+        self::assertSame('suit.clubs', Suit::readableForName(Suit::Clubs->name));
     }
 
-    /**
-     * @dataProvider enumValuesProvider
-     */
-    public function testCreateEnumValue($value, $expectedReadable): void
+    public function testReadableForNameExceptionOnInvalidName(): void
     {
-        $enumValue = Gender::get($value);
+        $this->expectException(NameException::class);
 
-        self::assertSame($value, $enumValue->getValue());
-        self::assertSame($expectedReadable, $enumValue->getReadable());
+        Suit::readableForName('invalidName');
     }
 
-    public function testEnumToString(): void
+    public function testReadableForValue(): void
     {
-        $enumValue = Gender::get(Gender::MALE);
-
-        self::assertSame('Male', (string) $enumValue);
+        self::assertSame('suit.clubs', Suit::readableForValue(Suit::Clubs->value));
     }
 
-    public function testValueCanBeReadabled(): void
+    public function testReadableForValueExceptionOnInvalidName(): void
     {
-        self::assertSame('Female', Gender::readableFor(Gender::FEMALE));
-    }
+        $this->expectException(\ValueError::class);
 
-    public function testExceptionIsRaisedWhenValueCannotBeReadable(): void
-    {
-        $this->expectException(InvalidValueException::class);
-
-        Gender::readableFor('invalid_value');
+        Suit::readableForValue('invalidValue');
     }
 }

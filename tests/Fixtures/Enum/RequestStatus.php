@@ -10,8 +10,11 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Exception;
+namespace Elao\Enum\Tests\Fixtures\Enum;
 
-interface ExceptionInterface extends \Throwable
+enum RequestStatus: int
 {
+    case Success = 200;
+    case Forbidden = 403;
+    case InternalServerError = 500;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -11,7 +13,7 @@
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Compiler\DoctrineDBALTypesPass;
-use Elao\Enum\Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DoctrineDBALTypesPassTest extends TestCase
@@ -49,8 +51,8 @@ class DoctrineDBALTypesPassTest extends TestCase
         $container = new ContainerBuilder();
         $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);
         $container->getParameterBag()->set('.elao_enum.doctrine_types', [
-            ['Foo\Bar\Baz', 'string', 'baz', null],
-            ['Foo\Bar\Qux', 'int', 'qux', null],
+            ['Foo\Bar\Baz', 'baz', null],
+            ['Foo\Bar\Qux', 'qux', null],
         ]);
 
         $this->pass->process($container);

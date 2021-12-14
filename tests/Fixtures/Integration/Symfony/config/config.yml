@@ -5,40 +5,34 @@ framework:
         resource: '%kernel.project_dir%/config/routing.yml'
         strict_requirements: '%kernel.debug%'
         utf8: true
+    session:
+        storage_factory_id: 'session.storage.factory.mock_file'
     test: ~
     assets: false
-
-twig:
-    strict_variables: false
-    paths:
-        '%kernel.project_dir%/templates': tests
-    exception_controller: null
 
 doctrine:
     dbal:
         driver: 'pdo_sqlite'
         path: '%kernel.cache_dir%/db.sqlite'
         charset: 'UTF8'
-        types:
-            gender: 'Elao\Enum\Tests\Fixtures\Bridge\Doctrine\DBAL\Types\GenderEnumType'
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         mappings:
             App:
                 is_bundle: false
-                type: annotation
+                type: attribute
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+
+elao_enum:
+    doctrine:
+        types:
+            Elao\Enum\Tests\Fixtures\Enum\Suit:
+                default: !php/const Elao\Enum\Tests\Fixtures\Enum\Suit::Spades
 
 services:
     logger:
         class: Psr\Log\NullLogger
         public: false
-
-    controllers:
-        namespace: App\Controller\
-        resource: '%kernel.project_dir%/src/Controller'
-        autowire: true
-        autoconfigure: true

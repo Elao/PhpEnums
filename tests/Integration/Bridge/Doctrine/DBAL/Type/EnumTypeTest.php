@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -10,15 +12,15 @@
 
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Card;
 use Doctrine\ORM\Tools\SchemaTool;
-use Elao\Enum\Tests\Fixtures\Enum\Gender;
+use Doctrine\Persistence\ManagerRegistry;
+use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeTest extends KernelTestCase
 {
-    /** @var EntityManagerInterface */
+    /** @var ManagerRegistry */
     private $em;
 
     protected function setUp(): void
@@ -41,25 +43,26 @@ class EnumTypeTest extends KernelTestCase
 
     public function testEnumType(): void
     {
-        $this->em->persist(new User($uuid = 'user01', Gender::get(Gender::MALE)));
+        $this->em->persist(new Card($uuid = 'card01', Suit::Hearts));
         $this->em->flush();
         $this->em->clear();
 
-        $user = $this->em->find(User::class, $uuid);
+        /** @var Card $card */
+        $card = $this->em->find(Card::class, $uuid);
 
-        self::assertTrue($user->getGender()->is(Gender::MALE));
+        self::assertSame(Suit::Hearts, $card->getSuit());
     }
 
     public function testEnumTypeOnNullFromPHP(): void
     {
-        $this->em->persist(new User($uuid = 'user01', null));
+        $this->em->persist(new Card($uuid = 'card01', null));
         $this->em->flush();
         $this->em->clear();
 
         self::assertSame(
-            ['gender' => 'unknown'],
+            ['suit' => 'S'],
             $this->em->getConnection()->executeQuery(
-                'SELECT gender FROM user WHERE user.uuid = :uuid',
+                'SELECT suit FROM cards WHERE cards.uuid = :uuid',
                 ['uuid' => $uuid]
             )->fetch()
         );
@@ -68,12 +71,13 @@ class EnumTypeTest extends KernelTestCase
     public function testEnumTypeOnNullFromDatabase(): void
     {
         $this->em->getConnection()->executeUpdate(
-            'INSERT INTO user (uuid, gender) VALUES(:uuid, null)',
-            ['uuid' => $uuid = 'user01']
+            'INSERT INTO cards (uuid, suit) VALUES(:uuid, null)',
+            ['uuid' => $uuid = 'card01']
         );
 
-        $user = $this->em->find(User::class, $uuid);
+        /** @var Card $card */
+        $card = $this->em->find(Card::class, $uuid);
 
-        self::assertTrue($user->getGender()->is(Gender::UNKNOW));
+        self::assertSame(Suit::Spades, $card->getSuit());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -10,44 +12,40 @@
 
 namespace Elao\Enum;
 
-use Elao\Enum\Exception\InvalidValueException;
-use Stringable;
+use Elao\Enum\Exception\NameException;
 
-/**
- * @template T of int|string
- * @extends EnumInterface<T>
- */
-interface ReadableEnumInterface extends EnumInterface, Stringable
+interface ReadableEnumInterface extends \UnitEnum
 {
     /**
-     * Gets an array of the human representations indexed by possible values.
+     * Gets human representations per enum cases.
      *
-     * @return string[] labels indexed by enumerated value
-     * @psalm-return array<T, string>
+     * @return iterable labels indexed by enum cases
+     * @psalm-return iterable<ReadableEnumInterface, string>
      */
-    public static function readables(): array;
+    public static function readables(): iterable;
 
     /**
+     * TODO: only for backed enums
+     *
      * Gets the human representation for a given value.
      *
-     * @param int|string $value The value of a particular enumerated constant
-     * @psalm-param T $value
-     *
-     * @throws InvalidValueException When $value is not acceptable for this enumeration type
+     * @throws \ValueError When $value is not acceptable for this enum
      *
      * @return string The human representation for a given value
      */
-    public static function readableFor($value): string;
+    public static function readableForValue(string|int $value): string;
+
+    /**
+     * Gets the human representation for a given name.
+     *
+     * @throws NameException When $name is not acceptable for this enum
+     *
+     * @return string The human representation for a given value
+     */
+    public static function readableForName(string $value): string;
 
     /**
      * Gets the human representation of the value.
      */
     public function getReadable(): string;
-
-    /**
-     * Converts to the human representation of the current value.
-     *
-     * @return string
-     */
-    public function __toString();
 }

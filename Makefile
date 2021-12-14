@@ -1,4 +1,4 @@
-PHP_CS_FIXER_VERSION=v3.3.2
+PHP_CS_FIXER_VERSION=v3.4.0
 
 ###########
 # Install #
@@ -14,7 +14,7 @@ install:
 	composer update --prefer-dist
 
 install-lowest: setup
-install-lowest: export SYMFONY_REQUIRE = 4.4.*
+install-lowest: export SYMFONY_REQUIRE = 5.4.*@dev
 install-lowest:
 	composer config minimum-stability --unset
 	composer update --prefer-lowest
@@ -27,29 +27,15 @@ install-54:
 
 install-60: setup
 install-60: export SYMFONY_REQUIRE = 6.0.*@dev
-install-60: remove-60unready-deps
 install-60:
 	composer config minimum-stability dev
 	composer update
 
 install-61: setup
 install-61: export SYMFONY_REQUIRE = 6.1.*@dev
-install-61: remove-60unready-deps
 install-61:
 	composer config minimum-stability dev
 	composer update
-
-remove-60unready-deps:
-	# Tmp remove packages not allowing Symfony 6 yet
-	composer remove --no-update --no-interaction --dev "nelmio/alice" "api-platform/core"
-
-add-odm:
-	composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.2" "doctrine/mongodb-odm-bundle:^4.3"
-	@echo "Run again appropriate install target to update dependencies"
-
-remove-odm:
-	composer remove --no-update --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
-	@echo "Run again appropriate install target to update dependencies"
 
 ########
 # Test #
@@ -81,4 +67,4 @@ fix-php-cs-fixer:
 
 lint-php-cs-fixer: php-cs-fixer.phar
 lint-php-cs-fixer:
-	./php-cs-fixer.phar fix --no-interaction --dry-run --diff
+	./php-cs-fixer.phar fix --no-interaction --dry-run --diff -vvv

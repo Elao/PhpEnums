@@ -1,8 +1,0 @@
-elao_enum:
-    js:
-        base_dir: 'assets/js/modules'
-        lib_path: 'assets/js/lib'
-        paths:
-            Elao\Enum\Tests\Fixtures\Enum\SimpleEnum: 'common/SimpleEnum.js'
-            Elao\Enum\Tests\Fixtures\Enum\Gender: 'common/Gender.js'
-            Elao\Enum\Tests\Fixtures\Enum\Permissions: 'auth/Permissions.js'

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -10,39 +12,34 @@
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Elao\Enum\EnumInterface;
+use Elao\Enum\Exception\InvalidArgumentException;
 
-/**
- * @template T of EnumInterface
- */
 abstract class AbstractEnumType extends Type
 {
+    private bool $isIntBackedEnum;
+
     /**
      * The enum FQCN for which we should make the DBAL conversion.
      *
-     * @return string&EnumInterface
-     * @psalm-return class-string<T>
+     * @psalm-return class-string<\BackedEnum>
      */
     abstract protected function getEnumClass(): string;
 
     /**
      * What should be returned on null value from the database.
-     *
-     * @return mixed
      */
-    protected function onNullFromDatabase()
+    protected function onNullFromDatabase(): ?\BackedEnum
     {
         return null;
     }
 
     /**
      * What should be returned on null value from PHP.
-     *
-     * @return mixed
      */
-    protected function onNullFromPhp()
+    protected function onNullFromPhp(): int|string|null
     {
         return null;
     }
@@ -50,24 +47,33 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      *
-     * @param EnumInterface|null $value
-     * @psalm-param T|null $value
+     * @param \BackedEnum|null $value
      *
      * @return mixed
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
+        if ($value !== null && !$value instanceof \BackedEnum) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected an instance of a %s. %s given.',
+                \BackedENum::class,
+                get_debug_type($value),
+            ));
+        }
+
         if (null === $value) {
             return $this->onNullFromPhp();
         }
 
-        return $value->getValue();
+        return $value->value;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @return mixed
+     * @param int|string|null $value The value to convert.
+     *
+     * @return \BackedEnum|null
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -75,9 +81,7 @@ abstract class AbstractEnumType extends Type
             return $this->onNullFromDatabase();
         }
 
-        $class = $this->getEnumClass();
-
-        return $class::get($this->cast($value));
+        return $this->getEnumClass()::from($this->cast($value));
     }
 
     /**
@@ -85,15 +89,10 @@ abstract class AbstractEnumType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultLength(AbstractPlatform $platform)
-    {
-        return $platform->getVarcharDefaultLength();
+        return $this->isIntBackedEnum()
+            ? $platform->getIntegerTypeDeclarationSQL($fieldDeclaration)
+            : $platform->getVarcharTypeDeclarationSQL($fieldDeclaration)
+        ;
     }
 
     /**
@@ -105,14 +104,36 @@ abstract class AbstractEnumType extends Type
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBindingType(): int
+    {
+        return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
+    }
+
+    /**
      * Cast the value from database to proper enumeration internal type.
      *
-     * @param mixed $value
-     *
-     * @return mixed
+     * @param int|string $value
      */
-    protected function cast($value)
+    private function cast($value): int|string
     {
-        return (string) $value;
+        return $this->isIntBackedEnum() ? (int) $value : (string) $value;
+    }
+
+    private function isIntBackedEnum(): bool
+    {
+        if (!isset($this->isIntBackedEnum)) {
+            $r = new \ReflectionEnum($this->getEnumClass());
+
+            $this->isIntBackedEnum = 'int' === (string) $r->getBackingType();
+        }
+
+        return $this->isIntBackedEnum;
+    }
+
+    public function getName(): string
+    {
+        return $this->getEnumClass();
     }
 }

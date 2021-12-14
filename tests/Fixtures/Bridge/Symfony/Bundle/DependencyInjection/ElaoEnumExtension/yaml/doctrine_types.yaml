@@ -1,8 +1,8 @@
 elao_enum:
     doctrine:
         types:
-            gender: Elao\Enum\Tests\Fixtures\Enum\Gender
-            another: { class: Elao\Enum\Tests\Fixtures\Enum\AnotherEnum, type: enum }
-            permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions, type: int }
-            simple_collection_json: { class: Elao\Enum\Tests\Fixtures\Enum\SimpleEnum, type: json_collection }
-            simple_collection_csv: { class: Elao\Enum\Tests\Fixtures\Enum\SimpleEnum, type: csv_collection }
+            suit: Elao\Enum\Tests\Fixtures\Enum\Suit
+            permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions }
+            request_status:
+                class: Elao\Enum\Tests\Fixtures\Enum\RequestStatus
+                default: !php/const Elao\Enum\Tests\Fixtures\Enum\RequestStatus::Success

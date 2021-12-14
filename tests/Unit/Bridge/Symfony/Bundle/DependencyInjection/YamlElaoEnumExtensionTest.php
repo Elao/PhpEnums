@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -10,9 +12,6 @@
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
-use Elao\Enum\Tests\Fixtures\Enum\AnotherEnum;
-use Elao\Enum\Tests\Fixtures\Enum\Gender;
-use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -23,19 +22,5 @@ class YamlElaoEnumExtensionTest extends ElaoEnumExtensionTest
     {
         $loader = new YamlFileLoader($container, new FileLocator(self::FIXTURES_PATH . '/yaml'));
         $loader->load($file . '.yaml');
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDoctrineLegacyTypes(): void
-    {
-        $container = $this->createContainerFromFile('doctrine_types_legacy');
-
-        self::assertEquals([
-            [Gender::class, 'string', 'gender', null],
-            [AnotherEnum::class, 'enum', 'another', null],
-            [Permissions::class, 'int', 'permissions', null],
-        ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 }

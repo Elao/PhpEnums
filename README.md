@@ -8,10 +8,44 @@ Elao Enumerations
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=master)
 [![php](https://img.shields.io/badge/PHP-8.1-green.svg?style=flat-square "Available for PHP 8.1+")](http://php.net)
 
-```php
-<?php
+_Provides additional, opinionated features to the [PHP 8.1+ native enums](https://php.watch/versions/8.1/enums) as well
+as specific integrations with frameworks and libraries._
 
+```php
+enum Suit: string implements ReadableEnumInterface
+{
+    use ReadableEnumTrait;
+
+    #[EnumCase('suit.hearts')]
+    case Hearts = 'H';
+
+    #[EnumCase('suit.diamonds')]
+    case Diamonds = 'D';
+
+    #[EnumCase('suit.clubs')]
+    case Clubs = 'C';
+
+    #[EnumCase('suit.spades')]
+    case Spades = 'S';
+}
+```
+
+**📢  This project used to emulate enumerations before PHP 8.1.**  
+For the 1.x documentation, [click here](https://github.com/Elao/PhpEnums/tree/1.x)
+
+## Readable enums
+
+Readable enums provides a way to expose human-readable labels for your enum cases, by adding a
+new `ReadableEnumInterface` contract to your enums.
+
+The easiest way to implement this interface is by using the [`ReadableEnumTrait`](src/ReadableEnumTrait.php) and
+the [`EnumCase`](src/Attribute/EnumCase.php) attribute:
+
+```php
 namespace App\Enum;
+
+use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\Attribute\EnumCase;
 
 enum Suit: string implements ReadableEnumInterface
 {
@@ -31,6 +65,37 @@ enum Suit: string implements ReadableEnumInterface
 }
 ```
 
+The following snippet shows how to render the human readable value of an enum:
+
+```php
+<?php
+$enum = Suit::get(Suit::HEARTS);
+$enum->getReadable(); // returns 'suit.hearts'
+```
+
+It defines a proper contract to expose an enum case label instead of using the enum case internal name. Which is
+especially useful if the locale to expose labels to your users differs from the one you're writing your code, as well as
+for creating integrations with libraries requiring to expose such labels.
+
+It's also especially useful in conjunction with a translation library
+like [Symfony's Translation component](https://symfony.com/doc/current/translation.html), by using translation keys.
+
+Given the following translation file:
+
+```yaml
+# translations/messages.fr.yaml
+suit.hearts: 'Coeurs'
+suit.diamonds: 'Carreaux'
+suit.clubs: 'Piques'
+suit.spades: 'Trèfles'
+```
+
+```php
+<?php
+$enum = Suit::get(Suit::HEARTS);
+$translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
+```
+
 ## Symfony Form
 
 Symfony already provides an [EnumType](https://symfony.com/doc/current/reference/forms/types/enum.html)
@@ -45,8 +110,6 @@ each case instead of their names.
 Use it instead of Symfony's one:
 
 ```php
-<?php
-
 namespace App\Form\Type;
 
 use App\Enum\Suit;
@@ -100,8 +163,6 @@ first.
 Extend the [AbstractEnumType](src/Bridge/Doctrine/DBAL/Types/AbstractEnumType.php):
 
 ```php
-<?php
-
 namespace App\Doctrine\DBAL\Type;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumType;
@@ -119,8 +180,6 @@ class SuitType extends AbstractEnumType
 In your application bootstrapping code:
 
 ```php
-<?php
-
 use App\Doctrine\DBAL\Type\SuitType;
 use Doctrine\DBAL\Types\Type;
 
@@ -131,16 +190,13 @@ To convert the underlying database type of your new "Suit" type directly into an
 schema operations, the type has to be registered with the database platform as well:
 
 ```php
-<?php
 $conn = $em->getConnection();
 $conn->getDatabasePlatform()->registerDoctrineTypeMapping(Suit::class, SuitType::class);
 ```
 
-Then use as:
+Then, use it as a column type:
 
 ```php
-<?php
-
 use App\Enum\Suit;
 
 class Card

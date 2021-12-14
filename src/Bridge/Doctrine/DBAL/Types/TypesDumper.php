@@ -32,7 +32,7 @@ class TypesDumper
 
     private function dump(array $types): string
     {
-        array_walk($types, static function (& $type) {
+        array_walk($types, static function (&$type) {
             $type = array_pad($type, 3, null);
         });
 
@@ -107,7 +107,7 @@ PHP;
         return 'ELAO_ENUM_DT_DBAL';
     }
 
-    private function appendDefaultOnNullMethods(string & $code, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
+    private function appendDefaultOnNullMethods(string &$code, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
     {
         if ($defaultOnNull !== null) {
             $defaultOnNullCode = var_export(

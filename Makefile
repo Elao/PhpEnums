@@ -1,4 +1,4 @@
-PHP_CS_FIXER_VERSION=v3.3.2
+PHP_CS_FIXER_VERSION=v3.4.0
 
 ###########
 # Install #
@@ -67,4 +67,4 @@ fix-php-cs-fixer:
 
 lint-php-cs-fixer: php-cs-fixer.phar
 lint-php-cs-fixer:
-	./php-cs-fixer.phar fix --no-interaction --dry-run --diff
+	./php-cs-fixer.phar fix --no-interaction --dry-run --diff -vvv

@@ -4,7 +4,7 @@ on:
   workflow_dispatch: ~
   push:
     branches:
-      - 1.x
+      - 2.x
   pull_request: ~
 
 jobs:

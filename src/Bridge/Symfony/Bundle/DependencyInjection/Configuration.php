@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('class')
                             ->cannotBeEmpty()
                             ->validate()
-                                ->ifTrue(static function (string $class): bool {return !is_a($class, \BackedEnum::class, true); })
+                                ->ifTrue(static function (string $class): bool { return !is_a($class, \BackedEnum::class, true); })
                                 ->thenInvalid(sprintf('Invalid class. Expected instance of "%s"', \BackedEnum::class) . '. Got %s.')
                             ->end()
                         ->end()

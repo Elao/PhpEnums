@@ -17,7 +17,7 @@ use Symfony\Component\VarDumper\Caster\Caster;
 
 final class ReadableEnumCaster
 {
-    public static function castEnum(ReadableEnumInterface $enum, $array)
+    public static function cast(ReadableEnumInterface $enum, $array)
     {
         return $array + [
             // Append the readable value;

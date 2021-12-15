@@ -30,6 +30,18 @@ final class Suit extends Enum
 
 It will leverage integration of the main PHP frameworks and also provide bridges with other libraries when relevant.
 
+---
+
+<p align="center">
+    <strong>📢  This project used to emulate enumerations before PHP 8.1.</strong><br/>
+    If you're interested into extending PHP 8.1 enumeration capabilities, reusing some specific features of this lib,<br/>
+    have a look at the <a href="https://github.com/Elao/PhpEnums/tree/2.x">2.x documentation.</a>
+    <br/><br/>
+    You can also consult <a href="https://github.com/Elao/PhpEnums/issues/124">this issue</a> to follow objectives & progress for the V2 of this lib.
+</p>
+
+---
+
 Table of Contents
 =================
 

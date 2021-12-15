@@ -26,7 +26,10 @@
     "autoload": {
         "psr-4": {
             "Elao\\Enum\\": "src/"
-        }
+        },
+        "files": [
+            "src/Bridge/Symfony/VarDumper/Resources/register_caster.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

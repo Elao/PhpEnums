@@ -157,6 +157,14 @@ class FlagBag
     }
 
     /**
+     * The encoded bits value.
+     */
+    public function getValue(): int
+    {
+        return self::encodeBits($this->bits);
+    }
+
+    /**
      * @return \BackedEnum[]
      */
     public function getFlags(): array
@@ -223,6 +231,14 @@ class FlagBag
         }
 
         return new static($this->type, self::encodeBits($this->bits) & ~$mask);
+    }
+
+    /**
+     * @return class-string<\BackedEnum>
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

@@ -71,11 +71,10 @@ enum Suit: string implements ReadableEnumInterface
 }
 ```
 
-The following snippet shows how to render the human readable value of an enum:
+The following snippet shows how to get the human readable value of an enum:
 
 ```php
-$enum = Suit::get(Suit::HEARTS);
-$enum->getReadable(); // returns 'suit.hearts'
+Suit::HEARTS->getReadable(); // returns 'suit.hearts'
 ```
 
 It defines a proper contract to expose an enum case label instead of using the enum case internal name. Which is
@@ -96,7 +95,7 @@ suit.spades: 'Trèfles'
 ```
 
 ```php
-$enum = Suit::get(Suit::HEARTS);
+$enum = Suit::HEARTS;
 $translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
 ```
 

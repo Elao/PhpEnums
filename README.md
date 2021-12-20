@@ -121,10 +121,16 @@ using a [`FlagBag`](src/FlagBag.php) object:
 use App\Enum\Permissions;
 use Elao\Enum\FlagBag;
 
-$permissions = new FlagBag(Permissions::Execute, Permissions::Write, Permissions::Read);
+$permissions = FlagBag::from(Permissions::Execute, Permissions::Write, Permissions::Read);
+// same as:
+$permissions = new FlagBag(Permissions::class, 7); 
+// where 7 is the "encoded" bits value for:
+Permissions::Execute->value | Permissions::Write->value | Permissions::Read->value // 7
+
 $permissions = $permissions->withoutFlags(Permissions::Execute); // Returns an instance without "execute" flag
 
-$permissions->getBits(); // Returns [2, 4]
+$permissions->getValue(); // Returns 6, i.e: the encoded bits value
+$permissions->getBits(); // Returns [2, 4], i.e: the decoded bits
 $permissions->getFlags(); // Returns [Permissions::Write, Permissions::Read]
 
 $permissions = $permissions->withoutFlags(Permissions::Read, Permissions::Write); // Returns an instance without "read" and "write" flags
@@ -139,6 +145,9 @@ $permissions->hasFlags(Permissions::Read); // True
 $permissions->hasFlags(Permissions::Read, Permissions::Execute); // True
 $permissions->hasFlags(Permissions::Write); // False
 ```
+
+Hence, using `FlagBag::getValue()` you can get an encoded value for any combination of flags from your enum, 
+and use it for storage or communication between your processes.
 
 ## Integrations
 

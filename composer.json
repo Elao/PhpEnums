@@ -1,6 +1,6 @@
 {
     "name": "elao/enum",
-    "description": "Enumerations for PHP and frameworks integrations",
+    "description": "Extended PHP enums capabilities and frameworks integrations",
     "keywords": [
         "enum",
         "symfony",

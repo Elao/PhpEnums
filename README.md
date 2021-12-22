@@ -41,7 +41,7 @@ enum Suit: string implements ReadableEnumInterface
 
 ## Readable enums
 
-Readable enums provides a way to expose human-readable labels for your enum cases, by adding a
+Readable enums provide a way to expose human-readable labels for your enum cases, by adding a
 new `ReadableEnumInterface` contract to your enums.
 
 The easiest way to implement this interface is by using the [`ReadableEnumTrait`](src/ReadableEnumTrait.php) and
@@ -114,7 +114,7 @@ enum Permissions: int
 }
 ```
 
-Each enumerated case is a bit flag and can be combined with other cases into a valid bitmask and manipulated 
+Each enumerated case is a bit flag and can be combined with other cases into a bitmask and manipulated 
 using a [`FlagBag`](src/FlagBag.php) object:
 
 ```php
@@ -158,7 +158,7 @@ for allowing the user to choose one or more options defined in a PHP enumeration
 It extends the ChoiceType field and defines the same options.
 
 However, it uses the enum case name as label, which might not be convenient.  
-Since this library specifically support readable enums, it ships its
+Since this library specifically supports readable enums, it ships its
 own [EnumType](src/Bridge/Symfony/Form/Type/EnumType.php), extending Symfony's one and using the human representation of
 each case instead of their names.
 
@@ -191,7 +191,7 @@ class CardType extends AbstractType
 
 ### Doctrine
 
-Given Doctrine DBAL and ORM [does not provide yet](https://github.com/doctrine/orm/issues/9021) a way to easily write
+Given Doctrine DBAL and ORM _[does not provide yet](https://github.com/doctrine/orm/issues/9021)_ a way to easily write
 DBAL types for enums, this library provides some base classes to save your PHP backed enumerations in your database.
 
 #### In a Symfony app
@@ -227,12 +227,12 @@ class SuitType extends AbstractEnumType
 {
     protected function getEnumClass(): string
     {
-        return Suit::class;
+        return Suit::class; // By default, the enum FQCN is used as the DBAL type name as well
     }
 }
 ```
 
-In your application bootstrapping code:
+In your application bootstraping code:
 
 ```php
 use App\Doctrine\DBAL\Type\SuitType;

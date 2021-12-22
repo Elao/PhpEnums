@@ -232,7 +232,7 @@ class SuitType extends AbstractEnumType
 }
 ```
 
-In your application bootstraping code:
+In your application bootstrapping code:
 
 ```php
 use App\Doctrine\DBAL\Type\SuitType;

@@ -51,6 +51,7 @@
         "symfony/filesystem": "^5.4|^6.0",
         "symfony/form": "^5.4|^6.0",
         "symfony/framework-bundle": "^5.4|^6.0",
+        "symfony/browser-kit": "^5.4|^6.0",
         "symfony/http-kernel": "^5.4|^6.0",
         "symfony/phpunit-bridge": "^5.4|^6.0",
         "symfony/var-dumper": "^5.4|^6.0",

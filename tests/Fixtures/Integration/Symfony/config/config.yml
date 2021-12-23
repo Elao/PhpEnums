@@ -29,10 +29,16 @@ doctrine:
 elao_enum:
     doctrine:
         types:
-            Elao\Enum\Tests\Fixtures\Enum\Suit:
-                default: !php/const Elao\Enum\Tests\Fixtures\Enum\Suit::Spades
+            App\Enum\Suit:
+                default: !php/const App\Enum\Suit::Spades
 
 services:
+    # Registers this controller as a service so that we have the
+    # \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver enabled on it:
+    App\Controller\BackedEnumValueResolverController:
+        autoconfigure: true
+        autowire: true
+
     logger:
         class: Psr\Log\NullLogger
         public: false

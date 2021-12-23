@@ -189,6 +189,51 @@ class CardType extends AbstractType
 }
 ```
 
+### Symfony HttpKernel
+
+The [BackedEnumValueResolver](src/Bridge/Symfony/HttpKernel/Controller/ArgumentResolver/BackedEnumValueResolver.php)
+allows to resolve your backed enum typed controller arguments from the request attributes, query or body.
+
+It'll attempt to resolve the enum case **from your route attributes by default** ; simply typehint your controller:
+
+```php
+class CardController
+{
+    #[Route('/cards/{suit}')]
+    public function list(Suit $suit): Response
+    {
+        // [...]
+    }
+}
+```
+
+➜ A call to `/cards/H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
+
+You can also specify from which request component(s) you want to resolve the enum case using
+the [ResolveBackedEnumValue](src/Bridge/Symfony/HttpKernel/Controller/ArgumentResolver/BackedEnumValueResolver/ResolveBackedEnumValue.php)
+attribute:
+
+```php
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver\ResolveBackedEnumValue;
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver\ResolveFrom;
+
+class DefaultController
+{
+    #[Route('/cards')]
+    public function list(
+        #[ResolveBackedEnumValue(ResolveFrom::Query)]
+        ?Suit $suit = null,
+    ): Response
+    {
+        // [...]
+    }
+}
+```
+
+➜ A call to `/cards?suit=H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
+
+Use `ResolveFrom::Body` to resolve from the request body (`$_POST`).
+
 ### Doctrine
 
 Given Doctrine DBAL and ORM _[does not provide yet](https://github.com/doctrine/orm/issues/9021)_ a way to easily write

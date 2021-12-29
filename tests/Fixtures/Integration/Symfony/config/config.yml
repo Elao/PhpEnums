@@ -33,9 +33,12 @@ elao_enum:
                 default: !php/const App\Enum\Suit::Spades
 
 services:
-    # Registers this controller as a service so that we have the
+    # Registers these controllers as a service so that we have the
     # \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver enabled on it:
     App\Controller\BackedEnumValueResolverController:
+        autoconfigure: true
+        autowire: true
+    App\Controller\QueryBodyBackedEnumValueResolverController:
         autoconfigure: true
         autowire: true
 

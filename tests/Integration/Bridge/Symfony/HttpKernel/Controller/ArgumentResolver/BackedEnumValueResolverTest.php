@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackedEnumValueResolverTest extends WebTestCase
 {
@@ -58,36 +58,16 @@ class BackedEnumValueResolverTest extends WebTestCase
 
         yield 'invalid value' => [
             function (KernelBrowser $client) {
-                $this->expectException(BadRequestHttpException::class);
-                $this->expectExceptionMessage('Enum type "App\Enum\Suit" does not accept value "foo"');
+                $this->expectException(NotFoundHttpException::class);
+                $this->expectExceptionMessage('Could not resolve the "App\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum "App\Enum\Suit"');
 
                 $client->request(Request::METHOD_GET, '/resolver/from-attributes/foo');
             },
         ];
 
-        yield 'from query' => [
+        yield 'nullable' => [
             function (KernelBrowser $client) {
-                $client->request(Request::METHOD_GET, '/resolver/from-query?' . http_build_query([
-                    'suit' => Suit::Hearts->value,
-                ]));
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                App\Enum\Suit {
-                  +name: "Hearts"
-                  +value: "H"
-                  readable: "suit.hearts"
-                }
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from query nullable' => [
-            function (KernelBrowser $client) {
-                $client->request(Request::METHOD_GET, '/resolver/from-query-nullable?' . http_build_query([
-                    'suit' => '',
-                ]));
+                $client->request(Request::METHOD_GET, '/resolver/from-attributes-nullable');
             },
             function (Response $response) {
                 self::assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -97,122 +77,18 @@ class BackedEnumValueResolverTest extends WebTestCase
             },
         ];
 
-        yield 'from query with default' => [
+        yield 'with default' => [
             function (KernelBrowser $client) {
-                $client->request(Request::METHOD_GET, '/resolver/from-query-with-default');
+                $client->request(Request::METHOD_GET, '/resolver/from-attributes-with-default');
             },
             function (Response $response) {
                 self::assertSame(Response::HTTP_OK, $response->getStatusCode());
                 self::assertSame(<<<DUMP
                 App\Enum\Suit {
-                  +name: "Hearts"
-                  +value: "H"
-                  readable: "suit.hearts"
+                  +name: "Spades"
+                  +value: "S"
+                  readable: "suit.spades"
                 }
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from query with default uses null' => [
-            function (KernelBrowser $client) {
-                $client->request(Request::METHOD_GET, '/resolver/from-query-with-default?' . http_build_query([
-                    'suit' => '',
-                ]));
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                null
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from query with default, non-nullable' => [
-            function (KernelBrowser $client) {
-                // this one will fail with:
-                // Symfony\Component\DependencyInjection\Exception\RuntimeException: Cannot autowire argument $suit of "App\Controller\BackedEnumValueResolverController::fromQueryWithDefaultNonNullable()": it references class "App\Enum\Suit" but no such service exists.
-                self::markTestSkipped('Skipped: requires Symfony fix. See https://github.com/symfony/symfony/pull/44826');
-
-                $client->request(Request::METHOD_GET, '/resolver/from-query-with-default-non-nullable?' . http_build_query([
-                    'suit' => '',
-                ]));
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                App\Enum\Suit {
-                  +name: "Hearts"
-                  +value: "H"
-                  readable: "suit.hearts"
-                }
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from query with variadics' => [
-            function (KernelBrowser $client) {
-                $client->request(Request::METHOD_GET, '/resolver/from-query-variadics?' . http_build_query([
-                    'suit' => [Suit::Hearts->value, Suit::Spades->value],
-                ]));
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                [
-                  App\Enum\Suit {
-                    +name: "Hearts"
-                    +value: "H"
-                    readable: "suit.hearts"
-                  }
-                  App\Enum\Suit {
-                    +name: "Spades"
-                    +value: "S"
-                    readable: "suit.spades"
-                  }
-                ]
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from body' => [
-            function (KernelBrowser $client) {
-                $client->request(Request::METHOD_POST, '/resolver/from-body', [
-                    'suit' => Suit::Hearts->value,
-                ]);
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                App\Enum\Suit {
-                  +name: "Hearts"
-                  +value: "H"
-                  readable: "suit.hearts"
-                }
-                DUMP, $response->getContent());
-            },
-        ];
-
-        yield 'from body with variadics' => [
-            function (KernelBrowser $client) {
-                $client->request(Request::METHOD_POST, '/resolver/from-body-variadics', [
-                    'suit' => [Suit::Hearts->value, Suit::Spades->value],
-                ]);
-            },
-            function (Response $response) {
-                self::assertSame(Response::HTTP_OK, $response->getStatusCode());
-                self::assertSame(<<<DUMP
-                [
-                  App\Enum\Suit {
-                    +name: "Hearts"
-                    +value: "H"
-                    readable: "suit.hearts"
-                  }
-                  App\Enum\Suit {
-                    +name: "Spades"
-                    +value: "S"
-                    readable: "suit.spades"
-                  }
-                ]
                 DUMP, $response->getContent());
             },
         ];

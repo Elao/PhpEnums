@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -39,6 +40,11 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        // Use Symfony's 6.1 backed enum resolver once available:
+        if (class_exists(\Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver::class)) {
+            $container->removeDefinition(BackedEnumValueResolver::class);
+        }
 
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(

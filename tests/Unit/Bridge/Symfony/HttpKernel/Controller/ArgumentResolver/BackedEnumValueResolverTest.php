@@ -13,291 +13,126 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver;
 
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver\ResolveBackedEnumValue;
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver\ResolveFrom;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BackedEnumValueResolverTest extends TestCase
 {
-    private static function getResolveFromAttributes(ResolveFrom ...$from): array
-    {
-        return [new ResolveBackedEnumValue($from)];
-    }
-
     /**
-     * @dataProvider provides testSupports data
+     * @dataProvider provideTestSupportsData
      */
-    public function testSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
+    public function testSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport)
     {
         $resolver = new BackedEnumValueResolver();
 
         self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
     }
 
-    public function provides testSupports data(): iterable
+    public function provideTestSupportsData(): iterable
     {
         yield 'unsupported type' => [
-            self::getRequest(['suit' => 'H']),
-            self::getArgumentMetadata('suit', \stdClass::class),
+            self::createRequest(['suit' => 'H']),
+            self::createArgumentMetadata('suit', \stdClass::class),
             false,
         ];
 
-        yield 'missing argument value for name' => [
-            self::getRequest(attributes: ['suit' => 'H']),
-            self::getArgumentMetadata('wrong_name', Suit::class),
-            false,
-        ];
-
-        yield 'defaults from attributes' => [
-            self::getRequest(attributes: ['suit' => 'H']),
-            self::getArgumentMetadata('suit', Suit::class),
+        yield 'supports from attributes' => [
+            self::createRequest(['suit' => 'H']),
+            self::createArgumentMetadata('suit', Suit::class),
             true,
         ];
 
-        yield 'explicit from attributes' => [
-            self::getRequest(attributes: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Attributes),
-            ),
+        yield 'with null attribute value' => [
+            self::createRequest(['suit' => null]),
+            self::createArgumentMetadata('suit', Suit::class),
             true,
         ];
 
-        yield 'explicit from attributes (absent)' => [
-            self::getRequest(attributes: []),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Attributes),
-            ),
+        yield 'without matching attribute' => [
+            self::createRequest(),
+            self::createArgumentMetadata('suit', Suit::class),
             false,
         ];
 
-        yield 'explicit from query' => [
-            self::getRequest(query: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            true,
-        ];
-
-        yield 'explicit from query (absent)' => [
-            self::getRequest(query: []),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            false,
-        ];
-
-        yield 'explicit from body' => [
-            self::getRequest(body: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Body),
-            ),
-            true,
-        ];
-
-        yield 'explicit from body (absent)' => [
-            self::getRequest(body: []),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Body),
-            ),
-            false,
-        ];
-
-        yield 'non-nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                nullable: false,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            false,
-        ];
-
-        yield 'nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                nullable: true,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            true,
-        ];
-
-        yield 'non-nullable with no value found' => [
-            self::getRequest(),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                nullable: false,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            false,
-        ];
-
-        yield 'supports variadics' => [
-            self::getRequest(query: ['suit' => ['H', 'S']]),
-            self::getArgumentMetadata(
+        yield 'unsupported variadic' => [
+            self::createRequest(['suit' => ['H', 'S']]),
+            self::createArgumentMetadata(
                 'suit',
                 Suit::class,
                 variadic: true,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
             ),
-            true,
+            false,
         ];
     }
 
     /**
-     * @dataProvider provides testResolve data
+     * @dataProvider provideTestResolveData
      */
-    public function testResolve(Request $request, ArgumentMetadata $metadata, $expected): void
+    public function testResolve(Request $request, ArgumentMetadata $metadata, $expected)
     {
         $resolver = new BackedEnumValueResolver();
-
-        if (!$resolver->supports($request, $metadata)) {
-            throw new \LogicException(sprintf(
-                'Invalid test case %s, since the supports method returned false',
-                $this->getName(true),
-            ));
-        }
-
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
 
         self::assertSame($expected, iterator_to_array($results));
     }
 
-    public function provides testResolve data(): iterable
+    public function provideTestResolveData(): iterable
     {
-        yield 'defaults from attributes' => [
-            self::getRequest(attributes: ['suit' => 'H']),
-            self::getArgumentMetadata('suit', Suit::class),
+        yield 'resolves from attributes' => [
+            self::createRequest(['suit' => 'H']),
+            self::createArgumentMetadata('suit', Suit::class),
             [Suit::Hearts],
         ];
 
-        yield 'explicit from attributes' => [
-            self::getRequest(attributes: ['suit' => 'H']),
-            self::getArgumentMetadata(
+        yield 'with null attribute value' => [
+            self::createRequest(['suit' => null]),
+            self::createArgumentMetadata(
                 'suit',
                 Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Attributes),
-            ),
-            [Suit::Hearts],
-        ];
-
-        yield 'explicit from query' => [
-            self::getRequest(query: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            [Suit::Hearts],
-        ];
-
-        yield 'explicit from body' => [
-            self::getRequest(body: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Body),
-            ),
-            [Suit::Hearts],
-        ];
-
-        yield 'explicit from query or body' => [
-            self::getRequest(query: ['suit' => 'S'], body: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query, ResolveFrom::Body),
-            ),
-            [Suit::Spades],
-        ];
-
-        yield 'nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                nullable: true,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
             ),
             [null],
         ];
-
-        yield 'with variadics' => [
-            self::getRequest(query: ['suit' => ['H', 'S']]),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                variadic: true,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            [Suit::Hearts, Suit::Spades],
-        ];
-
-        yield 'nullable, with variadics' => [
-            self::getRequest(query: ['suit' => ['', '']]),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                nullable: true,
-                variadic: true,
-                attributes: self::getResolveFromAttributes(ResolveFrom::Query),
-            ),
-            [null, null],
-        ];
     }
 
-    public function testResolveThrowsOnInvalidValue(): void
+    public function testResolveThrowsNotFoundOnInvalidValue()
     {
         $resolver = new BackedEnumValueResolver();
-        $request = self::getRequest(attributes: ['suit' => 'foo']);
-        $metadata = self::getArgumentMetadata('suit', Suit::class);
+        $request = self::createRequest(['suit' => 'foo']);
+        $metadata = self::createArgumentMetadata('suit', Suit::class);
 
-        $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('Enum type "Elao\Enum\Tests\Fixtures\Enum\Suit" does not accept value "foo"');
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum');
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
         iterator_to_array($results);
     }
 
-    private static function getRequest(array $attributes = [], array $query = [], array $body = []): Request
+    public function testResolveThrowsOnUnexpectedType()
     {
-        $request = new Request();
+        $resolver = new BackedEnumValueResolver();
+        $request = self::createRequest(['suit' => false]);
+        $metadata = self::createArgumentMetadata('suit', Suit::class);
 
-        $request->attributes->replace($attributes);
-        $request->query->replace($query);
-        $request->request->replace($body);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: expecting an int or string, got bool.');
 
-        return $request;
+        /** @var \Generator $results */
+        $results = $resolver->resolve($request, $metadata);
+        iterator_to_array($results);
     }
 
-    private static function getArgumentMetadata(
-        string $name,
-        string $type,
-        bool $nullable = false,
-        bool $variadic = false,
-        array $attributes = []
-    ): ArgumentMetadata {
-        return new ArgumentMetadata($name, $type, $variadic, false, null, $nullable, $attributes);
+    private static function createRequest(array $attributes = []): Request
+    {
+        return new Request([], [], $attributes);
+    }
+
+    private static function createArgumentMetadata(string $name, string $type, bool $variadic = false): ArgumentMetadata
+    {
+        return new ArgumentMetadata($name, $type, $variadic, false, null);
     }
 }

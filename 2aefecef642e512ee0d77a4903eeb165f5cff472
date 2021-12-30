@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by chalasr at 2021-12-23T15:29:55Z
+
+> in \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver::supports as a bug fix?
+
+Making ServiceValueResolver skip enums makes sense overall, but I guess it'd be best to avoid doing so if we can.
+Could you show some code to illustrate the problematic case?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2021-12-23T15:47:17Z
+
+> but I guess it'd be best to avoid doing so if we can
+
+What do you mean?
+
+I won't dig further right now _(I'll probably suggest a fix next week)_ but I guess the true fix should be in the `RegisterControllerArgumentLocatorsPass` wrongly registering an enum argument in the controller resolver service locator, just because it's considered as an object, hence looking for a service. Such a thing isn't an issue with non-nullable scalar arguments with a default.
+
+Basic reproducer (no need for this patch nor the `elao/enum` bundle to be registered), given:
+
+```php
+namespace App\Model;
+
+enum Suit: string
+{
+    case Hearts = 'H';
+    case Diamonds = 'D';
+    case Clubs = 'C';
+    case Spades = 'S';
+}
+```
+
+controller:
+
+```php
+    #[Route('/foo')]
+    public function foo(Suit $suit = Suit::Hearts): Response
+    {
+        dd($suit);
+    }
+```
+
+->
+
+> Cannot autowire argument $suit of "App\Controller\FooController::foo()": it references class "App\Model\Suit" but no such service exists.
+in vendor/symfony/dependency-injection/Container.php (line 416)
+in vendor/symfony/dependency-injection/Argument/ServiceLocator.php -> getService (line 42)
+in vendor/symfony/http-kernel/Controller/ArgumentResolver/ServiceValueResolver.php -> get (line 84)
+
+Make it nullable:
+
+```php
+    #[Route('/foo')]
+    public function foo(?Suit $suit = Suit::Hearts): Response
+    {
+        dd($suit);
+    }
+```
+
+->
+```php
+FooController.php on line 24:
+App\Model\Suit {#5351 ▼
+  +name: "Hearts"
+  +value: "H"
+}
+```

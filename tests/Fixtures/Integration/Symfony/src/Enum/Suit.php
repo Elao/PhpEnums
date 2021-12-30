@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Fixtures\Enum;
+namespace App\Enum;
 
 use Elao\Enum\Attribute\EnumCase;
 use Elao\Enum\ReadableEnumInterface;

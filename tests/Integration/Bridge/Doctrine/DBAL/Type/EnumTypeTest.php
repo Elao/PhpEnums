@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
 use App\Entity\Card;
+use App\Enum\Suit;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
-use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeTest extends KernelTestCase

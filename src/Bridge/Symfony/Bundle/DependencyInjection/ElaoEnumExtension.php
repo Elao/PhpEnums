@@ -13,14 +13,20 @@ declare(strict_types=1);
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 {
     public function prepend(ContainerBuilder $container)
     {
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../config'));
+        $loader->load('services.php');
+
         $bundles = $container->getParameter('kernel.bundles');
 
         $configs = $container->getExtensionConfig($this->getAlias());
@@ -34,6 +40,11 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        // Use Symfony's 6.1 backed enum resolver once available:
+        if (class_exists(\Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver::class)) {
+            $container->removeDefinition(BackedEnumValueResolver::class);
+        }
 
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(
@@ -60,7 +71,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
     public function getXsdValidationBasePath(): string
     {
-        return __DIR__ . '/../Resources/config/schema';
+        return __DIR__ . '/../config/schema';
     }
 
     private function prependDoctrineDbalConfig(array $config, ContainerBuilder $container): void

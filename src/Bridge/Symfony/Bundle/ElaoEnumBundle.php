@@ -26,4 +26,9 @@ class ElaoEnumBundle extends Bundle
             new DoctrineDBALTypesPass($container->getParameter('kernel.cache_dir') . '/elao_enum_doctrine_dbal_types.php')
         );
     }
+
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
 }

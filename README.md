@@ -44,7 +44,7 @@ enum Suit: string implements ReadableEnumInterface
 ## Installation
 
 ```bash
-composer require "elao/enum:^2.0-alpha"
+composer require "elao/enum:^2.0@alpha"
 ```
 
 Or, in order to help and test latest changes:

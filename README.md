@@ -1,6 +1,6 @@
 Elao Enumerations
 =================
-[![Latest Stable Version](https://poser.pugx.org/elao/enum/v/stable?format=flat-square)](https://packagist.org/packages/elao/enum)
+[![Latest Version](https://poser.pugx.org/elao/enum/v?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Total Downloads](https://poser.pugx.org/elao/enum/downloads?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Monthly Downloads](https://poser.pugx.org/elao/enum/d/monthly?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Tests](https://github.com/Elao/PhpEnums/actions/workflows/ci.yml/badge.svg)](https://github.com/Elao/PhpEnums/actions/workflows/ci.yml)
@@ -35,9 +35,23 @@ enum Suit: string implements ReadableEnumInterface
 <p align="center">
     <strong>📢  This project used to emulate enumerations before PHP 8.1.</strong><br/>
     For the 1.x documentation, <a href="https://github.com/Elao/PhpEnums/tree/1.x">click here</a>
+    <br/><br/>
+    You can also consult <a href="https://github.com/Elao/PhpEnums/issues/124">this issue</a> to follow objectives & progress for the V2 of this lib.
 </p>
 
 ---
+
+## Installation
+
+```bash
+composer require "elao/enum:^2.0-alpha"
+```
+
+Or, in order to help and test latest changes:
+
+```bash
+composer require "elao/enum:^2.x-dev"
+```
 
 ## Readable enums
 
@@ -193,7 +207,7 @@ class CardType extends AbstractType
 
 #### Resolve controller arguments from route path
 
-As of Symfony 6.1+, backed enum cases can be resolved from route path parameters:
+As of Symfony 6.1+, [backed enum cases will be resolved](https://github.com/symfony/symfony/pull/44831) from route path parameters:
 
 ```php
 class CardController

@@ -223,7 +223,7 @@ class CardController
 ➜ A call to `/cards/H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
 
 If you're not yet using Symfony HttpKernel 6.1+, this library will still make this working by registering its own
-provider.
+resolver.
 
 #### Resolve controller arguments from query or body
 

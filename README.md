@@ -65,6 +65,7 @@ the [`EnumCase`](src/Attribute/EnumCase.php) attribute:
 namespace App\Enum;
 
 use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ReadableEnumTrait;
 use Elao\Enum\Attribute\EnumCase;
 
 enum Suit: string implements ReadableEnumInterface
@@ -111,6 +112,85 @@ suit.spades: 'Trèfles'
 ```php
 $enum = Suit::Hearts;
 $translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
+```
+
+## Extra values
+
+The `EnumCase` attributes also provides you a way to configure some extra attributes on your cases and access these easily with the `ExtrasTrait`:
+
+```php
+namespace App\Enum;
+
+use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ExtrasTrait;
+use Elao\Enum\Attribute\EnumCase;
+
+enum Suit implements ReadableEnumInterface
+{
+    use ExtrasTrait;
+
+    #[EnumCase(extras: ['icon' => 'fa-heart', 'color' => 'red'])]
+    case Hearts;
+
+    #[EnumCase(extras: ['icon' => 'fa-diamond', 'color' => 'red'])]
+    case Diamonds;
+
+    #[EnumCase(extras: ['icon' => 'fa-club', 'color' => 'black'])]
+    case Clubs;
+
+    #[EnumCase(extras: ['icon' => 'fa-spade', 'color' => 'black'])]
+    case Spades;
+}
+```
+
+Access these infos using `ExtrasTrait::getExtra(string $key, bool $throwOnMissingExtra = false): mixed`:
+
+```php
+Suit::Hearts->getExtra('color'); // 'red'
+Suit::Spades->getExtra('icon'); // 'fa-spade'
+Suit::Spades->getExtra('missing-key'); // null
+Suit::Spades->getExtra('missing-key', true); // throws
+```
+
+or create your own interfaces/traits:
+
+```php
+interface RenderableEnumInterface 
+{
+    public function getColor(): string;
+    public function getIcon(): string;
+}
+
+use Elao\Enum\ExtrasTrait;
+
+trait RenderableEnumTrait
+{
+    use ExtrasTrait;
+
+    public function getColor(): string
+    {
+        $this->getExtra('color', true);
+    }
+    
+    public function getIcon(): string
+    {
+        $this->getExtra('icon', true);
+    }
+}
+
+use Elao\Enum\Attribute\EnumCase;
+
+enum Suit implements RenderableEnumInterface
+{
+    use RenderableEnumTrait;
+
+    #[EnumCase(extras: ['icon' => 'fa-heart', 'color' => 'red'])]
+    case Hearts;
+    
+    // […]
+}
+
+Suit::Hearts->getColor(); // 'red'
 ```
 
 ## Flag enums

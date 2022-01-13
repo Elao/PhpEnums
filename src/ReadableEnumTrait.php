@@ -18,6 +18,8 @@ use Elao\Enum\Exception\NameException;
 
 trait ReadableEnumTrait
 {
+    use EnumCaseAttributesTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -61,7 +63,7 @@ trait ReadableEnumTrait
      */
     public function getReadable(): string
     {
-        return static::cachedReadables()[$this];
+        return static::arrayAccessReadables()[$this];
     }
 
     /**
@@ -75,11 +77,12 @@ trait ReadableEnumTrait
 
         if (!isset($readables)) {
             $readables = new \SplObjectStorage();
-            $r = new \ReflectionEnum(static::class);
 
+            /** @var static $case */
             foreach (static::cases() as $case) {
-                $rCase = $r->getCase($case->name);
-                if (null === $rAttr = $rCase->getAttributes(EnumCase::class)[0] ?? null) {
+                $attribute = $case->getEnumCaseAttribute();
+
+                if (null === $attribute) {
                     throw new LogicException(sprintf(
                         'enum "%s" using the "%s" trait must define a "%s" attribute on every cases. Case "%s" is missing one. Alternatively, override the "%s()" method',
                         static::class,
@@ -90,10 +93,7 @@ trait ReadableEnumTrait
                     ));
                 }
 
-                /** @var EnumCase $attr */
-                $attr = $rAttr->newInstance();
-
-                if (null === $attr->label) {
+                if (null === $attribute->label) {
                     throw new LogicException(sprintf(
                         'enum "%s" using the "%s" trait must define a label using the "%s" attribute on every cases. Case "%s" is missing a label. Alternatively, override the "%s()" method',
                         static::class,
@@ -104,11 +104,14 @@ trait ReadableEnumTrait
                     ));
                 }
 
-                $readables[$case] = $attr->label;
+                $readables[$case] = $attribute->label;
             }
         }
 
-        return $readables;
+        /** @var static $case */
+        foreach (static::cases() as $case) {
+            yield $case => $readables[$case];
+        }
     }
 
     /**
@@ -118,17 +121,14 @@ trait ReadableEnumTrait
      * making these two storage mechanisms effectively equivalent.
      *
      * However, there is a {@link https://wiki.php.net/rfc/object_keys_in_arrays pending RFC} regarding object as array keys.
+     *
+     * @internal
      */
-    private static function cachedReadables(): \ArrayAccess
+    private static function arrayAccessReadables(): \SplObjectStorage
     {
         static $readables;
 
         if (!isset($readables)) {
-            $readables = static::readables();
-            if ($readables instanceof \ArrayAccess) {
-                return $readables;
-            }
-
             $readables = new \SplObjectStorage();
             foreach (static::readables() as $case => $label) {
                 $readables[$case] = $label;

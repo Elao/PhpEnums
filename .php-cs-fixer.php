@@ -18,6 +18,7 @@ $finder = PhpCsFixer\Finder::create()
         'tests/Fixtures/Enum/Suit.php',
         'tests/Fixtures/Enum/SuitWithAttributesMissingAttribute.php',
         'tests/Fixtures/Enum/SuitWithAttributes.php',
+        'tests/Fixtures/Enum/SuitWithExtras.php',
         'tests/Fixtures/Enum/UnitSuit.php',
         'tests/Fixtures/Integration/Symfony/src/Enum/Suit.php',
     ])

@@ -271,8 +271,23 @@ class DefaultController
 
 ### Doctrine
 
-Given Doctrine DBAL and ORM _[does not provide yet](https://github.com/doctrine/orm/issues/9021)_ a way to easily write
-DBAL types for enums, this library provides some base classes to save your PHP backed enumerations in your database.
+As of `doctrine/orm` 2.11, PHP 8.1 enum types [are supported natively](https://twitter.com/ogizanagi/status/1480456881265012736?s=20):
+
+```php
+#[Entity]
+class Card
+{
+    #[Column(type: 'string', enumType: Suit::class)]
+    public $suit;
+}
+```
+
+⚠️ Unless you have specific needs for a DBAL type as described below, 
+we recommend using the official ORM integration for backed enums.
+
+PhpEnums however also provides some base classes to save your PHP backed enumerations in your database.
+In a near future, custom DBAL classes for use-cases specific to this library, 
+such as storing a flag bag or a collection of backed enum cases, would also be provided.
 
 #### In a Symfony app
 

@@ -12,6 +12,10 @@ namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
+/**
+ * @template T of EnumInterface
+ * @template-extends AbstractEnumType<T>
+ */
 abstract class AbstractIntegerEnumType extends AbstractEnumType
 {
     /**

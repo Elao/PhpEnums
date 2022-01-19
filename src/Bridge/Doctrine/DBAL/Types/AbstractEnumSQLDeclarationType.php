@@ -14,6 +14,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
  * Base class for string enumerations with an `ENUM(...values)` column definition
+ *
+ * @template T of EnumInterface
+ * @template-extends AbstractEnumType<T>
  */
 abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
 {

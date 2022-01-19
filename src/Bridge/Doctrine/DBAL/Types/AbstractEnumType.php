@@ -56,7 +56,7 @@ abstract class AbstractEnumType extends Type
         if ($value !== null && !$value instanceof \BackedEnum) {
             throw new InvalidArgumentException(sprintf(
                 'Expected an instance of a %s. %s given.',
-                \BackedENum::class,
+                \BackedEnum::class,
                 get_debug_type($value),
             ));
         }

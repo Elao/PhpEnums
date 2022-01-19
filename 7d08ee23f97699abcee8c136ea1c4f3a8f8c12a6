@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by Kleinast at 2022-01-18T17:45:00Z
+
+Not sure that is good, your exemple work on phpstan linter https://phpstan.org/r/0c9e5d20-6ec0-482a-b354-7450f3f9d7cd
+But when I add this quickly in my vendor, I steel have this error:
+```
+Type CampaignKpi in generic type Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType<CampaignKpi> in PHPDoc tag @extends is not subtype of
+         template type T of Elao\Enum\Bridge\Doctrine\DBAL\Types\EnumInterface of class Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType.
+```
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-18T19:29:01Z
+
+That's weird since it works on phpstan online linter and on
+
+https://github.com/Elao/PhpEnums/blob/75f2d02f94c9c4956b12964ee71131a4508a6c6d/src/FlaggedEnum.php#L16-L19
+
+which extends
+
+https://github.com/Elao/PhpEnums/blob/75f2d02f94c9c4956b12964ee71131a4508a6c6d/src/ReadableEnum.php#L15-L20
+
+which extends
+
+https://github.com/Elao/PhpEnums/blob/75f2d02f94c9c4956b12964ee71131a4508a6c6d/src/Enum.php#L17-L21
+
+as well, which seems similar. Did you try to upgrade phpstan for bug fixes?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-18T19:33:31Z
+
+Would it work using `template-extends` instead in `AbstractIntegerEnumType` ?
+
+See https://tomasvotruba.com/blog/phpstan-generics-for-dummies-with-two-parents/
+and https://phpstan.org/r/5c1ecfa7-6620-46b1-9e72-93a5dba213e3
+
+---------------------------------------------------------------------------
+
+by Kleinast at 2022-01-19T09:47:29Z
+
+I'm confuse, indeed on phpstan linter it work with both method (@extends AbstractEnumType<T> or template-extends), even when I try with all Enum class I use in my work case:
+https://phpstan.org/r/d6182ea4-81d6-49ce-a25f-669698bc913e
+
+But still have error on my project with cryptic error:
+Type App\Domain\Tracker\CampaignKpi in generic type Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType<App\Domain\Tracker\CampaignKpi> in PHPDoc tag @extends is not subtype of
+         template type T of Elao\Enum\Bridge\Doctrine\DBAL\Types\EnumInterface of class Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractIntegerEnumType.
+
+So may be it's now a problem on my projet, I wil dig into. Whitch solution do you prefer between @extends AbstractEnumType<T> or template-extends for this PR ?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-19T10:26:25Z
+
+Given the blog post and since it's recent, I'd say `@template-extends` is the way to go
+
+---------------------------------------------------------------------------
+
+by Kleinast at 2022-01-19T16:31:57Z
+
+ok Done

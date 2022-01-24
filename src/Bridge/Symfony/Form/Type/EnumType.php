@@ -42,4 +42,12 @@ class EnumType extends AbstractType
     {
         return SymfonyEnumType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'elao_enum';
+    }
 }

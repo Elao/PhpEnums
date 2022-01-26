@@ -14,6 +14,7 @@ namespace Elao\Enum\Tests\Unit;
 
 use Elao\Enum\Exception\NameException;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
+use Elao\Enum\Tests\Fixtures\Enum\UnitSuit;
 use PHPUnit\Framework\TestCase;
 
 class ReadableEnumTest extends TestCase
@@ -33,6 +34,14 @@ class ReadableEnumTest extends TestCase
     public function testReadableForValue(): void
     {
         self::assertSame('suit.clubs', Suit::readableForValue(Suit::Clubs->value));
+    }
+
+    public function testReadableForValueThrowOnUnitEnum(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot call method "Elao\Enum\ReadableEnumTrait::readableForValue" on non-backed enum "Elao\Enum\Tests\Fixtures\Enum\UnitSuit');
+
+        self::assertSame('suit.clubs', UnitSuit::readableForValue('C'));
     }
 
     public function testReadableForValueExceptionOnInvalidName(): void

@@ -23,6 +23,14 @@ trait ReadableEnumTrait
      */
     public static function readableForValue(string|int $value): string
     {
+        if (!is_a(static::class, \BackedEnum::class, true)) {
+            throw new \BadMethodCallException(sprintf(
+                'Cannot call method "%s" on non-backed enum "%s".',
+                __METHOD__,
+                static::class,
+            ));
+        }
+
         /** @var ReadableEnumInterface $case */
         $case = static::from($value);
 

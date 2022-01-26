@@ -25,11 +25,10 @@ interface ReadableEnumInterface extends \UnitEnum
     public static function readables(): iterable;
 
     /**
-     * TODO: only for backed enums
+     * Gets the human representation for a given value (only for backed enum).
      *
-     * Gets the human representation for a given value.
-     *
-     * @throws \ValueError When $value is not acceptable for this enum
+     * @throws \ValueError             When $value is not acceptable for this enum
+     * @throws \BadMethodCallException When attempting to call this method on a non-backed enum.
      *
      * @return string The human representation for a given value
      */

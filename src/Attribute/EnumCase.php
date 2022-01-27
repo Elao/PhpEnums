@@ -12,13 +12,10 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Attribute;
 
-/**
- * @final
- */
 #[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 class EnumCase
 {
-    public function __construct(public readonly ?string $label = null)
+    public function __construct(public readonly ?string $label = null, public readonly array $extras = [])
     {
     }
 }

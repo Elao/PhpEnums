@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by IonBazan at 2022-01-13T11:04:34Z
+
+Makes sense to me 💯
+Would that be also possible to add a method to get the actual attribute instance to allow extending `EnumCase` attribute while still benefiting from the cache?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-13T11:39:01Z
+
+> Would that be also possible to add a method to get the actual attribute instance to allow extending EnumCase attribute while still benefiting from the cache?
+
+Might be. But I think your use-case might be covered by:
+
+```php
+/**
+ * @final
+ */
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
+class RenderableCase extends EnumCase
+{
+    public function __construct(string $label, string $color, string $icon)
+    {
+        parent::__construct($label, extra: compact('color', 'icon'))
+    }
+}
+```
+
+while still requiring only `getExtra`, if that's only about more scoped PHP attributes, isn't it?
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2022-01-13T11:48:02Z
+
+My concern is type safety. With this `extra: ['something' => 'test']` we are not sure what items and what types are stored there. If we could have a method that returns all attributes that extend `EnumCase`, we could store and retrieve any kind of extra information with ease and type safety.
+
+Something like:
+```php
+/**
+ * @return EnumCase[]
+ */
+public function getAttributes(): array
+{
+    // ...
+}
+
+public function getColor(): ?string
+{
+    foreach ($this->getAttributes() as $attribute) {
+        if ($attribute instanceof HasColor) {
+            return $attribute->color;
+        }
+    }
+
+    return null;
+}
+```
+
+We could combine both approaches - for quick results, developers might use this `extra` field, but for more sophisticated logic, they might want to use the helper that returns the attributes assigned to the case.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-13T13:28:54Z
+
+But the example in https://github.com/Elao/PhpEnums/pull/170#issuecomment-1012056988 is enough to provide type safety to me (unless you use both `EnumCase` and `RenderableCase` in your code base for the same needs, but that's not the point of creating a dedicated attribute then).

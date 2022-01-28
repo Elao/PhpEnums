@@ -12,60 +12,22 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
+use Elao\Enum\Bridge\Doctrine\Common\AbstractTypesDumper;
+
 /**
  * @internal
  */
-class TypesDumper
+class TypesDumper extends AbstractTypesDumper
 {
-    /**
-     * @return void
-     */
-    public function dumpToFile(string $file, array $types)
-    {
-        file_put_contents($file, $this->dump($types));
-    }
+    public const TYPE_SINGLE = 'single';
+    public const TYPES = [
+        self::TYPE_SINGLE,
+    ];
 
-    public static function getTypeClassname(string $class): string
-    {
-        return sprintf('%s\\%sType', static::getMarker(), $class);
-    }
-
-    private function dump(array $types): string
-    {
-        array_walk($types, static function (&$type) {
-            $type = array_pad($type, 3, null);
-        });
-
-        $namespaces = [];
-        foreach ($types as [$enumClass, $name, $default]) {
-            $fqcn = self::getTypeClassname($enumClass);
-            $classname = basename(str_replace('\\', '/', $fqcn));
-            $ns = substr($fqcn, 0, -\strlen($classname) - 1);
-
-            if (!isset($namespaces[$ns])) {
-                $namespaces[$ns] = '';
-            }
-
-            $namespaces[$ns] .= $this->getTypeCode($classname, $enumClass, $name, $default);
-        }
-
-        $code = "<?php\n";
-        foreach ($namespaces as $namespace => $typeCode) {
-            $code .= <<<PHP
-
-namespace $namespace {
-$typeCode
-}
-
-PHP;
-        }
-
-        return $code;
-    }
-
-    private function getTypeCode(
+    protected function getTypeCode(
         string $classname,
         string $enumClass,
+        string $type,
         string $name,
         \BackedEnum|int|string|null $defaultOnNull = null
     ): string {
@@ -102,7 +64,7 @@ PHP;
         PHP;
     }
 
-    private static function getMarker(): string
+    protected static function getMarker(): string
     {
         return 'ELAO_ENUM_DT_DBAL';
     }
@@ -129,5 +91,12 @@ PHP;
                         }
             PHP;
         }
+    }
+
+    protected static function getSuffixes(): array
+    {
+        return [
+            self::TYPE_SINGLE => 'Type',
+        ];
     }
 }

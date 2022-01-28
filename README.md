@@ -377,8 +377,9 @@ This configuration is equivalent to the following sections explaining how to cre
 elao_enum:
   doctrine:
     types:
-      App\Enum\Suit: ~ # Defaults to `{ class: App\Enum\Suit, default: null }`
+      App\Enum\Suit: ~ # Defaults to `{ class: App\Enum\Suit, default: null, type: single }`
       permissions: { class: App\Enum\Permission } # You can set a name different from the enum FQCN
+      another: { class: App\Enum\AnotherEnum, type: collection } # values are stored as an array of integers or strings
       App\Enum\RequestStatus: { default: 200 } # Default value from enum cases, in case the db value is NULL
 ```
 
@@ -434,6 +435,78 @@ use Doctrine\ORM\Mapping as ORM;
 class Card
 {
     #[ORM\Column(Suit::class, nullable: false)]
+    private Suit $field;
+}
+```
+
+
+### Doctrine ODM
+
+You can store enumeration values as string or integer in your MongoDB database and manipulate them as objects thanks to custom mapping types included in this library.
+
+In a near future, custom ODM classes for use-cases specific to this library,
+such as storing a flag bag or a collection of backed enum cases, would also be provided.
+
+#### In a Symfony app
+
+This configuration is equivalent to the following sections explaining how to create a custom Doctrine ODM type:
+
+```yaml
+elao_enum:
+  doctrine_mongodb:
+    types:
+      App\Enum\Suit: ~ # Defaults to `{ class: App\Enum\Suit, type: single }`
+      permissions: { class: App\Enum\Permission } # You can set a name different from the enum FQCN
+      another: { class: App\Enum\AnotherEnum, type: collection } # values are stored as an array of integers or strings
+      App\Enum\RequestStatus: { default: 200 } # Default value from enum cases, in case the db value is NULL
+```
+
+It'll actually generate & register the types classes for you, saving you from writing this boilerplate code.
+
+#### Manually
+
+Read the
+[Doctrine ODM docs](https://www.doctrine-project.org/projects/doctrine-mongodb-bundle/en/current/config.html#custom-types)
+first.
+
+Extend the [AbstractEnumType](src/Bridge/Doctrine/ODM/Types/AbstractEnumType.php) or [AbstractCollectionEnumType](src/Bridge/Doctrine/ODM/Types/AbstractCollectionEnumType.php):
+
+```php
+namespace App\Doctrine\ODM\Type;
+
+use Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractEnumType;
+use App\Enum\Suit;
+
+class SuitType extends AbstractEnumType
+{
+    protected function getEnumClass(): string
+    {
+        return Suit::class; // By default, the enum FQCN is used as the DBAL type name as well
+    }
+}
+```
+
+In your application bootstrapping code:
+
+```php
+use App\Doctrine\ODM\Type\SuitType;
+use Doctrine\ODM\MongoDB\Types\Type;
+
+Type::addType(Suit::class, SuitType::class);
+```
+
+#### Mapping
+
+Now the new type can be used when mapping fields:
+
+```php
+use App\Enum\Suit;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+#[MongoDB\Document]
+class Card
+{
+    #[MongoDB\Field(Suit::class)]
     private Suit $field;
 }
 ```

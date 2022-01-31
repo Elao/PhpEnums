@@ -437,3 +437,60 @@ class Card
     private Suit $field;
 }
 ```
+
+### Faker
+
+The PhpEnums library provides a faker `EnumProvider` allowing to select random enum cases:
+
+```php
+use \Elao\Enum\Bridge\Faker\Provider\EnumProvider;
+ 
+$faker = new Faker\Generator();
+$faker->addProvider(new EnumProvider());
+
+$faker->randomEnum(Suit::class) // Select one of the Suit cases, e.g: `Suit::Hearts`
+$faker->randomEnums(Suit::class, 2, min: 1) // Select between 1 and 2 enums cases, e.g: `[Suit::Hearts, Suit::Spades]`
+$faker->randomEnums(Suit::class, 3, exact: true) // Select exactly 3 enums cases
+```
+
+Its constructor receives a mapping of enum types aliases as first argument:
+
+```php
+new EnumProvider([
+    'Civility' => App\Enum\Civility::class,
+    'Suit' => App\Enum\Suit::class,
+]);
+```
+
+This is especially useful when using this provider with Nelmio Alice's DSL (_see next section_)
+
+### Usage with Alice
+
+If you're using the [nelmio/alice](https://github.com/nelmio/alice) package and its bundle in order to generate fixtures, 
+you can register the Faker provider by using the `nelmio_alice.faker.generator`:
+
+```yml
+# config/services.yaml
+services:
+    Elao\Enum\Bridge\Faker\Provider\EnumProvider:
+        arguments:
+            - Civility: App\Enum\Civility
+              Suit: App\Enum\Suit
+        tags: ['nelmio_alice.faker.provider']
+```
+
+The following example shows how to use the provider within a [PHP fixture file](https://github.com/nelmio/alice/blob/master/doc/complete-reference.md#php):
+
+```php
+return [
+    MyEntity::class => [
+        'entity1' => [
+            'civility' => Civility::MISTER // Select a specific case, using PHP directly
+            'suit' => '<randomEnum(App\Enum\Suit)>' // Select a random case
+            'suit' => '<randomEnum(Suit)>' // Select a random case, using the FQCN alias
+            'permissions' => '<randomEnums(Permissions, 3, false, 1)>' // Select between 1 and 2 enums cases
+            'permissions' => '<randomEnums(Permissions, 3, true)>' // Select exactly 3 enums cases
+        ]
+    ]
+]
+```

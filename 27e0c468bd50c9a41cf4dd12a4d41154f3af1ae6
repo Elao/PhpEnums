@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-01-28T06:59:18Z
+
+I think there is not much benefit to have a bundle config for this, since registering the provider in Alice is done this way:
+
+```yaml
+services:
+  Elao\Enum\Bridge\Faker\Provider\EnumProvider:
+    arguments:
+      - Suit: App\Enums\Suit
+        Permissions: App\Enums\Permissions
+  tags: ['nelmio_alice.faker.provider']
+```
+
+which is simple enough not to bother about introducing another conditional config entry.

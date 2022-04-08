@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by IonBazan at 2022-02-25T10:56:44Z
+
+@ogizanagi this is now complete and ready for review! 🚀
+
+I managed to extract common parts of TypeDumper tests so that we keep them DRY. I also used `readonly` typed properties  instead of phpdocs for stricter type checking.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-02-25T10:58:49Z
+
+Thank you @IonBazan . Could you please add a short doc entry as well? 🙏🏻
+
+---------------------------------------------------------------------------
+
+by IonBazan at 2022-02-25T11:22:19Z
+
+Sure! Added the readme and rebased on top of recent `2.x` changes to keep the history clean. Cheers!

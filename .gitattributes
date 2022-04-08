@@ -3,6 +3,7 @@
 /.github           export-ignore
 /.gitignore        export-ignore
 /.php-cs-fixer.php export-ignore
+/.php-version      export-ignore
 /link              export-ignore
 /Makefile          export-ignore
 /phpunit.xml.dist  export-ignore

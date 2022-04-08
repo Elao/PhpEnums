@@ -38,7 +38,7 @@ class Card
         return $this->uuid;
     }
 
-    public function getSuit(): Suit
+    public function getSuit(): ?Suit
     {
         return $this->suit;
     }

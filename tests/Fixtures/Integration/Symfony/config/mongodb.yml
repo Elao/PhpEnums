@@ -1,0 +1,19 @@
+doctrine_mongodb:
+  connections:
+    default:
+      server: '%env(resolve:MONGODB_URL)%'
+  default_database: '%env(resolve:MONGODB_DB)%'
+  document_managers:
+    default:
+      mappings:
+        App:
+          is_bundle: false
+          type: attribute
+          dir: '%kernel.project_dir%/src/Document'
+          prefix: 'App\Document'
+          alias: Document
+
+elao_enum:
+  doctrine_mongodb:
+    types:
+      App\Enum\Suit: 'App\Enum\Suit'

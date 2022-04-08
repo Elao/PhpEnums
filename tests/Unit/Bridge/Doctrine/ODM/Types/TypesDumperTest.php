@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\DBAL\Types;
+namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\ODM\Types;
 
 use Elao\Enum\Bridge\Doctrine\Common\AbstractTypesDumper;
-use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
+use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper;
 use Elao\Enum\Tests\Unit\Bridge\Doctrine\Common\Types\BaseTypesDumperTest;
 
 class TypesDumperTest extends BaseTypesDumperTest
@@ -27,10 +27,9 @@ class TypesDumperTest extends BaseTypesDumperTest
     {
         return [
             ['Foo\Bar\Baz', 'single', 'Foo\Bar\Baz'],
-            ['Foo\Bar\BazWithDefault', 'single', 'baz_with_default', 'foo'],
             ['Foo\Bar\Qux', 'single', 'Foo\Bar\Qux'],
             ['Foo\Baz\Foo', 'single', 'foo'],
-            ['Foo\Baz\FooWithDefault', 'single', 'foo_with_default', 3],
+            ['Foo\Baz\Foo', 'collection', 'foo_collection'],
         ];
     }
 

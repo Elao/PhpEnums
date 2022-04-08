@@ -12,20 +12,20 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection\Compiler;
 
-use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Compiler\DoctrineDBALTypesPass;
+use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\Compiler\DoctrineODMTypesPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class DoctrineDBALTypesPassTest extends TestCase
+class DoctrineODMTypesPassTest extends TestCase
 {
-    private readonly DoctrineDBALTypesPass $pass;
+    private readonly DoctrineODMTypesPass $pass;
 
     private readonly string $dumpPath;
 
     protected function setUp(): void
     {
         $this->dumpPath = sys_get_temp_dir() . '/elao_enum_types_dumper.php';
-        $this->pass = new DoctrineDBALTypesPass($this->dumpPath);
+        $this->pass = new DoctrineODMTypesPass($this->dumpPath);
     }
 
     protected function tearDown(): void
@@ -36,7 +36,7 @@ class DoctrineDBALTypesPassTest extends TestCase
     public function testDoesNothingOnNoTypesSet(): void
     {
         $container = new ContainerBuilder();
-        $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);
+        $def = $container->register('doctrine_mongodb.odm.manager_configurator.abstract', \stdClass::class);
 
         $this->pass->process($container);
 
@@ -47,10 +47,10 @@ class DoctrineDBALTypesPassTest extends TestCase
     public function testDumpsOnTypesSet(): void
     {
         $container = new ContainerBuilder();
-        $def = $container->register('doctrine.dbal.connection_factory', \stdClass::class);
-        $container->getParameterBag()->set('.elao_enum.doctrine_types', [
+        $def = $container->register('doctrine_mongodb.odm.manager_configurator.abstract', \stdClass::class);
+        $container->getParameterBag()->set('.elao_enum.doctrine_mongodb_types', [
             ['Foo\Bar\Baz', 'single', 'baz', null],
-            ['Foo\Bar\Qux', 'single', 'qux', null],
+            ['Foo\Bar\Qux', 'collection', 'qux', null],
         ]);
 
         $this->pass->process($container);

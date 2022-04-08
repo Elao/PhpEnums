@@ -12,6 +12,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude('tests/Fixtures/Integration/Symfony/var')
     ->exclude('tests/Unit/Bridge/Doctrine/DBAL/Types/TypesDumperTest')
+    ->exclude('tests/Unit/Bridge/Doctrine/ODM/Types/TypesDumperTest')
     // Enum ignored for now since php-cs-fixer removes the traits & extra blank lines:
     ->notPath([
         'tests/Fixtures/Enum/SuitWithAttributesMissingLabel.php',

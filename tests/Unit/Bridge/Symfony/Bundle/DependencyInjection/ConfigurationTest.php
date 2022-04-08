@@ -30,7 +30,7 @@ class ConfigurationTest extends TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), [[]]);
 
-        self::assertEquals($this->getDefaultConfig(), $config);
+        self::assertSame($this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineConfig(): void
@@ -49,12 +49,36 @@ class ConfigurationTest extends TestCase
         self::assertEquals([
             'doctrine' => [
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null],
-                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
+                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => 'single'],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
+    }
+
+    public function testDoctrineMongoDBConfig(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'doctrine_mongodb' => [
+                'types' => [
+                    Suit::class => ['class' => Suit::class],
+                    Permissions::class => Permissions::class,
+                    'request_status' => ['class' => RequestStatus::class, 'type' => 'collection'],
+                ],
+            ],
+        ]]);
+
+        self::assertEquals([
+                'doctrine_mongodb' => [
+                    'types' => [
+                        Suit::class => ['class' => Suit::class, 'type' => 'single'],
+                        Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
+                        'request_status' => ['class' => RequestStatus::class, 'type' => 'collection'],
+                    ],
+                ],
+            ] + $this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineConfigNameAsEnumClass(): void
@@ -72,11 +96,35 @@ class ConfigurationTest extends TestCase
         self::assertEquals([
             'doctrine' => [
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
+    }
+
+    public function testDoctrineMongoDBConfigNameAsEnumClass(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'doctrine_mongodb' => [
+                'types' => [
+                    Suit::class => [],
+                    Permissions::class => null,
+                    RequestStatus::class => ['type' => 'collection'],
+                ],
+            ],
+        ]]);
+
+        self::assertEquals([
+                'doctrine_mongodb' => [
+                    'types' => [
+                        Suit::class => ['class' => Suit::class, 'type' => 'single'],
+                        Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
+                        RequestStatus::class => ['class' => RequestStatus::class, 'type' => 'collection'],
+                    ],
+                ],
+            ] + $this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineTypeConfigWithInvalidEnumClass(): void
@@ -94,10 +142,28 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
+    public function testDoctrineMongoDBTypeConfigWithInvalidEnumClass(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Invalid configuration for path "elao_enum.doctrine_mongodb.types.std.class": Invalid class. Expected instance of "BackedEnum". Got "stdClass".');
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration(), [[
+            'doctrine_mongodb' => [
+                'types' => [
+                    'std' => ['class' => \stdClass::class],
+                ],
+            ],
+        ]]);
+    }
+
     private function getDefaultConfig(): array
     {
         return [
             'doctrine' => [
+                'types' => [],
+            ],
+            'doctrine_mongodb' => [
                 'types' => [],
             ],
         ];

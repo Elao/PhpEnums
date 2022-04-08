@@ -1,4 +1,4 @@
-PHP_CS_FIXER_VERSION=v3.4.0
+PHP_CS_FIXER_VERSION=v3.8.0
 
 ###########
 # Install #

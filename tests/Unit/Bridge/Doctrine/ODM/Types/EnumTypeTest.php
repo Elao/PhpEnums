@@ -12,14 +12,13 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\ODM\Types;
 
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Doctrine\ODM\MongoDB\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\RequestStatusType;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\SuitEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\RequestStatus;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
-use TypeError;
-use ValueError;
 
 class EnumTypeTest extends TestCase
 {
@@ -31,6 +30,10 @@ class EnumTypeTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        if (!class_exists(DoctrineMongoDBBundle::class)) {
+            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+        }
+
         if (Type::hasType(Suit::class)) {
             Type::overrideType(Suit::class, SuitEnumType::class);
         } else {
@@ -79,13 +82,13 @@ class EnumTypeTest extends TestCase
 
     public function testConvertToPHPValueOnInvalidType(): void
     {
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $this->stringType->convertToPHPValue(1);
     }
 
     public function testConvertToPHPValueOnInvalidValue(): void
     {
-        $this->expectException(ValueError::class);
+        $this->expectException(\ValueError::class);
         $this->stringType->convertToPHPValue('invalid');
     }
 }

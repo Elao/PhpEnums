@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\ODM\Types;
 
-use BackedEnum;
 use Doctrine\ODM\MongoDB\Types\ClosureToPHP;
 use Doctrine\ODM\MongoDB\Types\Type;
 
@@ -32,7 +31,7 @@ abstract class AbstractEnumType extends Type
             return null;
         }
 
-        if ($value instanceof BackedEnum) {
+        if ($value instanceof \BackedEnum) {
             return $value->value;
         }
 
@@ -44,7 +43,7 @@ abstract class AbstractEnumType extends Type
      *
      * @psalm-return TEnum
      */
-    public function convertToPHPValue($value): ?BackedEnum
+    public function convertToPHPValue($value): ?\BackedEnum
     {
         if (null === $value) {
             return null;

@@ -37,6 +37,14 @@ install-61:
 	composer config minimum-stability dev
 	composer update
 
+add-odm:
+	composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.3" "doctrine/mongodb-odm-bundle:^4.4.1"
+	@echo "Run again appropriate install target to update dependencies"
+
+remove-odm:
+	composer remove --no-update --no-interaction --dev "doctrine/mongodb-odm" "doctrine/mongodb-odm-bundle"
+	@echo "Run again appropriate install target to update dependencies"
+
 ########
 # Test #
 ########

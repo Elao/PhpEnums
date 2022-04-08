@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\Common;
 
+/**
+ * @internal
+ */
 abstract class AbstractTypesDumper
 {
     public function dumpToFile(string $file, array $types)
@@ -47,11 +50,11 @@ abstract class AbstractTypesDumper
         foreach ($namespaces as $namespace => $typeCode) {
             $code .= <<<PHP
 
-namespace $namespace {
-$typeCode
-}
+                namespace $namespace {
+                $typeCode
+                }
 
-PHP;
+                PHP;
         }
 
         return $code;

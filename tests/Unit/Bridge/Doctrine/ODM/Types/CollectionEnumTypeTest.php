@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\ODM\Types;
 
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Doctrine\ODM\MongoDB\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\RequestStatusCollectionType;
 use Elao\Enum\Tests\Fixtures\Enum\RequestStatus;
 use PHPUnit\Framework\TestCase;
-use ValueError;
 
 class CollectionEnumTypeTest extends TestCase
 {
@@ -26,6 +26,10 @@ class CollectionEnumTypeTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        if (!class_exists(DoctrineMongoDBBundle::class)) {
+            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+        }
+
         Type::addType(self::NAME, RequestStatusCollectionType::class);
     }
 
@@ -88,7 +92,7 @@ class CollectionEnumTypeTest extends TestCase
 
     public function testConvertToPHPValueOnInvalidValue(): void
     {
-        $this->expectException(ValueError::class);
+        $this->expectException(\ValueError::class);
         $this->type->convertToPHPValue([301]);
     }
 }

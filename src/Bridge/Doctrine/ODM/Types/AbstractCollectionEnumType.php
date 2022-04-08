@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\ODM\Types;
 
-use BackedEnum;
 use Doctrine\ODM\MongoDB\Types\ClosureToPHP;
 use Doctrine\ODM\MongoDB\Types\CollectionType;
 
@@ -27,7 +26,7 @@ abstract class AbstractCollectionEnumType extends CollectionType
     {
         if (\is_array($value)) {
             return array_unique(array_values(array_map(static function ($value) {
-                return $value instanceof BackedEnum ? $value->value : $value;
+                return $value instanceof \BackedEnum ? $value->value : $value;
             }, $value)));
         }
 

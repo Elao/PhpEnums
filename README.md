@@ -41,10 +41,22 @@ enum Suit: string implements ReadableEnumInterface
 
 ---
 
+- Features
+  - [Readable enums](#readable-enums)
+  - [Flag enums](#flag-enums)
+  - [Extra values](#extra-values)
+- [Integrations](#integrations)
+  - [Symfony Forms](#symfony-form)
+  - [Symfony Controller Argument Resolver](#symfony-httpkernel)
+  - Symfony VarDumper
+  - [Doctrine ORM](#doctrine)
+  - [Doctrine ODM](#doctrine-odm)
+  - [Faker](#faker)
+
 ## Installation
 
 ```bash
-composer require "elao/enum:^2.0@alpha"
+composer require "elao/enum:^2.0@beta"
 ```
 
 Or, in order to help and test latest changes:

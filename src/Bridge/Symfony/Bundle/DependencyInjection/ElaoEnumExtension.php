@@ -15,6 +15,7 @@ namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DBALTypesDumper;
 use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as ODMTypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
+use Elao\Enum\FlagBag;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -54,12 +55,13 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(
                 '.elao_enum.doctrine_types',
-                array_map(static function (string $name, array $v): array {
+                array_map(function (string $name, array $v) use($config): array {
                     $default = $v['default'];
 
                     return [
                         $v['class'],
-                        $v['type'],
+                        $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)),
+                        //$v['type'],
                         $name,
                         // Symfony DI parameters do not support enum cases (yet?).
                         // Does not fail in an array parameter, but the PhpDumper generate incorrect code for now.
@@ -117,5 +119,24 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         }
 
         $container->prependExtensionConfig('doctrine_mongodb', ['types' => $doctrineTypesConfig]);
+    }
+
+    private function resolveDbalType(array $config, bool $useEnumSQLDeclaration): string
+    {
+        $type = $config['type'];
+        $class = $config['class'];
+
+        $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'single';
+
+        if (null === $type) {
+            $type = is_a($class, FlagBag::class, true) ? 'int' : $defaultStringType;
+        }
+
+        return $type;
+    }
+
+    private function usesEnumSQLDeclaration(array $config): bool
+    {
+        return $config['doctrine']['enum_sql_declaration'];
     }
 }

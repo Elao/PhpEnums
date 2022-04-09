@@ -48,6 +48,7 @@ class ConfigurationTest extends TestCase
 
         self::assertEquals([
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [
                     Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
                     Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
@@ -95,6 +96,7 @@ class ConfigurationTest extends TestCase
 
         self::assertEquals([
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [
                     Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
                     Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
@@ -161,6 +163,7 @@ class ConfigurationTest extends TestCase
     {
         return [
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [],
             ],
             'doctrine_mongodb' => [

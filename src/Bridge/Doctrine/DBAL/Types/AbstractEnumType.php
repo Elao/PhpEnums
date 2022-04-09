@@ -121,7 +121,7 @@ abstract class AbstractEnumType extends Type
         return $this->isIntBackedEnum() ? (int) $value : (string) $value;
     }
 
-    protected function isIntBackedEnum(): bool
+    private function isIntBackedEnum(): bool
     {
         if (!isset($this->isIntBackedEnum)) {
             $r = new \ReflectionEnum($this->getEnumClass());

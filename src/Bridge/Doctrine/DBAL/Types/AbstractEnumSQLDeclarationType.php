@@ -22,16 +22,12 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
-        if ($this->isIntBackedEnum()) {
-            $values = ($this->getEnumClass())::cases();
-        } else {
-            $values = array_map(
-                function ($val) {
-                    return "'" . $val->value . "'";
-                },
-                ($this->getEnumClass())::cases()
-            );
-        }
+        $values = array_map(
+            function ($val) {
+                return "'" . $val->value . "'";
+            },
+            ($this->getEnumClass())::cases()
+        );
 
         return "ENUM(" . implode(", ", $values) . ")";
     }

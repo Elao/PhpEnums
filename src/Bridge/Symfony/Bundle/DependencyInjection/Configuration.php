@@ -78,7 +78,7 @@ class Configuration implements ConfigurationInterface
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
 - single: VARCHAR/INT based on BackedEnum type
-- enum: ENUM(...values) - values are string/int based on BackedEnum type (Your platform must support it)
+- enum: ENUM(...values) - values are strings based on BackedEnum type (Your platform must support it)
 Default is either "single" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
 Default for flagged enums is "int".
 TXT

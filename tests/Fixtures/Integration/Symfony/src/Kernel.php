@@ -38,6 +38,10 @@ class Kernel extends BaseKernel
     {
         $loader->load($this->getProjectDir() . '/config/config.yml');
 
+        if (preg_match('/^pdo-mysql:\/\//i', $_ENV['DOCTRINE_DBAL_URL'])) {
+            $loader->load($this->getProjectDir() . '/config/mysql.yml');
+        }
+
         if (class_exists(DoctrineMongoDBBundle::class)) {
             $loader->load($this->getProjectDir() . '/config/mongodb.yml');
         }

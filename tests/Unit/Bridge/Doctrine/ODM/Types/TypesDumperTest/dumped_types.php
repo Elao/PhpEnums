@@ -36,8 +36,8 @@ namespace ELAO_ENUM_DT_ODM\Foo\Baz {
         }
     }
 
-    if (!\class_exists(FooCollectionType::class)) {
-        class FooCollectionType extends \Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractCollectionEnumType
+    if (!\class_exists(FooCollectionCollectionType::class)) {
+        class FooCollectionCollectionType extends \Elao\Enum\Bridge\Doctrine\ODM\Types\AbstractCollectionEnumType
         {
             protected function getEnumClass(): string
             {

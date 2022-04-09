@@ -47,6 +47,21 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
         }
     }
 
+    if (!\class_exists(FooEnumType::class)) {
+        class FooEnumType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractEnumSQLDeclarationType
+        {
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Baz::class;
+            }
+
+            public function getName(): string
+            {
+                return 'foo_enum';
+            }
+        }
+    }
+
 }
 
 namespace ELAO_ENUM_DT_DBAL\Foo\Baz {

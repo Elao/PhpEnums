@@ -1,0 +1,17 @@
+doctrine:
+  orm:
+    mappings:
+      AppMySQL:
+        is_bundle: false
+        type: attribute
+        dir: '%kernel.project_dir%/src/EntityMySQL'
+        prefix: 'App\Entity'
+        alias: App
+
+elao_enum:
+    doctrine:
+      types:
+        suit_sql_enum:
+          class: App\Enum\Suit
+          type: enum
+          default: !php/const App\Enum\Suit::Spades

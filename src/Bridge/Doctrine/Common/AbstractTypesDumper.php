@@ -27,6 +27,12 @@ abstract class AbstractTypesDumper
         return sprintf('%s\\%s%s', static::getMarker(), $class, static::getSuffixes()[$type]);
     }
 
+    /**
+     * Returns FQCN for given Enum
+     *
+     * If name is FQCN already, then the resulting FQCN will be MARKER\Originalnamespaceofenum\EnumclassnameSuffix
+     * If name is custom string, then the resulting FQCN will be MARKER\Originalnamespaceofenum\CustomnamepascalcaseSuffix
+     */
     public static function getTypeFullyQualifiedClassName(string $enumClass, string $type, string $name): string
     {
         $fqcn = sprintf('%s\\%s', static::getMarker(), $enumClass);
@@ -36,9 +42,11 @@ abstract class AbstractTypesDumper
 
         if (str_contains($name, '\\')) {
             $name = $classname;
+        } else {
+            $name = static::getPascalCase($name);
         }
 
-        return $ns.'\\'.static::getPascalCase($name).static::getSuffixes()[$type];
+        return sprintf('%s\\%s%s', $ns, $name, static::getSuffixes()[$type]);
     }
 
     public static function getPascalCase(string $string): string

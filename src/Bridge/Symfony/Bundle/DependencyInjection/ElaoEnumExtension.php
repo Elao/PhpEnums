@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
-use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DBALTypesDumper;
 use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as ODMTypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
@@ -127,7 +126,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $type = $config['type'];
         $class = $config['class'];
 
-        $defaultStringType = $useEnumSQLDeclaration ? TypesDumper::TYPE_ENUM : TypesDumper::TYPE_SCALAR;
+        $defaultStringType = $useEnumSQLDeclaration ? DBALTypesDumper::TYPE_ENUM : DBALTypesDumper::TYPE_SCALAR;
 
         if (null === $type) {
             $type = is_a($class, FlagBag::class, true) ? 'int' : $defaultStringType;

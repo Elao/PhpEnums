@@ -129,7 +129,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $defaultStringType = $useEnumSQLDeclaration ? DBALTypesDumper::TYPE_ENUM : DBALTypesDumper::TYPE_SCALAR;
 
         if (null === $type) {
-            $type = is_a($class, FlagBag::class, true) ? 'int' : $defaultStringType;
+            $type = is_a($class, FlagBag::class, true) ? DBALTypesDumper::TYPE_SCALAR : $defaultStringType;
         }
 
         return $type;

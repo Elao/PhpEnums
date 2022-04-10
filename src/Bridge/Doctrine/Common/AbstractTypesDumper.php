@@ -27,6 +27,33 @@ abstract class AbstractTypesDumper
         return sprintf('%s\\%s%s', static::getMarker(), $class, static::getSuffixes()[$type]);
     }
 
+    public static function getTypeFullyQualifiedClassName(string $enumClass, string $type, string $name): string
+    {
+        $fqcn = sprintf('%s\\%s', static::getMarker(), $enumClass);
+
+        $classname = basename(str_replace('\\', '/', $fqcn));
+        $ns = substr($fqcn, 0, -\strlen($classname) - 1);
+
+        if (str_contains($name, '\\')) {
+            $name = $classname;
+        }
+
+        return $ns.'\\'.static::getPascalCase($name).static::getSuffixes()[$type];
+    }
+
+    public static function getPascalCase(string $string): string
+    {
+        return ucfirst(
+            preg_replace_callback(
+                '/:([a-z])/i',
+                function(array $word): string {
+                    return ucfirst(strtolower($word[1]));
+                },
+                preg_replace('/[^\da-z]+/i', ':', $string)
+            )
+        );
+    }
+
     private function dump(array $types): string
     {
         array_walk($types, static function (&$type) {
@@ -35,7 +62,7 @@ abstract class AbstractTypesDumper
 
         $namespaces = [];
         foreach ($types as [$enumClass, $type, $name, $default]) {
-            $fqcn = self::getTypeClassname($enumClass, $type);
+            $fqcn = self::getTypeFullyQualifiedClassName($enumClass, $type, $name);
             $classname = basename(str_replace('\\', '/', $fqcn));
             $ns = substr($fqcn, 0, -\strlen($classname) - 1);
 

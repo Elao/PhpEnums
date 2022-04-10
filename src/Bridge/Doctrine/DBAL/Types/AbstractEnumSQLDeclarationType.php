@@ -10,7 +10,9 @@
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Elao\Enum\Exception\LogicException;
 
 /**
  * Base class for string enumerations with an `ENUM(...values)` column definition
@@ -22,6 +24,10 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
+        if (!$platform instanceof AbstractMySQLPlatform) {
+            throw new LogicException("ENUMs not supported on current platform");
+        }
+
         $values = array_map(
             function ($val) {
                 return "'" . $val->value . "'";

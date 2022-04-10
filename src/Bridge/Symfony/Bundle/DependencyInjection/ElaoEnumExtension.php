@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
+use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper;
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DBALTypesDumper;
 use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as ODMTypesDumper;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
@@ -97,7 +98,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeClassname($value['class'], $value['type']);
+            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeFullyQualifiedClassName($value['class'], $value['type'], $name);
         }
 
         $container->prependExtensionConfig('doctrine', [
@@ -115,7 +116,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = ODMTypesDumper::getTypeClassname($value['class'], $value['type']);
+            $doctrineTypesConfig[$name] = ODMTypesDumper::getTypeFullyQualifiedClassName($value['class'], $value['type'], $name);
         }
 
         $container->prependExtensionConfig('doctrine_mongodb', ['types' => $doctrineTypesConfig]);
@@ -126,7 +127,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $type = $config['type'];
         $class = $config['class'];
 
-        $defaultStringType = $useEnumSQLDeclaration ? 'enum' : 'single';
+        $defaultStringType = $useEnumSQLDeclaration ? TypesDumper::TYPE_ENUM : TypesDumper::TYPE_SCALAR;
 
         if (null === $type) {
             $type = is_a($class, FlagBag::class, true) ? 'int' : $defaultStringType;

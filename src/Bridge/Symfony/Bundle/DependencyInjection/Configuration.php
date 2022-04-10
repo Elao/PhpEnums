@@ -77,14 +77,14 @@ class Configuration implements ConfigurationInterface
                             ->values(DBALTypesDumper::TYPES)
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
-- single: VARCHAR/INT based on BackedEnum type
+- scalar: VARCHAR/INT based on BackedEnum type
 - enum: ENUM(...values) - values are strings based on BackedEnum type (Your platform must support it)
-Default is either "single" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
+Default is either "scalar" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
 Default for flagged enums is "int".
 TXT
                             )
                             ->cannotBeEmpty()
-                            ->defaultValue(DBALTypesDumper::TYPE_SINGLE)
+                            ->defaultValue(DBALTypesDumper::TYPE_SCALAR)
                         ->end()
                         ->variableNode('default')
                             ->info('Default enumeration case on NULL')

@@ -50,9 +50,9 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => false,
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
-                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => 'single'],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'scalar'],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'scalar'],
+                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => 'scalar'],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -98,8 +98,8 @@ class ConfigurationTest extends TestCase
             'doctrine' => [
                 'enum_sql_declaration' => false,
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'scalar'],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'scalar'],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);

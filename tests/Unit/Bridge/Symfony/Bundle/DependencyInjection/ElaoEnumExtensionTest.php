@@ -37,9 +37,9 @@ abstract class ElaoEnumExtensionTest extends TestCase
         $container = $this->createContainerFromFile('doctrine_types');
 
         self::assertEquals([
-            [Suit::class, 'single', 'suit', null],
-            [Permissions::class, 'single', 'permissions', null],
-            [RequestStatus::class, 'single', 'request_status', 200],
+            [Suit::class, 'scalar', 'suit', null],
+            [Permissions::class, 'scalar', 'permissions', null],
+            [RequestStatus::class, 'scalar', 'request_status', 200],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 

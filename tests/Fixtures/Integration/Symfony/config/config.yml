@@ -31,6 +31,9 @@ elao_enum:
         types:
             App\Enum\Suit:
                 default: !php/const App\Enum\Suit::Spades
+            #suit_sql_enum:
+            #    class: App\Enum\Suit
+            #    type: enum
 
 services:
     # Registers these controllers as a service so that we have the

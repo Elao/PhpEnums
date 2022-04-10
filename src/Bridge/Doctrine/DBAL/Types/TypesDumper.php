@@ -20,10 +20,10 @@ use Elao\Enum\Exception\LogicException;
  */
 class TypesDumper extends AbstractTypesDumper
 {
-    public const TYPE_SINGLE = 'single';
+    public const TYPE_SCALAR = 'scalar';
     public const TYPE_ENUM = 'enum';
     public const TYPES = [
-        self::TYPE_SINGLE,
+        self::TYPE_SCALAR,
         self::TYPE_ENUM,
     ];
 
@@ -53,7 +53,7 @@ class TypesDumper extends AbstractTypesDumper
         }
 
         switch ($type) {
-            case self::TYPE_SINGLE:
+            case self::TYPE_SCALAR:
                 $baseClass = AbstractEnumType::class;
                 $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
                 break;
@@ -109,7 +109,7 @@ class TypesDumper extends AbstractTypesDumper
     protected static function getSuffixes(): array
     {
         return [
-            self::TYPE_SINGLE => 'Type',
+            self::TYPE_SCALAR => 'Type',
             self::TYPE_ENUM => 'Type',
         ];
     }

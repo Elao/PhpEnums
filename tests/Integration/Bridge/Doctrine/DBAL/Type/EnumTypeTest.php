@@ -13,15 +13,16 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
 use App\Entity\Card;
+use App\Entity\CardSQLEnum;
 use App\Enum\Suit;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeTest extends KernelTestCase
 {
-    /** @var ManagerRegistry */
-    private $em;
+    private ?EntityManagerInterface $em;
 
     protected function setUp(): void
     {
@@ -53,6 +54,20 @@ class EnumTypeTest extends KernelTestCase
         self::assertSame(Suit::Hearts, $card->getSuit());
     }
 
+    public function testEnumSQLType(): void
+    {
+        self::markTestSkipped('SQL Enum tests skipped for now');
+
+        $this->em->persist(new CardSQLEnum($uuid = 'card01', Suit::Hearts));
+        $this->em->flush();
+        $this->em->clear();
+
+        /** @var Card $card */
+        $card = $this->em->find(CardSQLEnum::class, $uuid);
+
+        self::assertSame(Suit::Hearts, $card->getSuit());
+    }
+
     public function testEnumTypeOnNullFromPHP(): void
     {
         $this->em->persist(new Card($uuid = 'card01', null));
@@ -68,6 +83,24 @@ class EnumTypeTest extends KernelTestCase
         );
     }
 
+    public function testEnumSQLTypeOnNullFromPHP(): void
+    {
+        self::markTestSkipped('SQL Enum tests skipped for now');
+
+        $card = new CardSQLEnum($uuid = 'card01', null);
+        $this->em->persist($card);
+        $this->em->flush();
+        $this->em->clear();
+
+        self::assertSame(
+            ['suit' => 'S'],
+            $this->em->getConnection()->executeQuery(
+                'SELECT suit FROM cards_sql_enum WHERE cards_sql_enum.uuid = :uuid',
+                ['uuid' => $uuid]
+            )->fetch()
+        );
+    }
+
     public function testEnumTypeOnNullFromDatabase(): void
     {
         $this->em->getConnection()->executeUpdate(
@@ -77,6 +110,21 @@ class EnumTypeTest extends KernelTestCase
 
         /** @var Card $card */
         $card = $this->em->find(Card::class, $uuid);
+
+        self::assertSame(Suit::Spades, $card->getSuit());
+    }
+
+    public function testEnumSQLTypeOnNullFromDatabase(): void
+    {
+        self::markTestSkipped('SQL Enum tests skipped for now');
+
+        $this->em->getConnection()->executeUpdate(
+            'INSERT INTO cards_sql_enum (uuid, suit) VALUES(:uuid, null)',
+            ['uuid' => $uuid = 'card01']
+        );
+
+        /** @var Card $card */
+        $card = $this->em->find(CardSQLEnum::class, $uuid);
 
         self::assertSame(Suit::Spades, $card->getSuit());
     }

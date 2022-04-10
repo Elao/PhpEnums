@@ -55,4 +55,19 @@ abstract class BaseTypesDumperTest extends TestCase
             file_put_contents($snapshotPath, rtrim($content) . "\n");
         }
     }
+
+    public function testPascalCaseConvertor()
+    {
+        $testCases = [
+            'Foo\\Bar\\Baz' => 'FooBarBaz',
+            'Foo::Bar.baz' => 'FooBarBaz',
+            'foo Bar?? Baz' => 'FooBarBaz',
+            'FooBarBaz' => 'FooBarBaz',
+        ];
+
+        foreach ($testCases as $testCase => $expected){
+            self::assertEquals($expected, $this->getDumper()::getPascalCase($testCase));
+        }
+
+    }
 }

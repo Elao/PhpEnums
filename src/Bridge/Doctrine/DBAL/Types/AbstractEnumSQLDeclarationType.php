@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the "elao/enum" package.
  *
@@ -25,7 +27,7 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if (!$platform instanceof AbstractMySQLPlatform) {
-            throw new LogicException("ENUMs not supported on current platform");
+            throw new LogicException('ENUMs not supported on current platform');
         }
 
         $values = array_map(
@@ -35,6 +37,6 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
             ($this->getEnumClass())::cases()
         );
 
-        return "ENUM(" . implode(", ", $values) . ")";
+        return 'ENUM(' . implode(', ', $values) . ')';
     }
 }

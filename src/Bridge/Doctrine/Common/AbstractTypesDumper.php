@@ -54,7 +54,7 @@ abstract class AbstractTypesDumper
         return ucfirst(
             preg_replace_callback(
                 '/:([a-z])/i',
-                function(array $word): string {
+                function (array $word): string {
                     return ucfirst(strtolower($word[1]));
                 },
                 preg_replace('/[^\da-z]+/i', ':', $string)

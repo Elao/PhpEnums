@@ -65,9 +65,8 @@ abstract class BaseTypesDumperTest extends TestCase
             'FooBarBaz' => 'FooBarBaz',
         ];
 
-        foreach ($testCases as $testCase => $expected){
+        foreach ($testCases as $testCase => $expected) {
             self::assertEquals($expected, $this->getDumper()::getPascalCase($testCase));
         }
-
     }
 }

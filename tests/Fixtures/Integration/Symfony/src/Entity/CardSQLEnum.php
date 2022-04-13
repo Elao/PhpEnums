@@ -15,8 +15,8 @@ namespace App\Entity;
 use App\Enum\Suit;
 use Doctrine\ORM\Mapping as ORM;
 
-##[ORM\Entity]
-##[ORM\Table(name: 'cards_sql_enum')]
+// #[ORM\Entity]
+// #[ORM\Table(name: 'cards_sql_enum')]
 class CardSQLEnum
 {
     #[ORM\Id]

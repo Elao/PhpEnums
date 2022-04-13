@@ -55,13 +55,12 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(
                 '.elao_enum.doctrine_types',
-                array_map(function (string $name, array $v) use($config): array {
+                array_map(function (string $name, array $v) use ($config): array {
                     $default = $v['default'];
 
                     return [
                         $v['class'],
                         $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)),
-                        //$v['type'],
                         $name,
                         // Symfony DI parameters do not support enum cases (yet?).
                         // Does not fail in an array parameter, but the PhpDumper generate incorrect code for now.

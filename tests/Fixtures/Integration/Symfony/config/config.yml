@@ -12,9 +12,7 @@ framework:
 
 doctrine:
     dbal:
-        driver: 'pdo_sqlite'
-        path: '%kernel.cache_dir%/db.sqlite'
-        charset: 'UTF8'
+        url: '%env(resolve:DOCTRINE_DBAL_URL)%'
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
@@ -31,9 +29,6 @@ elao_enum:
         types:
             App\Enum\Suit:
                 default: !php/const App\Enum\Suit::Spades
-            #suit_sql_enum:
-            #    class: App\Enum\Suit
-            #    type: enum
 
 services:
     # Registers these controllers as a service so that we have the

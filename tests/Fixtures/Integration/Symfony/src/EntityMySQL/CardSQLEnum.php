@@ -10,13 +10,13 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace App\Entity;
+namespace App\EntityMySQL;
 
 use App\Enum\Suit;
 use Doctrine\ORM\Mapping as ORM;
 
-// #[ORM\Entity]
-// #[ORM\Table(name: 'cards_sql_enum')]
+#[ORM\Entity]
+#[ORM\Table(name: 'cards_sql_enum')]
 class CardSQLEnum
 {
     #[ORM\Id]

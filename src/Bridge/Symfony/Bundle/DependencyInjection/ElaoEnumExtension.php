@@ -125,16 +125,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
     private function resolveDbalType(array $config, bool $useEnumSQLDeclaration): string
     {
-        $type = $config['type'];
-        $class = $config['class'];
-
-        $defaultStringType = $useEnumSQLDeclaration ? DBALTypesDumper::TYPE_ENUM : DBALTypesDumper::TYPE_SCALAR;
-
-        if (null === $type) {
-            $type = is_a($class, FlagBag::class, true) ? DBALTypesDumper::TYPE_SCALAR : $defaultStringType;
-        }
-
-        return $type;
+        return $config['type'] ?? ($useEnumSQLDeclaration ? DBALTypesDumper::TYPE_ENUM : DBALTypesDumper::TYPE_SCALAR);
     }
 
     private function usesEnumSQLDeclaration(array $config): bool

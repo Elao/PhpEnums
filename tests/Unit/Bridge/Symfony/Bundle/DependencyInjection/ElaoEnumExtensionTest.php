@@ -40,6 +40,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
             [Suit::class, 'scalar', 'suit', null],
             [Permissions::class, 'scalar', 'permissions', null],
             [RequestStatus::class, 'scalar', 'request_status', 200],
+            [Suit::class, 'enum', 'suit_enum', null],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
@@ -57,6 +58,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
                         'suit' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SuitType',
                         'permissions' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
                         'request_status' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\RequestStatusType',
+                        'suit_enum' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SuitEnumType',
                     ],
                 ],
             ],

@@ -34,7 +34,7 @@ class FlagBag
     private string $type;
 
     /**
-     * @param class-string<\BackedEnum>|\BackedEnum $enumOrType
+     * @param class-string<\BackedEnum> $enumType
      */
     public function __construct(string $enumType, int ...$bits)
     {
@@ -55,6 +55,14 @@ class FlagBag
         }
 
         $this->bits = static::decodeBits($bits);
+    }
+
+    /**
+     * @param class-string<\BackedEnum> $enumType
+     */
+    public static function fromAll(string $enumType): FlagBag
+    {
+        return new FlagBag($enumType, static::getBitmask($enumType));
     }
 
     /**
@@ -80,6 +88,9 @@ class FlagBag
         return new static($type, static::encodeBits(array_map(static fn (\BackedEnum $flag) => $flag->value, $flags)));
     }
 
+    /**
+     * @param class-string<\BackedEnum> $enumType
+     */
     public static function accepts(string $enumType, int $value): bool
     {
         if ($value === self::NONE) {
@@ -112,6 +123,8 @@ class FlagBag
 
     /**
      * E.g: [1, 2, 8, 32] => 43
+     *
+     * @param int[] $bits
      */
     private static function encodeBits(array $bits): int
     {

@@ -232,6 +232,8 @@ $permissions = FlagBag::from(Permissions::Execute, Permissions::Write, Permissio
 $permissions = new FlagBag(Permissions::class, 7); 
 // where 7 is the "encoded" bits value for:
 Permissions::Execute->value | Permissions::Write->value | Permissions::Read->value // 7
+// or:
+$permissions = FlagBag::fromAll(Permissions::class); // which initiates bag with all possible values
 
 $permissions = $permissions->withoutFlags(Permissions::Execute); // Returns an instance without "execute" flag
 

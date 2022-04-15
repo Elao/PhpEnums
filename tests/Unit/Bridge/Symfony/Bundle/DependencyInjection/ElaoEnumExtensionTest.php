@@ -44,6 +44,16 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
+    public function testDoctrineTypesSQLEnum(): void
+    {
+        $container = $this->createContainerFromFile('doctrine_types_sql_enum');
+
+        self::assertEquals([
+            [Suit::class, 'enum', 'suit', null],
+            [Permissions::class, 'scalar', 'permissions', null],
+        ], $container->getParameter('.elao_enum.doctrine_types'));
+    }
+
     public function testDoctrineTypesArePrepended(): void
     {
         $container = $this->createContainerFromFile('doctrine_types', false);

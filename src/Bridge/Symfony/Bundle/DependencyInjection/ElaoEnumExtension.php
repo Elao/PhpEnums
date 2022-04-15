@@ -96,7 +96,10 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeFullyQualifiedClassName($value['class'], $value['type'], $name);
+            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeFullyQualifiedClassName($value['class'], $this->resolveDbalType(
+                $value,
+                $this->usesEnumSQLDeclaration($config)
+            ), $name);
         }
 
         $container->prependExtensionConfig('doctrine', [

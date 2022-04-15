@@ -17,7 +17,7 @@
         <xsd:sequence>
             <xsd:element name="type" type="doctrine_type" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-        <xsd:attribute name="enum_sql_declaration" default="false" />
+        <xsd:attribute name="enum_sql_declaration" type="xsd:boolean" default="false" />
     </xsd:complexType>
 
     <xsd:complexType name="doctrine_type">

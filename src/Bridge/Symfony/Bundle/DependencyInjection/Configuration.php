@@ -84,7 +84,7 @@ Default for flagged enums is "int".
 TXT
                             )
                             ->cannotBeEmpty()
-                            ->defaultValue(DBALTypesDumper::TYPE_SCALAR)
+                            ->defaultValue(null)
                         ->end()
                         ->variableNode('default')
                             ->info('Default enumeration case on NULL')

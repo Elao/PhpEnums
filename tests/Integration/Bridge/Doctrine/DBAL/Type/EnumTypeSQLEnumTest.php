@@ -69,13 +69,13 @@ class EnumTypeSQLEnumTest extends KernelTestCase
             $this->em->getConnection()->executeQuery(
                 'SELECT suit FROM cards_sql_enum WHERE cards_sql_enum.uuid = :uuid',
                 ['uuid' => $uuid]
-            )->fetch()
+            )->fetchAssociative()
         );
     }
 
     public function testEnumSQLTypeOnNullFromDatabase(): void
     {
-        $this->em->getConnection()->executeUpdate(
+        $this->em->getConnection()->executeStatement(
             'INSERT INTO cards_sql_enum (uuid, suit) VALUES(:uuid, null)',
             ['uuid' => $uuid = 'card01']
         );

@@ -63,13 +63,13 @@ class EnumTypeTest extends KernelTestCase
             $this->em->getConnection()->executeQuery(
                 'SELECT suit FROM cards WHERE cards.uuid = :uuid',
                 ['uuid' => $uuid]
-            )->fetch()
+            )->fetchAssociative()
         );
     }
 
     public function testEnumTypeOnNullFromDatabase(): void
     {
-        $this->em->getConnection()->executeUpdate(
+        $this->em->getConnection()->executeStatement(
             'INSERT INTO cards (uuid, suit) VALUES(:uuid, null)',
             ['uuid' => $uuid = 'card01']
         );

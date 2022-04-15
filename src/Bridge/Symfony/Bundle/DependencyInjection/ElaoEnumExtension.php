@@ -47,7 +47,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
-        // Use Symfony's 6.1 backed enum resolver once available:
+        // TODO: Use Symfony's 6.1 backed enum resolver once available:
         if (class_exists(\Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver::class)) {
             $container->removeDefinition(BackedEnumValueResolver::class);
         }

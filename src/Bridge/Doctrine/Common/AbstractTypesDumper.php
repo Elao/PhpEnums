@@ -22,11 +22,6 @@ abstract class AbstractTypesDumper
         file_put_contents($file, $this->dump($types));
     }
 
-    public static function getTypeClassname(string $class, string $type): string
-    {
-        return sprintf('%s\\%s%s', static::getMarker(), $class, static::getSuffixes()[$type]);
-    }
-
     /**
      * Returns FQCN for given Enum
      *

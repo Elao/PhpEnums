@@ -52,18 +52,13 @@ class TypesDumper extends AbstractTypesDumper
             PHP;
         }
 
-        switch ($type) {
-            case self::TYPE_SCALAR:
-                $baseClass = AbstractEnumType::class;
-                $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
-                break;
-            case self::TYPE_ENUM:
-                $baseClass = AbstractEnumSQLDeclarationType::class;
-                $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
-                break;
-            default:
-                throw new LogicException(sprintf('Unexpected type "%s"', $type));
-        }
+        $baseClass = match ($type) {
+            self::TYPE_SCALAR => AbstractEnumType::class,
+            self::TYPE_ENUM => AbstractEnumSQLDeclarationType::class,
+            default => throw new LogicException(sprintf('Unexpected type "%s"', $type)),
+        };
+
+        $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
 
         return <<<PHP
 

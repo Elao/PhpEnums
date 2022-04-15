@@ -27,12 +27,12 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if (!$platform instanceof AbstractMySQLPlatform) {
-            throw new LogicException('ENUMs not supported on current platform');
+            throw new LogicException('SQL ENUM type is not supported on the current platform');
         }
 
         $values = array_map(
             function ($val) {
-                return "'" . $val->value . "'";
+                return "'{$val->value}'";
             },
             ($this->getEnumClass())::cases()
         );

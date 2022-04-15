@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('enum_sql_declaration')
                     ->defaultValue(false)
-                    ->info('If true, by default for enumerations, generate DBAL types with an ENUM SQL declaration with enum values instead of a VARCHAR/INT (Your platform must support it)')
+                    ->info('If true, generate DBAL types with an ENUM SQL declaration with enum values instead of a VARCHAR/INT (Your platform must support it)')
                 ->end()
                 ->arrayNode('types')
                     ->beforeNormalization()
@@ -78,7 +78,7 @@ class Configuration implements ConfigurationInterface
                             ->info(<<<TXT
 Which column definition to use and the way the enumeration values are stored in the database:
 - scalar: VARCHAR/INT based on BackedEnum type
-- enum: ENUM(...values) - values are strings based on BackedEnum type (Your platform must support it)
+- enum: ENUM(...values) as strings based on BackedEnum type (Your platform must support it)
 Default is either "scalar" or "enum", controlled by the `elao_enum.doctrine.enum_sql_declaration` option.
 Default for flagged enums is "int".
 TXT

@@ -15,6 +15,7 @@ namespace Elao\Enum\Tests\Unit;
 use Elao\Enum\Exception\InvalidArgumentException;
 use Elao\Enum\FlagBag;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
+use Elao\Enum\Tests\Fixtures\Enum\PermissionsMissingBit;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +45,6 @@ class FlagBagTest extends TestCase
             [Permissions::class, Permissions::Write->value, true],
             [Permissions::class, Permissions::Read->value, true],
             [Permissions::class, Permissions::Read->value | Permissions::Write->value, true],
-//            [Permissions::class, Permissions::ALL->value, true],
             [Permissions::class, 99, false],
         ];
     }
@@ -61,7 +61,7 @@ class FlagBagTest extends TestCase
         );
     }
 
-    public function from valid values(): array
+    public function fromValidValues(): array
     {
         return [
             [Permissions::class],
@@ -73,7 +73,7 @@ class FlagBagTest extends TestCase
     }
 
     /**
-     * @dataProvider from valid values
+     * @dataProvider fromValidValues
      */
     public function testFrom(string $enumType, \BackedEnum ...$flags)
     {
@@ -164,5 +164,12 @@ class FlagBagTest extends TestCase
         self::assertTrue($result->hasFlags(Permissions::Execute));
         self::assertFalse($result->hasFlags(Permissions::Write));
         self::assertFalse($result->hasFlags(Permissions::Read));
+    }
+
+    public function testFromAll()
+    {
+        $flagBagAll = FlagBag::fromAll(PermissionsMissingBit::class);
+
+        self::assertEquals(13, $flagBagAll->getValue());
     }
 }

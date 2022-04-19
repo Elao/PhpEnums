@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2022-04-17T09:55:03Z
+
+I have ported also `BitmaskToBitFlagsValueTransformer`, but I dont think this is going to be used now. In fact the whole `as_value` part makes little to no sense for me under the new implementation. One of the issues is that the new 2.x `EnumType` extends the Symfony's own `EnumType` and not the `ChoiceType` which was the case with 1.x version. So if we use `DataTransformer` that spits out `int` and not `BackedEnum[]`, then the Symfony `EnumType` does not handle it and fails.
+
+I have made `BitmaskToBitFlagsValueTransformerTest` so I think we can keep the DataTransformer in the package, maybe somebody will find it useful. But Id remove the `as_value` option from the `FlagBagType` and would only allow it to work with the `FlagBagToCollectionTransformer` (refactored version of `SingleToCollectionFlagEnumTransformer`)
+
+WDYT @ogizanagi ?
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-04-18T09:53:13Z
+
+> I have ported also BitmaskToBitFlagsValueTransformer, but I dont think this is going to be used now. In fact the whole as_value part makes little to no sense for me under the new implementation.
+
+I agree, let's remove this part until it is proven useful.
+I don't want to strictly port every 1.x features as is, only what makes sense regarding the new PHP 8.1 native enums implementation. Also we don't need everything to land in 2.0.0, just what can impact the design and main interfaces.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2022-04-18T10:32:55Z
+
+> Also we don't need everything to land in 2.0.0, just what can impact the design and main interfaces.
+
+Yes, but I would like to include SQL enum, this PR and also FlagBag DBAL type for sure
+
+---------------------------------------------------------------------------
+
+by michnovka at 2022-04-18T10:33:11Z
+
+This is ready for merge @ogizanagi
+
+---------------------------------------------------------------------------
+
+by michnovka at 2022-04-18T10:35:05Z
+
+One important note: I have made the `FlagBag::getBitmask()` public. I think its a useful tool to be used with FlagBags and dont see any reason why it should stay protected.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2022-04-19T09:27:05Z
+
+@ogizanagi changes committed, ready for merge

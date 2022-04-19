@@ -296,6 +296,35 @@ class CardType extends AbstractType
     // ...
 }
 ```
+#### FlagBag Form Type
+
+If you want to use `FlagBag` in Symfony Forms, use the [FlagBagType](src/Bridge/Symfony/Form/Type/FlagBagType.php). This
+type also extends Symfony [EnumType](https://symfony.com/doc/current/reference/forms/types/enum.html), but it transforms
+form values to and from `FlagBag` instances.
+
+```php
+namespace App\Form\Type;
+
+use App\Enum\Permissions;
+use Symfony\Component\Form\AbstractType;
+use Elao\Enum\Bridge\Symfony\Form\Type\FlagBagType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class AuthenticationType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('permission', FlagBagType::class, [
+                'class' => Permissions::class, 
+            ])
+        ;
+    }
+
+    // ...
+}
+```
 
 ### Symfony HttpKernel
 

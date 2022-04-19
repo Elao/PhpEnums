@@ -38,13 +38,7 @@ class FlagBag
      */
     public function __construct(string $enumType, int ...$bits)
     {
-        if (!is_a($enumType, \BackedEnum::class, true)) {
-            throw new InvalidArgumentException(sprintf('"%s" is not a backed enum', $enumType));
-        }
-
-        if ('int' !== (string) (new \ReflectionEnum($enumType))->getBackingType()) {
-            throw new InvalidArgumentException(sprintf('"%s" is not an int backed enum', $enumType));
-        }
+        self::checkIntBackedEnumType($enumType);
 
         $this->type = $enumType;
 
@@ -55,6 +49,20 @@ class FlagBag
         }
 
         $this->bits = static::decodeBits($bits);
+    }
+
+    /**
+     * @param class-string $enumType
+     */
+    private static function checkIntBackedEnumType(string $enumType): void
+    {
+        if (!is_a($enumType, \BackedEnum::class, true)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not a backed enum', $enumType));
+        }
+
+        if ('int' !== (string) (new \ReflectionEnum($enumType))->getBackingType()) {
+            throw new InvalidArgumentException(sprintf('"%s" is not an int backed enum', $enumType));
+        }
     }
 
     /**
@@ -138,9 +146,11 @@ class FlagBag
      *
      * @throws LogicException If the possibles values are not valid bit flags
      */
-    private static function getBitmask(string $enumType): int
+    public static function getBitmask(string $enumType): int
     {
         if (!isset(self::$masks[$enumType])) {
+            self::checkIntBackedEnumType($enumType);
+
             /** @var \BackedEnum[] $cases */
             $cases = $enumType::cases();
             $mask = 0;

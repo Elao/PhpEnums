@@ -31,10 +31,8 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
         }
 
         $values = array_map(
-            function ($val) {
-                return "'{$val->value}'";
-            },
-            ($this->getEnumClass())::cases()
+            static fn ($val) => "'{$val->value}'",
+            $this->getEnumClass()::cases()
         );
 
         return 'ENUM(' . implode(', ', $values) . ')';

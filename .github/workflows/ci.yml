@@ -32,7 +32,7 @@ jobs:
   test:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 8
+    timeout-minutes: 15
     continue-on-error: ${{ matrix.allow-failure == 1 }}
 
     strategy:
@@ -60,12 +60,14 @@ jobs:
             symfony: '5.4.*@dev'
             allow-unstable: true
             mongodb: true
+            mysql: true
 
           - name: 'Test Symfony 5.4 [Windows, PHP 8.1]'
             os: 'windows-latest'
             php: '8.1'
             symfony: '5.4.*@dev'
             mongodb: true
+            mysql: true
             allow-unstable: true
 
           - name: 'Test Symfony 6.0 [Linux, PHP 8.1]'
@@ -73,6 +75,7 @@ jobs:
             php: '8.1'
             symfony: '6.0.*@dev'
             mongodb: true
+            mysql: true
             allow-unstable: true
 
           # Bleeding edge (unreleased dev versions where failures are allowed)
@@ -83,6 +86,7 @@ jobs:
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true
             allow-failure: true
+            mysql: true
             mongodb: true
 
     steps:
@@ -98,7 +102,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: pdo_sqlite ${{ matrix.mongodb && ', mongodb' }}
+          extensions: pdo_sqlite ${{ matrix.mongodb && ', mongodb' }} ${{ matrix.mysql && ', pdo_mysql' }}
           coverage: pcov
           tools: 'composer:v2,flex'
 
@@ -111,6 +115,17 @@ jobs:
         with:
           args: install mongodb
         if: ${{ matrix.mongodb && matrix.os == 'windows-latest' }}
+
+      - name: 'Shutdown Default Ubuntu MySQL'
+        run: sudo service mysql stop
+        if: ${{ matrix.mysql && matrix.os == 'ubuntu-latest' }}
+
+      - name: 'Setup MySQL'
+        uses: ankane/setup-mysql@v1
+        with:
+          mysql-version: '8.0'
+          database: doctrine_tests
+        if: ${{ matrix.mysql }}
 
       - name: 'Get composer cache directory'
         id: composer-cache
@@ -132,9 +147,24 @@ jobs:
         if: ${{ matrix.mongodb }}
 
       - name: 'Install dependencies'
-        run: composer update --prefer-dist ${{ matrix.composer-flags }} --ansi
+        run: |
+          echo "::group::Install project deps"
+            composer update --prefer-dist ${{ matrix.composer-flags }} --ansi
+          echo "::endgroup::"
+
+          echo "::group::Install PHPUnit"
+            vendor/bin/simple-phpunit install
+          echo "::endgroup::"
         env:
           SYMFONY_REQUIRE: "${{ matrix.symfony }}"
+
+      - name: 'Set Doctrine MySQL DSN (Linux)'
+        run: echo "DOCTRINE_DBAL_URL=pdo-mysql://root@127.0.0.1:3306/doctrine_tests?serverVersion=8.0" >> $GITHUB_ENV
+        if: ${{ matrix.mysql && matrix.os == 'ubuntu-latest' }}
+
+      - name: 'Set Doctrine MySQL DSN (Windows)'
+        run: echo "DOCTRINE_DBAL_URL=pdo-mysql://root@127.0.0.1:3306/doctrine_tests?serverVersion=8.0" >> $env:GITHUB_ENV
+        if: ${{ matrix.mysql && matrix.os == 'windows-latest' }}
 
       - name: 'Run PHPUnit tests'
         run: vendor/bin/simple-phpunit --testdox --verbose ${{ matrix.code-coverage && '--coverage-text --coverage-clover build/logs/clover.xml' }}

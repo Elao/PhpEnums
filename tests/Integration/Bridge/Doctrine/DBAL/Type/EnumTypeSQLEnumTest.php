@@ -23,17 +23,20 @@ class EnumTypeSQLEnumTest extends KernelTestCase
 {
     private ?EntityManagerInterface $em;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        if (!preg_match('/^pdo-mysql:\/\//i', $_ENV['DOCTRINE_DBAL_URL'])) {
+        if (!str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {
             self::markTestSkipped('SQL Enums can be tested only with MySQL');
         }
+    }
 
+    protected function setUp(): void
+    {
         $kernel = static::bootKernel();
         $container = $kernel->getContainer();
         $this->em = $container->get('doctrine.orm.entity_manager');
-        $this->em->getConnection()->executeQuery('DROP TABLE IF EXISTS cards_sql_enum');
         $schemaTool = new SchemaTool($this->em);
+        $schemaTool->dropDatabase();
         $schemaTool->createSchema($this->em->getMetadataFactory()->getAllMetadata());
     }
 

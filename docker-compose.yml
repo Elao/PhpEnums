@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'doctrine_tests'
+      MYSQL_USER: app
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '63306:3306'
+    expose:
+      - '3306'

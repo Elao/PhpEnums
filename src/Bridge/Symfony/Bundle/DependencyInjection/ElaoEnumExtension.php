@@ -104,6 +104,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
                 'types' => $doctrineTypesConfig,
+                'mapping_types' => ['enum' => 'string'],
             ],
         ]);
     }

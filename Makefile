@@ -49,11 +49,20 @@ remove-odm:
 # Test #
 ########
 
-test:
-	symfony php vendor/bin/simple-phpunit
+docker.start:
+	docker-compose up -d --wait
 
-testdox:
-	symfony php vendor/bin/simple-phpunit --testdox --verbose
+docker.stop:
+	docker-compose kill
+	docker-compose rm --force
+
+test:
+	symfony php vendor/bin/simple-phpunit $(if $(TESTDOX), --testdox --verbose)
+
+test.mysql: export DOCTRINE_DBAL_URL=pdo-mysql://app:password@127.0.0.1:63306/doctrine_tests
+test.mysql: docker.start
+test.mysql:
+	symfony php vendor/bin/simple-phpunit $(if $(TESTDOX), --testdox --verbose)
 
 ########
 # Lint #

@@ -5,8 +5,8 @@ doctrine:
         is_bundle: false
         type: attribute
         dir: '%kernel.project_dir%/src/EntityMySQL'
-        prefix: 'App\Entity'
-        alias: App
+        prefix: 'App\EntityMySQL'
+        alias: AppMySQL
 
 elao_enum:
     doctrine:

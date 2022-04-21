@@ -33,11 +33,4 @@
             </xsd:simpleType>
         </xsd:attribute>
     </xsd:complexType>
-
-    <xsd:simpleType name="doctrine_type_type">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="string"/>
-            <xsd:enumeration value="int"/>
-        </xsd:restriction>
-    </xsd:simpleType>
 </xsd:schema>

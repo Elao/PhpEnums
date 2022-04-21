@@ -70,6 +70,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
                         'request_status' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\RequestStatusType',
                         'suit_enum' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SuitEnumType',
                     ],
+                    'mapping_types' => ['enum' => 'string'],
                 ],
             ],
         ], $container->getExtensionConfig('doctrine'));

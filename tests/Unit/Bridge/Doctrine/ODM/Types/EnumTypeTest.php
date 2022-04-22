@@ -18,6 +18,7 @@ use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\RequestStatusType;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\SuitEnumType;
 use Elao\Enum\Tests\Fixtures\Enum\RequestStatus;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use PHPUnit\Framework\TestCase;
 
 class EnumTypeTest extends TestCase
@@ -31,7 +32,7 @@ class EnumTypeTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         if (!class_exists(DoctrineMongoDBBundle::class)) {
-            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+            throw new SkippedTestSuiteError('Doctrine MongoDB ODM bundle not installed');
         }
 
         if (Type::hasType(Suit::class)) {

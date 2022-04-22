@@ -13,15 +13,18 @@ declare(strict_types=1);
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
 use Elao\Enum\Bridge\Doctrine\Common\AbstractTypesDumper;
+use Elao\Enum\Exception\LogicException;
 
 /**
  * @internal
  */
 class TypesDumper extends AbstractTypesDumper
 {
-    public const TYPE_SINGLE = 'single';
+    public const TYPE_SCALAR = 'scalar';
+    public const TYPE_ENUM = 'enum';
     public const TYPES = [
-        self::TYPE_SINGLE,
+        self::TYPE_SCALAR,
+        self::TYPE_ENUM,
     ];
 
     protected function getTypeCode(
@@ -49,7 +52,12 @@ class TypesDumper extends AbstractTypesDumper
             PHP;
         }
 
-        $baseClass = AbstractEnumType::class;
+        $baseClass = match ($type) {
+            self::TYPE_SCALAR => AbstractEnumType::class,
+            self::TYPE_ENUM => AbstractEnumSQLDeclarationType::class,
+            default => throw new LogicException(sprintf('Unexpected type "%s"', $type)),
+        };
+
         $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
 
         return <<<PHP
@@ -96,7 +104,8 @@ class TypesDumper extends AbstractTypesDumper
     protected static function getSuffixes(): array
     {
         return [
-            self::TYPE_SINGLE => 'Type',
+            self::TYPE_SCALAR => 'Type',
+            self::TYPE_ENUM => 'Type',
         ];
     }
 }

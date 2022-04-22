@@ -46,7 +46,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
-        // Use Symfony's 6.1 backed enum resolver once available:
+        // TODO: Use Symfony's 6.1 backed enum resolver once available:
         if (class_exists(\Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver::class)) {
             $container->removeDefinition(BackedEnumValueResolver::class);
         }
@@ -54,12 +54,12 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(
                 '.elao_enum.doctrine_types',
-                array_map(static function (string $name, array $v): array {
+                array_map(function (string $name, array $v) use ($config): array {
                     $default = $v['default'];
 
                     return [
                         $v['class'],
-                        $v['type'],
+                        $this->resolveDbalType($v, $this->usesEnumSQLDeclaration($config)),
                         $name,
                         // Symfony DI parameters do not support enum cases (yet?).
                         // Does not fail in an array parameter, but the PhpDumper generate incorrect code for now.
@@ -95,12 +95,16 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeClassname($value['class'], $value['type']);
+            $doctrineTypesConfig[$name] = DBALTypesDumper::getTypeFullyQualifiedClassName($value['class'], $this->resolveDbalType(
+                $value,
+                $this->usesEnumSQLDeclaration($config)
+            ), $name);
         }
 
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
                 'types' => $doctrineTypesConfig,
+                'mapping_types' => ['enum' => 'string'],
             ],
         ]);
     }
@@ -113,9 +117,19 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 
         $doctrineTypesConfig = [];
         foreach ($types as $name => $value) {
-            $doctrineTypesConfig[$name] = ODMTypesDumper::getTypeClassname($value['class'], $value['type']);
+            $doctrineTypesConfig[$name] = ODMTypesDumper::getTypeFullyQualifiedClassName($value['class'], $value['type'], $name);
         }
 
         $container->prependExtensionConfig('doctrine_mongodb', ['types' => $doctrineTypesConfig]);
+    }
+
+    private function resolveDbalType(array $config, bool $useEnumSQLDeclaration): string
+    {
+        return $config['type'] ?? ($useEnumSQLDeclaration ? DBALTypesDumper::TYPE_ENUM : DBALTypesDumper::TYPE_SCALAR);
+    }
+
+    private function usesEnumSQLDeclaration(array $config): bool
+    {
+        return $config['doctrine']['enum_sql_declaration'];
     }
 }

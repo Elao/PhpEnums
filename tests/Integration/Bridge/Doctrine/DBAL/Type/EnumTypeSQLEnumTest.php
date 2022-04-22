@@ -13,14 +13,23 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Integration\Bridge\Doctrine\DBAL\Type;
 
 use App\Entity\Card;
+use App\EntityMySQL\CardSQLEnum;
 use App\Enum\Suit;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EnumTypeTest extends KernelTestCase
+class EnumTypeSQLEnumTest extends KernelTestCase
 {
     private ?EntityManagerInterface $em;
+
+    public static function setUpBeforeClass(): void
+    {
+        if (!str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {
+            throw new SkippedTestSuiteError('SQL Enums can be tested only with MySQL');
+        }
+    }
 
     protected function setUp(): void
     {
@@ -40,42 +49,43 @@ class EnumTypeTest extends KernelTestCase
         parent::tearDown();
     }
 
-    public function testEnumType(): void
+    public function testEnumSQLType(): void
     {
-        $this->em->persist(new Card($uuid = 'card01', Suit::Hearts));
+        $this->em->persist(new CardSQLEnum($uuid = 'card01', Suit::Hearts));
         $this->em->flush();
         $this->em->clear();
 
         /** @var Card $card */
-        $card = $this->em->find(Card::class, $uuid);
+        $card = $this->em->find(CardSQLEnum::class, $uuid);
 
         self::assertSame(Suit::Hearts, $card->getSuit());
     }
 
-    public function testEnumTypeOnNullFromPHP(): void
+    public function testEnumSQLTypeOnNullFromPHP(): void
     {
-        $this->em->persist(new Card($uuid = 'card01', null));
+        $card = new CardSQLEnum($uuid = 'card01', null);
+        $this->em->persist($card);
         $this->em->flush();
         $this->em->clear();
 
         self::assertSame(
             ['suit' => 'S'],
             $this->em->getConnection()->executeQuery(
-                'SELECT suit FROM cards WHERE cards.uuid = :uuid',
+                'SELECT suit FROM cards_sql_enum WHERE cards_sql_enum.uuid = :uuid',
                 ['uuid' => $uuid]
             )->fetchAssociative()
         );
     }
 
-    public function testEnumTypeOnNullFromDatabase(): void
+    public function testEnumSQLTypeOnNullFromDatabase(): void
     {
         $this->em->getConnection()->executeStatement(
-            'INSERT INTO cards (uuid, suit) VALUES(:uuid, null)',
+            'INSERT INTO cards_sql_enum (uuid, suit) VALUES(:uuid, null)',
             ['uuid' => $uuid = 'card01']
         );
 
         /** @var Card $card */
-        $card = $this->em->find(Card::class, $uuid);
+        $card = $this->em->find(CardSQLEnum::class, $uuid);
 
         self::assertSame(Suit::Spades, $card->getSuit());
     }

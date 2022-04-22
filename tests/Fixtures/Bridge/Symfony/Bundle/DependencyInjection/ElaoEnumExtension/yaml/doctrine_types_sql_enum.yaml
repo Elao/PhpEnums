@@ -1,0 +1,8 @@
+elao_enum:
+    doctrine:
+        enum_sql_declaration: true
+        types:
+            suit: Elao\Enum\Tests\Fixtures\Enum\Suit
+            permissions:
+                class: Elao\Enum\Tests\Fixtures\Enum\Permissions
+                type: scalar

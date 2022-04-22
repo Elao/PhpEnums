@@ -26,11 +26,12 @@ class TypesDumperTest extends BaseTypesDumperTest
     protected function getTypes(): array
     {
         return [
-            ['Foo\Bar\Baz', 'single', 'Foo\Bar\Baz'],
-            ['Foo\Bar\BazWithDefault', 'single', 'baz_with_default', 'foo'],
-            ['Foo\Bar\Qux', 'single', 'Foo\Bar\Qux'],
-            ['Foo\Baz\Foo', 'single', 'foo'],
-            ['Foo\Baz\FooWithDefault', 'single', 'foo_with_default', 3],
+            ['Foo\Bar\Baz', 'scalar', 'Foo\Bar\Baz'],
+            ['Foo\Bar\BazWithDefault', 'scalar', 'baz_with_default', 'foo'],
+            ['Foo\Bar\Qux', 'scalar', 'Foo\Bar\Qux'],
+            ['Foo\Baz\Foo', 'scalar', 'foo'],
+            ['Foo\Baz\FooWithDefault', 'scalar', 'foo_with_default', 3],
+            ['Foo\Bar\Baz', 'enum', 'foo_enum'],
         ];
     }
 

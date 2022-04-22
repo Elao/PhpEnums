@@ -48,10 +48,37 @@ class ConfigurationTest extends TestCase
 
         self::assertEquals([
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
-                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => 'single'],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => null],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => null],
+                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => null],
+                ],
+            ],
+        ] + $this->getDefaultConfig(), $config);
+    }
+
+    public function testDoctrineConfigEnumSQLDeclarationEnabled(): void
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), [[
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                    Suit::class => ['class' => Suit::class],
+                    Permissions::class => Permissions::class,
+                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value],
+                ],
+            ],
+        ]]);
+
+        self::assertEquals([
+            'doctrine' => [
+                'enum_sql_declaration' => true,
+                'types' => [
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => null],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => null],
+                    RequestStatus::class => ['class' => RequestStatus::class, 'default' => RequestStatus::Success->value, 'type' => null],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -95,9 +122,10 @@ class ConfigurationTest extends TestCase
 
         self::assertEquals([
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [
-                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => 'single'],
-                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => 'single'],
+                    Suit::class => ['class' => Suit::class, 'default' => null, 'type' => null],
+                    Permissions::class => ['class' => Permissions::class, 'default' => null, 'type' => null],
                 ],
             ],
         ] + $this->getDefaultConfig(), $config);
@@ -161,6 +189,7 @@ class ConfigurationTest extends TestCase
     {
         return [
             'doctrine' => [
+                'enum_sql_declaration' => false,
                 'types' => [],
             ],
             'doctrine_mongodb' => [

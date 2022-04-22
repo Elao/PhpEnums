@@ -6,3 +6,6 @@ elao_enum:
             request_status:
                 class: Elao\Enum\Tests\Fixtures\Enum\RequestStatus
                 default: !php/const Elao\Enum\Tests\Fixtures\Enum\RequestStatus::Success
+            suit_enum:
+                class: Elao\Enum\Tests\Fixtures\Enum\Suit
+                type: enum

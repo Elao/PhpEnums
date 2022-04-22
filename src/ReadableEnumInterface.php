@@ -14,7 +14,7 @@ namespace Elao\Enum;
 
 use Elao\Enum\Exception\NameException;
 
-interface ReadableEnumInterface extends \UnitEnum
+interface ReadableEnumInterface extends EnumCaseInterface
 {
     /**
      * Gets human representations per enum cases.

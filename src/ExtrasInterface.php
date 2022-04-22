@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Elao\Enum;
 
-interface ExtrasInterface extends \UnitEnum
+interface ExtrasInterface extends EnumCaseInterface
 {
     /**
      * @throws \InvalidArgumentException if $throwOnMissingExtra is set to true

@@ -133,7 +133,8 @@ The `EnumCase` attributes also provides you a way to configure some extra attrib
 ```php
 namespace App\Enum;
 
-use Elao\Enum\ExtrasInterface;use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ExtrasInterface;
+use Elao\Enum\ReadableEnumInterface;
 use Elao\Enum\ExtrasTrait;
 use Elao\Enum\Attribute\EnumCase;
 

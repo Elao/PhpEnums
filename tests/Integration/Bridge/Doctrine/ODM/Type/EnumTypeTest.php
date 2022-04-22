@@ -17,6 +17,7 @@ use App\Enum\Suit;
 use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use MongoDB\BSON\ObjectId;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeTest extends KernelTestCase
@@ -26,7 +27,7 @@ class EnumTypeTest extends KernelTestCase
     public static function setUpBeforeClass(): void
     {
         if (!class_exists(DoctrineMongoDBBundle::class)) {
-            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+            throw new SkippedTestSuiteError('Doctrine MongoDB ODM bundle not installed');
         }
     }
 

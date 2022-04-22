@@ -16,6 +16,7 @@ use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Doctrine\ODM\MongoDB\Types\Type;
 use Elao\Enum\Tests\Fixtures\Bridge\Doctrine\ODM\Types\RequestStatusCollectionType;
 use Elao\Enum\Tests\Fixtures\Enum\RequestStatus;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use PHPUnit\Framework\TestCase;
 
 class CollectionEnumTypeTest extends TestCase
@@ -27,7 +28,7 @@ class CollectionEnumTypeTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         if (!class_exists(DoctrineMongoDBBundle::class)) {
-            self::markTestSkipped('Doctrine MongoDB ODM bundle not installed');
+            throw new SkippedTestSuiteError('Doctrine MongoDB ODM bundle not installed');
         }
 
         Type::addType(self::NAME, RequestStatusCollectionType::class);

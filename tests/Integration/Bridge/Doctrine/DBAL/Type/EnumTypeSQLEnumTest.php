@@ -17,6 +17,7 @@ use App\EntityMySQL\CardSQLEnum;
 use App\Enum\Suit;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnumTypeSQLEnumTest extends KernelTestCase
@@ -26,7 +27,7 @@ class EnumTypeSQLEnumTest extends KernelTestCase
     public static function setUpBeforeClass(): void
     {
         if (!str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {
-            self::markTestSkipped('SQL Enums can be tested only with MySQL');
+            throw new SkippedTestSuiteError('SQL Enums can be tested only with MySQL');
         }
     }
 

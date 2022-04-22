@@ -248,7 +248,7 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testResolveThrowsNonVariadicsArrayValue(): void
     {
         if (!InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '^6.0')) {
-            $this->markTestSkipped();
+            self::markTestSkipped();
         }
 
         $resolver = new QueryBodyBackedEnumValueResolver();

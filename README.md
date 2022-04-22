@@ -133,11 +133,11 @@ The `EnumCase` attributes also provides you a way to configure some extra attrib
 ```php
 namespace App\Enum;
 
-use Elao\Enum\ReadableEnumInterface;
+use Elao\Enum\ExtrasInterface;use Elao\Enum\ReadableEnumInterface;
 use Elao\Enum\ExtrasTrait;
 use Elao\Enum\Attribute\EnumCase;
 
-enum Suit implements ReadableEnumInterface
+enum Suit implements ExtrasInterface
 {
     use ExtrasTrait;
 
@@ -167,7 +167,9 @@ Suit::Spades->getExtra('missing-key', true); // throws
 or create your own interfaces/traits:
 
 ```php
-interface RenderableEnumInterface 
+use Elao\Enum\ExtrasInterface;
+
+interface RenderableEnumInterface extends ExtrasInterface
 {
     public function getColor(): string;
     public function getIcon(): string;
@@ -204,6 +206,8 @@ enum Suit implements RenderableEnumInterface
 
 Suit::Hearts->getColor(); // 'red'
 ```
+
+Note that extras feature and [`ExtrasInterface`](src/ExtrasInterface.php) can be used as standalone without [`ReadableEnumInterface`](src/ReadableEnumInterface.php)  
 
 ## Flag enums
 

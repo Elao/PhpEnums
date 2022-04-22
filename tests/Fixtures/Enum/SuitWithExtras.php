@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Fixtures\Enum;
 
 use Elao\Enum\Attribute\EnumCase;
+use Elao\Enum\ExtrasInterface;
 use Elao\Enum\ExtrasTrait;
 
-enum SuitWithExtras
+enum SuitWithExtras implements ExtrasInterface
 {
     use ExtrasTrait;
 

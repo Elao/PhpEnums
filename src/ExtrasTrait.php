@@ -16,6 +16,9 @@ trait ExtrasTrait
 {
     use EnumCaseAttributesTrait;
 
+    /**
+     * {@inheritdoc}
+     */
     public function getExtra(string $key, bool $throwOnMissingExtra = false): mixed
     {
         if ($throwOnMissingExtra && !isset(static::arrayAccessibleExtras()[$this][$key])) {
@@ -31,7 +34,7 @@ trait ExtrasTrait
     }
 
     /**
-     * @return iterable<static, mixed>
+     * {@inheritdoc}
      */
     public static function extras(string $key, bool $throwOnMissingExtra = false): iterable
     {

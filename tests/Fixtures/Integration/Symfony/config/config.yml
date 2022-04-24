@@ -29,6 +29,10 @@ elao_enum:
         types:
             App\Enum\Suit:
                 default: !php/const App\Enum\Suit::Spades
+            permissions_flagbag:
+                class: App\Enum\Permissions
+                default: !php/const App\Enum\Permissions::Read
+                type: flagbag
 
 services:
     # Registers these controllers as a service so that we have the

@@ -19,22 +19,23 @@ use Elao\Enum\Exception\LogicException;
  * A bag of {@see \BackedEnum} allowing to perform bit operations.
  *
  * @final
+ * @template T of \BackedEnum
  */
 class FlagBag
 {
     public const NONE = 0;
 
-    /** @var array<class-string<\BackedEnum>, int> */
+    /** @var array<class-string<T>, int> */
     private static array $masks = [];
 
     /** @var int[] */
     private array $bits;
 
-    /** @var class-string<\BackedEnum> */
+    /** @var class-string<T> */
     private string $type;
 
     /**
-     * @param class-string<\BackedEnum> $enumType
+     * @param class-string<T> $enumType
      */
     public function __construct(string $enumType, int ...$bits)
     {
@@ -66,7 +67,7 @@ class FlagBag
     }
 
     /**
-     * @param class-string<\BackedEnum> $enumType
+     * @param class-string<T> $enumType
      */
     public static function fromAll(string $enumType): FlagBag
     {
@@ -74,7 +75,7 @@ class FlagBag
     }
 
     /**
-     * @param class-string<\BackedEnum>|\BackedEnum $enumOrType
+     * @param class-string<T>|T $enumOrType
      */
     public static function from(string|\BackedEnum $enumOrType, \BackedEnum ...$flags): static
     {
@@ -97,7 +98,7 @@ class FlagBag
     }
 
     /**
-     * @param class-string<\BackedEnum> $enumType
+     * @param class-string<T> $enumType
      */
     public static function accepts(string $enumType, int $value): bool
     {
@@ -142,7 +143,7 @@ class FlagBag
     /**
      * Gets an integer value of the possible flags for enumeration.
      *
-     * @param class-string<\BackedEnum> $enumType
+     * @param class-string<T> $enumType
      *
      * @throws LogicException If the possibles values are not valid bit flags
      */
@@ -188,7 +189,7 @@ class FlagBag
     }
 
     /**
-     * @return \BackedEnum[]
+     * @return array<T>
      */
     public function getFlags(): array
     {
@@ -209,6 +210,8 @@ class FlagBag
 
     /**
      * True if the all the flags are also present in the current bag.
+     *
+     * @param T ...$flags
      */
     public function hasFlags(\BackedEnum ...$flags): bool
     {
@@ -235,11 +238,17 @@ class FlagBag
         return new static($this->type, self::encodeBits($this->bits) | $mask);
     }
 
+    /**
+     * @param T ...$flags
+     */
     public function withFlags(\BackedEnum ...$flags): static
     {
         return $this->withBits(...$this->flagsToBits(...$flags));
     }
 
+    /**
+     * @param T ...$flags
+     */
     public function withoutFlags(\BackedEnum ...$flags): static
     {
         return $this->withoutBits(...$this->flagsToBits(...$flags));
@@ -257,7 +266,7 @@ class FlagBag
     }
 
     /**
-     * @return class-string<\BackedEnum>
+     * @return class-string<T>
      */
     public function getType(): string
     {
@@ -265,7 +274,7 @@ class FlagBag
     }
 
     /**
-     * @param \BackedEnum[] $flags
+     * @param array<T> $flags
      *
      * @return int[]
      */

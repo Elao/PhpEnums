@@ -32,6 +32,8 @@ class TypesDumperTest extends BaseTypesDumperTest
             ['Foo\Baz\Foo', 'scalar', 'foo'],
             ['Foo\Baz\FooWithDefault', 'scalar', 'foo_with_default', 3],
             ['Foo\Bar\Baz', 'enum', 'foo_enum'],
+            ['Foo\Bar\Baz', 'flagbag', 'foo_flagbag'],
+            ['Foo\Bar\Baz', 'flagbag', 'foo_flagbag_with_default', 1],
         ];
     }
 

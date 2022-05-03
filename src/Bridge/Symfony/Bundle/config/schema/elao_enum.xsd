@@ -29,6 +29,7 @@
                 <xsd:restriction base="xsd:string">
                     <xsd:enumeration value="scalar"/>
                     <xsd:enumeration value="enum"/>
+                    <xsd:enumeration value="flagbag"/>
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>

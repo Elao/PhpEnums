@@ -9,3 +9,7 @@ elao_enum:
             suit_enum:
                 class: Elao\Enum\Tests\Fixtures\Enum\Suit
                 type: enum
+            permissions_flagbag:
+                class: Elao\Enum\Tests\Fixtures\Enum\Permissions
+                default: !php/const Elao\Enum\Tests\Fixtures\Enum\Permissions::Write
+                type: flagbag

@@ -62,6 +62,46 @@ namespace ELAO_ENUM_DT_DBAL\Foo\Bar {
         }
     }
 
+    if (!\class_exists(FooFlagbagFlagBagType::class)) {
+        class FooFlagbagFlagBagType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractFlagBagType
+        {
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Baz::class;
+            }
+
+            public function getName(): string
+            {
+                return 'foo_flagbag';
+            }
+        }
+    }
+
+    if (!\class_exists(FooFlagbagWithDefaultFlagBagType::class)) {
+        class FooFlagbagWithDefaultFlagBagType extends \Elao\Enum\Bridge\Doctrine\DBAL\Types\AbstractFlagBagType
+        {
+            protected function getEnumClass(): string
+            {
+                return \Foo\Bar\Baz::class;
+            }
+
+            public function getName(): string
+            {
+                return 'foo_flagbag_with_default';
+            }
+
+            protected function onNullFromDatabase(): ?\Elao\Enum\FlagBag
+            {
+                return new \Elao\Enum\FlagBag('Foo\Bar\Baz', 1);
+            }
+
+            protected function onNullFromPhp(): int|null
+            {
+                return 1;
+            }
+        }
+    }
+
 }
 
 namespace ELAO_ENUM_DT_DBAL\Foo\Baz {

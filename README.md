@@ -422,7 +422,7 @@ elao_enum:
     types:
       App\Enum\Suit: ~ # Defaults to `{ class: App\Enum\Suit, default: null, type: single }`
       permissions: { class: App\Enum\Permission } # You can set a name different from the enum FQCN
-      another: { class: App\Enum\AnotherEnum, type: collection } # values are stored as an array of integers or strings
+      permissions_bag: { class: App\Enum\Permissions, type: flagbag } # values are stored as an int and retrieved as FlagBag object
       App\Enum\RequestStatus: { default: 200 } # Default value from enum cases, in case the db value is NULL
 ```
 

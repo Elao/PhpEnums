@@ -22,9 +22,11 @@ class TypesDumper extends AbstractTypesDumper
 {
     public const TYPE_SCALAR = 'scalar';
     public const TYPE_ENUM = 'enum';
+    public const TYPE_FLAGBAG = 'flagbag';
     public const TYPES = [
         self::TYPE_SCALAR,
         self::TYPE_ENUM,
+        self::TYPE_FLAGBAG,
     ];
 
     protected function getTypeCode(
@@ -55,10 +57,11 @@ class TypesDumper extends AbstractTypesDumper
         $baseClass = match ($type) {
             self::TYPE_SCALAR => AbstractEnumType::class,
             self::TYPE_ENUM => AbstractEnumSQLDeclarationType::class,
+            self::TYPE_FLAGBAG => AbstractFlagBagType::class,
             default => throw new LogicException(sprintf('Unexpected type "%s"', $type)),
         };
 
-        $this->appendDefaultOnNullMethods($code, $enumClass, $defaultOnNull);
+        $this->appendDefaultOnNullMethods($code, $type, $enumClass, $defaultOnNull);
 
         return <<<PHP
 
@@ -77,7 +80,7 @@ class TypesDumper extends AbstractTypesDumper
         return 'ELAO_ENUM_DT_DBAL';
     }
 
-    private function appendDefaultOnNullMethods(string &$code, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
+    private function appendDefaultOnNullMethods(string &$code, string $type, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
     {
         if ($defaultOnNull !== null) {
             $defaultOnNullCode = var_export(
@@ -85,19 +88,35 @@ class TypesDumper extends AbstractTypesDumper
                 true,
             );
 
-            $code .= <<<PHP
+            if ($type == self::TYPE_FLAGBAG) {
+                $code .= <<<PHP
 
 
-                        protected function onNullFromDatabase(): ?\BackedEnum
-                        {
-                            return \\{$enumClass}::from($defaultOnNullCode);
-                        }
+                            protected function onNullFromDatabase(): ?\\Elao\\Enum\\FlagBag
+                            {
+                                return new \\Elao\\Enum\\FlagBag('$enumClass', $defaultOnNullCode);
+                            }
 
-                        protected function onNullFromPhp(): int|string|null
-                        {
-                            return {$defaultOnNullCode};
-                        }
-            PHP;
+                            protected function onNullFromPhp(): int|null
+                            {
+                                return {$defaultOnNullCode};
+                            }
+                PHP;
+            } else {
+                $code .= <<<PHP
+
+
+                            protected function onNullFromDatabase(): ?\BackedEnum
+                            {
+                                return \\{$enumClass}::from($defaultOnNullCode);
+                            }
+
+                            protected function onNullFromPhp(): int|string|null
+                            {
+                                return {$defaultOnNullCode};
+                            }
+                PHP;
+            }
         }
     }
 
@@ -106,6 +125,7 @@ class TypesDumper extends AbstractTypesDumper
         return [
             self::TYPE_SCALAR => 'Type',
             self::TYPE_ENUM => 'Type',
+            self::TYPE_FLAGBAG => 'FlagBagType',
         ];
     }
 }

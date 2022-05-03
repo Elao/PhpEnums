@@ -11,6 +11,7 @@
             <elao-enum:type class="Elao\Enum\Tests\Fixtures\Enum\Permissions" name="permissions" />
             <elao-enum:type class="Elao\Enum\Tests\Fixtures\Enum\RequestStatus" name="request_status" default="200" />
             <elao-enum:type class="Elao\Enum\Tests\Fixtures\Enum\Suit" name="suit_enum" type="enum" />
+            <elao-enum:type class="Elao\Enum\Tests\Fixtures\Enum\Permissions" name="permissions_flagbag" type="flagbag" default="2" />
         </elao-enum:doctrine>
     </elao-enum:config>
 </container>

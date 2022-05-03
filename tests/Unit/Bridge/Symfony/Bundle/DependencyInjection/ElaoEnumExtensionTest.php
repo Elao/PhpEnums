@@ -41,6 +41,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
             [Permissions::class, 'scalar', 'permissions', null],
             [RequestStatus::class, 'scalar', 'request_status', 200],
             [Suit::class, 'enum', 'suit_enum', null],
+            [Permissions::class, 'flagbag', 'permissions_flagbag', Permissions::Write->value],
         ], $container->getParameter('.elao_enum.doctrine_types'));
     }
 
@@ -69,6 +70,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
                         'permissions' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsType',
                         'request_status' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\RequestStatusType',
                         'suit_enum' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SuitEnumType',
+                        'permissions_flagbag' => 'ELAO_ENUM_DT_DBAL\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsFlagbagFlagBagType',
                     ],
                     'mapping_types' => ['enum' => 'string'],
                 ],

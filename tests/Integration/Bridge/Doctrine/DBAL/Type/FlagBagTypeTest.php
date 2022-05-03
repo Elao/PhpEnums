@@ -78,8 +78,8 @@ class FlagBagTypeTest extends KernelTestCase
         );
 
         /** @var AccessRight $card */
-        $access_right = $this->em->find(AccessRight::class, $uuid);
+        $accessRight = $this->em->find(AccessRight::class, $uuid);
 
-        self::assertSame([Permissions::Read], $access_right->getPermissions()->getFlags());
+        self::assertSame([Permissions::Read], $accessRight->getPermissions()->getFlags());
     }
 }

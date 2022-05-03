@@ -12,14 +12,12 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\IntegerType;
 use Elao\Enum\Exception\InvalidArgumentException;
-use Elao\Enum\Exception\LogicException;
 use Elao\Enum\FlagBag;
 
-abstract class AbstractFlagBagType extends Type
+abstract class AbstractFlagBagType extends IntegerType
 {
     /**
      * The enum FQCN for which we should make the DBAL conversion.
@@ -77,15 +75,10 @@ abstract class AbstractFlagBagType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
+        $value = parent::convertToPHPValue($value, $platform);
+
         if (null === $value) {
             return $this->onNullFromDatabase();
-        }
-
-        if (!\is_int($value)) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected int. %s given.',
-                get_debug_type($value),
-            ));
         }
 
         return new FlagBag($this->getEnumClass(), $value);
@@ -94,31 +87,9 @@ abstract class AbstractFlagBagType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
-    {
-        $enumBackingType = (new \ReflectionEnum($this->getEnumClass()))->getBackingType();
-
-        if ('int' !== (string) $enumBackingType) {
-            throw new LogicException(sprintf('Expecting int backed enum, %s given', $enumBackingType));
-        }
-
-        return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBindingType(): int
-    {
-        return ParameterType::INTEGER;
     }
 
     public function getName(): string

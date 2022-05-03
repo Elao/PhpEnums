@@ -10,6 +10,7 @@
     <xsd:complexType name="config">
         <xsd:choice maxOccurs="unbounded">
             <xsd:element name="doctrine" type="doctrine" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="doctrine_mongodb" type="doctrine_mongodb" minOccurs="0" maxOccurs="1"/>
         </xsd:choice>
     </xsd:complexType>
 
@@ -33,5 +34,24 @@
                 </xsd:restriction>
             </xsd:simpleType>
         </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="doctrine_mongodb">
+        <xsd:sequence>
+            <xsd:element name="type" type="doctrine_mongodb_type" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="doctrine_mongodb_type">
+        <xsd:attribute name="class" type="xsd:string" use="required"/>
+        <xsd:attribute name="type">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="single"/>
+                    <xsd:enumeration value="collection"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
 </xsd:schema>

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection\ElaoEnumExtension;
 use Elao\Enum\Tests\Fixtures\Enum\Permissions;
 use Elao\Enum\Tests\Fixtures\Enum\RequestStatus;
@@ -78,6 +79,24 @@ abstract class ElaoEnumExtensionTest extends TestCase
         ], $container->getExtensionConfig('doctrine'));
     }
 
+    public function testDoctrineOdmTypesArePrepended(): void
+    {
+        $container = $this->createContainerFromFile('doctrine_mongodb_types', false);
+        /** @var ElaoEnumExtension $ext */
+        $ext = $container->getExtension('elao_enum');
+        $ext->prepend($container);
+
+        self::assertEquals([
+            [
+                'types' => [
+                    'suit' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\SuitType',
+                    'request_status' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\RequestStatusType',
+                    'permissions' => 'ELAO_ENUM_DT_ODM\\Elao\\Enum\\Tests\\Fixtures\\Enum\\PermissionsCollectionType',
+                ],
+            ],
+        ], $container->getExtensionConfig('doctrine_mongodb'));
+    }
+
     protected function createContainerFromFile(string $file, bool $compile = true): ContainerBuilder
     {
         $container = $this->createContainer();
@@ -102,6 +121,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         return new ContainerBuilder(new EnvPlaceholderParameterBag([
             'kernel.bundles' => [
                 'DoctrineBundle' => DoctrineBundle::class,
+                'DoctrineMongoDBBundle' => DoctrineMongoDBBundle::class,
             ],
             'kernel.cache_dir' => self::FIXTURES_PATH . '/cache_dir',
         ]));

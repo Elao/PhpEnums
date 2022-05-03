@@ -1,0 +1,6 @@
+elao_enum:
+  doctrine_mongodb:
+    types:
+      suit: Elao\Enum\Tests\Fixtures\Enum\Suit
+      request_status: { class: Elao\Enum\Tests\Fixtures\Enum\RequestStatus, type: single }
+      permissions: { class: Elao\Enum\Tests\Fixtures\Enum\Permissions, type: collection }

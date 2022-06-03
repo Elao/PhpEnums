@@ -63,6 +63,7 @@ Table of Contents
         * [Using the Doctrine Bundle with Symfony](#using-the-doctrine-bundle-with-symfony)
       * [Mapping](#mapping)
       * [Default value on null](#default-value-on-null)
+      * [Troubleshooting](#troubleshooting)
     * [Doctrine ODM](#doctrine-odm)
     * [Symfony HttpKernel component](#symfony-httpkernel-component)
     * [Symfony Serializer component](#symfony-serializer-component)
@@ -614,6 +615,56 @@ elao_enum:
 
 Beware that your database platform must support it. Also, the Doctrine diff tool is unable to detect new or removed 
 values, so you'll have to handle this in a migration yourself.
+
+### Troubleshooting
+
+#### Using Enum objects with QueryBuilder
+
+When using enum objects as parameters in a query made with `Doctrine\ORM\QueryBuilder`, 
+the enum objects are cast to database values using the `__toString()` method 
+as the parameter type can not be inferred correctly. 
+
+Either explicitly use enum value instead of an instance, 
+or pass the registered DBAL type as the 3rd parameter in `setParameter()` 
+to allow the query builder to cast the object to the database value correctly.
+
+I.E, given:
+
+```php
+class Card
+{
+  /**
+   * @ORM\Column(type="suit", length=255)
+   */
+  protected ?Suit $suit = null;
+}
+```
+
+Use one of the following methods:
+
+```php
+private function findByType(?Suit $suit = null): array 
+{
+    $qb = $em->createQueryBuilder()
+      ->select('c')
+      ->from('Card', 'c')
+      ->where('c.suit = :suit');
+      
+    // use a value from constants:
+    $qb->setParameter('param1', Suit::SPADES);
+    
+    // or from instances:
+    
+    // PHP >= 8: Use the value of the enum instance, but check for NULL
+    $qb->setParameter('suit', $suit?->getValue());
+    // PHP < 8: Use the value of the enum instance, but check for NULL
+    $qb->setParameter('suit', $suit ? $suit->getValue() : null);  
+    // Use the 3rd parameter to set the DBAL type
+    $qb->setParameter('suit', $filter->getSuitType(), 'suit');
+    
+    // […]
+}   
+```
 
 ### Create the DBAL type
 

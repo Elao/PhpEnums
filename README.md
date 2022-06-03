@@ -482,14 +482,12 @@ class Card
 }
 ```
 
-
 ### Troubleshooting
 
-#### Using Enum objects with QueryBuilder
+#### Using enum instances with a QueryBuilder
 
-When using enum objects as parameters in a query made with `Doctrine\ORM\QueryBuilder`,
-the enum objects are cast to database values using the `__toString()` method
-as the parameter type can not be inferred correctly.
+When using enum instance as parameters in a query made with `Doctrine\ORM\QueryBuilder` 
+and generated DBAL types from the bundle, parameter type might not be inferred correctly.
 
 Either explicitly use enum value instead of an instance,
 or pass the registered DBAL type as the 3rd parameter in `setParameter()`

@@ -761,21 +761,21 @@ private function findByType(?Suit $suit = null): array
       ->select('c')
       ->from('Card', 'c')
       ->where('c.suit = :suit');
-      
+
     // use a value from constants:
     $qb->setParameter('param1', Suit::SPADES);
-    
+
     // or from instances:
-    
+
     // PHP >= 8: Use the value of the enum instance, but check for NULL
     $qb->setParameter('suit', $suit?->getValue());
     // PHP < 8: Use the value of the enum instance, but check for NULL
     $qb->setParameter('suit', $suit ? $suit->getValue() : null);  
     // Use the 3rd parameter to set the DBAL type
-    $qb->setParameter('suit', $filter->getSuitType(), 'suit');
-    
+    $qb->setParameter('suit', $suit, 'suit');
+
     // […]
-}   
+}
 ```
 
 ## Doctrine ODM

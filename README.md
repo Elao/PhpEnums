@@ -483,6 +483,51 @@ class Card
 ```
 
 
+### Troubleshooting
+
+#### Using Enum objects with QueryBuilder
+
+When using enum objects as parameters in a query made with `Doctrine\ORM\QueryBuilder`,
+the enum objects are cast to database values using the `__toString()` method
+as the parameter type can not be inferred correctly.
+
+Either explicitly use enum value instead of an instance,
+or pass the registered DBAL type as the 3rd parameter in `setParameter()`
+to allow the query builder to cast the object to the database value correctly.
+
+I.E, given:
+
+```php
+#[ORM\Entity]
+class Card
+{
+   #[ORM\Column(Suit::class, nullable: true)
+  protected ?Suit $suit = null;
+}
+```
+
+Use one of the following methods:
+
+```php
+private function findByType(?Suit $suit = null): array 
+{
+    $qb = $em->createQueryBuilder()
+      ->select('c')
+      ->from('Card', 'c')
+      ->where('c.suit = :suit');
+      
+    // use a value from constants:
+    $qb->setParameter('param1', Suit::SPADES->value);
+    
+    // or from instances:
+    $qb->setParameter('suit', $suit->value);  
+    // Use the 3rd parameter to set the DBAL type
+    $qb->setParameter('suit', $suit, Suit::class);
+    
+    // […]
+}   
+```
+
 ### Doctrine ODM
 
 You can store enumeration values as string or integer in your MongoDB database and manipulate them as objects thanks to custom mapping types included in this library.

@@ -15,6 +15,9 @@ namespace Elao\Enum\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 class EnumCase
 {
+    /**
+     * @param array<string, mixed> $extras
+     */
     public function __construct(public readonly ?string $label = null, public readonly array $extras = [])
     {
     }

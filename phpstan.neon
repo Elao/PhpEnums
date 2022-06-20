@@ -8,3 +8,4 @@ parameters:
     checkGenericClassInNonGenericObjectType: false # https://phpstan.org/blog/generics-in-php-using-phpdocs
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
+    treatPhpDocTypesAsCertain: false

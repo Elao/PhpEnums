@@ -67,6 +67,8 @@ class FlagBag
     }
 
     /**
+     * @template T of \BackedEnum
+     *
      * @param class-string<T> $enumType
      */
     public static function fromAll(string $enumType): FlagBag
@@ -76,6 +78,7 @@ class FlagBag
 
     /**
      * @template T of \BackedEnum
+     *
      * @param class-string<T>|T $enumOrType
      */
     public static function from(string|\BackedEnum $enumOrType, \BackedEnum ...$flags): static
@@ -99,6 +102,8 @@ class FlagBag
     }
 
     /**
+     * @template T of \BackedEnum
+     *
      * @param class-string<T> $enumType
      */
     public static function accepts(string $enumType, int $value): bool
@@ -143,6 +148,8 @@ class FlagBag
 
     /**
      * Gets an integer value of the possible flags for enumeration.
+     *
+     * @template T of \BackedEnum
      *
      * @param class-string<T> $enumType
      *

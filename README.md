@@ -499,8 +499,8 @@ I.E, given:
 #[ORM\Entity]
 class Card
 {
-   #[ORM\Column(Suit::class, nullable: true)
-  protected ?Suit $suit = null;
+    #[ORM\Column(Suit::class, nullable: true)
+    protected ?Suit $suit = null;
 }
 ```
 

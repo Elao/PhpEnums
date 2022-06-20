@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+parameters:
+    level: 6
+    paths:
+        - src
+#        - tests
+    checkGenericClassInNonGenericObjectType: false # https://phpstan.org/blog/generics-in-php-using-phpdocs
+    reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false

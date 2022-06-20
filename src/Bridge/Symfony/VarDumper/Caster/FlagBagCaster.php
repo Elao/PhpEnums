@@ -18,7 +18,7 @@ use Symfony\Component\VarDumper\Caster\ConstStub;
 
 final class FlagBagCaster
 {
-    public static function cast(FlagBag $bag)
+    public static function cast(FlagBag $bag): array
     {
         $a = [];
 

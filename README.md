@@ -409,8 +409,8 @@ class Card
 we recommend using the official ORM integration for backed enums.
 
 PhpEnums however also provides some base classes to save your PHP backed enumerations in your database.
-In a near future, custom DBAL classes for use-cases specific to this library, 
-such as storing a flag bag or a collection of backed enum cases, would also be provided.
+Custom DBAL classes for use-cases specific to this library,
+such as storing a [flag bag](#flag-enums) or a collection of backed enum cases, are or will also be available.
 
 #### In a Symfony app
 

@@ -75,6 +75,7 @@ class FlagBag
     }
 
     /**
+     * @template T of \BackedEnum
      * @param class-string<T>|T $enumOrType
      */
     public static function from(string|\BackedEnum $enumOrType, \BackedEnum ...$flags): static

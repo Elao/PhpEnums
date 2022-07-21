@@ -32,7 +32,6 @@ enum SuitWithCustomCase
     case Spades;
 }
 
-
 #[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 class CustomCase extends EnumCase
 {

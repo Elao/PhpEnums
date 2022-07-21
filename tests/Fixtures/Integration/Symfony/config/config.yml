@@ -9,6 +9,7 @@ framework:
         storage_factory_id: 'session.storage.factory.mock_file'
     test: ~
     assets: false
+    http_method_override: false
 
 doctrine:
     dbal:

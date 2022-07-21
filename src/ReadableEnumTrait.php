@@ -55,7 +55,7 @@ trait ReadableEnumTrait
             throw new NameException($name, static::class);
         }
 
-        return ($map[$name])->getReadable();
+        return $map[$name]->getReadable();
     }
 
     /**

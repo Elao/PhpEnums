@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Unit;
 
+use Elao\Enum\Tests\Fixtures\Enum\SuitWithCustomCase;
 use Elao\Enum\Tests\Fixtures\Enum\SuitWithExtras;
 use Elao\Enum\Tests\IterableAssertionsTrait;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,15 @@ class EnumExtrasTest extends TestCase
         self::assertSame('fa-diamond', SuitWithExtras::Diamonds->getExtra('icon'));
 
         self::assertSame('value', SuitWithExtras::Hearts->getExtra('only-for-hearts'));
+    }
+
+    public function testGetExtraWithCustomCase(): void
+    {
+        self::assertSame('black', SuitWithCustomCase::Clubs->getExtra('color'));
+        self::assertSame('fa-club', SuitWithCustomCase::Clubs->getExtra('icon'));
+
+        self::assertSame('red', SuitWithCustomCase::Diamonds->getExtra('color'));
+        self::assertSame('fa-diamond', SuitWithCustomCase::Diamonds->getExtra('icon'));
     }
 
     public function testGetExtraReturnsNullOnMissingKey(): void
@@ -53,6 +63,16 @@ class EnumExtrasTest extends TestCase
             yield SuitWithExtras::Clubs => 'black';
             yield SuitWithExtras::Spades => 'black';
         })(), SuitWithExtras::extras('color'));
+    }
+
+    public function testWithCustomCaseExtrasCanBeIteratedWithEnumCaseAsKeys(): void
+    {
+        self::assertIterablesMatch((static function () {
+            yield SuitWithCustomCase::Hearts => 'red';
+            yield SuitWithCustomCase::Diamonds => 'red';
+            yield SuitWithCustomCase::Clubs => 'black';
+            yield SuitWithCustomCase::Spades => 'black';
+        })(), SuitWithCustomCase::extras('color'));
     }
 
     public function testExtrasAreNullOnMissingKey(): void

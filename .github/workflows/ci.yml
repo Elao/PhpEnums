@@ -74,15 +74,31 @@ jobs:
             os: 'ubuntu-latest'
             php: '8.1'
             symfony: '6.0.*@dev'
-            mongodb: true
-            mysql: true
             allow-unstable: true
+            
+          - name: 'Test Symfony 6.1 [Linux, PHP 8.1]'
+            os: 'ubuntu-latest'
+            php: '8.1'
+            symfony: '6.1.*@dev'
+            allow-unstable: true
+            mysql: true
+            mongodb: true
 
           # Bleeding edge (unreleased dev versions where failures are allowed)
           - name: 'Test next Symfony [Linux, PHP 8.1] (allowed failure)'
             os: 'ubuntu-latest'
             php: '8.1'
-            symfony: '6.1.*@dev'
+            symfony: '6.2.*@dev'
+            composer-flags: '--ignore-platform-req php'
+            allow-unstable: true
+            allow-failure: true
+            mysql: true
+            mongodb: true
+            
+          - name: 'Test next Symfony [Linux, PHP 8.2] (allowed failure)'
+            os: 'ubuntu-latest'
+            php: '8.2'
+            symfony: '6.2.*@dev'
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true
             allow-failure: true

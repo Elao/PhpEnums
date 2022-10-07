@@ -2,7 +2,7 @@ framework:
     secret: 'elao'
     form: true
     router:
-        resource: '%kernel.project_dir%/config/routing.yml'
+        resource: '%kernel.project_dir%/config/routing.yaml'
         strict_requirements: '%kernel.debug%'
         utf8: true
     session:

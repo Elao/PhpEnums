@@ -9,9 +9,9 @@ doctrine:
         alias: AppMySQL
 
 elao_enum:
-    doctrine:
-      types:
-        suit_sql_enum:
-          class: App\Enum\Suit
-          type: enum
-          default: !php/const App\Enum\Suit::Spades
+  doctrine:
+    types:
+      suit_sql_enum:
+        class: App\Enum\Suit
+        type: enum
+        default: !php/const App\Enum\Suit::Spades

@@ -36,14 +36,18 @@ class Kernel extends BaseKernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->getProjectDir() . '/config/config.yml');
+        $loader->load($this->getProjectDir() . '/config/config.yaml');
 
         if (str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {
-            $loader->load($this->getProjectDir() . '/config/mysql.yml');
+            $loader->load($this->getProjectDir() . '/config/mysql.yaml');
+        }
+
+        if (self::VERSION_ID >= 60200) {
+            $loader->load($this->getProjectDir() . '/config/config_6.2.yaml');
         }
 
         if (class_exists(DoctrineMongoDBBundle::class)) {
-            $loader->load($this->getProjectDir() . '/config/mongodb.yml');
+            $loader->load($this->getProjectDir() . '/config/mongodb.yaml');
         }
     }
 

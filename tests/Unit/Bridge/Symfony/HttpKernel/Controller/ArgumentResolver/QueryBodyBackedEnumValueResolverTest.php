@@ -21,6 +21,7 @@ use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class QueryBodyBackedEnumValueResolverTest extends TestCase
@@ -32,7 +33,18 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
 
-        self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
+        // Before Symfony 6.2
+        if (!interface_exists(ValueResolverInterface::class)) {
+            self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
+
+            return;
+        }
+
+        /** @var \Generator $results */
+        $results = $resolver->resolve($request, $metadata);
+        $results = iterator_to_array($results);
+
+        $expectedSupport ? self::assertNotEmpty($results) : self::assertSame([], $results);
     }
 
     public function provides testSupports data(): iterable
@@ -147,17 +159,30 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
 
-        if (!$resolver->supports($request, $metadata)) {
+        // Before Symfony 6.2
+        if (!interface_exists(ValueResolverInterface::class)) {
+            if (!$resolver->supports($request, $metadata)) {
+                throw new \LogicException(sprintf(
+                    'Invalid test case %s, since the supports method returned false',
+                    $this->getName(true),
+                ));
+            }
+
+            return;
+        }
+
+        /** @var \Generator $results */
+        $results = $resolver->resolve($request, $metadata);
+        $results = iterator_to_array($results);
+
+        if ([] === $results) {
             throw new \LogicException(sprintf(
                 'Invalid test case %s, since the supports method returned false',
                 $this->getName(true),
             ));
         }
 
-        /** @var \Generator $results */
-        $results = $resolver->resolve($request, $metadata);
-
-        self::assertSame($expected, iterator_to_array($results));
+        self::assertSame($expected, $results);
     }
 
     public function provides testResolve data(): iterable
@@ -224,7 +249,7 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
 
         $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum "Elao\Enum\Tests\Fixtures\Enum\Suit"');
+        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum');
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);

@@ -43,7 +43,7 @@ class QueryBodyBackedEnumValueResolverTest extends WebTestCase
         yield 'invalid value' => [
             function (KernelBrowser $client) {
                 $this->expectException(BadRequestHttpException::class);
-                $this->expectExceptionMessage('Could not resolve the "App\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum "App\Enum\Suit"');
+                $this->expectExceptionMessage('Could not resolve the "App\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum');
 
                 $client->request(Request::METHOD_GET, '/resolver/from-query?' . http_build_query([
                     'suit' => 'foo',

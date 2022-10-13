@@ -46,6 +46,13 @@ install.61:
 	symfony composer config minimum-stability dev
 	symfony composer update
 
+## Install - Install Symfony 6.2 deps
+install.62: setup
+install.62: export SYMFONY_REQUIRE = 6.2.*@dev
+install.62:
+	symfony composer config minimum-stability dev
+	symfony composer update
+
 ## Install - Add Doctrine ODM deps
 deps.odm.add:
 	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.3" "doctrine/mongodb-odm-bundle:^4.4.1"

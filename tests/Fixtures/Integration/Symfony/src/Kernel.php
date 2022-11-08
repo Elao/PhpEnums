@@ -42,10 +42,6 @@ class Kernel extends BaseKernel
             $loader->load($this->getProjectDir() . '/config/mysql.yaml');
         }
 
-        if (self::VERSION_ID >= 60200) {
-            $loader->load($this->getProjectDir() . '/config/config_6.2.yaml');
-        }
-
         if (class_exists(DoctrineMongoDBBundle::class)) {
             $loader->load($this->getProjectDir() . '/config/mongodb.yaml');
         }

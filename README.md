@@ -12,21 +12,15 @@ _Provides additional, opinionated features to the [PHP 8.1+ native enums](https:
 as specific integrations with frameworks and libraries._
 
 ```php
+#[ReadableEnum(prefix: 'suit.')]
 enum Suit: string implements ReadableEnumInterface
 {
     use ReadableEnumTrait;
 
-    #[EnumCase('suit.hearts')]
-    case Hearts = 'H';
-
-    #[EnumCase('suit.diamonds')]
-    case Diamonds = 'D';
-
-    #[EnumCase('suit.clubs')]
-    case Clubs = 'C';
-
-    #[EnumCase('suit.spades')]
-    case Spades = 'S';
+    case Hearts = '♥︎';
+    case Diamonds = '♦︎';
+    case Clubs = '♣︎';
+    case Spades = '︎♠︎';
 }
 ```
 
@@ -85,20 +79,20 @@ enum Suit: string implements ReadableEnumInterface
     use ReadableEnumTrait;
 
     #[EnumCase('suit.hearts')]
-    case Hearts = 'H';
+    case Hearts = '♥︎';
 
     #[EnumCase('suit.diamonds')]
-    case Diamonds = 'D';
+    case Diamonds = '♦︎';
 
     #[EnumCase('suit.clubs')]
-    case Clubs = 'C';
+    case Clubs = '♣︎';
 
     #[EnumCase('suit.spades')]
-    case Spades = 'S';
+    case Spades = '︎♠︎';
 }
 ```
 
-The following snippet shows how to get the human readable value of an enum:
+The following snippet shows how to get the human-readable value of an enum:
 
 ```php
 Suit::Hearts->getReadable(); // returns 'suit.hearts'
@@ -124,6 +118,46 @@ suit.spades: 'Trèfles'
 ```php
 $enum = Suit::Hearts;
 $translator->trans($enum->getReadable(), locale: 'fr'); // returns 'Coeurs'
+```
+
+### Configure suffix/prefix & default value
+
+As a shorcut, you can also use the [`ReadableEnum`](src/Attribute/ReadableEnum.php) attribute to define the
+common `suffix` and `prefix` to use, as well as defaulting on the enum case name or value, if not provided explicitly:
+
+```php
+#[ReadableEnum(prefix: 'suit.')]
+enum Suit: string implements ReadableEnumInterface
+{
+    use ReadableEnumTrait;
+
+    #[EnumCase('hearts︎')]
+    case Hearts = '♥︎';
+    case Diamonds = '♦︎';
+    case Clubs = '♣︎';
+    case Spades = '︎♠︎';
+}
+
+Suit::Hearts->getReadable(); // returns 'suit.hearts'
+Suit::Clubs->getReadable(); // returns 'suit.Clubs'
+```
+
+using the case value (only for string backed enums):
+
+```php
+#[ReadableEnum(prefix: 'suit.', useValueAsDefault: true)]
+enum Suit: string implements ReadableEnumInterface
+{
+    use ReadableEnumTrait;
+
+    case Hearts = 'hearts';
+    case Diamonds = 'diamonds';
+    case Clubs = 'clubs︎';
+    case Spades = '︎spades';
+}
+
+Suit::Hearts->getReadable(); // returns 'suit.hearts'
+Suit::Clubs->getReadable(); // returns 'suit.clubs'
 ```
 
 ## Extra values

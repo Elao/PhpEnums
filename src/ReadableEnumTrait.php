@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Elao\Enum;
 
 use Elao\Enum\Attribute\EnumCase;
+use Elao\Enum\Attribute\ReadableEnum;
 use Elao\Enum\Exception\LogicException;
 use Elao\Enum\Exception\NameException;
 
@@ -69,42 +70,60 @@ trait ReadableEnumTrait
     /**
      * {@inheritdoc}
      *
-     * Implements readables using PHP 8 attributes, expecting an {@link EnumCase} on each case, with a label.
+     * Implements readables using PHP 8 attributes, expecting an {@link EnumCase} on each case, with a label,
+     * or uses the value as label if {@link ReadableEnum} is used on the class.
      */
     public static function readables(): iterable
     {
         static $readables;
 
         if (!isset($readables)) {
+            $readableEnumAttribute = static::getReadableEnumAttribute();
             $readables = new \SplObjectStorage();
+            $r = new \ReflectionEnum(static::class);
+
+            if (($readableEnumAttribute?->useValueAsDefault ?? false) && 'string' !== (string) $r->getBackingType()) {
+                throw new LogicException(sprintf(
+                    'Cannot use "useValueAsDefault" with "#[%s]" attribute on enum "%s" as it\'s not a string backed enum.',
+                    ReadableEnum::class,
+                    static::class,
+                ));
+            }
 
             /** @var static $case */
             foreach (static::cases() as $case) {
                 $attribute = $case->getEnumCaseAttribute();
 
-                if (null === $attribute) {
+                if (null === $attribute && null === $readableEnumAttribute) {
                     throw new LogicException(sprintf(
-                        'enum "%s" using the "%s" trait must define a "%s" attribute on every cases. Case "%s" is missing one. Alternatively, override the "%s()" method',
+                        'enum "%s" using the "%s" trait must define a "%s" attribute on every cases. Case "%s" is missing one. Alternatively, override the "%s()" method, or use the "%s" attribute on the enum class to use the value as default.',
                         static::class,
                         ReadableEnumTrait::class,
                         EnumCase::class,
                         $case->name,
                         __METHOD__,
+                        ReadableEnum::class,
                     ));
                 }
 
-                if (null === $attribute->label) {
+                if (null === $attribute?->label && null === $readableEnumAttribute) {
                     throw new LogicException(sprintf(
-                        'enum "%s" using the "%s" trait must define a label using the "%s" attribute on every cases. Case "%s" is missing a label. Alternatively, override the "%s()" method',
+                        'enum "%s" using the "%s" trait must define a label using the "%s" attribute on every cases. Case "%s" is missing a label. Alternatively, override the "%s()" method, or use the "#[%s]" attribute on the enum class to use the value as default.',
                         static::class,
                         ReadableEnumTrait::class,
                         EnumCase::class,
                         $case->name,
                         __METHOD__,
+                        ReadableEnum::class,
                     ));
                 }
 
-                $readables[$case] = $attribute->label;
+                $readables[$case] = sprintf(
+                    '%s%s%s',
+                    $readableEnumAttribute?->prefix,
+                    $attribute?->label ?? ($readableEnumAttribute->useValueAsDefault ? $case->value : $case->name),
+                    $readableEnumAttribute?->suffix,
+                );
             }
         }
 
@@ -112,6 +131,20 @@ trait ReadableEnumTrait
         foreach (static::cases() as $case) {
             yield $case => $readables[$case];
         }
+    }
+
+    /**
+     * @internal
+     */
+    private static function getReadableEnumAttribute(): ?ReadableEnum
+    {
+        $r = new \ReflectionEnum(static::class);
+
+        if (null === $rAttr = $r->getAttributes(ReadableEnum::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null) {
+            return null;
+        }
+
+        return $rAttr->newInstance();
     }
 
     /**

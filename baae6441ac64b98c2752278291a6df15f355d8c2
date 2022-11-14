@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by chalasr at 2022-11-09T12:32:13Z
+
+> Should we actually default on the name rather than the value by default when using this attribute?
+
+👍 I think so
+
+> Name this attribute ConfigureReadableEnum? AutoReadableEnum?
+
+Not necessarily IMHO it's simpler as-is

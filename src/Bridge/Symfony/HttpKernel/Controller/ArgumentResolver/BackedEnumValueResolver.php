@@ -18,17 +18,6 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-// Suggest using Symfony 6.1+ resolver
-if (class_exists(SymfonyBackedEnumValueResolver::class)) {
-    trigger_deprecation(
-        'elao/enum',
-        '2.1',
-        'The "%s" class is deprecated with "symfony/http-kernel" >= 6.1, use "%s" instead.',
-        BackedEnumValueResolver::class,
-        SymfonyBackedEnumValueResolver::class
-    );
-}
-
 // Legacy (<6.1) resolver
 /**
  * Attempt to resolve backed enum cases from request attributes, for a route path parameter,
@@ -40,6 +29,20 @@ if (class_exists(SymfonyBackedEnumValueResolver::class)) {
  */
 class BackedEnumValueResolver implements ArgumentValueResolverInterface
 {
+    public function __construct()
+    {
+        // Suggest using Symfony 6.1+ resolver
+        if (class_exists(SymfonyBackedEnumValueResolver::class)) {
+            trigger_deprecation(
+                'elao/enum',
+                '2.1',
+                'The "%s" class is deprecated with "symfony/http-kernel" >= 6.1, use "%s" instead.',
+                __CLASS__,
+                SymfonyBackedEnumValueResolver::class
+            );
+        }
+    }
+
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         if (!is_subclass_of($argument->getType(), \BackedEnum::class)) {

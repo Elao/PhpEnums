@@ -14,10 +14,15 @@ namespace Elao\Enum\Bridge\Doctrine\Common;
 
 /**
  * @internal
+ *
+ * @phpstan-type Type = array{0: class-string<\BackedEnum>, 1: string, 2: string, 3: string|int|null}
  */
 abstract class AbstractTypesDumper
 {
-    public function dumpToFile(string $file, array $types)
+    /**
+     * @param Type[] $types
+     */
+    public function dumpToFile(string $file, array $types): void
     {
         file_put_contents($file, $this->dump($types));
     }
@@ -57,6 +62,9 @@ abstract class AbstractTypesDumper
         );
     }
 
+    /**
+     * @param Type[] $types
+     */
     private function dump(array $types): string
     {
         array_walk($types, static function (&$type) {
@@ -92,6 +100,9 @@ abstract class AbstractTypesDumper
 
     abstract protected function getTypeCode(string $classname, string $enumClass, string $type, string $name, \BackedEnum|int|string|null $defaultOnNull = null): string;
 
+    /**
+     * @return array<string, string>
+     */
     abstract protected static function getSuffixes(): array;
 
     abstract protected static function getMarker(): string;

@@ -212,3 +212,7 @@ jobs:
 
       - name: 'Run PHPUnit tests'
         run: vendor/bin/simple-phpunit --testdox --verbose ${{ matrix.code-coverage && '--coverage-text --coverage-clover build/logs/clover.xml' }}
+
+      - name: 'Run PHPStan'
+        run: vendor/bin/phpstan
+        if: ${{ matrix.mongodb }}

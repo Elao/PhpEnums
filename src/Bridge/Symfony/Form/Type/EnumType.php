@@ -25,7 +25,7 @@ class EnumType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             // Override the original type logic for label for readable enums.

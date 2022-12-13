@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FlagBagType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['multiple']) {
             throw new InvalidConfigurationException(sprintf(
@@ -38,7 +38,7 @@ class FlagBagType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefault('multiple', true)

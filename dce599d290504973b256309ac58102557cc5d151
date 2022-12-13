@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2022-12-13T13:29:27Z
+
+@ogizanagi why is mongodb test on windows failing? It seems as if its not started.
+
+Also it seems that
+```yaml
+      - name: 'Start MongoDB (Windows)'
+        uses: crazy-max/ghaction-chocolatey@v2
+        with:
+          args: install mongodb
+        if: ${{ matrix.mongodb && matrix.os == 'windows-latest' }}
+```
+
+still uses Chocolatey 1.2.0 (from test logs). Why? This is very outdated. Even the mongodb version it tries to use (v5) is old
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2022-12-13T13:51:28Z
+
+@michnovka Thanks for opening this.
+I didn't have time yet to inspect the mongodb issue on Windows nor to update the CI setup regarding this, so I don't know much about it.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2022-12-13T16:01:18Z
+
+@ogizanagi I figured it out :) Please merge

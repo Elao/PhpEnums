@@ -19,6 +19,7 @@ use Elao\Enum\Exception\LogicException;
  * A bag of {@see \BackedEnum} allowing to perform bit operations.
  *
  * @final
+ *
  * @template T of \BackedEnum
  */
 class FlagBag

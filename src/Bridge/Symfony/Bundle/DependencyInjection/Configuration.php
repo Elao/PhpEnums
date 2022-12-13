@@ -30,7 +30,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addDoctrineDbalSection(ArrayNodeDefinition $rootNode)
+    private function addDoctrineDbalSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode->children()
             ->arrayNode('doctrine')
@@ -97,7 +97,7 @@ TXT
         ->end();
     }
 
-    private function addDoctrineOdmSection(ArrayNodeDefinition $rootNode)
+    private function addDoctrineOdmSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode->children()
             ->arrayNode('doctrine_mongodb')

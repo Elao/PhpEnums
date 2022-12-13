@@ -20,6 +20,7 @@ interface ReadableEnumInterface extends \UnitEnum
      * Gets human representations per enum cases.
      *
      * @return iterable labels indexed by enum cases
+     *
      * @psalm-return iterable<ReadableEnumInterface, string>
      */
     public static function readables(): iterable;

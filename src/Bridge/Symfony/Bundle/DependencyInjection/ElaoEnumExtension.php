@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class ElaoEnumExtension extends Extension implements PrependExtensionInterface
 {
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../config'));
         $loader->load('services.php');
@@ -42,7 +42,7 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
         }
     }
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 

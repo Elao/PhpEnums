@@ -1,7 +1,7 @@
 include .make/help.mk
 include .make/text.mk
 
-PHP_CS_FIXER_VERSION=v3.9.4
+PHP_CS_FIXER_VERSION=v3.13.0
 
 ###########
 # Install #

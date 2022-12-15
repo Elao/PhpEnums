@@ -18,15 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DoctrineDBALTypesPass implements CompilerPassInterface
 {
-    /** @var string */
-    private $typesFilePath;
+    private string $typesFilePath;
 
     public function __construct(string $typesFilePath)
     {
         $this->typesFilePath = $typesFilePath;
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('.elao_enum.doctrine_types')) {
             return;

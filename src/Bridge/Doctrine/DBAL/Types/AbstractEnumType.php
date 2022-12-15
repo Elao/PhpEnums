@@ -48,10 +48,8 @@ abstract class AbstractEnumType extends Type
      * {@inheritdoc}
      *
      * @param \BackedEnum|null $value
-     *
-     * @return mixed
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): string|int|null
     {
         if ($value !== null && !$value instanceof \BackedEnum) {
             throw new InvalidArgumentException(sprintf(
@@ -72,10 +70,8 @@ abstract class AbstractEnumType extends Type
      * {@inheritdoc}
      *
      * @param int|string|null $value The value to convert.
-     *
-     * @return \BackedEnum|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\BackedEnum
     {
         if (null === $value) {
             return $this->onNullFromDatabase();
@@ -87,11 +83,15 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $this->isIntBackedEnum()
-            ? $platform->getIntegerTypeDeclarationSQL($fieldDeclaration)
-            : $platform->getVarcharTypeDeclarationSQL($fieldDeclaration)
+            ? $platform->getIntegerTypeDeclarationSQL($column)
+            : (
+                method_exists($platform, 'getStringTypeDeclarationSQL') ?
+                $platform->getStringTypeDeclarationSQL($column) :
+                $platform->getVarcharTypeDeclarationSQL($column)
+            )
         ;
     }
 
@@ -113,10 +113,8 @@ abstract class AbstractEnumType extends Type
 
     /**
      * Cast the value from database to proper enumeration internal type.
-     *
-     * @param int|string $value
      */
-    private function cast($value): int|string
+    private function cast(int|string $value): int|string
     {
         return $this->isIntBackedEnum() ? (int) $value : (string) $value;
     }

@@ -17,7 +17,7 @@ namespace Elao\Enum\Bridge\Doctrine\Common;
  */
 abstract class AbstractTypesDumper
 {
-    public function dumpToFile(string $file, array $types)
+    public function dumpToFile(string $file, array $types): void
     {
         file_put_contents($file, $this->dump($types));
     }

@@ -23,7 +23,7 @@ abstract class AbstractFlagBagTransformer implements DataTransformerInterface
     /** @var class-string<\BackedEnum> */
     protected string $enumType;
 
-    /** @var class-string<\BackedEnum> */
+    /** @param class-string<\BackedEnum> $enumType */
     public function __construct(string $enumType)
     {
         if (!is_a($enumType, \BackedEnum::class, true)) {

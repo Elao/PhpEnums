@@ -439,8 +439,8 @@ class Card
 }
 ```
 
-⚠️ Unless you have specific needs for a DBAL type as described below, 
-we recommend using the official ORM integration for backed enums.
+> **Note**: Unless you have specific needs for a DBAL type as described below, 
+> we recommend using the official ORM integration for backed enums.
 
 PhpEnums however also provides some base classes to save your PHP backed enumerations in your database.
 Custom DBAL classes for use-cases specific to this library,

@@ -27,6 +27,7 @@ class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
      * {@inheritdoc}
      *
      * @template T of int|string
+     *
      * @param EnumInterface<T> $object
      *
      * @return T

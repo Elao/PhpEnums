@@ -50,6 +50,7 @@ class Enum extends Choice
     ) {
         parent::__construct(
             $class, // "class" is the default option here and supersedes "choices" from parent class.
+            null,
             $callback,
             $multiple,
             $strict,

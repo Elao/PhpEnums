@@ -102,7 +102,7 @@ class EnumTest extends TestCase
                 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
                 use Elao\Enum\Tests\Fixtures\Enum\SimpleEnum;
 
-                return new Enum(class: SimpleEnum::class, callback: 'allowedValues');
+                return new Enum(class: SimpleEnum::class, callback: 'allowedValues', message: 'foo');
             PHP), !self::isSf52()];
         }
     }

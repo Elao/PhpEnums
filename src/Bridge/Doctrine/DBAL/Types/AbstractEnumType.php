@@ -91,7 +91,7 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getDefaultLength(AbstractPlatform $platform)
+    public function getDefaultLength(AbstractPlatform $platform): ?int
     {
         return $platform->getVarcharDefaultLength();
     }

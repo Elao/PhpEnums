@@ -111,3 +111,10 @@ lint.php-cs-fixer:
 php-cs-fixer.phar:
 	wget --no-verbose https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar
 	chmod +x php-cs-fixer.phar
+
+lint.php-cs-fixer@integration: php-cs-fixer.phar
+lint.php-cs-fixer@integration:
+	./php-cs-fixer.phar fix --dry-run --no-interaction --diff
+
+lint.phpstan@integration:
+	./vendor/bin/phpstan

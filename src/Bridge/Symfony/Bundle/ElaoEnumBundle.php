@@ -23,12 +23,15 @@ class ElaoEnumBundle extends Bundle
     {
         parent::build($container);
 
+        /** @var string $kernelCacheDir */
+        $kernelCacheDir = $container->getParameter('kernel.cache_dir');
+
         $container->addCompilerPass(
-            new DoctrineDBALTypesPass($container->getParameter('kernel.cache_dir') . '/elao_enum_doctrine_dbal_types.php')
+            new DoctrineDBALTypesPass($kernelCacheDir . '/elao_enum_doctrine_dbal_types.php')
         );
 
         $container->addCompilerPass(
-            new DoctrineODMTypesPass($container->getParameter('kernel.cache_dir') . '/elao_enum_doctrine_odm_types.php')
+            new DoctrineODMTypesPass($kernelCacheDir . '/elao_enum_doctrine_odm_types.php')
         );
     }
 

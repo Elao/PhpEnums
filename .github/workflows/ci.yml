@@ -22,12 +22,30 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
+          coverage: none
+
+      - name: 'Require Doctrine MongoDB dependencies'
+        run: composer require --no-update --ignore-platform-reqs --dev --no-interaction --ansi "doctrine/mongodb-odm:^2.4" "doctrine/mongodb-odm-bundle:^4.5.1"
 
       - name: 'Install dependencies'
-        run: make php-cs-fixer.phar
+        id: deps
+        run: |
+          echo "::group::Install project deps"
+            composer update --prefer-dist --ignore-platform-reqs --ansi
+          echo "::endgroup::"
 
-      - name: 'Check style'
-        run: ./php-cs-fixer.phar fix --dry-run --no-interaction --diff
+          echo "::group::Install PHPUnit"
+            vendor/bin/simple-phpunit install
+          echo "::endgroup::"
+        env:
+          SYMFONY_REQUIRE: "6.2*dev"
+
+      - name: 'Lint - php-cs-fixer'
+        run: make lint.php-cs-fixer@integration
+
+      - name: 'Lint - phpstan'
+        if: always() && steps.deps.outcome == 'success'
+        run: make lint.phpstan@integration
 
   test:
     name: ${{ matrix.name }}
@@ -139,7 +157,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: pdo_sqlite ${{ matrix.mongodb && ', mongodb' }} ${{ matrix.mysql && ', pdo_mysql' }}
-          coverage: pcov
+          coverage: none
           tools: 'composer:v2,flex'
 
       - name: 'Start MongoDB (Linux)'
@@ -211,4 +229,4 @@ jobs:
         if: ${{ matrix.mysql && matrix.os == 'windows-latest' }}
 
       - name: 'Run PHPUnit tests'
-        run: vendor/bin/simple-phpunit --testdox --verbose ${{ matrix.code-coverage && '--coverage-text --coverage-clover build/logs/clover.xml' }}
+        run: vendor/bin/simple-phpunit --testdox --verbose

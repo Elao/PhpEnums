@@ -31,7 +31,7 @@ class EnumProvider
      */
     public function randomEnum(string $enumClassOrAlias): \UnitEnum
     {
-        /** @var \UnitEnum|string $class */
+        /** @var class-string<\UnitEnum> $class */
         $class = $this->aliases[$enumClassOrAlias] ?? $enumClassOrAlias;
 
         $this->ensureEnumClass($class);
@@ -59,7 +59,7 @@ class EnumProvider
             $count = mt_rand($min, $count);
         }
 
-        /** @var \UnitEnum|string $class */
+        /** @var class-string<\UnitEnum> $class */
         $class = $this->aliases[$enumClassOrAlias] ?? $enumClassOrAlias;
 
         $this->ensureEnumClass($class);

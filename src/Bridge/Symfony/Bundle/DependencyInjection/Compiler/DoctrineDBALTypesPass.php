@@ -33,6 +33,10 @@ class DoctrineDBALTypesPass implements CompilerPassInterface
 
         $types = $container->getParameter('.elao_enum.doctrine_types');
 
+        if (!\is_array($types)) {
+            throw new \InvalidArgumentException('The .elao_enum.doctrine_types parameter must be an array');
+        }
+
         (new TypesDumper())->dumpToFile($this->typesFilePath, $types);
 
         $container->getDefinition('doctrine.dbal.connection_factory')->setFile($this->typesFilePath);

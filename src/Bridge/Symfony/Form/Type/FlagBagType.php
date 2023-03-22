@@ -32,6 +32,13 @@ class FlagBagType extends AbstractType
             ));
         }
 
+        if (!\is_string($options['class']) || !is_subclass_of($options['class'], \BackedEnum::class)) {
+            throw new InvalidConfigurationException(sprintf(
+                'The "class" option of the "%s" form type must contains the FQCN of a BackedEnum.',
+                static::class
+            ));
+        }
+
         $builder->addModelTransformer(new FlagBagToCollectionTransformer($options['class']));
     }
 

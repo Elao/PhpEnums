@@ -55,6 +55,8 @@ class FlagBag
 
     /**
      * @param class-string $enumType
+     *
+     * @throws InvalidArgumentException If $enumType is not an int backed enum
      */
     private static function checkIntBackedEnumType(string $enumType): void
     {
@@ -68,9 +70,9 @@ class FlagBag
     }
 
     /**
-     * @template T of \BackedEnum
-     *
      * @param class-string<T> $enumType
+     *
+     * @return FlagBag<T>
      */
     public static function fromAll(string $enumType): FlagBag
     {
@@ -78,8 +80,6 @@ class FlagBag
     }
 
     /**
-     * @template T of \BackedEnum
-     *
      * @param class-string<T>|T $enumOrType
      */
     public static function from(string|\BackedEnum $enumOrType, \BackedEnum ...$flags): static
@@ -103,8 +103,6 @@ class FlagBag
     }
 
     /**
-     * @template T of \BackedEnum
-     *
      * @param class-string<T> $enumType
      */
     public static function accepts(string $enumType, int $value): bool
@@ -123,7 +121,7 @@ class FlagBag
      */
     private static function decodeBits(int $flags): array
     {
-        /** @var int[] $bits */
+        /** @var string[] $bits */
         $bits = array_reverse(str_split(decbin($flags)));
 
         return array_values(
@@ -150,11 +148,10 @@ class FlagBag
     /**
      * Gets an integer value of the possible flags for enumeration.
      *
-     * @template T of \BackedEnum
+     * @param class-string<\BackedEnum> $enumType
      *
-     * @param class-string<T> $enumType
-     *
-     * @throws LogicException If the possibles values are not valid bit flags
+     * @throws LogicException           If the possibles values are not valid bit flags
+     * @throws InvalidArgumentException If $enumType is not an int backed enum
      */
     public static function getBitmask(string $enumType): int
     {
@@ -226,7 +223,7 @@ class FlagBag
     {
         $bits = static::encodeBits(array_map(static fn (\BackedEnum $flag) => $flag->value, $flags));
 
-        if ($flags >= 1) {
+        if ($bits >= 1) {
             return $bits === ($bits & self::encodeBits($this->bits));
         }
 
@@ -283,7 +280,7 @@ class FlagBag
     }
 
     /**
-     * @param array<T> $flags
+     * @param T ...$flags
      *
      * @return int[]
      */

@@ -18,6 +18,9 @@ use Elao\Enum\FlagBag;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 
+/**
+ * @implements DataTransformerInterface<FlagBag<\BackedEnum>, \BackedEnum[]>
+ */
 abstract class AbstractFlagBagTransformer implements DataTransformerInterface
 {
     /** @var class-string<\BackedEnum> */
@@ -50,6 +53,8 @@ abstract class AbstractFlagBagTransformer implements DataTransformerInterface
 
     /**
      * @param int|\BackedEnum[] $value
+     *
+     * @return FlagBag<\BackedEnum>
      */
     protected function createEnum(int|array $value): FlagBag
     {

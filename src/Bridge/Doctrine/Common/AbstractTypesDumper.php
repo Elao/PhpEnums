@@ -47,12 +47,12 @@ abstract class AbstractTypesDumper
     public static function getPascalCase(string $string): string
     {
         return ucfirst(
-            preg_replace_callback(
+            (string) preg_replace_callback(
                 '/:([a-z])/i',
                 function (array $word): string {
                     return ucfirst(strtolower($word[1]));
                 },
-                preg_replace('/[^\da-z]+/i', ':', $string)
+                (string) preg_replace('/[^\da-z]+/i', ':', $string)
             )
         );
     }

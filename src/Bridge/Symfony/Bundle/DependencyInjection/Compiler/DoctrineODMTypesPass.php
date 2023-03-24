@@ -33,6 +33,10 @@ class DoctrineODMTypesPass implements CompilerPassInterface
 
         $types = $container->getParameter('.elao_enum.doctrine_mongodb_types');
 
+        if (!\is_array($types)) {
+            throw new \InvalidArgumentException('The .elao_enum.doctrine_mongodb_types parameter must be an array');
+        }
+
         (new TypesDumper())->dumpToFile($this->typesFilePath, $types);
 
         if (!empty($types)) {

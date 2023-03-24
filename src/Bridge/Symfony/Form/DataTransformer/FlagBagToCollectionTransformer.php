@@ -20,7 +20,7 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
     /**
      * Transforms a FlagBag objects to an array of BackedEnum
      *
-     * @param FlagBag $value A FlagBag instance
+     * @param FlagBag<\BackedEnum> $value A FlagBag instance
      *
      * @throws TransformationFailedException When the transformation fails
      *
@@ -58,7 +58,7 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
      *
      * @throws TransformationFailedException When the transformation fails
      *
-     * @return FlagBag|null A single FlagBag instance or null
+     * @return FlagBag<\BackedEnum>|null A single FlagBag instance or null
      */
     public function reverseTransform($values): ?FlagBag
     {

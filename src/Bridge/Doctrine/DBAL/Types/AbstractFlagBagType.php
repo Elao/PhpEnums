@@ -28,6 +28,8 @@ abstract class AbstractFlagBagType extends IntegerType
 
     /**
      * What should be returned on null value from the database.
+     *
+     * @return FlagBag<\BackedEnum>|null
      */
     protected function onNullFromDatabase(): ?FlagBag
     {
@@ -45,11 +47,9 @@ abstract class AbstractFlagBagType extends IntegerType
     /**
      * {@inheritdoc}
      *
-     * @param FlagBag|null $value
-     *
-     * @return mixed
+     * @param FlagBag<\BackedEnum>|null $value
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): int
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
     {
         if ($value !== null && !$value instanceof FlagBag) {
             throw new InvalidArgumentException(sprintf(
@@ -71,7 +71,7 @@ abstract class AbstractFlagBagType extends IntegerType
      *
      * @param int|null $value The value to convert.
      *
-     * @return FlagBag|null
+     * @return FlagBag<\BackedEnum>|null
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {

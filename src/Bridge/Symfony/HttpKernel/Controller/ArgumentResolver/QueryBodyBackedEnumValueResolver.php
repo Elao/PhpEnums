@@ -38,6 +38,7 @@ function resolveValues(Request $request, ArgumentMetadata $argument): array
     $bag = match (true) {
         $from instanceof BackedEnumFromQuery => $request->query,
         $from instanceof BackedEnumFromBody => $request->request,
+        default => throw new \LogicException(sprintf('Unexpected attribute class "%s"', get_debug_type($from))),
     };
 
     if (!$bag->has($key)) {

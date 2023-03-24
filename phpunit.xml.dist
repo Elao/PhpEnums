@@ -15,7 +15,7 @@
     <env name="MONGODB_DB" value="enum-test" />
     <env name="DOCTRINE_DBAL_URL" value="sqlite:///%kernel.cache_dir%/db.sqlite" />
     <!--<env name="DOCTRINE_DBAL_URL" value="pdo-mysql://root@localhost:3306/doctrine_tests" />-->
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[self]=0&amp;max[total]=9999&amp;verbose=1&amp;baselineFile=./tests/allowed-deprecations.json&amp;generateBaseline=0"/>
     <env name="SYMFONY_PHPUNIT_REQUIRE" value="phpspec/prophecy-phpunit"/>
     <env name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
   </php>

@@ -1,6 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Match expression does not handle remaining value\\: true$#"
-			count: 1
-			path: src/Bridge/Symfony/HttpKernel/Controller/ArgumentResolver/QueryBodyBackedEnumValueResolver.php

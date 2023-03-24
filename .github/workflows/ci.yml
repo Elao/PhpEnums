@@ -40,12 +40,18 @@ jobs:
         env:
           SYMFONY_REQUIRE: "6.2*dev"
 
-      - name: 'Lint - php-cs-fixer'
-        run: make lint.php-cs-fixer@integration
-
-      - name: 'Lint - phpstan'
+      - name: 'Lint - PHP CS Fixer'
         if: always() && steps.deps.outcome == 'success'
-        run: make lint.phpstan@integration
+        run: |
+          echo "::group::Install PHP CS Fixer"
+            make php-cs-fixer.phar
+          echo "::endgroup::"
+
+          ./php-cs-fixer.phar fix --dry-run --no-interaction --diff
+
+      - name: 'Lint - PHPStan'
+        if: always() && steps.deps.outcome == 'success'
+        run: ./vendor/bin/phpstan
 
   test:
     name: ${{ matrix.name }}

@@ -1,0 +1,22 @@
+[
+    {
+        "location": "Elao\\Enum\\Tests\\Integration\\Bridge\\Doctrine\\ODM\\Type\\EnumTypeTest::tearDown",
+        "message": "Since doctrine/mongodb-odm 2.4: Passing $entityClass argument to Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::__construct() is deprecated and will not be supported in Doctrine ODM 3.0.",
+        "count": 5
+    },
+    {
+        "location": "Elao\\Enum\\Tests\\Integration\\Bridge\\Doctrine\\ODM\\Type\\EnumTypeTest::testEnumType",
+        "message": "Since doctrine/mongodb-odm 2.4: Passing $entityClass argument to Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::__construct() is deprecated and will not be supported in Doctrine ODM 3.0.",
+        "count": 1
+    },
+    {
+        "location": "Elao\\Enum\\Tests\\Integration\\Bridge\\Doctrine\\ODM\\Type\\EnumTypeTest::testEnumTypeOnNullFromPHP",
+        "message": "Since doctrine/mongodb-odm 2.4: Passing $entityClass argument to Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::__construct() is deprecated and will not be supported in Doctrine ODM 3.0.",
+        "count": 1
+    },
+    {
+        "location": "Elao\\Enum\\Tests\\Integration\\Bridge\\Doctrine\\ODM\\Type\\EnumTypeTest::testQueryByValueOrEnumInstance",
+        "message": "Since doctrine/mongodb-odm 2.4: Passing $entityClass argument to Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::Doctrine\\ODM\\MongoDB\\Event\\OnClearEventArgs::__construct() is deprecated and will not be supported in Doctrine ODM 3.0.",
+        "count": 1
+    }
+]

@@ -16,42 +16,42 @@ install: setup
 install:
 	rm -f symfony composer.lock
 	symfony composer config minimum-stability --unset
-	symfony composer update --prefer-dist
+	symfony composer update --prefer-dist --ignore-platform-req=ext-mongodb
 
 ## Install - Install lowest deps
 install.lowest: setup
 install.lowest: export SYMFONY_REQUIRE = 5.4.*@dev
 install.lowest:
 	symfony composer config minimum-stability --unset
-	symfony composer update --prefer-lowest
+	symfony composer update --prefer-lowest --ignore-platform-req=ext-mongodb
 
 ## Install - Install Symfony 5.4 deps
 install.54: setup
 install.54: export SYMFONY_REQUIRE = 5.4.*@dev
 install.54:
 	symfony composer config minimum-stability dev
-	symfony composer update
+	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Install Symfony 6.0 deps
 install.60: setup
 install.60: export SYMFONY_REQUIRE = 6.0.*@dev
 install.60:
 	symfony composer config minimum-stability dev
-	symfony composer update
+	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Install Symfony 6.1 deps
 install.61: setup
 install.61: export SYMFONY_REQUIRE = 6.1.*@dev
 install.61:
 	symfony composer config minimum-stability dev
-	symfony composer update
+	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Install Symfony 6.2 deps
 install.62: setup
 install.62: export SYMFONY_REQUIRE = 6.2.*@dev
 install.62:
 	symfony composer config minimum-stability dev
-	symfony composer update
+	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Add Doctrine ODM deps
 deps.odm.add:
@@ -90,10 +90,10 @@ docker.stop:
 ########
 
 ## Lint - Lint
-lint: lint.php-cs-fixer
+lint: lint.php-cs-fixer lint.phpstan
 
 ## Lint - Fix Lint
-lint.fix: lint.php-cs-fixer.fix
+lint.fix: lint.php-cs-fixer.fix lint.phpstan
 
 ## Lint - Update tools
 lint.update:
@@ -112,9 +112,7 @@ php-cs-fixer.phar:
 	wget --no-verbose https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/${PHP_CS_FIXER_VERSION}/php-cs-fixer.phar
 	chmod +x php-cs-fixer.phar
 
-lint.php-cs-fixer@integration: php-cs-fixer.phar
-lint.php-cs-fixer@integration:
-	./php-cs-fixer.phar fix --dry-run --no-interaction --diff
-
-lint.phpstan@integration:
+lint.phpstan:
+	@make deps.odm.add install >> /dev/null 2>&1
 	./vendor/bin/phpstan
+	@make deps.odm.rm install >> /dev/null 2>&1

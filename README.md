@@ -43,6 +43,7 @@ enum Suit: string implements ReadableEnumInterface
   - [Symfony Forms](#symfony-form)
   - [Symfony Controller Argument Resolver](#symfony-httpkernel)
   - Symfony VarDumper
+  - [Symfony Translation](#symfony-translation)
   - [Doctrine ORM](#doctrine)
   - [Doctrine ODM](#doctrine-odm)
   - [Faker](#faker)
@@ -425,6 +426,47 @@ class DefaultController
 ```
 
 ➜ A call to `/cards?suits[]=H&suits[]=S` will resolve the `$suits` argument as `[Suit::Hearts, Suit::Spades]`.
+
+### Symfony Translation
+
+Because the `ReadableEnumInterface` can be translated within the `TranslatorInterface`, it is easy to use `TranslatableInterface` to enums.
+
+To translate readable enums is just matter to have a call:
+
+```php
+public function trans(TranslatorInterface $translator, string $locale = null): string
+{
+    return $translator->trans($this->getReadable(), [], $locale);
+}
+```
+
+An interface and a trait have been added for that purpose.
+
+```php
+use Elao\Enum\Bridge\Symfony\Translation\TranslatableEnumInterface;
+use Elao\Enum\Bridge\Symfony\Translation\TranslatableEnumTrait;
+
+class Card: string implements TranslatableEnumInterface
+{
+    use TranslatableEnumTrait;
+    
+    #[EnumCase('suit.hearts')]
+    case Hearts = '♥︎';    
+    // ...
+}
+```
+
+We then use in **PHP**:
+
+```php
+$translated = Card::Hearts->trans($this->translator)
+```
+
+Or in **Twig**:
+
+```twig
+{{ game.card|trans }}
+```
 
 ### Doctrine
 

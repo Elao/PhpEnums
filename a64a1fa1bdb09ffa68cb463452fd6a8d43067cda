@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2023-01-19T12:11:05Z
+
+Lets wait before merging, I have opened a doctrine issue and I have some idea how this might be fixed on Doctrine level - https://github.com/doctrine/orm/issues/10432
+
+But we have to see whether its decided to fix there or not.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2023-01-19T12:58:00Z
+
+Thanks for opening this and the issue on the Doctrine repository 🙏🏻
+
+---------------------------------------------------------------------------
+
+by jroszkiewicz at 2023-12-21T08:57:45Z
+
+Hey guys, any chance for merge that? I think we can't depend on doctrine team :(

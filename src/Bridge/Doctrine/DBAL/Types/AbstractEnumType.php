@@ -47,16 +47,26 @@ abstract class AbstractEnumType extends Type
     /**
      * {@inheritdoc}
      *
-     * @param \BackedEnum|null $value
+     * @param \BackedEnum|int|string|null $value
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string|int|null
     {
-        if ($value !== null && !$value instanceof \BackedEnum) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected an instance of a %s. %s given.',
-                \BackedEnum::class,
-                get_debug_type($value),
-            ));
+        if ($value !== null && !is_a($value, $this->getEnumClass())) {
+            $throwException = true;
+            if ($this->checkIfValueMatchesBackedEnumType($value)) {
+                $value = $this->getEnumClass()::tryFrom($this->cast($value));
+                if ($value !== null) {
+                    $throwException = false;
+                }
+            }
+
+            if ($throwException) {
+                throw new InvalidArgumentException(sprintf(
+                    'Expected an instance of a %s. %s given.',
+                    $this->getEnumClass(),
+                    get_debug_type($value),
+                ));
+            }
         }
 
         if (null === $value) {
@@ -117,6 +127,11 @@ abstract class AbstractEnumType extends Type
     private function cast(int|string $value): int|string
     {
         return $this->isIntBackedEnum() ? (int) $value : (string) $value;
+    }
+
+    private function checkIfValueMatchesBackedEnumType(mixed $value): bool
+    {
+        return ($this->isIntBackedEnum() && \is_int($value)) || (!$this->isIntBackedEnum() && \is_string($value));
     }
 
     private function isIntBackedEnum(): bool

@@ -2,10 +2,10 @@ framework:
     secret: 'elao'
     form: true
     router:
-        resource: '%kernel.project_dir%/config/routing.yaml'
         strict_requirements: '%kernel.debug%'
         utf8: true
     session:
+        handler_id: null
         storage_factory_id: 'session.storage.factory.mock_file'
     test: ~
     assets: false
@@ -42,6 +42,12 @@ services:
         autoconfigure: true
         autowire: true
     App\Controller\QueryBodyBackedEnumValueResolverController:
+        autoconfigure: true
+        autowire: true
+    App\ControllerAnnotation\BackedEnumValueResolverController:
+        autoconfigure: true
+        autowire: true
+    App\ControllerAnnotation\QueryBodyBackedEnumValueResolverController:
         autoconfigure: true
         autowire: true
 

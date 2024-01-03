@@ -1,0 +1,5 @@
+framework:
+    annotations:
+            enabled: false
+    router:
+        resource: '%kernel.project_dir%/config/routing.yaml'

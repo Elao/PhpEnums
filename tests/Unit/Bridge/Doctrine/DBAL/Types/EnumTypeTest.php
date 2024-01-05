@@ -112,13 +112,6 @@ class EnumTypeTest extends TestCase
         self::assertSame(Suit::Spades, $PHPValue);
     }
 
-    public function testRequiresSQLCommentHintIsTrue(): void
-    {
-        self::assertTrue($this->stringType->requiresSQLCommentHint($this->platform));
-        self::assertTrue($this->intType->requiresSQLCommentHint($this->platform));
-        self::assertTrue($this->withDefaultType->requiresSQLCommentHint($this->platform));
-    }
-
     public function testIntegerBindingType(): void
     {
         self::assertSame(ParameterType::STRING, $this->stringType->getBindingType());

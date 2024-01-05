@@ -103,23 +103,13 @@ abstract class AbstractEnumType extends Type
             $column['length'] = 255;
         }
 
-        return method_exists($platform, 'getStringTypeDeclarationSQL') ?
-            $platform->getStringTypeDeclarationSQL($column) :
-            $platform->getVarcharTypeDeclarationSQL($column);
+        return $platform->getStringTypeDeclarationSQL($column);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
     }

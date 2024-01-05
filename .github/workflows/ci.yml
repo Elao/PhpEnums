@@ -91,6 +91,7 @@ jobs:
             php: '8.1'
             symfony: '6.4.*@dev'
             mongodb: true
+            mongodbnew: true
             mysql: true
             allow-unstable: true
 

@@ -95,14 +95,17 @@ abstract class AbstractEnumType extends Type
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $this->isIntBackedEnum()
-            ? $platform->getIntegerTypeDeclarationSQL($column)
-            : (
-                method_exists($platform, 'getStringTypeDeclarationSQL') ?
-                $platform->getStringTypeDeclarationSQL($column) :
-                $platform->getVarcharTypeDeclarationSQL($column)
-            )
-        ;
+        if ($this->isIntBackedEnum()) {
+            return $platform->getIntegerTypeDeclarationSQL($column);
+        }
+
+        if (empty($column['length'])) {
+            $column['length'] = 255;
+        }
+
+        return method_exists($platform, 'getStringTypeDeclarationSQL') ?
+            $platform->getStringTypeDeclarationSQL($column) :
+            $platform->getVarcharTypeDeclarationSQL($column);
     }
 
     /**

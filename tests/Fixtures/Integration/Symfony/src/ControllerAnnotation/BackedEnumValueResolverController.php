@@ -10,12 +10,12 @@ declare(strict_types=1);
  * @author Elao <contact@elao.com>
  */
 
-namespace App\Controller;
+namespace App\ControllerAnnotation;
 
 use App\Enum\Suit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 

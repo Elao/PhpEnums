@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle;
@@ -37,6 +39,20 @@ class Kernel extends BaseKernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load($this->getProjectDir() . '/config/config.yaml');
+
+        // TODO: we can remove when 5.4 is dropped
+        if (InstalledVersions::satisfies(new VersionParser(), 'doctrine/doctrine-bundle', '>=2.10')) {
+            $loader->load($this->getProjectDir() . '/config/doctrine-new.yaml');
+        } else {
+            $loader->load($this->getProjectDir() . '/config/doctrine-old.yaml');
+        }
+
+        // TODO: we can remove when 5.4 and 6.3 is dropped
+        if (InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '>=6.4')) {
+            $loader->load($this->getProjectDir() . '/config/config-routing-attribute.yaml');
+        } else {
+            $loader->load($this->getProjectDir() . '/config/config-routing-annotation.yaml');
+        }
 
         if (str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {
             $loader->load($this->getProjectDir() . '/config/mysql.yaml');

@@ -263,7 +263,13 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
 
         $this->expectException(BadRequestException::class);
-        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, bool given');
+        $errorMessage = 'Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, bool given';
+
+        if (PHP_VERSION_ID >= 80300) {
+            $errorMessage = 'Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, true given';
+        }
+
+        $this->expectExceptionMessage($errorMessage);
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);

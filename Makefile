@@ -32,24 +32,31 @@ install.54:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
-## Install - Install Symfony 6.0 deps
-install.60: setup
-install.60: export SYMFONY_REQUIRE = 6.0.*@dev
-install.60:
+## Install - Install Symfony 6.3 deps
+install.63: setup
+install.63: export SYMFONY_REQUIRE = 6.3.*@dev
+install.63:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
-## Install - Install Symfony 6.1 deps
-install.61: setup
-install.61: export SYMFONY_REQUIRE = 6.1.*@dev
-install.61:
+## Install - Install Symfony 6.4 deps
+install.64: setup
+install.64: export SYMFONY_REQUIRE = 6.4.*@dev
+install.64:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
-## Install - Install Symfony 6.2 deps
-install.62: setup
-install.62: export SYMFONY_REQUIRE = 6.2.*@dev
-install.62:
+## Install - Install Symfony 7.0 deps
+install.70: setup
+install.70: export SYMFONY_REQUIRE = 7.0.*@dev
+install.70:
+	symfony composer config minimum-stability dev
+	symfony composer update --ignore-platform-req=ext-mongodb
+
+## Install - Install Symfony 7.1 deps
+install.71: setup
+install.71: export SYMFONY_REQUIRE = 7.1.*@dev
+install.71:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 

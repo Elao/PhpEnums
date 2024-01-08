@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-03T15:58:14Z
+
+I am sorry, I dont have the time nor energy to work on this.. I assumed itd be a simple fix. But there are many changes in Doctrine as well as in symfony, tests are therefore failing.
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2024-01-03T16:33:15Z
+
+No problem, thanks @michnovka for trying. Keeping opened for reminder.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-03T16:52:51Z
+
+@ogizanagi  Have a look at the errors tho. What buffles me most is that ini_set error.
+
+Then we have another issue - doctrine since orm 2.17. requires some config params
+
+```yaml
+        report_fields_where_declared: true
+        enable_lazy_ghost_objects: true
+```
+
+and throws deprecation when not present.
+But for older versions, these cannot be present at all, as it will throw and exit.
+
+So with "lowest deps" option we need to use different config for symfony than for all the others (which default to 2.17 version as of now).
+
+The mongodb installation on windows is totally broken, but id look into this as latest.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-03T17:41:50Z
+
+I made some progress, but we have an issue still.
+
+There are multiple config conflicts we need to address depending on which CI job is run (which Symfony/Doctrine version)
+
+One is the aforementioned
+
+```yaml
+        report_fields_where_declared: true
+        enable_lazy_ghost_objects: true
+```
+
+That stems from DoctrineBundle version < 2.10 cannot parse the config. And if we do bump the bundle, we still need to keep these values as FALSE for orm < 2.14, as it is not supported. So we need 2 different config files for `tests/Fixtures/Integration/Symfony/config/config.yaml`
+
+then in Symfony 7.x annotation routing was removed, so we also need 2 versions of `tests/Fixtures/Integration/Symfony/config/routing.yaml`
+
+I dont know how to do this, so @ogizanagi if you have an idea, or preferably if you build on my findings I will appreciate any help.
+
+---
+
+I dont get AT ALL why symfony 6.x has the ini_set errors.
+
+---
+
+And also still totally unsure why Windows mongodb install suddenly fails, I didnt make changes there.
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-03T18:16:29Z
+
+Update - I followed https://github.com/symfony/symfony/issues/51600 (no idea why this is needed, but it does work) and now symfony 6.3 works well.
+
+We still have tons of deprecations issues in 6.4 and 7.x does not work at all. We need separate configs based on the symfony version used
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-04T13:16:31Z
+
+My OCD will kill me one day... Cant leave a draft PR.
+
+Anyways, I am happy with it, please review @ogizanagi
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-01-04T13:41:57Z
+
+do you want me to squash commits?
+
+---------------------------------------------------------------------------
+
+by benji07 at 2024-01-04T13:58:48Z
+
+@michnovka yes, please 🙏🏻

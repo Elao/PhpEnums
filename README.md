@@ -446,7 +446,7 @@ An interface and a trait have been added for that purpose.
 use Elao\Enum\Bridge\Symfony\Translation\TranslatableEnumInterface;
 use Elao\Enum\Bridge\Symfony\Translation\TranslatableEnumTrait;
 
-class Card: string implements TranslatableEnumInterface
+enum Card: string implements TranslatableEnumInterface
 {
     use TranslatableEnumTrait;
     

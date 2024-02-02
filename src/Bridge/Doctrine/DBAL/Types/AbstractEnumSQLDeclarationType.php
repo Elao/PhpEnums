@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
-use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Elao\Enum\Exception\LogicException;
@@ -25,16 +24,10 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        if (class_exists(AbstractMySQLPlatform::class)) {
-            if (!$platform instanceof AbstractMySQLPlatform) {
-                throw new LogicException('SQL ENUM type is not supported on the current platform');
-            }
-        } elseif (class_exists(MySQLPlatform::class)) {
-            if (!$platform instanceof MySQLPlatform) {
-                throw new LogicException('SQL ENUM type is not supported on the current platform');
-            }
+        if (!$platform instanceof MySQLPlatform) {
+            throw new LogicException('SQL ENUM type is not supported on the current platform');
         }
 
         $values = array_map(

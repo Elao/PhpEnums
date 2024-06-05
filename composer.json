@@ -41,9 +41,9 @@
     "require-dev": {
         "ext-pdo_sqlite": "*",
         "composer/semver": "^3.2",
-        "doctrine/dbal": "^3.2",
+        "doctrine/dbal": "^3.2|^4.0",
         "doctrine/doctrine-bundle": "^2.5",
-        "doctrine/orm": "^2.10",
+        "doctrine/orm": "^2.10|^3.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-symfony": "^1.2",
         "symfony/browser-kit": "^5.4|^6.3|^7.0",

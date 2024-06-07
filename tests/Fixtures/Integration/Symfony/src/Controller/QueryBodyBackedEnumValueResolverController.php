@@ -21,6 +21,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
+if (!class_exists(Route::class)) {
+    class_alias(\Symfony\Component\Routing\Annotation\Route::class, Route::class);
+}
+
 #[Route(path: '/resolver', name: 'from-query-body')]
 class QueryBodyBackedEnumValueResolverController extends AbstractController
 {

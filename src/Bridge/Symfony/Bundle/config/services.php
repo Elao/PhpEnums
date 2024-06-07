@@ -15,9 +15,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\QueryBodyBackedEnumValueResolver;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver as SymfonyBackedEnumValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 
 return static function (ContainerConfigurator $container) {
-    if (!class_exists(SymfonyBackedEnumValueResolver::class)) {
+    // To be dropped when Symfony 5.4 support is dropped
+    if (!class_exists(SymfonyBackedEnumValueResolver::class) && interface_exists(ArgumentValueResolverInterface::class)) {
         $container->services()
             ->set(BackedEnumValueResolver::class)->tag('controller.argument_value_resolver', [
                 'priority' => 105, // Prior RequestAttributeValueResolver

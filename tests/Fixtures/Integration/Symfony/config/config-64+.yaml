@@ -1,0 +1,7 @@
+framework:
+  session:
+    cookie_secure: auto
+    cookie_samesite: lax
+  handle_all_throwables: true
+  php_errors:
+    log: true

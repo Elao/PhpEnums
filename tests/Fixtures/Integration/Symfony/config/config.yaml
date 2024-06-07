@@ -1,56 +1,55 @@
 framework:
-    secret: 'elao'
-    form: true
-    router:
-        strict_requirements: '%kernel.debug%'
-        utf8: true
-    session:
-        handler_id: null
-        storage_factory_id: 'session.storage.factory.mock_file'
-    test: ~
-    assets: false
-    http_method_override: false
+  secret: 'elao'
+  form: true
+  router:
+    strict_requirements: '%kernel.debug%'
+    utf8: true
+  session:
+    handler_id: null
+    storage_factory_id: 'session.storage.factory.mock_file'
+  test: ~
+  assets: false
+  http_method_override: false
 
 doctrine:
-    dbal:
-        url: '%env(resolve:DOCTRINE_DBAL_URL)%'
+  dbal:
+    url: '%env(resolve:DOCTRINE_DBAL_URL)%'
 
-    orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
-        mappings:
-            App:
-                is_bundle: false
-                type: attribute
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+  orm:
+    auto_generate_proxy_classes: '%kernel.debug%'
+    report_fields_where_declared: true
+    enable_lazy_ghost_objects: true
+    controller_resolver:
+      auto_mapping: false
+
+    mappings:
+      App:
+        is_bundle: false
+        type: attribute
+        dir: '%kernel.project_dir%/src/Entity'
+        prefix: 'App\Entity'
+        alias: App
 
 elao_enum:
-    doctrine:
-        types:
-            App\Enum\Suit:
-                default: !php/const App\Enum\Suit::Spades
-            permissions_flagbag:
-                class: App\Enum\Permissions
-                default: !php/const App\Enum\Permissions::Read
-                type: flagbag
+  doctrine:
+    types:
+      App\Enum\Suit:
+        default: !php/const App\Enum\Suit::Spades
+      permissions_flagbag:
+        class: App\Enum\Permissions
+        default: !php/const App\Enum\Permissions::Read
+        type: flagbag
 
 services:
-    # Registers these controllers as a service so that we have the
-    # \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver enabled on it:
-    App\Controller\BackedEnumValueResolverController:
-        autoconfigure: true
-        autowire: true
-    App\Controller\QueryBodyBackedEnumValueResolverController:
-        autoconfigure: true
-        autowire: true
-    App\ControllerAnnotation\BackedEnumValueResolverController:
-        autoconfigure: true
-        autowire: true
-    App\ControllerAnnotation\QueryBodyBackedEnumValueResolverController:
-        autoconfigure: true
-        autowire: true
+  # Registers these controllers as a service so that we have the
+  # \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver enabled on it:
+  App\Controller\BackedEnumValueResolverController:
+    autoconfigure: true
+    autowire: true
+  App\Controller\QueryBodyBackedEnumValueResolverController:
+    autoconfigure: true
+    autowire: true
 
-    logger:
-        class: Psr\Log\NullLogger
-        public: false
+  logger:
+    class: Psr\Log\NullLogger
+    public: false

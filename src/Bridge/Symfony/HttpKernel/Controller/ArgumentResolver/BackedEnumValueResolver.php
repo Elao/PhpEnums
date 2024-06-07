@@ -18,7 +18,13 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+if (!interface_exists(ArgumentValueResolverInterface::class)) {
+    // Interface does not exist anymore as of Symfony 7+
+    return;
+}
+
 // Legacy (<6.1) resolver
+// To be dropped when Symfony 5.4 is EOL.
 /**
  * Attempt to resolve backed enum cases from request attributes, for a route path parameter,
  * leading to a 404 Not Found if the attribute value isn't a valid backing value for the enum type.

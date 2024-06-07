@@ -62,7 +62,8 @@ function resolveValues(Request $request, ArgumentMetadata $argument): array
 }
 
 // Legacy (<6.2) resolver
-if (!interface_exists(ValueResolverInterface::class)) {
+// To be dropped when Symfony 5.4 is EOL.
+if (!interface_exists(ValueResolverInterface::class) && interface_exists(ArgumentValueResolverInterface::class)) {
     /**
      * @final
      */

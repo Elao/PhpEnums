@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2024-06-05T11:57:12Z
+
+Hi @ogizanagi , I have made a version which should allow us to use Doctrine 3 and DBAL 4 without the need to explicitly maintain 2 versions.
+
+I do have some PHPStan issues because of that, as I had to use some code dynamically based on class_exists to differentiate between DBAL3 and DBAL4. I am not experienced with PHPStan exceptions, so can you please take it up from here, create these exceptions (as these errors are expected) and review my code?
+
+Thanks!
+
+---------------------------------------------------------------------------
+
+by ogizanagi at 2024-06-05T14:24:12Z
+
+@michnovka : that's awesome 💖  and a weird coincidence ; I was about to start this exactly today. So thank you very much for saving me this work and I'll look at it in the next days 🙏🏻

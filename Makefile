@@ -1,5 +1,6 @@
 include .make/help.mk
 include .make/text.mk
+include .make/try.mk
 
 PHP_CS_FIXER_VERSION=v3.13.0
 
@@ -14,7 +15,7 @@ setup:
 ## Install - Install deps
 install: setup
 install:
-	rm -f symfony composer.lock
+	rm -f composer.lock
 	symfony composer config minimum-stability --unset
 	symfony composer update --prefer-dist --ignore-platform-req=ext-mongodb
 
@@ -29,13 +30,6 @@ install.lowest:
 install.54: setup
 install.54: export SYMFONY_REQUIRE = 5.4.*@dev
 install.54:
-	symfony composer config minimum-stability dev
-	symfony composer update --ignore-platform-req=ext-mongodb
-
-## Install - Install Symfony 6.3 deps
-install.63: setup
-install.63: export SYMFONY_REQUIRE = 6.3.*@dev
-install.63:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
@@ -61,8 +55,16 @@ install.71:
 	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Add Doctrine ODM deps
-deps.odm.add:
-	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.3" "doctrine/mongodb-odm-bundle:^4.4.1"
+deps.odm.add: deps.odm.add+sf64
+
+## Install - Add Doctrine ODM deps for Symfony 6.4+
+deps.odm.add+sf64:
+	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.6" "doctrine/mongodb-odm-bundle:^5.0"
+	@$(call log_warning, Run again appropriate install target to update dependencies. Be careful not to commit compose.json changes.)
+
+## Install - Add Doctrine ODM deps for Symfony 5.4+
+deps.odm.add+sf54:
+	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.4" "doctrine/mongodb-odm-bundle:^4.5.1"
 	@$(call log_warning, Run again appropriate install target to update dependencies. Be careful not to commit compose.json changes.)
 
 ## Install - Remove back Doctrine ODM deps
@@ -108,10 +110,12 @@ lint.update:
 	make php-cs-fixer.phar
 
 lint.php-cs-fixer.fix: php-cs-fixer.phar
+lint.php-cs-fixer.fix: export PHP_CS_FIXER_IGNORE_ENV = 1
 lint.php-cs-fixer.fix:
 	symfony php ./php-cs-fixer.phar fix --no-interaction
 
 lint.php-cs-fixer: php-cs-fixer.phar
+lint.php-cs-fixer: export PHP_CS_FIXER_IGNORE_ENV = 1
 lint.php-cs-fixer:
 	symfony php ./php-cs-fixer.phar fix --no-interaction --dry-run --diff -vvv
 
@@ -121,5 +125,4 @@ php-cs-fixer.phar:
 
 lint.phpstan:
 	@make deps.odm.add install >> /dev/null 2>&1
-	./vendor/bin/phpstan
-	@make deps.odm.rm install >> /dev/null 2>&1
+	$(call try_finally, ./vendor/bin/phpstan, make deps.odm.rm install >> /dev/null 2>&1)

@@ -25,7 +25,7 @@ abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if (class_exists(AbstractMySQLPlatform::class)) {
             if (!$platform instanceof AbstractMySQLPlatform) {

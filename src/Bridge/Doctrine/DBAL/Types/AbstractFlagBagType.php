@@ -12,13 +12,50 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Bridge\Doctrine\DBAL\Types;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Exception\InvalidArgumentException;
 use Elao\Enum\FlagBag;
 
-abstract class AbstractFlagBagType extends IntegerType
+if (enum_exists(ParameterType::class)) {
+    /**
+     * For doctrine/dbal 4
+     *
+     * @internal
+     */
+    trait DbalVersionFlagBagTypeTrait
+    {
+        /**
+         * {@inheritdoc}
+         */
+        public function getBindingType(): ParameterType
+        {
+            return ParameterType::INTEGER;
+        }
+    }
+} else {
+    /**
+     * For doctrine/dbal 3
+     *
+     * @internal
+     */
+    trait DbalVersionFlagBagTypeTrait
+    {
+        /**
+         * {@inheritdoc}
+         */
+        public function getBindingType(): int
+        {
+            return ParameterType::INTEGER;
+        }
+    }
+}
+
+abstract class AbstractFlagBagType extends Type
 {
+    use DbalVersionFlagBagTypeTrait;
+
     /**
      * The enum FQCN for which we should make the DBAL conversion.
      *
@@ -73,7 +110,7 @@ abstract class AbstractFlagBagType extends IntegerType
      *
      * @return FlagBag<\BackedEnum>|null
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?FlagBag
     {
         $value = parent::convertToPHPValue($value, $platform);
 
@@ -95,5 +132,10 @@ abstract class AbstractFlagBagType extends IntegerType
     public function getName(): string
     {
         return $this->getEnumClass();
+    }
+
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $platform->getIntegerTypeDeclarationSQL($column);
     }
 }

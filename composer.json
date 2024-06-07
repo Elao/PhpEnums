@@ -41,22 +41,22 @@
     "require-dev": {
         "ext-pdo_sqlite": "*",
         "composer/semver": "^3.2",
-        "doctrine/dbal": "^3.2",
-        "doctrine/doctrine-bundle": "^2.5",
-        "doctrine/orm": "^2.10",
+        "doctrine/dbal": "^3.8|^4.0",
+        "doctrine/doctrine-bundle": "^2.11",
+        "doctrine/orm": "^2.20|^3.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-symfony": "^1.2",
-        "symfony/browser-kit": "^5.4|^6.3|^7.0",
-        "symfony/config": "^5.4|^6.3|^7.0",
-        "symfony/dependency-injection": "^5.4.2|^6.3|^7.0",
-        "symfony/filesystem": "^5.4|^6.3|^7.0",
-        "symfony/form": "^5.4|^6.3|^7.0",
-        "symfony/framework-bundle": "^5.4|^6.3|^7.0",
-        "symfony/http-kernel": "^5.4.2|^6.3|^7.0",
-        "symfony/phpunit-bridge": "^5.4|^6.3|^7.0",
-        "symfony/translation": "^5.4|^6.3|^7.0",
-        "symfony/var-dumper": "^5.4|^6.3|^7.0",
-        "symfony/yaml": "^5.4|^6.3|^7.0"
+        "symfony/browser-kit": "^5.4.40|^6.4|^7.0",
+        "symfony/config": "^5.4.40|^6.4|^7.0",
+        "symfony/dependency-injection": "^5.4.40|^6.4|^7.0",
+        "symfony/filesystem": "^5.4.40|^6.4|^7.0",
+        "symfony/form": "^5.4.40|^6.4|^7.0",
+        "symfony/framework-bundle": "^5.4.40|^6.4|^7.0",
+        "symfony/http-kernel": "^5.4.40|^6.4|^7.0",
+        "symfony/phpunit-bridge": "^5.4.40|^6.4|^7.0",
+        "symfony/translation": "^5.4.40|^6.4|^7.0",
+        "symfony/var-dumper": "^5.4.40|^6.4|^7.0",
+        "symfony/yaml": "^5.4.40|^6.4|^7.0"
     },
     "extra": {
         "branch-alias": {
@@ -68,6 +68,5 @@
             "*": "dist"
         },
         "sort-packages": true
-    },
-    "minimum-stability": "dev"
+    }
 }

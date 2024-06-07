@@ -40,16 +40,10 @@ class Kernel extends BaseKernel
     {
         $loader->load($this->getProjectDir() . '/config/config.yaml');
 
-        // TODO: we can remove when 5.4 is dropped
-        if (InstalledVersions::satisfies(new VersionParser(), 'doctrine/doctrine-bundle', '>=2.10')) {
-            $loader->load($this->getProjectDir() . '/config/doctrine-new.yaml');
-        } else {
-            $loader->load($this->getProjectDir() . '/config/doctrine-old.yaml');
-        }
-
-        // TODO: we can remove when 5.4 and 6.3 is dropped
+        // TODO: we can remove when Sf 5.4 is dropped
         if (InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '>=6.4')) {
             $loader->load($this->getProjectDir() . '/config/config-routing-attribute.yaml');
+            $loader->load($this->getProjectDir() . '/config/config-64+.yaml');
         } else {
             $loader->load($this->getProjectDir() . '/config/config-routing-annotation.yaml');
         }

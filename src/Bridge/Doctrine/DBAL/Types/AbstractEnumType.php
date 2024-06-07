@@ -17,8 +17,44 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Elao\Enum\Exception\InvalidArgumentException;
 
+if (enum_exists(ParameterType::class)) {
+    /**
+     * For doctrine/dbal 4
+     *
+     * @internal
+     */
+    trait DbalVersionEnumTypeTrait
+    {
+        /**
+         * {@inheritdoc}
+         */
+        public function getBindingType(): ParameterType
+        {
+            return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
+        }
+    }
+} else {
+    /**
+     * For doctrine/dbal 3
+     *
+     * @internal
+     */
+    trait DbalVersionEnumTypeTrait
+    {
+        /**
+         * {@inheritdoc}
+         */
+        public function getBindingType(): int
+        {
+            return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
+        }
+    }
+}
+
 abstract class AbstractEnumType extends Type
 {
+    use DbalVersionEnumTypeTrait;
+
     private bool $isIntBackedEnum;
 
     /**
@@ -103,9 +139,7 @@ abstract class AbstractEnumType extends Type
             $column['length'] = 255;
         }
 
-        return method_exists($platform, 'getStringTypeDeclarationSQL') ?
-            $platform->getStringTypeDeclarationSQL($column) :
-            $platform->getVarcharTypeDeclarationSQL($column);
+        return $platform->getStringTypeDeclarationSQL($column);
     }
 
     /**
@@ -114,14 +148,6 @@ abstract class AbstractEnumType extends Type
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBindingType(): int
-    {
-        return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
     }
 
     /**

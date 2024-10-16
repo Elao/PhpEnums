@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by michnovka at 2024-10-15T19:17:15Z
+
+Hmm, so we have 2 failed tests, separate issues:
+
+1. the lowest deps installs `symfony/var-exporter (v4.4.11)` and the error says:
+```
+LogicException: Lazy ghost objects cannot be enabled because the "symfony/var-exporter" library version 6.2 or higher is not installed. Please run "composer require symfony/var-exporter:^6.2".
+```
+I want to investigate that.
+
+2. PHP 8.4 fails due to PHPUnit's incompatibility with PHP8.4 Id say (there are deprecations), I think safe to ignore
+
+---------------------------------------------------------------------------
+
+by michnovka at 2024-10-15T19:29:20Z
+
+Ok, I think this can be merged. The php 8.4 failed test cant be fixed until we use phpunit 11, and unfortunately thats not compatible with symfony phpunit bridge.
+I think the future of this bridge is doomed anyways, so at one point well have to use native phpunit without bridge, but lets see. For now I am done. @ogizanagi please review

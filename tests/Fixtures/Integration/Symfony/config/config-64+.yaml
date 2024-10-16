@@ -5,3 +5,7 @@ framework:
   handle_all_throwables: true
   php_errors:
     log: true
+
+doctrine:
+  orm:
+    enable_lazy_ghost_objects: true

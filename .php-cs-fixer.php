@@ -27,6 +27,7 @@ return (new PhpCsFixer\Config())
         'header_comment' => ['header' => $header],
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'no_unneeded_final_method' => false, // final private __construct is a valid use-case
+        'nullable_type_declaration_for_default_null_value' => true,
         'ordered_imports' => true,
         'php_unit_namespaced' => true,
         'php_unit_method_casing' => false,

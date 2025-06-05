@@ -19,7 +19,7 @@ trait TranslatableEnumTrait
 {
     use ReadableEnumTrait;
 
-    public function trans(TranslatorInterface $translator, string $locale = null): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans($this->getReadable(), [], $locale);
     }

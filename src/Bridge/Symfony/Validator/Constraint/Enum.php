@@ -111,7 +111,7 @@ class Enum extends Choice
      *
      * @return string
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return ChoiceValidator::class;
     }
@@ -129,7 +129,7 @@ class Enum extends Choice
      *
      * @return string[]
      */
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['class'];
     }

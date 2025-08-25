@@ -1,35 +1,18 @@
 {
     "name": "elao/enum",
     "description": "Enumerations for PHP and frameworks integrations",
-    "keywords": [
-        "enum",
-        "symfony",
-        "doctrine"
-    ],
+    "keywords": ["enum", "symfony", "doctrine"],
     "type": "library",
     "homepage": "https://github.com/Elao/PhpEnums",
     "license": "MIT",
     "authors": [
-        {
-            "name": "Elao",
-            "homepage": "https://www.elao.com"
-        },
-        {
-            "name": "Maxime Steinhausser",
-            "email": "maxime.steinhausser@gmail.com",
-            "homepage": "https://github.com/ogizanagi"
-        }
+        { "name": "Elao", "homepage": "https://www.elao.com" },
+        { "name": "Maxime Steinhausser", "email": "maxime.steinhausser@gmail.com", "homepage": "https://github.com/ogizanagi" }
     ],
-    "bin": [
-        "bin/elao-enum-dump-js"
-    ],
+    "bin": ["bin/elao-enum-dump-js"],
     "autoload": {
-        "psr-4": {
-            "Elao\\Enum\\": "src/"
-        },
-        "files": [
-            "src/Bridge/Symfony/VarDumper/Resources/register_caster.php"
-        ]
+        "psr-4": { "Elao\\Enum\\": "src/" },
+        "files": ["src/Bridge/Symfony/VarDumper/Resources/register_caster.php"]
     },
     "autoload-dev": {
         "psr-4": {
@@ -39,31 +22,30 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
-        "ext-json": "*",
-        "symfony/polyfill-php80": "^1.15"
+        "php": ">=8.3",
+        "ext-json": "*"
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
-        "api-platform/core": "^2.5.1",
-        "doctrine/annotations": "^1.9",
-        "doctrine/data-fixtures": "^1.2",
-        "doctrine/doctrine-bundle": "^1.12|^2.0",
-        "doctrine/orm": "^2.4",
-        "nelmio/alice": "^3.0",
-        "symfony/browser-kit": "^4.4|^5.1|^6.0",
-        "symfony/console": "^4.4|^5.1|^6.0",
-        "symfony/css-selector": "^4.4|^5.1|^6.0",
-        "symfony/finder": "^4.4|^5.1|^6.0",
-        "symfony/form": "^4.4|^5.1|^6.0",
-        "symfony/framework-bundle": "^4.4|^5.1|^6.0",
-        "symfony/phpunit-bridge": "^5.3|^6.0",
-        "symfony/serializer": "^4.4|^5.1|^6.0",
-        "symfony/translation": "^4.4|^5.1|^6.0",
-        "symfony/twig-bundle": "^4.4|^5.1|^6.0",
-        "symfony/validator": "^4.4|^5.1|^6.0",
-        "symfony/yaml": "^4.4|^5.1|^6.0",
-        "twig/twig": "^2.12|^3.0"
+        "api-platform/core": "^3.2",
+        "doctrine/annotations": "^1.13 || ^2.0",
+        "doctrine/data-fixtures": "^1.7",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/orm": "^2.16 || ^3.0",
+        "nelmio/alice": "^3.12",
+        "symfony/browser-kit": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/console": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/css-selector": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/finder": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/form": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/framework-bundle": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/phpunit-bridge": "^7.0",
+        "symfony/serializer": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/translation": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/twig-bundle": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/validator": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "symfony/yaml": "^4.4 || ^5.1 || ^6.0 || ^7.0",
+        "twig/twig": "^3.0"
     },
     "extra": {
         "branch-alias": {
@@ -72,9 +54,7 @@
         }
     },
     "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
+        "preferred-install": { "*": "dist" },
         "sort-packages": true
     }
 }

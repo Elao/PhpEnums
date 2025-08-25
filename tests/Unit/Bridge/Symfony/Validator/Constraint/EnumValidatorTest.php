@@ -13,6 +13,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Symfony\Validator\Constraint;
 use Elao\Enum\Bridge\Symfony\Validator\Constraint\Enum;
 use Elao\Enum\Tests\Fixtures\Enum\Gender;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EnumValidatorTest extends ConstraintValidatorTestCase
@@ -83,7 +84,7 @@ class EnumValidatorTest extends ConstraintValidatorTestCase
         $violation->assertRaised();
     }
 
-    protected function createValidator()
+    protected function createValidator(): ConstraintValidatorInterface
     {
         return new ChoiceValidator();
     }

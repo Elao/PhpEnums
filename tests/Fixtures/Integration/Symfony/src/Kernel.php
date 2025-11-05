@@ -20,6 +20,7 @@ use Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use const PHP_VERSION_ID;
 
 /**
  * Kernel for tests.
@@ -46,6 +47,10 @@ class Kernel extends BaseKernel
             $loader->load($this->getProjectDir() . '/config/config-64+.yaml');
         } else {
             $loader->load($this->getProjectDir() . '/config/config-routing-annotation.yaml');
+        }
+
+        if (PHP_VERSION_ID >= 80400) {
+            $loader->load($this->getProjectDir() . '/config/config-php8.4+.yaml');
         }
 
         if (str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {

@@ -145,7 +145,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: pdo_sqlite ${{ matrix.mongodb && ', mongodb' }} ${{ matrix.mysql && ', pdo_mysql' }}
+          extensions: pdo_sqlite ${{ matrix.mongodb && ', mongodb-mongodb/mongo-php-driver@1.21.2' }} ${{ matrix.mysql && ', pdo_mysql' }}
           coverage: none
           tools: 'composer:v2,flex'
 

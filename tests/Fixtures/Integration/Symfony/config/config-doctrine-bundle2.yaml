@@ -1,0 +1,4 @@
+doctrine:
+  orm:
+    auto_generate_proxy_classes: '%kernel.debug%'
+    report_fields_where_declared: true

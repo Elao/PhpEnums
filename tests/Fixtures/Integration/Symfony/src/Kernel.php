@@ -40,6 +40,10 @@ class Kernel extends BaseKernel
     {
         $loader->load($this->getProjectDir() . '/config/config.yaml');
 
+        if (InstalledVersions::satisfies(new VersionParser(), 'doctrine/doctrine-bundle', '<3.0')) {
+            $loader->load($this->getProjectDir() . '/config/config-doctrine-bundle2.yaml');
+        }
+
         // TODO: we can remove when Sf 5.4 is dropped
         if (InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '>=6.4')) {
             $loader->load($this->getProjectDir() . '/config/config-routing-attribute.yaml');
@@ -62,7 +66,7 @@ class Kernel extends BaseKernel
 
         if (class_exists(DoctrineMongoDBBundle::class)) {
             $loader->load($this->getProjectDir() . '/config/mongodb.yaml');
-            if (\PHP_VERSION_ID >= 80400 && InstalledVersions::satisfies(new VersionParser(), 'doctrine/mongodb-odm', '>=2.14')){
+            if (\PHP_VERSION_ID >= 80400 && InstalledVersions::satisfies(new VersionParser(), 'doctrine/mongodb-odm', '>=2.14')) {
                 $loader->load($this->getProjectDir() . '/config/mongodb-new.yaml');
             }
         }

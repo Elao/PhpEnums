@@ -16,8 +16,6 @@ doctrine:
     url: '%env(resolve:DOCTRINE_DBAL_URL)%'
 
   orm:
-    auto_generate_proxy_classes: '%kernel.debug%'
-    report_fields_where_declared: true
     controller_resolver:
       auto_mapping: false
 

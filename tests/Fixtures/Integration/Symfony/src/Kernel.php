@@ -49,6 +49,10 @@ class Kernel extends BaseKernel
             $loader->load($this->getProjectDir() . '/config/config-routing-annotation.yaml');
         }
 
+        if (InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '>=7.3')) {
+            $loader->load($this->getProjectDir() . '/config/config-73+.yaml');
+        }
+
         if (PHP_VERSION_ID >= 80400) {
             $loader->load($this->getProjectDir() . '/config/config-php8.4+.yaml');
         }

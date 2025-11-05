@@ -42,7 +42,7 @@
         "ext-pdo_sqlite": "*",
         "composer/semver": "^3.2",
         "doctrine/dbal": "^3.8|^4.2",
-        "doctrine/doctrine-bundle": "^2.11",
+        "doctrine/doctrine-bundle": "^2.11|^3.0",
         "doctrine/orm": "^2.20|^3.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-symfony": "^1.2",

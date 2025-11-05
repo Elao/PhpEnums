@@ -1,0 +1,2 @@
+doctrine_mongodb:
+  enable_native_lazy_objects: true

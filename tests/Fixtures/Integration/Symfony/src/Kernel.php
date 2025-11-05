@@ -59,6 +59,9 @@ class Kernel extends BaseKernel
 
         if (class_exists(DoctrineMongoDBBundle::class)) {
             $loader->load($this->getProjectDir() . '/config/mongodb.yaml');
+            if(PHP_VERSION_ID >= 70400){
+                $loader->load($this->getProjectDir() . '/config/mongodb-new.yaml');
+            }
         }
     }
 

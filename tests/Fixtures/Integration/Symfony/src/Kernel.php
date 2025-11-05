@@ -20,7 +20,6 @@ use Elao\Enum\Bridge\Symfony\Bundle\ElaoEnumBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use const PHP_VERSION_ID;
 
 /**
  * Kernel for tests.
@@ -53,7 +52,7 @@ class Kernel extends BaseKernel
             $loader->load($this->getProjectDir() . '/config/config-73+.yaml');
         }
 
-        if (PHP_VERSION_ID >= 80400) {
+        if (\PHP_VERSION_ID >= 80400) {
             $loader->load($this->getProjectDir() . '/config/config-php8.4+.yaml');
         }
 
@@ -63,7 +62,7 @@ class Kernel extends BaseKernel
 
         if (class_exists(DoctrineMongoDBBundle::class)) {
             $loader->load($this->getProjectDir() . '/config/mongodb.yaml');
-            if(PHP_VERSION_ID >= 70400){
+            if(\PHP_VERSION_ID >= 80400 && InstalledVersions::satisfies(new VersionParser(), 'doctrine/mongodb-odm', '>=2.14')){
                 $loader->load($this->getProjectDir() . '/config/mongodb-new.yaml');
             }
         }

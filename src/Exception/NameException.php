@@ -19,7 +19,7 @@ class NameException extends InvalidArgumentException
 {
     public function __construct(string $name, string $enumType)
     {
-        $message = sprintf('"%s" is not an acceptable case name for "%s" enum.', $name, $enumType);
+        $message = \sprintf('"%s" is not an acceptable case name for "%s" enum.', $name, $enumType);
 
         parent::__construct($message);
     }

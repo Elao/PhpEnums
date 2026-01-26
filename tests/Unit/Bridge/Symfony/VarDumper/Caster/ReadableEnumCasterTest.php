@@ -34,7 +34,7 @@ class ReadableEnumCasterTest extends TestCase
         putenv('DUMP_LIGHT_ARRAY');
     }
 
-    public function testCasterIsRegistered()
+    public function testCasterIsRegistered(): void
     {
         self::assertArrayHasKey(
             ReadableEnumInterface::class,
@@ -43,7 +43,7 @@ class ReadableEnumCasterTest extends TestCase
         );
     }
 
-    public function testCastReadable()
+    public function testCastReadable(): void
     {
         $expectedDump = <<<'EODUMP'
 Elao\Enum\Tests\Fixtures\Enum\Suit {
@@ -56,7 +56,7 @@ EODUMP;
         $this->assertDumpEquals($expectedDump, Suit::Spades);
     }
 
-    public function testCastAsHtml()
+    public function testCastAsHtml(): void
     {
         $dump = $this->dumpAsHtml(Suit::Spades);
 
@@ -74,7 +74,7 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $dump);
     }
 
-    private function dumpAsHtml($value): string
+    private function dumpAsHtml(\BackedEnum $value): string
     {
         $cloner = new VarCloner();
         $cloner->setMaxItems(-1);

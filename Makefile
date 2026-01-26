@@ -2,7 +2,7 @@ include .make/help.mk
 include .make/text.mk
 include .make/try.mk
 
-PHP_CS_FIXER_VERSION=v3.13.0
+PHP_CS_FIXER_VERSION=v3.93.0
 
 ###########
 # Install #
@@ -21,17 +21,10 @@ install:
 
 ## Install - Install lowest deps
 install.lowest: setup
-install.lowest: export SYMFONY_REQUIRE = 5.4.*@dev
+install.lowest: export SYMFONY_REQUIRE = 6.4.*@dev
 install.lowest:
 	symfony composer config minimum-stability --unset
 	symfony composer update --prefer-lowest --ignore-platform-req=ext-mongodb
-
-## Install - Install Symfony 5.4 deps
-install.54: setup
-install.54: export SYMFONY_REQUIRE = 5.4.*@dev
-install.54:
-	symfony composer config minimum-stability dev
-	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Install Symfony 6.4 deps
 install.64: setup
@@ -40,31 +33,23 @@ install.64:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
-## Install - Install Symfony 7.0 deps
-install.70: setup
-install.70: export SYMFONY_REQUIRE = 7.0.*@dev
-install.70:
+## Install - Install Symfony 7.4 deps
+install.74: setup
+install.74: export SYMFONY_REQUIRE = 7.4.*@dev
+install.74:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
-## Install - Install Symfony 7.1 deps
-install.71: setup
-install.71: export SYMFONY_REQUIRE = 7.1.*@dev
-install.71:
+## Install - Install Symfony 8.0 deps
+install.80: setup
+install.80: export SYMFONY_REQUIRE = 8.0.*@dev
+install.80:
 	symfony composer config minimum-stability dev
 	symfony composer update --ignore-platform-req=ext-mongodb
 
 ## Install - Add Doctrine ODM deps
-deps.odm.add: deps.odm.add+sf64
-
-## Install - Add Doctrine ODM deps for Symfony 6.4+
-deps.odm.add+sf64:
+deps.odm.add:
 	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.6" "doctrine/mongodb-odm-bundle:^5.0"
-	@$(call log_warning, Run again appropriate install target to update dependencies. Be careful not to commit compose.json changes.)
-
-## Install - Add Doctrine ODM deps for Symfony 5.4+
-deps.odm.add+sf54:
-	symfony composer require --no-update --no-interaction --dev "doctrine/mongodb-odm:^2.4" "doctrine/mongodb-odm-bundle:^4.5.1"
 	@$(call log_warning, Run again appropriate install target to update dependencies. Be careful not to commit compose.json changes.)
 
 ## Install - Remove back Doctrine ODM deps
@@ -77,13 +62,13 @@ deps.odm.rm:
 ########
 ## Tests - Test (TESTDOX=1 for testdox format)
 test:
-	symfony php vendor/bin/simple-phpunit $(if $(TESTDOX), --testdox --verbose)
+	symfony php vendor/bin/phpunit $(if $(TESTDOX), --testdox --verbose)
 
 ## Tests - Test with MySQL server (TESTDOX=1 for testdox format)
 test.mysql: export DOCTRINE_DBAL_URL=pdo-mysql://app:password@127.0.0.1:63306/doctrine_tests
 test.mysql: docker.start
 test.mysql:
-	symfony php vendor/bin/simple-phpunit $(if $(TESTDOX), --testdox --verbose)
+	symfony php vendor/bin/phpunit $(if $(TESTDOX), --testdox --verbose)
 
 ## Tests - Start Docker services for integration tests
 docker.start:

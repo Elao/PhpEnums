@@ -14,7 +14,6 @@ namespace Elao\Enum\Bridge\Symfony\Bundle\DependencyInjection;
 
 use Elao\Enum\Bridge\Doctrine\DBAL\Types\TypesDumper as DBALTypesDumper;
 use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper as ODMTypesDumper;
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -45,11 +44,6 @@ class ElaoEnumExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-
-        // TODO: Use Symfony's 6.1 backed enum resolver once available:
-        if (class_exists(\Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver::class)) {
-            $container->removeDefinition(BackedEnumValueResolver::class);
-        }
 
         if ($types = $config['doctrine']['types'] ?? false) {
             $container->setParameter(

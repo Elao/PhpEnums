@@ -98,14 +98,14 @@ class ConfigurationTest extends TestCase
         ]]);
 
         self::assertEquals([
-                'doctrine_mongodb' => [
-                    'types' => [
-                        Suit::class => ['class' => Suit::class, 'type' => 'single'],
-                        Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
-                        'request_status' => ['class' => RequestStatus::class, 'type' => 'collection'],
-                    ],
+            'doctrine_mongodb' => [
+                'types' => [
+                    Suit::class => ['class' => Suit::class, 'type' => 'single'],
+                    Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
+                    'request_status' => ['class' => RequestStatus::class, 'type' => 'collection'],
                 ],
-            ] + $this->getDefaultConfig(), $config);
+            ],
+        ] + $this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineConfigNameAsEnumClass(): void
@@ -145,14 +145,14 @@ class ConfigurationTest extends TestCase
         ]]);
 
         self::assertEquals([
-                'doctrine_mongodb' => [
-                    'types' => [
-                        Suit::class => ['class' => Suit::class, 'type' => 'single'],
-                        Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
-                        RequestStatus::class => ['class' => RequestStatus::class, 'type' => 'collection'],
-                    ],
+            'doctrine_mongodb' => [
+                'types' => [
+                    Suit::class => ['class' => Suit::class, 'type' => 'single'],
+                    Permissions::class => ['class' => Permissions::class, 'type' => 'single'],
+                    RequestStatus::class => ['class' => RequestStatus::class, 'type' => 'collection'],
                 ],
-            ] + $this->getDefaultConfig(), $config);
+            ],
+        ] + $this->getDefaultConfig(), $config);
     }
 
     public function testDoctrineTypeConfigWithInvalidEnumClass(): void

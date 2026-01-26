@@ -22,9 +22,6 @@ abstract class AbstractEnumType extends Type
 {
     use ClosureToPHP;
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value): int|string|null
     {
         if (null === $value) {
@@ -39,8 +36,6 @@ abstract class AbstractEnumType extends Type
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @psalm-return TEnum
      */
     public function convertToPHPValue($value): ?\BackedEnum

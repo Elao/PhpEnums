@@ -21,7 +21,7 @@ class ReadableEnum
     public function __construct(
         public readonly ?string $prefix = null,
         public readonly ?string $suffix = null,
-        public readonly bool $useValueAsDefault = false
+        public readonly bool $useValueAsDefault = false,
     ) {
     }
 }

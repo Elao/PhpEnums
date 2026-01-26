@@ -84,7 +84,7 @@ class EnumProvider
     private function ensureEnumClass(string $enumClass): void
     {
         if (!is_a($enumClass, \UnitEnum::class, true)) {
-            throw new InvalidArgumentException(sprintf('"%s" is not a proper enum class', $enumClass));
+            throw new InvalidArgumentException(\sprintf('"%s" is not a proper enum class', $enumClass));
         }
     }
 }

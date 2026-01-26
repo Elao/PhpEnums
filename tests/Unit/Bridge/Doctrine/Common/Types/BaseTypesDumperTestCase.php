@@ -15,7 +15,7 @@ namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\Common\Types;
 use Elao\Enum\Bridge\Doctrine\Common\AbstractTypesDumper;
 use PHPUnit\Framework\TestCase;
 
-abstract class BaseTypesDumperTest extends TestCase
+abstract class BaseTypesDumperTestCase extends TestCase
 {
     private readonly string $dumpPath;
 
@@ -42,7 +42,7 @@ abstract class BaseTypesDumperTest extends TestCase
 
     abstract protected function getDumper(): AbstractTypesDumper;
 
-    private static function assertSnapshotFileMatchesFile(string $snapshotPath, string $actualPath)
+    private static function assertSnapshotFileMatchesFile(string $snapshotPath, string $actualPath): void
     {
         self::updateSnapshot($snapshotPath, file_get_contents($actualPath));
 
@@ -56,7 +56,7 @@ abstract class BaseTypesDumperTest extends TestCase
         }
     }
 
-    public function testPascalCaseConvertor()
+    public function testPascalCaseConvertor(): void
     {
         $testCases = [
             'Foo\\Bar\\Baz' => 'FooBarBaz',

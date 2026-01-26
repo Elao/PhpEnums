@@ -21,13 +21,10 @@ trait ReadableEnumTrait
 {
     use EnumCaseAttributesTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function readableForValue(string|int $value): string
     {
         if (!is_a(static::class, \BackedEnum::class, true)) {
-            throw new \BadMethodCallException(sprintf(
+            throw new \BadMethodCallException(\sprintf(
                 'Cannot call method "%s" on non-backed enum "%s".',
                 __METHOD__,
                 static::class,
@@ -40,9 +37,6 @@ trait ReadableEnumTrait
         return $case->getReadable();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function readableForName(string $name): string
     {
         /** @var array<string,ReadableEnumInterface>|null $map */
@@ -59,9 +53,6 @@ trait ReadableEnumTrait
         return $map[$name]->getReadable();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReadable(): string
     {
         return static::arrayAccessReadables()[$this];
@@ -83,7 +74,7 @@ trait ReadableEnumTrait
             $r = new \ReflectionEnum(static::class);
 
             if (($readableEnumAttribute?->useValueAsDefault ?? false) && 'string' !== (string) $r->getBackingType()) {
-                throw new LogicException(sprintf(
+                throw new LogicException(\sprintf(
                     'Cannot use "useValueAsDefault" with "#[%s]" attribute on enum "%s" as it\'s not a string backed enum.',
                     ReadableEnum::class,
                     static::class,
@@ -95,7 +86,7 @@ trait ReadableEnumTrait
                 $attribute = $case->getEnumCaseAttribute();
 
                 if (null === $attribute && null === $readableEnumAttribute) {
-                    throw new LogicException(sprintf(
+                    throw new LogicException(\sprintf(
                         'enum "%s" using the "%s" trait must define a "%s" attribute on every cases. Case "%s" is missing one. Alternatively, override the "%s()" method, or use the "%s" attribute on the enum class to use the value as default.',
                         static::class,
                         ReadableEnumTrait::class,
@@ -107,7 +98,7 @@ trait ReadableEnumTrait
                 }
 
                 if (null === $attribute?->label && null === $readableEnumAttribute) {
-                    throw new LogicException(sprintf(
+                    throw new LogicException(\sprintf(
                         'enum "%s" using the "%s" trait must define a label using the "%s" attribute on every cases. Case "%s" is missing a label. Alternatively, override the "%s()" method, or use the "#[%s]" attribute on the enum class to use the value as default.',
                         static::class,
                         ReadableEnumTrait::class,
@@ -118,7 +109,7 @@ trait ReadableEnumTrait
                     ));
                 }
 
-                $readables[$case] = sprintf(
+                $readables[$case] = \sprintf(
                     '%s%s%s',
                     $readableEnumAttribute?->prefix,
                     $attribute?->label ?? ($readableEnumAttribute->useValueAsDefault ? $case->value : $case->name),

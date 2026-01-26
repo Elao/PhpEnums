@@ -42,6 +42,5 @@ return (new PhpCsFixer\Config())
         'psr_autoloading' => true,
         'single_line_throw' => false,
         'simplified_null_return' => false,
-        'yoda_style' => [],
     ])
 ;

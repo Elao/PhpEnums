@@ -31,7 +31,7 @@ class EnumTypeTest extends TypeTestCase
         $this->assertSame('suit.hearts', $view->children[0]->vars['label']);
     }
 
-    protected function getTestedType()
+    protected function getTestedType(): string
     {
         return EnumType::class;
     }

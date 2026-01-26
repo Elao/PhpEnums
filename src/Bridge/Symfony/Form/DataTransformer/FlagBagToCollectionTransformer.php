@@ -28,12 +28,12 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
      */
     public function transform($value): ?array
     {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
         if (!$value instanceof FlagBag) {
-            throw new TransformationFailedException(sprintf(
+            throw new TransformationFailedException(\sprintf(
                 'Expected instance of "%s". Got "%s".',
                 FlagBag::class,
                 get_debug_type($value)
@@ -41,7 +41,7 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
         }
 
         if ($value->getType() !== $this->enumType) {
-            throw new TransformationFailedException(sprintf(
+            throw new TransformationFailedException(\sprintf(
                 'Expected FlagBag instance of "%s" values. Got FlagBag instance of "%s" values.',
                 $this->enumType,
                 $value->getType()
@@ -67,7 +67,7 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
         }
 
         if (!\is_array($values)) {
-            throw new TransformationFailedException(sprintf(
+            throw new TransformationFailedException(\sprintf(
                 'Expected array. Got "%s".',
                 get_debug_type($values)
             ));
@@ -79,7 +79,7 @@ class FlagBagToCollectionTransformer extends AbstractFlagBagTransformer
 
         foreach ($values as $value) {
             if (!$value instanceof $this->enumType) {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'Expected array of "%s". Got a "%s" inside.',
                     $this->enumType,
                     get_debug_type($value)

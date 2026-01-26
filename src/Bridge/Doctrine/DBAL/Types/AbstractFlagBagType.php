@@ -26,9 +26,6 @@ if (enum_exists(ParameterType::class)) {
      */
     trait DbalVersionFlagBagTypeTrait
     {
-        /**
-         * {@inheritdoc}
-         */
         public function getBindingType(): ParameterType
         {
             return ParameterType::INTEGER;
@@ -42,9 +39,6 @@ if (enum_exists(ParameterType::class)) {
      */
     trait DbalVersionFlagBagTypeTrait
     {
-        /**
-         * {@inheritdoc}
-         */
         public function getBindingType(): int
         {
             return ParameterType::INTEGER;
@@ -76,20 +70,18 @@ abstract class AbstractFlagBagType extends Type
     /**
      * What should be returned on null value from PHP.
      */
-    protected function onNullFromPhp(): int|null
+    protected function onNullFromPhp(): ?int
     {
         return null;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param FlagBag<\BackedEnum>|null $value
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?int
     {
-        if ($value !== null && !$value instanceof FlagBag) {
-            throw new InvalidArgumentException(sprintf(
+        if (null !== $value && !$value instanceof FlagBag) {
+            throw new InvalidArgumentException(\sprintf(
                 'Expected an instance of a %s. %s given.',
                 FlagBag::class,
                 get_debug_type($value),
@@ -104,8 +96,6 @@ abstract class AbstractFlagBagType extends Type
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param int|null $value The value to convert.
      *
      * @return FlagBag<\BackedEnum>|null
@@ -121,9 +111,6 @@ abstract class AbstractFlagBagType extends Type
         return new FlagBag($this->getEnumClass(), $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

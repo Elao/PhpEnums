@@ -47,7 +47,7 @@ class FlagBag
         $bits = self::encodeBits($bits);
 
         if (!static::accepts($enumType, $bits)) {
-            throw new InvalidArgumentException(sprintf('%d is not a valid bits combination for "%s"', $bits, $this->type));
+            throw new InvalidArgumentException(\sprintf('%d is not a valid bits combination for "%s"', $bits, $this->type));
         }
 
         $this->bits = static::decodeBits($bits);
@@ -61,14 +61,14 @@ class FlagBag
     private static function checkIntBackedEnumType(string|object $enumOrType): void
     {
         if (!is_a($enumOrType, \BackedEnum::class, true)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 '"%s" is not a backed enum',
                 \is_object($enumOrType) ? $enumOrType::class : $enumOrType,
             ));
         }
 
         if ('int' !== (string) (new \ReflectionEnum($enumOrType))->getBackingType()) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 '"%s" is not an int backed enum',
                 \is_object($enumOrType) ? $enumOrType::class : $enumOrType,
             ));
@@ -117,7 +117,7 @@ class FlagBag
      */
     public static function accepts(string $enumType, int $value): bool
     {
-        if ($value === self::NONE) {
+        if (self::NONE === $value) {
             return true;
         }
 
@@ -137,7 +137,7 @@ class FlagBag
         return array_values(
             array_filter(
                 array_map(
-                    static fn ($k, $v) => $v === '1' ? (1 << $k) : null,
+                    static fn ($k, $v) => '1' === $v ? (1 << $k) : null,
                     array_keys($bits),
                     array_values($bits),
                 )
@@ -174,7 +174,7 @@ class FlagBag
             foreach ($cases as $case) {
                 $value = $case->value;
                 if ($value < 1 || ($value > 1 && ($value % 2) !== 0)) {
-                    throw new LogicException(sprintf(
+                    throw new LogicException(\sprintf(
                         'Possible value %s of the enumeration "%s" is not a bit flag.',
                         $value,
                         $enumType
@@ -244,7 +244,7 @@ class FlagBag
         $mask = self::encodeBits($bits);
 
         if (!static::accepts($this->type, $mask)) {
-            throw new InvalidArgumentException(sprintf('"%d" is not a valid flags combination for "%s"', $mask, $this->type));
+            throw new InvalidArgumentException(\sprintf('"%d" is not a valid flags combination for "%s"', $mask, $this->type));
         }
 
         return new static($this->type, self::encodeBits($this->bits) | $mask);
@@ -271,7 +271,7 @@ class FlagBag
         $mask = self::encodeBits($bits);
 
         if (!static::accepts($this->type, $mask)) {
-            throw new InvalidArgumentException(sprintf('"%d" is not a valid flags combination for "%s"', $mask, $this->type));
+            throw new InvalidArgumentException(\sprintf('"%d" is not a valid flags combination for "%s"', $mask, $this->type));
         }
 
         return new static($this->type, self::encodeBits($this->bits) & ~$mask);

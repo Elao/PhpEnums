@@ -38,7 +38,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-query')]
     public function fromQuery(
         #[BackedEnumFromQuery]
-        Suit $suit
+        Suit $suit,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -46,7 +46,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-query-nullable')]
     public function fromQueryNullable(
         #[BackedEnumFromQuery]
-        ?Suit $suit
+        ?Suit $suit,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -54,7 +54,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-query-with-default')]
     public function fromQueryWithDefault(
         #[BackedEnumFromQuery]
-        ?Suit $suit = Suit::Hearts
+        ?Suit $suit = Suit::Hearts,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -62,7 +62,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-query-with-default-non-nullable')]
     public function fromQueryWithDefaultNonNullable(
         #[BackedEnumFromQuery]
-        Suit $suit = Suit::Hearts
+        Suit $suit = Suit::Hearts,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -70,7 +70,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-query-variadics')]
     public function fromQueryVariadics(
         #[BackedEnumFromQuery]
-        Suit ...$suit
+        Suit ...$suit,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -78,7 +78,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-body', methods: 'POST')]
     public function fromBody(
         #[BackedEnumFromBody]
-        Suit $suit
+        Suit $suit,
     ): Response {
         return new Response($this->getDump($suit));
     }
@@ -86,7 +86,7 @@ class QueryBodyBackedEnumValueResolverController extends AbstractController
     #[Route(path: '/from-body-variadics', methods: 'POST')]
     public function fromBodyVariadics(
         #[BackedEnumFromBody]
-        Suit ...$suit
+        Suit ...$suit,
     ): Response {
         return new Response($this->getDump($suit));
     }

@@ -22,9 +22,6 @@ use Elao\Enum\Exception\LogicException;
  */
 abstract class AbstractEnumSQLDeclarationType extends AbstractEnumType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if (class_exists(AbstractMySQLPlatform::class)) {

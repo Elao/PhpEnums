@@ -16,9 +16,18 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class XmlElaoEnumExtensionTest extends ElaoEnumExtensionTest
+class XmlElaoEnumExtensionTest extends BaseElaoEnumExtensionTestCase
 {
-    protected function loadFromFile(ContainerBuilder $container, string $file)
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (!class_exists(XmlFileLoader::class)) {
+            $this->markTestSkipped('XML loader is not available');
+        }
+    }
+
+    protected function loadFromFile(ContainerBuilder $container, string $file): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(self::FIXTURES_PATH . '/xml'));
         $loader->load($file . '.xml');

@@ -16,9 +16,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class YamlElaoEnumExtensionTest extends ElaoEnumExtensionTest
+class YamlElaoEnumExtensionTest extends BaseElaoEnumExtensionTestCase
 {
-    protected function loadFromFile(ContainerBuilder $container, string $file)
+    protected function loadFromFile(ContainerBuilder $container, string $file): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(self::FIXTURES_PATH . '/yaml'));
         $loader->load($file . '.yaml');

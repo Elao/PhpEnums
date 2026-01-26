@@ -34,9 +34,6 @@ class CollectionEnumTypeTest extends TestCase
         Type::addType(self::NAME, RequestStatusCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->type = Type::getType(self::NAME);

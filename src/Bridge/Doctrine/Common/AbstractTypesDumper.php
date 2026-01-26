@@ -30,7 +30,7 @@ abstract class AbstractTypesDumper
      */
     public static function getTypeFullyQualifiedClassName(string $enumClass, string $type, string $name): string
     {
-        $fqcn = sprintf('%s\\%s', static::getMarker(), $enumClass);
+        $fqcn = \sprintf('%s\\%s', static::getMarker(), $enumClass);
 
         $classname = basename(str_replace('\\', '/', $fqcn));
         $ns = substr($fqcn, 0, -\strlen($classname) - 1);
@@ -41,7 +41,7 @@ abstract class AbstractTypesDumper
             $name = static::getPascalCase($name);
         }
 
-        return sprintf('%s\\%s%s', $ns, $name, static::getSuffixes()[$type]);
+        return \sprintf('%s\\%s%s', $ns, $name, static::getSuffixes()[$type]);
     }
 
     public static function getPascalCase(string $string): string

@@ -31,7 +31,7 @@ class FlagBagCasterTest extends TestCase
         putenv('DUMP_LIGHT_ARRAY');
     }
 
-    public function testCast()
+    public function testCast(): void
     {
         $expectedDump = <<<'EODUMP'
 Elao\Enum\FlagBag {

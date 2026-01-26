@@ -32,7 +32,7 @@ class TypesDumper extends AbstractTypesDumper
         string $enumClass,
         string $type,
         string $name,
-        \BackedEnum|int|string|null $defaultOnNull = null
+        \BackedEnum|int|string|null $defaultOnNull = null,
     ): string {
         $code = <<<PHP
                         protected function getEnumClass(): string
@@ -44,7 +44,7 @@ class TypesDumper extends AbstractTypesDumper
         $baseClass = match ($type) {
             self::TYPE_SINGLE => AbstractEnumType::class,
             self::TYPE_COLLECTION => AbstractCollectionEnumType::class,
-            default => throw new LogicException(sprintf('Unexpected type "%s"', $type)),
+            default => throw new LogicException(\sprintf('Unexpected type "%s"', $type)),
         };
 
         return <<<PHP

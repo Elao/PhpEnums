@@ -34,8 +34,6 @@ abstract class AbstractCollectionEnumType extends CollectionType
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @phpstan-return array<TEnum>|null
      */
     public function convertToPHPValue($value): ?array

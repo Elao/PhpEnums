@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver;
 
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -30,21 +29,14 @@ class QueryBodyBackedEnumValueResolver implements ValueResolverInterface
             return [];
         }
 
-        $from = $argument->getAttributes(BackedEnumFromQuery::class, ArgumentMetadata::IS_INSTANCEOF)[0]
-            ?? $argument->getAttributes(BackedEnumFromBody::class, ArgumentMetadata::IS_INSTANCEOF)[0]
-            ?? null;
+        $from = $argument->getAttributes(BackedEnumFromBody::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? null;
 
         if (null === $from) {
             return [];
         }
 
         $key = $argument->getName();
-
-        $bag = match (true) {
-            $from instanceof BackedEnumFromQuery => $request->query,
-            $from instanceof BackedEnumFromBody => $request->request,
-            default => throw new \LogicException(\sprintf('Unexpected attribute class "%s"', get_debug_type($from))),
-        };
+        $bag = $request->request;
 
         if (!$bag->has($key)) {
             return [];

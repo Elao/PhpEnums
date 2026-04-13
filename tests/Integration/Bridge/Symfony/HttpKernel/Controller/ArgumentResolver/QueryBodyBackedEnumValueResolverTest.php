@@ -22,9 +22,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class QueryBodyBackedEnumValueResolverTest extends WebTestCase
 {
     /**
-     * @dataProvider requestProvider
+     * @group legacy
+     *
+     * @dataProvider queryRequestProvider
      */
-    public function testResolver(
+    public function testResolverFromQuery(
         callable $request,
         ?callable $assert = null,
     ): void {
@@ -38,7 +40,7 @@ class QueryBodyBackedEnumValueResolverTest extends WebTestCase
         }
     }
 
-    public function requestProvider(): iterable
+    public function queryRequestProvider(): iterable
     {
         yield 'invalid value' => [
             function (KernelBrowser $client) {
@@ -155,7 +157,27 @@ class QueryBodyBackedEnumValueResolverTest extends WebTestCase
                 DUMP, $response->getContent());
             },
         ];
+    }
 
+    /**
+     * @dataProvider bodyRequestProvider
+     */
+    public function testResolverFromBody(
+        callable $request,
+        ?callable $assert = null,
+    ): void {
+        $client = static::createClient();
+        $client->catchExceptions(false);
+
+        \Closure::bind($request, $this)($client);
+
+        if ($assert) {
+            \Closure::bind($assert, $this)($client->getResponse());
+        }
+    }
+
+    public function bodyRequestProvider(): iterable
+    {
         yield 'from body' => [
             function (KernelBrowser $client) {
                 $client->request(Request::METHOD_POST, '/resolver/from-body', [

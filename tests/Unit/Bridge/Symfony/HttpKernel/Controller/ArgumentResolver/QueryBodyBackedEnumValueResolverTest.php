@@ -22,43 +22,40 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class QueryBodyBackedEnumValueResolverTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
-     * @dataProvider provides testSupports data
+     * @group legacy
      */
-    public function testSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
+    public function testBackedEnumFromQueryIsDeprecated(): void
     {
-        $resolver = new QueryBodyBackedEnumValueResolver();
+        $this->expectDeprecation(sprintf(
+            'Since elao/enum 2.6: The "%s" attribute is deprecated, use "%s" instead. It will be removed in 3.0.',
+            BackedEnumFromQuery::class,
+            MapQueryParameter::class,
+        ));
 
-        // Before Symfony 6.2
-        if (!interface_exists(ValueResolverInterface::class)) {
-            self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
-
-            return;
-        }
-
-        /** @var \Generator $results */
-        $results = $resolver->resolve($request, $metadata);
-        $results = iterator_to_array($results);
-
-        $expectedSupport ? self::assertNotEmpty($results) : self::assertSame([], $results);
+        new BackedEnumFromQuery();
     }
 
-    public function provides testSupports data(): iterable
+    /**
+     * @group legacy
+     *
+     * @dataProvider provideLegacyTestSupportsFromQueryData
+     */
+    public function testSupportsFromQuery(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
     {
-        yield 'no PHP 8.1 attribute' => [
-            self::getRequest(['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                \stdClass::class,
-                attributes: []
-            ),
-            false,
-        ];
+        $this->assertSupports($request, $metadata, $expectedSupport);
+    }
 
+    public function provideLegacyTestSupportsFromQueryData(): iterable
+    {
         yield 'unsupported type' => [
             self::getRequest(['suit' => 'H']),
             self::getArgumentMetadata(
@@ -85,26 +82,6 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
                 'suit',
                 Suit::class,
                 attributes: [new BackedEnumFromQuery()],
-            ),
-            false,
-        ];
-
-        yield 'from body' => [
-            self::getRequest(body: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromBody()],
-            ),
-            true,
-        ];
-
-        yield 'missing from body' => [
-            self::getRequest(body: []),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromBody()],
             ),
             false,
         ];
@@ -153,48 +130,23 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provides testResolve data
+     * @dataProvider providesTestSupportsFromBodyData
      */
-    public function testResolve(Request $request, ArgumentMetadata $metadata, $expected): void
+    public function testSupportsFromBody(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
     {
-        $resolver = new QueryBodyBackedEnumValueResolver();
-
-        // Before Symfony 6.2
-        if (!interface_exists(ValueResolverInterface::class)) {
-            if (!$resolver->supports($request, $metadata)) {
-                throw new \LogicException(sprintf(
-                    'Invalid test case %s, since the supports method returned false',
-                    $this->getName(true),
-                ));
-            }
-
-            return;
-        }
-
-        /** @var \Generator $results */
-        $results = $resolver->resolve($request, $metadata);
-        $results = iterator_to_array($results);
-
-        if ([] === $results) {
-            throw new \LogicException(sprintf(
-                'Invalid test case %s, since the supports method returned false',
-                $this->getName(true),
-            ));
-        }
-
-        self::assertSame($expected, $results);
+        $this->assertSupports($request, $metadata, $expectedSupport);
     }
 
-    public function provides testResolve data(): iterable
+    public function providesTestSupportsFromBodyData(): iterable
     {
-        yield 'from query' => [
-            self::getRequest(query: ['suit' => 'H']),
+        yield 'no PHP 8.1 attribute' => [
+            self::getRequest(['suit' => 'H']),
             self::getArgumentMetadata(
                 'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromQuery()],
+                \stdClass::class,
+                attributes: []
             ),
-            [Suit::Hearts],
+            false,
         ];
 
         yield 'from body' => [
@@ -203,6 +155,39 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
                 'suit',
                 Suit::class,
                 attributes: [new BackedEnumFromBody()],
+            ),
+            true,
+        ];
+
+        yield 'missing from body' => [
+            self::getRequest(body: []),
+            self::getArgumentMetadata(
+                'suit',
+                Suit::class,
+                attributes: [new BackedEnumFromBody()],
+            ),
+            false,
+        ];
+    }
+
+    /**
+     * @group legacy
+     *
+     * @dataProvider provideLegacyTestResolveFromQueryData
+     */
+    public function testResolveFromQuery(Request $request, ArgumentMetadata $metadata, $expected): void
+    {
+        $this->assertResolves($request, $metadata, $expected);
+    }
+
+    public function provideLegacyTestResolveFromQueryData(): iterable
+    {
+        yield 'from query' => [
+            self::getRequest(query: ['suit' => 'H']),
+            self::getArgumentMetadata(
+                'suit',
+                Suit::class,
+                attributes: [new BackedEnumFromQuery()],
             ),
             [Suit::Hearts],
         ];
@@ -242,6 +227,30 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider providesTestResolveFromBodyData
+     */
+    public function testResolveFromBody(Request $request, ArgumentMetadata $metadata, $expected): void
+    {
+        $this->assertResolves($request, $metadata, $expected);
+    }
+
+    public function providesTestResolveFromBodyData(): iterable
+    {
+        yield 'from body' => [
+            self::getRequest(body: ['suit' => 'H']),
+            self::getArgumentMetadata(
+                'suit',
+                Suit::class,
+                attributes: [new BackedEnumFromBody()],
+            ),
+            [Suit::Hearts],
+        ];
+    }
+
+    /**
+     * @group legacy
+     */
     public function testResolveThrowsOnInvalidValue(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
@@ -256,6 +265,9 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         iterator_to_array($results);
     }
 
+    /**
+     * @group legacy
+     */
     public function testResolveThrowsUnexpectedType(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
@@ -276,6 +288,9 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         iterator_to_array($results);
     }
 
+    /**
+     * @group legacy
+     */
     public function testResolveThrowsNonVariadicsArrayValue(): void
     {
         if (!InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '^6.0')) {
@@ -294,6 +309,9 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         iterator_to_array($results);
     }
 
+    /**
+     * @group legacy
+     */
     public function testResolveThrowsVariadicsScalarValue(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
@@ -306,6 +324,54 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
         iterator_to_array($results);
+    }
+
+    private function assertSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
+    {
+        $resolver = new QueryBodyBackedEnumValueResolver();
+
+        // Before Symfony 6.2
+        if (!interface_exists(ValueResolverInterface::class)) {
+            self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
+
+            return;
+        }
+
+        /** @var \Generator $results */
+        $results = $resolver->resolve($request, $metadata);
+        $results = iterator_to_array($results);
+
+        $expectedSupport ? self::assertNotEmpty($results) : self::assertSame([], $results);
+    }
+
+    private function assertResolves(Request $request, ArgumentMetadata $metadata, $expected): void
+    {
+        $resolver = new QueryBodyBackedEnumValueResolver();
+
+        // Before Symfony 6.2
+        if (!interface_exists(ValueResolverInterface::class)) {
+            if (!$resolver->supports($request, $metadata)) {
+                throw new \LogicException(sprintf(
+                    'Invalid test case %s, since the supports method returned false',
+                    $this->getName(true),
+                ));
+            }
+
+            return;
+        }
+
+        /** @var \Generator $results */
+        $results = $resolver->resolve($request, $metadata);
+        $results = iterator_to_array($results);
+
+        if ([] === $results) {
+            throw new \LogicException(sprintf(
+                'Invalid test case %s, since the supports method returned false',
+                $this->getName(true),
+            ));
+        }
+
+        self::assertSame($expected, $results);
     }
 
     private static function getRequest(array $query = [], array $body = []): Request

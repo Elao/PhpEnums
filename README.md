@@ -387,18 +387,19 @@ class CardController
 If you're not yet using Symfony HttpKernel 6.1+, this library will still make this working by registering its own
 resolver.
 
-#### Resolve controller arguments from query or body
+#### Resolve controller arguments from query parameters
 
-You can also resolve from query params or from the request body:
+> **Deprecated:** The `#[BackedEnumFromQuery]` attribute is deprecated since 2.6 and will be removed in 3.0.  
+> Use Symfony's native [`#[MapQueryParameter]`](https://symfony.com/doc/current/controller.html#mapping-query-parameters-individually) instead (available since Symfony 6.3):
 
 ```php
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 class DefaultController
 {
     #[Route('/cards')]
     public function list(
-        #[BackedEnumFromQuery]
+        #[MapQueryParameter]
         ?Suit $suit = null,
     ): Response
     {
@@ -409,19 +410,19 @@ class DefaultController
 
 ➜ A call to `/cards?suit=H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
 
-Use `BackedEnumFromBody` to resolve from the request body (`$_POST`).
+#### Resolve controller arguments from body
 
-It also supports variadics:
+Use `BackedEnumFromBody` to resolve from the request body (`$_POST`):
 
 ```php
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
 
 class DefaultController
 {
-    #[Route('/cards')]
-    public function list(
-        #[BackedEnumFromQuery]
-        ?Suit ...$suits = null,
+    #[Route('/cards', methods: 'POST')]
+    public function create(
+        #[BackedEnumFromBody]
+        Suit $suit,
     ): Response
     {
         // [...]
@@ -429,7 +430,23 @@ class DefaultController
 }
 ```
 
-➜ A call to `/cards?suits[]=H&suits[]=S` will resolve the `$suits` argument as `[Suit::Hearts, Suit::Spades]`.
+It also supports variadics:
+
+```php
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
+
+class DefaultController
+{
+    #[Route('/cards', methods: 'POST')]
+    public function create(
+        #[BackedEnumFromBody]
+        Suit ...$suits,
+    ): Response
+    {
+        // [...]
+    }
+}
+```
 
 ### Symfony Translation
 

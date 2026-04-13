@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver;
 
-use Composer\InstalledVersions;
-use Composer\Semver\VersionParser;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\QueryBodyBackedEnumValueResolver;
@@ -21,7 +19,6 @@ use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class QueryBodyBackedEnumValueResolverTest extends TestCase
@@ -32,13 +29,6 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-
-        // Before Symfony 6.2
-        if (!interface_exists(ValueResolverInterface::class)) {
-            self::assertSame($expectedSupport, $resolver->supports($request, $metadata));
-
-            return;
-        }
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
@@ -155,28 +145,16 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     /**
      * @dataProvider provides testResolve data
      */
-    public function testResolve(Request $request, ArgumentMetadata $metadata, $expected): void
+    public function testResolve(Request $request, ArgumentMetadata $metadata, array $expected): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-
-        // Before Symfony 6.2
-        if (!interface_exists(ValueResolverInterface::class)) {
-            if (!$resolver->supports($request, $metadata)) {
-                throw new \LogicException(sprintf(
-                    'Invalid test case %s, since the supports method returned false',
-                    $this->getName(true),
-                ));
-            }
-
-            return;
-        }
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
         $results = iterator_to_array($results);
 
         if ([] === $results) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Invalid test case %s, since the supports method returned false',
                 $this->getName(true),
             ));
@@ -278,10 +256,6 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
 
     public function testResolveThrowsNonVariadicsArrayValue(): void
     {
-        if (!InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '^6.0')) {
-            self::markTestSkipped();
-        }
-
         $resolver = new QueryBodyBackedEnumValueResolver();
         $request = self::getRequest(query: ['suit' => ['H', 'S']]);
         $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
@@ -323,7 +297,7 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         string $type,
         bool $nullable = false,
         bool $variadic = false,
-        array $attributes = []
+        array $attributes = [],
     ): ArgumentMetadata {
         return new ArgumentMetadata($name, $type, $variadic, false, null, $nullable, $attributes);
     }

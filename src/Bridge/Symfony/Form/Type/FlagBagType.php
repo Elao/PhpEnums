@@ -20,20 +20,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @final
+ *
+ * @extends AbstractType<\BackedEnum>
  */
 class FlagBagType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['multiple']) {
-            throw new InvalidConfigurationException(sprintf(
+            throw new InvalidConfigurationException(\sprintf(
                 'The "multiple" option of the "%s" form type cannot be set to false.',
                 static::class
             ));
         }
 
         if (!\is_string($options['class']) || !is_subclass_of($options['class'], \BackedEnum::class)) {
-            throw new InvalidConfigurationException(sprintf(
+            throw new InvalidConfigurationException(\sprintf(
                 'The "class" option of the "%s" form type must contains the FQCN of a BackedEnum.',
                 static::class
             ));
@@ -42,9 +44,6 @@ class FlagBagType extends AbstractType
         $builder->addModelTransformer(new FlagBagToCollectionTransformer($options['class']));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -52,10 +51,7 @@ class FlagBagType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return EnumType::class;
     }

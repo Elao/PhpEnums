@@ -22,7 +22,7 @@ trait IterableAssertionsTrait
         }
     }
 
-    private static function assertIterablesMatch(iterable $expected, iterable $iterable)
+    private static function assertIterablesMatch(iterable $expected, iterable $iterable): void
     {
         $keys = [];
         $values = [];

@@ -14,9 +14,9 @@ namespace Elao\Enum\Tests\Unit\Bridge\Doctrine\ODM\Types;
 
 use Elao\Enum\Bridge\Doctrine\Common\AbstractTypesDumper;
 use Elao\Enum\Bridge\Doctrine\ODM\Types\TypesDumper;
-use Elao\Enum\Tests\Unit\Bridge\Doctrine\Common\Types\BaseTypesDumperTest;
+use Elao\Enum\Tests\Unit\Bridge\Doctrine\Common\Types\BaseTypesDumperTestCase;
 
-class TypesDumperTest extends BaseTypesDumperTest
+class TypesDumperTest extends BaseTypesDumperTestCase
 {
     protected function getSnapshotPath(): string
     {

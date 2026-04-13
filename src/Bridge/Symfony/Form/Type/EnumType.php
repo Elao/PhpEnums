@@ -19,12 +19,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @final
+ *
+ * @extends AbstractType<\UnitEnum>
  */
 class EnumType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -35,17 +34,11 @@ class EnumType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return SymfonyEnumType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'elao_enum';

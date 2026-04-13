@@ -48,9 +48,6 @@ class EnumTypeTest extends TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->stringType = Type::getType(Suit::class);

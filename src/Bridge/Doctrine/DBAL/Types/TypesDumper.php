@@ -34,7 +34,7 @@ class TypesDumper extends AbstractTypesDumper
         string $enumClass,
         string $type,
         string $name,
-        \BackedEnum|int|string|null $defaultOnNull = null
+        \BackedEnum|int|string|null $defaultOnNull = null,
     ): string {
         $code = <<<PHP
                         protected function getEnumClass(): string
@@ -58,7 +58,7 @@ class TypesDumper extends AbstractTypesDumper
             self::TYPE_SCALAR => AbstractEnumType::class,
             self::TYPE_ENUM => AbstractEnumSQLDeclarationType::class,
             self::TYPE_FLAGBAG => AbstractFlagBagType::class,
-            default => throw new LogicException(sprintf('Unexpected type "%s"', $type)),
+            default => throw new LogicException(\sprintf('Unexpected type "%s"', $type)),
         };
 
         $this->appendDefaultOnNullMethods($code, $type, $enumClass, $defaultOnNull);
@@ -82,13 +82,13 @@ class TypesDumper extends AbstractTypesDumper
 
     private function appendDefaultOnNullMethods(string &$code, string $type, string $enumClass, \BackedEnum|int|string|null $defaultOnNull): void
     {
-        if ($defaultOnNull !== null) {
+        if (null !== $defaultOnNull) {
             $defaultOnNullCode = var_export(
                 $defaultOnNull instanceof \BackedEnum ? $defaultOnNull->value : $defaultOnNull,
                 true,
             );
 
-            if ($type == self::TYPE_FLAGBAG) {
+            if (self::TYPE_FLAGBAG == $type) {
                 $code .= <<<PHP
 
 

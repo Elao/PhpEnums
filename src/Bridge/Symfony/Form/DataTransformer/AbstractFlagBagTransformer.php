@@ -30,7 +30,7 @@ abstract class AbstractFlagBagTransformer implements DataTransformerInterface
     public function __construct(string $enumType)
     {
         if (!is_a($enumType, \BackedEnum::class, true)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 '"%s" is not an instance of "%s"',
                 $enumType,
                 \BackedEnum::class
@@ -40,7 +40,7 @@ abstract class AbstractFlagBagTransformer implements DataTransformerInterface
         try {
             FlagBag::getBitmask($enumType);
         } catch (LogicException $e) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 '"%s" is not a valid bitmask enum',
                 $enumType
             ), 0, $e);
@@ -60,9 +60,9 @@ abstract class AbstractFlagBagTransformer implements DataTransformerInterface
     {
         if (\is_int($value)) {
             return new FlagBag($this->enumType, $value);
-        } else {
-            return FlagBag::from($this->enumType, ...$value);
         }
+
+        return FlagBag::from($this->enumType, ...$value);
     }
 
     protected function isAcceptableValueForEnum(int $value): bool

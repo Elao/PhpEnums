@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\EnvPlaceholderParameterBag;
 
-abstract class ElaoEnumExtensionTest extends TestCase
+abstract class BaseElaoEnumExtensionTestCase extends TestCase
 {
     protected const FIXTURES_PATH = __DIR__ . '/../../../../../Fixtures/Bridge/Symfony/Bundle/DependencyInjection/ElaoEnumExtension';
 
@@ -114,7 +114,7 @@ abstract class ElaoEnumExtensionTest extends TestCase
         return $container;
     }
 
-    abstract protected function loadFromFile(ContainerBuilder $container, string $file);
+    abstract protected function loadFromFile(ContainerBuilder $container, string $file): void;
 
     protected function createContainer(): ContainerBuilder
     {

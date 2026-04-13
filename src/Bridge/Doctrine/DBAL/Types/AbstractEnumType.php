@@ -25,9 +25,6 @@ if (enum_exists(ParameterType::class)) {
      */
     trait DbalVersionEnumTypeTrait
     {
-        /**
-         * {@inheritdoc}
-         */
         public function getBindingType(): ParameterType
         {
             return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
@@ -41,9 +38,6 @@ if (enum_exists(ParameterType::class)) {
      */
     trait DbalVersionEnumTypeTrait
     {
-        /**
-         * {@inheritdoc}
-         */
         public function getBindingType(): int
         {
             return $this->isIntBackedEnum() ? ParameterType::INTEGER : ParameterType::STRING;
@@ -81,23 +75,21 @@ abstract class AbstractEnumType extends Type
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param \BackedEnum|int|string|null $value
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string|int|null
     {
-        if ($value !== null && !is_a($value, $this->getEnumClass())) {
+        if (null !== $value && !is_a($value, $this->getEnumClass())) {
             $throwException = true;
             if ($this->checkIfValueMatchesBackedEnumType($value)) {
                 $value = $this->getEnumClass()::tryFrom($this->cast($value));
-                if ($value !== null) {
+                if (null !== $value) {
                     $throwException = false;
                 }
             }
 
             if ($throwException) {
-                throw new InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(\sprintf(
                     'Expected an instance of a %s. %s given.',
                     $this->getEnumClass(),
                     get_debug_type($value),
@@ -113,8 +105,6 @@ abstract class AbstractEnumType extends Type
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param int|string|null $value The value to convert.
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): ?\BackedEnum
@@ -126,9 +116,6 @@ abstract class AbstractEnumType extends Type
         return $this->getEnumClass()::from($this->cast($value));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if ($this->isIntBackedEnum()) {
@@ -142,9 +129,6 @@ abstract class AbstractEnumType extends Type
         return $platform->getStringTypeDeclarationSQL($column);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

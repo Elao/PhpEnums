@@ -19,7 +19,7 @@ trait ExtrasTrait
     public function getExtra(string $key, bool $throwOnMissingExtra = false): mixed
     {
         if ($throwOnMissingExtra && !isset(static::arrayAccessibleExtras()[$this][$key])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'No value for extra "%s" for enum case %s::%s',
                 $key,
                 __CLASS__,

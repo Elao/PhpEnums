@@ -40,12 +40,10 @@ class Kernel extends BaseKernel
     {
         $loader->load($this->getProjectDir() . '/config/config.yaml');
 
-        // TODO: we can remove when Sf 5.4 is dropped
-        if (InstalledVersions::satisfies(new VersionParser(), 'symfony/http-kernel', '>=6.4')) {
-            $loader->load($this->getProjectDir() . '/config/config-routing-attribute.yaml');
-            $loader->load($this->getProjectDir() . '/config/config-64+.yaml');
+        if (InstalledVersions::satisfies(new VersionParser(), 'doctrine/doctrine-bundle', '>=3.0')) {
+            $loader->load($this->getProjectDir() . '/config/config-doctrine-bundle-30.yaml');
         } else {
-            $loader->load($this->getProjectDir() . '/config/config-routing-annotation.yaml');
+            $loader->load($this->getProjectDir() . '/config/config-doctrine-bundle-20.yaml');
         }
 
         if (str_starts_with($_ENV['DOCTRINE_DBAL_URL'], 'pdo-mysql:')) {

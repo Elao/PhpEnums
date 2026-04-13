@@ -1,0 +1,4 @@
+doctrine:
+  orm:
+    validate_xml_mapping: true
+    auto_mapping: true

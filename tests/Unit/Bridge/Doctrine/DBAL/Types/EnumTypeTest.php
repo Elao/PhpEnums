@@ -58,9 +58,6 @@ class EnumTypeTest extends TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->platform = new MySQLPlatform();

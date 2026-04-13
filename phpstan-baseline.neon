@@ -1,2 +1,25 @@
 parameters:
 	ignoreErrors:
+		-
+			message: '#^Trait Elao\\Enum\\Bridge\\Symfony\\Translation\\TranslatableEnumTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Bridge/Symfony/Translation/TranslatableEnumTrait.php
+
+		-
+			message: '#^Trait Elao\\Enum\\EnumCaseAttributesTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/EnumCaseAttributesTrait.php
+
+		-
+			message: '#^Trait Elao\\Enum\\ExtrasTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/ExtrasTrait.php
+
+		-
+			message: '#^Trait Elao\\Enum\\ReadableEnumTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/ReadableEnumTrait.php

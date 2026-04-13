@@ -57,7 +57,7 @@ class FlagBagTest extends TestCase
         self::assertSame(
             $result,
             FlagBag::accepts($enumType, $value),
-            sprintf('->accepts() returns %s if the value %d.', $result ? 'true' : 'false', $value)
+            \sprintf('->accepts() returns %s if the value %d.', $result ? 'true' : 'false', $value)
         );
     }
 
@@ -75,7 +75,7 @@ class FlagBagTest extends TestCase
     /**
      * @dataProvider fromValidValues
      */
-    public function testFrom(string $enumType, \BackedEnum ...$flags)
+    public function testFrom(string $enumType, \BackedEnum ...$flags): void
     {
         FlagBag::from($enumType, ...$flags);
 
@@ -166,7 +166,7 @@ class FlagBagTest extends TestCase
         self::assertFalse($result->hasFlags(Permissions::Read));
     }
 
-    public function testFromAll()
+    public function testFromAll(): void
     {
         $flagBagAll = FlagBag::fromAll(PermissionsMissingBit::class);
 

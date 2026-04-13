@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Elao\Enum\Tests\Unit\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver;
 
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
 use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\QueryBodyBackedEnumValueResolver;
 use Elao\Enum\Tests\Fixtures\Enum\Suit;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +23,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 class QueryBodyBackedEnumValueResolverTest extends TestCase
 {
     /**
-     * @dataProvider provides testSupports data
+     * @dataProvider providesTestSupportsData
      */
     public function testSupports(Request $request, ArgumentMetadata $metadata, bool $expectedSupport): void
     {
@@ -37,10 +36,10 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         $expectedSupport ? self::assertNotEmpty($results) : self::assertSame([], $results);
     }
 
-    public function provides testSupports data(): iterable
+    public function providesTestSupportsData(): iterable
     {
         yield 'no PHP 8.1 attribute' => [
-            self::getRequest(['suit' => 'H']),
+            self::getRequest(body: ['suit' => 'H']),
             self::getArgumentMetadata(
                 'suit',
                 \stdClass::class,
@@ -50,31 +49,11 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         ];
 
         yield 'unsupported type' => [
-            self::getRequest(['suit' => 'H']),
+            self::getRequest(body: ['suit' => 'H']),
             self::getArgumentMetadata(
                 'suit',
                 \stdClass::class,
-                attributes: [new BackedEnumFromQuery()]
-            ),
-            false,
-        ];
-
-        yield 'from query' => [
-            self::getRequest(query: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromQuery()],
-            ),
-            true,
-        ];
-
-        yield 'missing from query' => [
-            self::getRequest(query: []),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()]
             ),
             false,
         ];
@@ -100,22 +79,22 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         ];
 
         yield 'non-nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
+            self::getRequest(body: ['suit' => '']),
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             false,
         ];
 
         yield 'nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
+            self::getRequest(body: ['suit' => '']),
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
                 nullable: true,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             true,
         ];
@@ -125,25 +104,25 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             false,
         ];
 
         yield 'supports variadics' => [
-            self::getRequest(query: ['suits' => ['H', 'S']]),
+            self::getRequest(body: ['suits' => ['H', 'S']]),
             self::getArgumentMetadata(
                 'suits',
                 Suit::class,
                 variadic: true,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             true,
         ];
     }
 
     /**
-     * @dataProvider provides testResolve data
+     * @dataProvider providesTestResolveData
      */
     public function testResolve(Request $request, ArgumentMetadata $metadata, array $expected): void
     {
@@ -163,18 +142,8 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         self::assertSame($expected, $results);
     }
 
-    public function provides testResolve data(): iterable
+    public function providesTestResolveData(): iterable
     {
-        yield 'from query' => [
-            self::getRequest(query: ['suit' => 'H']),
-            self::getArgumentMetadata(
-                'suit',
-                Suit::class,
-                attributes: [new BackedEnumFromQuery()],
-            ),
-            [Suit::Hearts],
-        ];
-
         yield 'from body' => [
             self::getRequest(body: ['suit' => 'H']),
             self::getArgumentMetadata(
@@ -186,35 +155,35 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         ];
 
         yield 'nullable with null found (casted from empty string)' => [
-            self::getRequest(query: ['suit' => '']),
+            self::getRequest(body: ['suit' => '']),
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
                 nullable: true,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             [null],
         ];
 
         yield 'with variadics' => [
-            self::getRequest(query: ['suit' => ['H', 'S']]),
+            self::getRequest(body: ['suit' => ['H', 'S']]),
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
                 variadic: true,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             [Suit::Hearts, Suit::Spades],
         ];
 
         yield 'nullable, with variadics' => [
-            self::getRequest(query: ['suit' => ['', '']]),
+            self::getRequest(body: ['suit' => ['', '']]),
             self::getArgumentMetadata(
                 'suit',
                 Suit::class,
                 nullable: true,
                 variadic: true,
-                attributes: [new BackedEnumFromQuery()],
+                attributes: [new BackedEnumFromBody()],
             ),
             [null, null],
         ];
@@ -223,8 +192,8 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testResolveThrowsOnInvalidValue(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-        $request = self::getRequest(query: ['suit' => 'foo']);
-        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
+        $request = self::getRequest(body: ['suit' => 'foo']);
+        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromBody()]);
 
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: "foo" is not a valid backing value for enum');
@@ -237,17 +206,11 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testResolveThrowsUnexpectedType(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-        $request = self::getRequest(query: ['suit' => true]);
-        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
+        $request = self::getRequest(body: ['suit' => true]);
+        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromBody()]);
 
         $this->expectException(BadRequestException::class);
-        $errorMessage = 'Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, bool given';
-
-        if (PHP_VERSION_ID >= 80300) {
-            $errorMessage = 'Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, true given';
-        }
-
-        $this->expectExceptionMessage($errorMessage);
+        $this->expectExceptionMessage('Could not resolve the "Elao\Enum\Tests\Fixtures\Enum\Suit $suit" controller argument: Elao\Enum\Tests\Fixtures\Enum\Suit::from(): Argument #1 ($value) must be of type string, true given');
 
         /** @var \Generator $results */
         $results = $resolver->resolve($request, $metadata);
@@ -257,8 +220,8 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testResolveThrowsNonVariadicsArrayValue(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-        $request = self::getRequest(query: ['suit' => ['H', 'S']]);
-        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromQuery()]);
+        $request = self::getRequest(body: ['suit' => ['H', 'S']]);
+        $metadata = self::getArgumentMetadata('suit', Suit::class, attributes: [new BackedEnumFromBody()]);
 
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('Input value "suit" contains a non-scalar value.');
@@ -271,8 +234,8 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
     public function testResolveThrowsVariadicsScalarValue(): void
     {
         $resolver = new QueryBodyBackedEnumValueResolver();
-        $request = self::getRequest(query: ['suit' => 'H']);
-        $metadata = self::getArgumentMetadata('suit', Suit::class, variadic: true, attributes: [new BackedEnumFromQuery()]);
+        $request = self::getRequest(body: ['suit' => 'H']);
+        $metadata = self::getArgumentMetadata('suit', Suit::class, variadic: true, attributes: [new BackedEnumFromBody()]);
 
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('Unexpected value for parameter "suit": expecting "array", got "string".');
@@ -282,11 +245,10 @@ class QueryBodyBackedEnumValueResolverTest extends TestCase
         iterator_to_array($results);
     }
 
-    private static function getRequest(array $query = [], array $body = []): Request
+    private static function getRequest(array $body = []): Request
     {
         $request = new Request();
 
-        $request->query->replace($query);
         $request->request->replace($body);
 
         return $request;

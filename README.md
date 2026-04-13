@@ -5,8 +5,8 @@ Elao Enumerations
 [![Monthly Downloads](https://poser.pugx.org/elao/enum/d/monthly?format=flat-square)](https://packagist.org/packages/elao/enum)
 [![Tests](https://github.com/Elao/PhpEnums/actions/workflows/ci.yml/badge.svg)](https://github.com/Elao/PhpEnums/actions/workflows/ci.yml)
 [![Coveralls](https://img.shields.io/coveralls/Elao/PhpEnums.svg?style=flat-square)](https://coveralls.io/github/Elao/PhpEnums)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=2.x)
-[![php](https://img.shields.io/badge/PHP-8.1-green.svg?style=flat-square "Available for PHP 8.1+")](http://php.net)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/Elao/PhpEnums.svg?style=flat-square)](https://scrutinizer-ci.com/g/Elao/PhpEnums/?branch=3.x)
+[![php](https://img.shields.io/badge/PHP-8.4-green.svg?style=flat-square "Available for PHP 8.4+")](http://php.net)
 
 _Provides additional, opinionated features to the [PHP 8.1+ native enums](https://php.watch/versions/8.1/enums) as well
 as specific integrations with frameworks and libraries._
@@ -26,12 +26,9 @@ enum Suit: string implements ReadableEnumInterface
 
 ---
 
-<p align="center">
-    <strong>📢  This project used to emulate enumerations before PHP 8.1.</strong><br/>
-    For the 1.x documentation, <a href="https://github.com/Elao/PhpEnums/tree/1.x">click here</a>
-    <br/><br/>
-    You can also consult <a href="https://github.com/Elao/PhpEnums/issues/124">this issue</a> to follow objectives & progress for the V2 of this lib.
-</p>
+> [!Important]
+> **Version 3.x** introduces support for **Symfony 8** and requires **PHP 8.4+** and **Symfony 6.4+** minimum.  
+> For older PHP or Symfony versions, refer to the [2.x documentation](https://github.com/Elao/PhpEnums/tree/2.x) (no longer maintained).
 
 ---
 
@@ -365,67 +362,66 @@ class AuthenticationType extends AbstractType
 
 #### Resolve controller arguments from route path
 
-As of Symfony 6.1+, [backed enum cases will be resolved](https://github.com/symfony/symfony/pull/44831) from route path parameters:
+Symfony [natively resolves backed enum cases](https://symfony.com/blog/new-in-symfony-6-1-improvements-related-to-types) from route path parameters:
 
 ```php
 class CardController
 {
     #[Route('/cards/{suit}')]
-    public function list(Suit $suit): Response
-    {
-        // [...]
-    }
+    public function list(Suit $suit): Response { /* ... */ }
 }
 ```
 
-➜ A call to `/cards/H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
+#### Resolve controller arguments from query parameters
 
-If you're not yet using Symfony HttpKernel 6.1+, this library will still make this working by registering its own
-resolver.
-
-#### Resolve controller arguments from query or body
-
-You can also resolve from query params or from the request body:
+Symfony [natively resolves backed enum cases](https://symfony.com/blog/new-in-symfony-6-3-query-parameters-mapper) from query parameters using `#[MapQueryParameter]`:
 
 ```php
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 class DefaultController
 {
     #[Route('/cards')]
-    public function list(
-        #[BackedEnumFromQuery]
-        ?Suit $suit = null,
-    ): Response
-    {
+    public function list(#[MapQueryParameter] ?Suit $suit = null): Response { /* ... */ }
+}
+```
+
+#### Resolve controller arguments from request body
+
+Symfony does not provide a native equivalent for resolving individual backed enum parameters from the request body.
+This library provides the `#[BackedEnumFromBody]` attribute to fill this gap:
+
+```php
+use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromBody;
+
+class DefaultController
+{
+    #[Route('/cards', methods: 'POST')]
+    public function create(
+        #[BackedEnumFromBody]
+        Suit $suit,
+    ): Response {
         // [...]
     }
 }
 ```
-
-➜ A call to `/cards?suit=H` will resolve the `$suit` argument as the `Suit::Hearts` enum case.
-
-Use `BackedEnumFromBody` to resolve from the request body (`$_POST`).
 
 It also supports variadics:
 
 ```php
-use Elao\Enum\Bridge\Symfony\HttpKernel\Controller\ArgumentResolver\Attributes\BackedEnumFromQuery;
-
 class DefaultController
 {
-    #[Route('/cards')]
-    public function list(
-        #[BackedEnumFromQuery]
-        ?Suit ...$suits = null,
-    ): Response
-    {
+    #[Route('/cards', methods: 'POST')]
+    public function create(
+        #[BackedEnumFromBody]
+        Suit ...$suits,
+    ): Response {
         // [...]
     }
 }
 ```
 
-➜ A call to `/cards?suits[]=H&suits[]=S` will resolve the `$suits` argument as `[Suit::Hearts, Suit::Spades]`.
+➜ A POST to `/cards` with body `suits[]=H&suits[]=S` will resolve the `$suits` argument as `[Suit::Hearts, Suit::Spades]`.
 
 ### Symfony Translation
 

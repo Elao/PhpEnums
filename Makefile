@@ -110,4 +110,4 @@ php-cs-fixer.phar:
 
 lint.phpstan:
 	@make deps.odm.add install >> /dev/null 2>&1
-	$(call try_finally, ./vendor/bin/phpstan, make deps.odm.rm install >> /dev/null 2>&1)
+	$(call try_finally, symfony php ./vendor/bin/phpstan, make deps.odm.rm install >> /dev/null 2>&1)

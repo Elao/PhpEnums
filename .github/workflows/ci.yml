@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 2.x
+      - 3.x
   pull_request: ~
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
       - name: 'Setup PHP'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.4'
           coverage: none
 
       - name: 'Require Doctrine MongoDB dependencies'
@@ -60,9 +61,9 @@ jobs:
       matrix:
         include:
           # Lowest deps
-          - name: 'Test lowest deps [Linux, PHP 8.1]'
+          - name: 'Test lowest deps [Linux, PHP 8.4]'
             os: 'ubuntu-latest'
-            php: '8.1'
+            php: '8.4'
             composer-flags: '--prefer-lowest'
             allow-unstable: true
             mongodb: true
@@ -117,6 +118,16 @@ jobs:
           - name: 'Test next Symfony 8.1 [Linux, PHP 8.5] (allowed failure)'
             os: 'ubuntu-latest'
             php: '8.5'
+            symfony: '8.1.*@dev'
+            composer-flags: '--ignore-platform-req php'
+            allow-unstable: true
+            allow-failure: true
+            mysql: true
+            mongodb: true
+
+          - name: 'Test next Symfony 8.1 [Linux, PHP 8.6] (allowed failure)'
+            os: 'ubuntu-latest'
+            php: '8.6'
             symfony: '8.1.*@dev'
             composer-flags: '--ignore-platform-req php'
             allow-unstable: true

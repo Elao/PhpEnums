@@ -26,11 +26,15 @@ enum Suit: string implements ReadableEnumInterface
 
 ---
 
+> [!Important]
+> **Version 3.x** is available with support for **Symfony 8+. (_PHP 8.4+ and Symfony 6.4+_)**.  
+> If you are looking for the latest version, have a look at the [3.x documentation](https://github.com/Elao/PhpEnums/tree/3.x).
+
+---
+
 <p align="center">
     <strong>📢  This project used to emulate enumerations before PHP 8.1.</strong><br/>
-    For the 1.x documentation, <a href="https://github.com/Elao/PhpEnums/tree/1.x">click here</a>
-    <br/><br/>
-    You can also consult <a href="https://github.com/Elao/PhpEnums/issues/124">this issue</a> to follow objectives & progress for the V2 of this lib.
+    For the 1.x documentation, <a href="https://github.com/Elao/PhpEnums/tree/1.x">click here</a>.
 </p>
 
 ---
